@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button States Design System</title>
+    <style>
+        :root {
+            --color-text-label: #333;
+            
+            /* Filled Button Colors (Row 1) */
+            --primary-bg: #cd6a6a; /* Dusty Rose Default */
+            --primary-text: #ffffff;
+            --hover-fill-bg: #f5e6e6; /* Light Dusty Rose Hover */
+            --hover-fill-text: #cd6a6a;
+            --active-fill-bg: #e8a8a8; /* Medium Dusty Rose Active */
+            --disabled-fill-bg: #e0e0e0; /* Gray Disabled */
+            --disabled-fill-text: #a0a0a0;
+
+            /* Text Button Colors (Row 2) */
+            --text-btn-color: #cd6a6a;
+            --text-btn-disabled: #d0d0d0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #ffffff;
+            padding: 40px;
+        }
+
+        /* --- Table Layout --- */
+        .design-system-table {
+            width: 100%;
+            border-collapse: collapse;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .design-system-table th {
+            font-weight: normal;
+            color: var(--color-text-label);
+            padding-bottom: 20px;
+            text-align: center;
+            width: 20%; /* 5 colonne uguali */
+        }
+
+        .design-system-table td {
+            text-align: center;
+            padding: 15px 10px;
+            vertical-align: middle;
+            position: relative; /* Per posizionare i cursori simulati */
+        }
+
+        .design-system-table tr:first-child td {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 25px;
+        }
+        
+        .design-system-table tr:last-child td {
+            padding-top: 25px;
+        }
+
+        /* --- Base Button Styles --- */
+        .btn-pill {
+            display: inline-block;
+            padding: 13px 34px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: none; /* Rimuoviamo le transizioni per stati statici */
+        }
+
+        /* 1. Stato DEFAULT (Nativo) */
+        .btn-filled-default {
+            background-color: var(--primary-bg);
+            color: var(--primary-text);
+        }
+
+        /* 2. FORCED HOVER State */
+        .btn-filled-hover {
+            background-color: var(--hover-fill-bg);
+            color: var(--hover-fill-text);
+        }
+
+        /* 3. FORCED ACTIVE State */
+        .btn-filled-active {
+            background-color: var(--active-fill-bg);
+            color: var(--primary-text);
+        }
+
+        /* 4. FORCED FOCUS State */
+        .btn-filled-focus {
+            background-color: var(--active-fill-bg); /* Stesso colore di active nell'immagine */
+            color: var(--primary-text);
+            /* Bordo simulato come nell'immagine */
+            outline: 2px solid #cd6a6a;
+            outline-offset: 2px;
+        }
+
+        /* 5. Stato DISABLED (Usiamo l'attributo nativo) */
+        .btn-filled-default[disabled] {
+            background-color: var(--disabled-fill-bg);
+            color: var(--disabled-fill-text);
+            cursor: default;
+        }
+
+
+        /* --- Text Only Button Styles (Row 2) --- */
+        .btn-text {
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 10px;
+        }
+
+        .btn-text-default {
+            color: var(--text-btn-color);
+            text-decoration: underline;
+        }
+
+        .btn-text-hover {
+            color: var(--text-btn-color);
+            text-decoration: none;
+        }
+
+        .btn-text-active {
+            color: var(--disabled-fill-text); /* Grigio scuro */
+            text-decoration: none;
+        }
+
+        .btn-text-focus {
+            color: var(--disabled-fill-text);
+            text-decoration: none;
+            outline: 2px solid #cd6a6a;
+            outline-offset: 1px;
+        }
+
+        .btn-text-disabled {
+            color: var(--text-btn-disabled);
+            text-decoration: none;
+            cursor: default;
+        }
+
+        /* --- Mouse Cursor Simulation --- */
+        .mock-cursor {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            pointer-events: none; /* Don't intercept clicks */
+            z-index: 10;
+            background-image: url('hand-cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* Cursor positioning above specific buttons */
+        #cursor-hand {
+            bottom: 5px; /* Overlapped on Hover button */
+            right: 40%;
+        }
+
+        #cursor-hand-text {
+            bottom: 5px; /* Overlapped on Text Hover button */
+            right: 40%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <table class="design-system-table">
+        <thead>
+            <tr>
+                <th>Default</th>
+                <th>Hover</th>
+                <th>Active/Tap</th>
+                <th>Focus</th>
+                <th>Disabled</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <button class="btn-pill btn-filled-default">Default</button>
+                </td>
+                <td>
+                    <div id="cursor-hand" class="mock-cursor"></div>
+                    <button class="btn-pill btn-filled-hover">Default</button>
+                </td>
+                <td>
+                    <button class="btn-pill btn-filled-active">Default</button>
+                </td>
+                <td>
+                    <button class="btn-pill btn-filled-focus">Default</button>
+                </td>
+                <td>
+                    <button class="btn-pill btn-filled-default" disabled>Default</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn-text btn-text-default">Default</button>
+                </td>
+                <td>
+                    <div id="cursor-hand-text" class="mock-cursor"></div>
+                    <button class="btn-text btn-text-hover">Default</button>
+                </td>
+                <td>
+                    <button class="btn-text btn-text-active">Default</button>
+                </td>
+                <td>
+                    <button class="btn-text btn-text-focus">Default</button>
+                </td>
+                <td>
+                    <button class="btn-text btn-text-disabled" disabled>Default</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

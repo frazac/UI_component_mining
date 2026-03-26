@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link States - UI Components</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <style>
+        a:link {
+            color: red;
+        }
+
+        a:visited {
+            color: green;
+        }
+
+        a:hover {
+            color: hotpink;
+        }
+
+        .hover {
+            color: hotpink !important;
+        }
+
+        a:active {
+            color: blue;
+        }
+
+        .active {
+            color: blue !important;
+        }
+
+        a:focus {
+            outline: 2px solid purple;
+            outline-offset: 3px;
+        }
+
+        .focus {
+            outline: 2px solid purple !important;
+            padding: 3px;
+            outline-offset: 3px;
+        }
+
+        .cursor-hand {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            z-index: 10;
+            background-image: url('hand-cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        .link-container {
+            position: relative;
+            display: inline-block;
+        }
+    </style>
+    <p><a href="https://lorem" target="_blank">This is a link</a></p>
+    <p><a href="https://google.com" target="_blank">This is a visited link</a></p>
+    <p>
+        <div class="link-container">
+            <div class="cursor-hand" style="top: -10px; right: -40px;"></div>
+            <a href="https://lorem" target="_blank" class="hover">This is how a link render when the mouse is over</a>
+        </div>
+    </p>
+    <p><a href="https://lorem" target="_blank" class="active">This is how a link render when the mouse is pressed on</a>
+    </p>
+    <p><a href="https://lorem" target="_blank" class="focus">This is how a link when the focus is on</a></p>
+</body>
+
+</html>
