@@ -9,7 +9,7 @@
             --color-text-label: #333;
             
             /* Filled Button Colors (Row 1) */
-            --primary-bg: #cd6a6a; /* Dusty Rose Default */
+            --primary-bg: #cd6a6a; /* Dusty Rose Lorem */
             --primary-text: #ffffff;
             --hover-fill-bg: #f5e6e6; /* Light Dusty Rose Hover */
             --hover-fill-text: #cd6a6a;
@@ -28,36 +28,63 @@
             padding: 40px;
         }
 
-        /* --- Table Layout --- */
-        .design-system-table {
-            width: 100%;
-            border-collapse: collapse;
-            max-width: 1000px;
+        /* --- Container Layout --- */
+        .components-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            max-width: 1200px;
             margin: 0 auto;
+            justify-content: center;
         }
 
-        .design-system-table th {
+        .component-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            min-width: 180px;
+        }
+
+        .component-label {
             font-weight: normal;
             color: var(--color-text-label);
-            padding-bottom: 20px;
+            font-size: 14px;
             text-align: center;
-            width: 20%; /* 5 colonne uguali */
         }
 
-        .design-system-table td {
-            text-align: center;
-            padding: 15px 10px;
-            vertical-align: middle;
-            position: relative; /* Per posizionare i cursori simulati */
+        .component-link {
+            font-size: 14px;
+            color: var(--text-btn-color);
+            text-decoration: underline;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
-        .design-system-table tr:first-child td {
-            border-bottom: 1px solid #e0e0e0;
-            padding-bottom: 25px;
+        .component-link:hover {
+            color: var(--hover-fill-text);
+            text-decoration: none;
+            background-color: var(--hover-fill-bg);
         }
-        
-        .design-system-table tr:last-child td {
-            padding-top: 25px;
+
+        .component-link.active {
+            color: var(--disabled-fill-text);
+            text-decoration: none;
+        }
+
+        .component-link.focus {
+            color: var(--disabled-fill-text);
+            text-decoration: none;
+            outline: 2px solid #cd6a6a;
+            outline-offset: 1px;
+        }
+
+        .component-link.disabled {
+            color: var(--text-btn-disabled);
+            text-decoration: none;
+            cursor: default;
         }
 
         /* --- Base Button Styles --- */
@@ -73,8 +100,8 @@
             transition: none; /* Rimuoviamo le transizioni per stati statici */
         }
 
-        /* 1. Stato DEFAULT (Nativo) */
-        .btn-filled-default {
+        /* 1. Stato Lorem (Nativo) */
+        .btn-filled-Lorem {
             background-color: var(--primary-bg);
             color: var(--primary-text);
         }
@@ -101,10 +128,10 @@
         }
 
         /* 5. Stato DISABLED (Usiamo l'attributo nativo) */
-        .btn-filled-default[disabled] {
+        .btn-filled-Lorem[disabled] {
             background-color: var(--disabled-fill-bg);
             color: var(--disabled-fill-text);
-            cursor: default;
+            cursor: Lorem;
         }
 
 
@@ -118,7 +145,7 @@
             padding: 6px 10px;
         }
 
-        .btn-text-default {
+        .btn-text-Lorem {
             color: var(--text-btn-color);
             text-decoration: underline;
         }
@@ -143,10 +170,26 @@
         .btn-text-disabled {
             color: var(--text-btn-disabled);
             text-decoration: none;
-            cursor: default;
+            cursor: Lorem;
         }
 
-        /* --- Mouse Cursor Simulation --- */
+        /* --- Badge Styles --- */
+        .badge-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 16px;
+            height: 16px;
+            background-color: #ff3b30; /* Apple red */
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
         .mock-cursor {
             position: absolute;
             width: 32px;
@@ -160,68 +203,84 @@
 
         /* Cursor positioning above specific buttons */
         #cursor-hand {
-            bottom: 5px; /* Overlapped on Hover button */
-            right: 40%;
+            bottom: -11px;
+            right: 24px;
         }
 
         #cursor-hand-text {
-            bottom: 5px; /* Overlapped on Text Hover button */
-            right: 40%;
+            bottom: -24px;
+            right: -13px;
+        }
+
+        .component-item {
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 20px 10px;
+            border-radius: 15px;
+            background-color: white;
+        }
+        body {
+            background-color: #eee6e4;
         }
 
     </style>
 </head>
 <body>
 
-    <table class="design-system-table">
-        <thead>
-            <tr>
-                <th>Default</th>
-                <th>Hover</th>
-                <th>Active/Tap</th>
-                <th>Focus</th>
-                <th>Disabled</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <button class="btn-pill btn-filled-default">Default</button>
-                </td>
-                <td>
-                    <div id="cursor-hand" class="mock-cursor"></div>
-                    <button class="btn-pill btn-filled-hover">Default</button>
-                </td>
-                <td>
-                    <button class="btn-pill btn-filled-active">Default</button>
-                </td>
-                <td>
-                    <button class="btn-pill btn-filled-focus">Default</button>
-                </td>
-                <td>
-                    <button class="btn-pill btn-filled-default" disabled>Default</button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <button class="btn-text btn-text-default">Default</button>
-                </td>
-                <td>
-                    <div id="cursor-hand-text" class="mock-cursor"></div>
-                    <button class="btn-text btn-text-hover">Default</button>
-                </td>
-                <td>
-                    <button class="btn-text btn-text-active">Default</button>
-                </td>
-                <td>
-                    <button class="btn-text btn-text-focus">Default</button>
-                </td>
-                <td>
-                    <button class="btn-text btn-text-disabled" disabled>Default</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="components-container">
+        <!-- Default -->
+        <div class="component-item">
+            <div class="component-label">Default</div>
+            <button class="btn-pill btn-filled-Lorem">Lorem</button>
+            <a href="#" class="component-link">Lorem</a>
+        </div>
+
+        <!-- Hover -->
+        <div class="component-item">
+            <div class="component-label">Hover</div>
+            <div style="position: relative;">
+                <div id="cursor-hand" class="mock-cursor"></div>
+                <button class="btn-pill btn-filled-hover">Lorem</button>
+            </div>
+            <div style="position: relative;">
+                <div id="cursor-hand-text" class="mock-cursor"></div>
+                <a href="#" class="component-link">Lorem</a>
+            </div>
+        </div>
+
+        <!-- Active -->
+        <div class="component-item">
+            <div class="component-label">Active/Tap</div>
+            <button class="btn-pill btn-filled-active">Lorem</button>
+            <a href="#" class="component-link active">Lorem</a>
+        </div>
+
+        <!-- Focus -->
+        <div class="component-item">
+            <div class="component-label">Focus</div>
+            <button class="btn-pill btn-filled-focus">Lorem</button>
+            <a href="#" class="component-link focus">Lorem</a>
+        </div>
+
+        <!-- Disabled -->
+        <div class="component-item">
+            <div class="component-label">Disabled</div>
+            <button class="btn-pill btn-filled-Lorem" disabled>Lorem</button>
+            <a href="#" class="component-link disabled">Lorem</a>
+        </div>
+
+        <!-- Badge -->
+        <div class="component-item">
+            <div class="component-label">Badge</div>
+            <div class="badge-container">
+                <button class="btn-pill btn-filled-Lorem">Lorem</button>
+                <div class="notification-badge"></div>
+            </div>
+            <div class="badge-container">
+                <a href="#" class="component-link">Lorem</a>
+                <div class="notification-badge"></div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
