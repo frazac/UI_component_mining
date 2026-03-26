@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Button Animation - Auto Demo</title>
+    <link type="text/css" rel="stylesheet" href="tipografia.css">
+    <style>
+        body {
+            font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+            letter-spacing: 0.02em;
+            background-color: #eee6e4;
+            padding: 60px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .demo-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* --- Button Colors --- */
+        :root {
+            --primary-bg: #cd6a6a; /* Dusty Rose Default */
+            --text-color: #8b5a5a; /* Dark dusty rose for text */
+            --hover-bg: #cd6a6a; /* Same as primary for hover */
+            --loading-bg: #f5e6e6; /* Light background for loading */
+            --success-bg: #e8a8a8; /* Medium dusty rose for success */
+            --shadow-normal: rgba(205, 106, 106, 0.3); /* Normal shadow */
+            --shadow-debug: rgba(255, 0, 0, 0.7); /* Debug shadow */
+        }
+
+        .feedback-btn {
+            position: relative;
+            width: 150px;
+            height: 80px !important;
+            background: white;
+            border: 2px solid var(--primary-bg);
+            border-radius: 40px;
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: default;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            box-shadow: 10px 10px 20px var(--shadow-normal);
+        }
+
+        /* --- Button States --- */
+        .feedback-btn.default {
+            /* Default state - white background, dusty rose border */
+        }
+
+        .feedback-btn.hover {
+            background: var(--hover-bg);
+            color: white;
+            border-color: var(--hover-bg);
+        }
+
+        .feedback-btn.pulse {
+            animation: pulseText 0.4s ease-in-out;
+        }
+
+        .feedback-btn.loading {
+            background: var(--loading-bg);
+            border-color: var(--primary-bg);
+            pointer-events: none;
+        }
+
+        .feedback-btn.success {
+            background: white;
+            border: 2px solid var(--primary-bg);
+            color: var(--text-color);
+            pointer-events: none;
+        }
+
+        .feedback-btn.pulse {
+            animation: pulseText 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), pulseShadow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        @keyframes pulseText {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(0.95);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulseShadow {
+            0% {
+                box-shadow: 10px 10px 20px var(--shadow-normal);
+            }
+            50% {
+                box-shadow: 0px 0px 20px var(--shadow-normal);
+            }
+            100% {
+                box-shadow: 10px 10px 20px var(--shadow-normal);
+            }
+        }
+
+        /* --- Content Container --- */
+        .btn-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Text Content --- */
+        .btn-text {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback-btn.loading .btn-text,
+        .feedback-btn.success .btn-text {
+            opacity: 0;
+        }
+
+        /* --- Loading Spinner --- */
+        .loading-spinner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .feedback-btn.loading .loading-spinner {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .spinner-circle {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(205, 106, 106, 0.3);
+            border-radius: 50%;
+            /* transform: translateY(-2px); */
+            animation: none; /* Reset animation */
+        }
+
+        .spinner-progress {
+            width: 100%;
+            height: 100%;
+            animation: none; /* Reset animation */
+        }
+
+        .feedback-btn.loading .spinner-progress {
+            animation: fillCircle 3s linear forwards;
+        }
+
+        @keyframes fillCircle {
+            0% {
+                stroke-dasharray: 0 57; /* 0% filled (circumference = 2πr ≈ 57) */
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dasharray: 57 57; /* 100% filled */
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* --- Success Checkmark --- */
+        .success-checkmark {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+            color: var(--primary-bg);
+            padding-left: 3px;
+        }
+
+        .feedback-btn.success .success-checkmark {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* --- Debug Switch --- */
+        .debug-switch-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: none;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .debug-switch-container.active {
+            display: flex;
+        }
+
+        .debug-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .debug-switch.on {
+            background: rgba(205, 106, 106, 0.9);
+        }
+
+        .debug-switch-slider {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .debug-switch.on .debug-switch-slider {
+            transform: translateX(28px);
+        }
+
+        .debug-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .debug-controls-container {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            display: none;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .debug-controls-container.active {
+            display: flex;
+        }
+
+        .state-indicator {
+            background: rgba(205, 106, 106, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .debug-next-btn {
+            background: rgba(205, 106, 106, 0.9);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            height: 32px;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        .debug-next-btn:hover {
+            background: white;
+            color: rgba(205, 106, 106, 0.9);
+            border: none;
+        }
+        .hand-cursor {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background-image: url('hand-cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: all 0.5s ease;
+            bottom: 10px;
+            right: -40px;
+        }
+
+        .feedback-btn.hover .hand-cursor {
+            opacity: 1;
+            right: 20px;
+        }
+
+        .feedback-btn.pulse .hand-cursor {
+            opacity: 1 !important;
+            right: 20px !important;
+            transition: none !important;
+        }
+
+        .feedback-btn.loading .hand-cursor {
+            opacity: 0;
+            right: -40px;
+            transition: opacity 0.3s ease 2.5s; /* Hide after 2.5s (500ms before loading ends) */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Debug Switch -->
+        <div class="debug-switch-container" id="debugSwitchContainer">
+            <div class="debug-label">DEBUG</div>
+            <div class="debug-switch" id="debugSwitch">
+                <div class="debug-switch-slider"></div>
+            </div>
+        </div>
+        
+        <div class="feedback-btn" id="feedbackBtn">
+            <div class="btn-content">
+                <span class="btn-text">Submit</span>
+                
+                <!-- Hand Cursor -->
+                <div class="hand-cursor"></div>
+                
+                <!-- Loading Spinner -->
+                <div class="loading-spinner">
+                    <svg width="24" height="24">
+                        <!-- <circle class="spinner-circle" cx="12" cy="12" r="9" fill="none" stroke="rgba(205, 106, 106, 0.3)" stroke-width="3"/> -->
+                        <circle class="spinner-progress" cx="12" cy="12" r="9" fill="none" stroke="#cd6a6a" stroke-width="3"/>
+                    </svg>
+                </div>
+                
+                <!-- Success Checkmark -->
+                <div class="success-checkmark">✔</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Debug mode control
+        let DEBUG_MODE = false; // Set to true to enable click-to-advance debugging
+        
+        // Debug switch elements
+        const debugSwitch = document.getElementById('debugSwitch');
+        const debugSwitchContainer = document.getElementById('debugSwitchContainer');
+        
+        // Create debug controls container
+        const debugControlsContainer = document.createElement('div');
+        debugControlsContainer.className = 'debug-controls-container';
+        debugControlsContainer.id = 'debugControlsContainer';
+        
+        // Create state indicator
+        const stateIndicator = document.createElement('div');
+        stateIndicator.className = 'state-indicator';
+        stateIndicator.id = 'stateIndicator';
+        stateIndicator.textContent = 'STATE: DEFAULT (1000 ms)';
+        
+        // Create next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'debug-next-btn';
+        nextBtn.id = 'debugNextBtn';
+        nextBtn.textContent = 'NEXT';
+        
+        // Add elements to container
+        debugControlsContainer.appendChild(stateIndicator);
+        debugControlsContainer.appendChild(nextBtn);
+        
+        // Show debug switch container
+        debugSwitchContainer.classList.add('active');
+        
+        // Add container to DOM
+        document.body.appendChild(debugControlsContainer);
+        
+        // Debug switch click handler
+        debugSwitch.addEventListener('click', function() {
+            DEBUG_MODE = !DEBUG_MODE;
+            debugSwitch.classList.toggle('on');
+            
+            // Update shadow based on debug mode
+            if (DEBUG_MODE) {
+                // Update CSS variables for debug mode
+                document.documentElement.style.setProperty('--shadow-normal', 'rgba(255, 0, 0, 0.7)');
+                btn.style.boxShadow = '10px 10px 20px var(--shadow-debug)';
+                debugControlsContainer.classList.add('active');
+                console.log('Debug mode: ENABLED - Click to advance states');
+            } else {
+                // Reset CSS variables for normal mode
+                document.documentElement.style.setProperty('--shadow-normal', 'rgba(205, 106, 106, 0.3)');
+                btn.style.boxShadow = '10px 10px 20px var(--shadow-normal)';
+                debugControlsContainer.classList.remove('active');
+                
+                // Restart auto-cycle animation when debug is disabled
+                currentStateIndex = 0;
+                runStateCycle();
+                console.log('Debug mode: DISABLED - Auto cycle restarted');
+            }
+        });
+        
+        // Next button click handler
+        nextBtn.addEventListener('click', function() {
+            if (DEBUG_MODE) {
+                console.log('Debug: Next button clicked - advancing to next state');
+                runStateCycle();
+            }
+        });
+        
+        // Auto-cycle animation states based on keyframes
+        const btn = document.getElementById('feedbackBtn');
+        
+        const stateSequence = [
+            { name: 'default', duration: 1000 },
+            { name: 'hover', duration: 1000 },
+            { name: 'pulse', duration: 100 },
+            { name: 'loading', duration: 3000 },
+            { name: 'success', duration: 3000 }
+        ];
+        
+        let currentStateIndex = 0;
+        
+        function updateState(stateName) {
+            // Remove all state classes
+            btn.classList.remove('default', 'hover', 'pulse', 'loading', 'success');
+            
+            // Add current state class
+            btn.classList.add(stateName);
+            
+            // Update state indicator in debug mode
+            if (DEBUG_MODE) {
+                const currentState = stateSequence.find(s => s.name === stateName);
+                stateIndicator.textContent = 'STATE: ' + stateName.toUpperCase() + ' (' + currentState.duration + ' ms)';
+            }
+            
+            console.log('Current state:', stateName);
+        }
+        
+        function runStateCycle() {
+            const currentState = stateSequence[currentStateIndex];
+            
+            // Update to current state
+            updateState(currentState.name);
+            
+            // Move to next state
+            currentStateIndex = (currentStateIndex + 1) % stateSequence.length;
+            
+            if (DEBUG_MODE) {
+                // In debug mode, wait for click before advancing
+                console.log('Debug mode: Click to advance to next state');
+            } else {
+                // Schedule next state change automatically
+                setTimeout(() => {
+                    runStateCycle();
+                }, currentState.duration);
+            }
+        }
+        
+        // Start the cycle
+        runStateCycle();
+        
+        // Click handler
+        if (DEBUG_MODE) {
+            // In debug mode, click anywhere on background to advance
+            document.addEventListener('click', function(e) {
+                // Don't advance if clicking on the button itself
+                if (e.target !== btn && !btn.contains(e.target)) {
+                    console.log('Debug: Background clicked - advancing to next state');
+                    runStateCycle();
+                }
+            });
+        } else {
+            // In normal mode, click button to restart cycle
+            btn.addEventListener('click', function() {
+                currentStateIndex = 0;
+                runStateCycle();
+            });
+        }
+        
+        // Debug info in console
+        console.log('Debug mode:', DEBUG_MODE ? 'ENABLED - Click to advance states' : 'DISABLED - Auto cycle');
+        console.log('State sequence:', stateSequence.map(s => `${s.name} (${s.duration}ms)`));
+    </script>
+</body>
+</html>

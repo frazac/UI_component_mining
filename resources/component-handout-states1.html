@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link States - UI Components</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-</head>
-
-<body>
+    <link type="text/css" rel="stylesheet" href="tipografia.css">
     <style>
         a:link {
             color: red;
@@ -60,18 +58,28 @@
             position: relative;
             display: inline-block;
         }
+
+        .content-container {
+            width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
     </style>
-    <p><a href="https://lorem" target="_blank">This is a link</a></p>
-    <p><a href="https://google.com" target="_blank">This is a visited link</a></p>
-    <p>
-        <div class="link-container">
-            <div class="cursor-hand" style="top: -10px; right: -40px;"></div>
-            <a href="https://lorem" target="_blank" class="hover">This is how a link render when the mouse is over</a>
-        </div>
-    </p>
-    <p><a href="https://lorem" target="_blank" class="active">This is how a link render when the mouse is pressed on</a>
-    </p>
-    <p><a href="https://lorem" target="_blank" class="focus">This is how a link when the focus is on</a></p>
+</head>
+
+<body>
+    <div class="content-container">
+        <p><a href="https://lorem" target="_blank">This is a link</a></p>
+        <p><a href="https://google.com" target="_blank">This is a visited link</a></p>
+        <p>
+            <div class="link-container">
+                <div class="cursor-hand" style="top: -8px; right: -35px;"></div>
+                <a href="https://lorem" target="_blank" class="hover">This is how a link render when the mouse is over</a>
+            </div>
+        </p>
+        <p><a href="https://lorem" target="_blank" class="active">This is how a link render when is active</a></p>
+        <p><a href="https://lorem" target="_blank" class="focus">This is how a link render when is focused</a></p>
+    </div>
 </body>
 
 </html>

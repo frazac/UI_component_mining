@@ -1,0 +1,22 @@
+/* Mining UI Components - Typography Base Styles */
+
+/* CSS Variables */
+:root {
+    --text-color: #000000;
+    --line-height: 1.4;
+    --background-color: #eee6e4;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+    letter-spacing: 0.02em;
+    color: var(--text-color);
+    line-height: var(--line-height);
+    background-color: var(--background-color);
+}
