@@ -16,7 +16,6 @@ body {
     overflow-x: auto;
     overflow-y: visible;
     position: relative;
-    max-height: calc(100vh - 40px);
 }
 
 .table-header {
@@ -144,8 +143,9 @@ a:visited {
 
 .footer p {
     margin: 5px 0;
-    color: var(--text-color);
+    color: #808080;
     line-height: var(--line-height);
+    font-size: 10px;
 }
 
 .footer a {
