@@ -1,45 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <title>UI Components Mining . States of interaction 2 . Francesco Zaccaria</title>
+    <!-- Meta sito - TUTTE LE PAGINE -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI Components Mining . States of interaction . Francesco Zaccaria</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link type="text/css" rel="stylesheet" href="tipografia.css">
     <link type="text/css" rel="stylesheet" href="stile.css">
-    <!-- Matomo -->
-    <script>
-        var _paq = window._paq || window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            var u = "https://matomo.masterismi.com/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', '15']);
-            var d = document,
-                g = d.createElement('script'),
-                s = d.getElementsByTagName('script')[0];
-            g.async = true;
-            g.src = u + 'matomo.js';
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
-</head>
-<body>
-    <!-- existing content -->
+    <meta name="description"
+        content="A curated exploration of UI components, evolved from systematic classroom mining into a refined catalog of modern design patterns. This collection identifies and enriches interactive elements and functional building blocks discovered across today's digital landscape, providing a specialized resource for UX/UI research.">
+    <meta name="keywords"
+        content="UI components, UX design, interface patterns, web design, user experience, design systems, component library, frontend development, interaction design, digital design patterns">
+    <meta name="author" content="Francesco Zaccaria">
+    <!-- fine Meta sito -->
     <style>
         :root {
             --color-text-label: #333;
-            
+
             /* Filled Button Colors (Row 1) */
-            --primary-bg: #cd6a6a; /* Dusty Rose Lorem */
+            --primary-bg: #cd6a6a;
+            /* Dusty Rose Lorem */
             --primary-text: #ffffff;
-            --hover-fill-bg: #f5e6e6; /* Light Dusty Rose Hover */
+            --hover-fill-bg: #f5e6e6;
+            /* Light Dusty Rose Hover */
             --hover-fill-text: #cd6a6a;
-            --active-fill-bg: #e8a8a8; /* Medium Dusty Rose Active */
-            --disabled-fill-bg: #e0e0e0; /* Gray Disabled */
+            --active-fill-bg: #e8a8a8;
+            /* Medium Dusty Rose Active */
+            --disabled-fill-bg: #e0e0e0;
+            /* Gray Disabled */
             --disabled-fill-text: #a0a0a0;
 
             /* Text Button Colors (Row 2) */
@@ -109,9 +101,10 @@
         .component-link.disabled {
             color: var(--text-btn-disabled);
             text-decoration: none;
-            cursor: default;
+            cursor: not-allowed;
+            position: relative;
         }
-
+        
         /* --- Base Button Styles --- */
         .btn-pill {
             display: inline-block;
@@ -122,7 +115,8 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
-            transition: none; /* Rimuoviamo le transizioni per stati statici */
+            transition: none;
+            /* Rimuoviamo le transizioni per stati statici */
         }
 
         /* 1. Stato Lorem (Nativo) */
@@ -145,7 +139,8 @@
 
         /* 4. FORCED FOCUS State */
         .btn-filled-focus {
-            background-color: var(--active-fill-bg); /* Stesso colore di active nell'immagine */
+            background-color: var(--active-fill-bg);
+            /* Stesso colore di active nell'immagine */
             color: var(--primary-text);
             /* Bordo simulato come nell'immagine */
             outline: 2px solid #cd6a6a;
@@ -156,9 +151,9 @@
         .btn-filled-Lorem[disabled] {
             background-color: var(--disabled-fill-bg);
             color: var(--disabled-fill-text);
-            cursor: Lorem;
+            cursor: not-allowed;
+            position: relative;
         }
-
 
         /* --- Text Only Button Styles (Row 2) --- */
         .btn-text {
@@ -181,7 +176,8 @@
         }
 
         .btn-text-active {
-            color: var(--disabled-fill-text); /* Grigio scuro */
+            color: var(--disabled-fill-text);
+            /* Grigio scuro */
             text-decoration: none;
         }
 
@@ -195,7 +191,17 @@
         .btn-text-disabled {
             color: var(--text-btn-disabled);
             text-decoration: none;
-            cursor: Lorem;
+            cursor: not-allowed;
+            position: relative;
+        }
+        
+        .btn-text-disabled::after {
+            content: "🚫";
+            position: absolute;
+            top: -8px;
+            right: -20px;
+            font-size: 12px;
+            pointer-events: none;
         }
 
         /* --- Badge Styles --- */
@@ -210,16 +216,19 @@
             right: -8px;
             width: 16px;
             height: 16px;
-            background-color: #ff3b30; /* Apple red */
+            background-color: #ff3b30;
+            /* Apple red */
             border-radius: 50%;
             border: 2px solid white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
+
         .mock-cursor {
             position: absolute;
-            width: 32px;
-            height: 32px;
-            pointer-events: none; /* Don't intercept clicks */
+            width: 24px;
+            height: 24px;
+            pointer-events: none;
+            /* Don't intercept clicks */
             z-index: 10;
             background-image: url('hand-cursor.png');
             background-size: contain;
@@ -238,17 +247,18 @@
         }
 
         .component-item {
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             padding: 20px 10px;
             border-radius: 15px;
             background-color: white;
         }
+
         body {
             background-color: #eee6e4;
         }
-
     </style>
 </head>
+
 <body>
 
     <div class="components-container">
@@ -306,6 +316,36 @@
             </div>
         </div>
     </div>
-
+    <!-- Footer - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><a href="https://frazac.github.io/UI_component_mining/" target="_blank">Homepage</a> . <a
+                    href="https://linktree.com/frazac" target="_blank">Contact me</a><br>We only use technical cookies
+                for anonymous, aggregated analytics via matomo.masterismi.com<br>© 2026 Francesco Zaccaria . Licensed
+                under: <a href="https://github.com/frazac/UI_component_mining?tab=GPL-3.0-1-ov-file" target="_blank">GNU
+                    General Public License v3.0</a></p>
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- Matomo - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <script>
+        var _paq = window._paq || window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://matomo.masterismi.com/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '15']);
+            var d = document,
+                g = d.createElement('script'),
+                s = d.getElementsByTagName('script')[0];
+            g.async = true;
+            g.src = u + 'matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo -->
 </body>
+
 </html>

@@ -1,12 +1,190 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
+
 <head>
+    <title>UI Components Mining . Tags . Francesco Zaccaria</title>
+    <!-- Meta sito - TUTTE LE PAGINE -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI Components Mining . States of interaction . Francesco Zaccaria</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link type="text/css" rel="stylesheet" href="tipografia.css">
     <link type="text/css" rel="stylesheet" href="stile.css">
-    <!-- Matomo -->
+    <meta name="description"
+        content="A curated exploration of UI components, evolved from systematic classroom mining into a refined catalog of modern design patterns. This collection identifies and enriches interactive elements and functional building blocks discovered across today's digital landscape, providing a specialized resource for UX/UI research.">
+    <meta name="keywords"
+        content="UI components, UX design, interface patterns, web design, user experience, design systems, component library, frontend development, interaction design, digital design patterns">
+    <meta name="author" content="Francesco Zaccaria">
+    <!-- fine Meta sito -->
+    <style>
+        body {
+            /* Sfumature del colore di sfondo solito con pattern zig zag */
+            background: linear-gradient(135deg, #eee6e4 0%, #d4c4c0 50%, #eee6e4 100%);
+            background-image:
+                linear-gradient(135deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%),
+                linear-gradient(225deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%),
+                linear-gradient(45deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%),
+                linear-gradient(315deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%);
+            background-position: 10px 0, 10px 0, 0 0, 0 0;
+            background-size: 20px 20px;
+            background-repeat: repeat;
+
+            margin: 0;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            /* Ridotto spazio tra tag */
+            max-width: 500px;
+            padding: 40px;
+            justify-content: flex-start;
+            /* Allineamento a sinistra */
+        }
+
+        .tag {
+            position: relative;
+            display: inline-block;
+            height: 34px;
+            line-height: 34px;
+            padding: 0 10px 0 12px;
+            margin-left: 20px;
+            /* Spazio per la punta a sinistra */
+
+            /* Colore crimson */
+            background: #dc143c;
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            /* Aumentato dimensione testo */
+            font-weight: bold;
+            text-transform: lowercase;
+
+            border-bottom-right-radius: 8px;
+            border-top-right-radius: 8px;
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s ease;
+            cursor: pointer;
+
+            outline: rgba(255, 255, 255, 0.5);
+            outline-offset: -4px;
+            outline-width: 2px;
+            outline-style: dotted;
+        }
+
+        /* La punta del tag a sinistra */
+        .tag::after {
+            content: "";
+            position: absolute;
+            left: -17px;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-top: 17px solid transparent;
+            border-bottom: 17px solid transparent;
+            border-right: 17px solid #dc143c;
+            /* Punta a sinistra crimson */
+            transition: border-color 0.2s ease;
+        }
+
+        /* Il forellino bianco più grande */
+        .tag::before {
+            content: "";
+            position: absolute;
+            top: 13px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Varianti di colore per i tag - tutti giallo acido */
+        .tag.brown {
+            background: #9acd32;
+        }
+
+        .tag.brown::after {
+            border-right-color: #9acd32;
+        }
+
+        .tag.ochre {
+            background: #9acd32;
+        }
+
+        .tag.ochre::after {
+            border-right-color: #9acd32;
+        }
+
+        .tag.dark-green {
+            background: #9acd32;
+        }
+
+        .tag.dark-green::after {
+            border-right-color: #9acd32;
+        }
+
+        /* Effetto Hover */
+        .tag:hover {
+            background: #c4a57b;
+            /* Marroncino più dolce */
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .tag:hover::after {
+            border-right-color: #c4a57b;
+            /* Marroncino più dolce */
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="tag-container">
+            <div class="tag">high resolution</div>
+            <div class="tag">icons</div>
+            <div class="tag">layer styles</div>
+            <div class="tag">layout</div>
+            <div class="tag">letterpress</div>
+            <div class="tag">magazine</div>
+            <div class="tag">menu</div>
+            <div class="tag">metal</div>
+            <div class="tag">navigation</div>
+            <div class="tag">paper</div>
+            <div class="tag">pattern</div>
+            <div class="tag">plastic</div>
+            <div class="tag">ribbon</div>
+            <div class="tag">seamless</div>
+            <div class="tag">simple</div>
+        </div>
+    </main>
+
+    <!-- Footer - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><a href="https://frazac.github.io/UI_component_mining/" target="_blank">Homepage</a> . <a
+                    href="https://linktree.com/frazac" target="_blank">Contact me</a><br>We only use technical cookies
+                for anonymous, aggregated analytics via matomo.masterismi.com<br>© 2026 Francesco Zaccaria . Licensed
+                under: <a href="https://github.com/frazac/UI_component_mining?tab=GPL-3.0-1-ov-file" target="_blank">GNU
+                    General Public License v3.0</a></p>
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- Matomo - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
     <script>
         var _paq = window._paq || window._paq || [];
         /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
@@ -24,135 +202,8 @@
             s.parentNode.insertBefore(g, s);
         })();
     </script>
-    <!-- End Matomo Code -->
-    <style>
-        body {
-            /* Sfumature del colore di sfondo solito con pattern zig zag */
-            background: linear-gradient(135deg, #eee6e4 0%, #d4c4c0 50%, #eee6e4 100%);
-            background-image: 
-                linear-gradient(135deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%), 
-                linear-gradient(225deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%), 
-                linear-gradient(45deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%), 
-                linear-gradient(315deg, rgba(205, 106, 106, 0.1) 25%, transparent 25%);
-            background-position: 10px 0, 10px 0, 0 0, 0 0;
-            background-size: 20px 20px;
-            background-repeat: repeat;
-            
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        }
-
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px 20px; /* Ridotto spazio tra tag */
-            max-width: 500px;
-            padding: 40px;
-            justify-content: flex-start; /* Allineamento a sinistra */
-        }
-
-        .tag {
-            position: relative;
-            display: inline-block;
-            height: 34px;
-            line-height: 34px;
-            padding: 0 10px 0 12px;
-            margin-left: 20px; /* Spazio per la punta a sinistra */
-            
-            /* Colore crimson */
-            background: #dc143c; 
-            color: #fff;
-            text-decoration: none;
-            font-size: 15px; /* Aumentato dimensione testo */
-            font-weight: bold;
-            text-transform: lowercase;
-            
-            border-bottom-right-radius: 8px;
-            border-top-right-radius: 8px;
-            border-bottom-left-radius: 0;
-            border-top-left-radius: 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            
-            outline: rgba(255, 255, 255, 0.5);
-            outline-offset: -4px;
-            outline-width: 2px;
-            outline-style: dotted;
-        }
-
-        /* La punta del tag a sinistra */
-        .tag::after {
-            content: "";
-            position: absolute;
-            left: -17px;
-            top: 0;
-            width: 0;
-            height: 0;
-            border-top: 17px solid transparent;
-            border-bottom: 17px solid transparent;
-            border-right: 17px solid #dc143c; /* Punta a sinistra crimson */
-            transition: border-color 0.2s ease;
-        }
-
-        /* Il forellino bianco più grande */
-        .tag::before {
-            content: "";
-            position: absolute;
-            top: 13px;
-            left: -3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #fff;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        /* Varianti di colore per i tag - tutti giallo acido */
-        .tag.brown { background: #9acd32; }
-        .tag.brown::after { border-right-color: #9acd32; }
-
-        .tag.ochre { background: #9acd32; }
-        .tag.ochre::after { border-right-color: #9acd32; }
-
-        .tag.dark-green { background: #9acd32; }
-        .tag.dark-green::after { border-right-color: #9acd32; }
-
-        /* Effetto Hover */
-        .tag:hover {
-            background: #c4a57b; /* Marroncino più dolce */
-            color: #fff;
-            transform: translateY(-2px);
-        }
-        .tag:hover::after {
-            border-right-color: #c4a57b; /* Marroncino più dolce */
-        }
-    </style>
-</head>
-<body>
-
-<div class="tag-container">
-    <div class="tag">high resolution</div>
-    <div class="tag">icons</div>
-    <div class="tag">layer styles</div>
-    <div class="tag">layout</div>
-    <div class="tag">letterpress</div>
-    <div class="tag">magazine</div>
-    <div class="tag">menu</div>
-    <div class="tag">metal</div>
-    <div class="tag">navigation</div>
-    <div class="tag">paper</div>
-    <div class="tag">pattern</div>
-    <div class="tag">plastic</div>
-    <div class="tag">ribbon</div>
-    <div class="tag">seamless</div>
-    <div class="tag">simple</div>
-</div>
+    <!-- End Matomo -->
 
 </body>
+
 </html>

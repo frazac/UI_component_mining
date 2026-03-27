@@ -1,43 +1,38 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
+
 <head>
+    <title>UI Components Mining . Ghost Buttons . Francesco Zaccaria</title>
+    <!-- Meta sito - TUTTE LE PAGINE -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI Components Mining . Feedback paradigm . Francesco Zaccaria</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link type="text/css" rel="stylesheet" href="resources/tipografia.css">
-    <link type="text/css" rel="stylesheet" href="resources/stile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <!-- Matomo -->
-    <script>
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            var u = "https://matomo.masterismi.com/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', '15']);
-            var d = document,
-                g = d.createElement('script'),
-                s = d.getElementsByTagName('script')[0];
-            g.async = true;
-            g.src = u + 'matomo.js';
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <link type="text/css" rel="stylesheet" href="tipografia.css">
+    <link type="text/css" rel="stylesheet" href="stile.css">
+    <meta name="description"
+        content="A curated exploration of UI components, evolved from systematic classroom mining into a refined catalog of modern design patterns. This collection identifies and enriches interactive elements and functional building blocks discovered across today's digital landscape, providing a specialized resource for UX/UI research.">
+    <meta name="keywords"
+        content="UI components, UX design, interface patterns, web design, user experience, design systems, component library, frontend development, interaction design, digital design patterns">
+    <meta name="author" content="Francesco Zaccaria">
+    <!-- fine Meta sito -->
     <style>
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: #eee6e4;
             height: 100vh;
-            display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        main {
+            display: flex;
+            /* height: 500px; */
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
         }
 
         .container {
@@ -62,8 +57,10 @@
 
         /* --- Prima Riga (In Alto) --- */
         .row-top {
-            background-color: #f8f9fa; /* Colore di base pulito */
-            background-image: repeating-linear-gradient(-45deg, #e9ecef 0px, #e9ecef 2px, transparent 2px, transparent 8px); /* Nuovo pattern a linee */
+            background-color: #f8f9fa;
+            /* Colore di base pulito */
+            background-image: repeating-linear-gradient(-45deg, #e9ecef 0px, #e9ecef 2px, transparent 2px, transparent 8px);
+            /* Nuovo pattern a linee */
         }
 
         .button-top {
@@ -78,6 +75,7 @@
             cursor: pointer;
             transition: background 0.3s;
         }
+
         .button-top:hover {
             background: rgba(255, 255, 255, 1);
             transform: scale(1.05);
@@ -86,12 +84,14 @@
 
         /* --- Seconda Riga --- */
         .row-middle-top {
-            background-color: rgb(218, 112, 214); /* Fucsia con leggera sfumatura cipria */
+            background-color: rgb(218, 112, 214);
+            /* Fucsia con leggera sfumatura cipria */
             transition: background-color 0.3s ease;
         }
 
         .row-middle-top:hover {
-            background-color: rgba(255, 0, 255, 0.8); /* Fucsia sulla riga */
+            background-color: rgba(255, 0, 255, 0.8);
+            /* Fucsia sulla riga */
         }
 
         .button-mid-top {
@@ -116,6 +116,7 @@
             top: -4px;
             left: -4px;
         }
+
         .button-mid-top::after {
             display: block;
             width: 180px;
@@ -130,13 +131,15 @@
             top: 5px;
             left: 5px;
             content: '';
-            
+
             transition: all 0.3s ease;
         }
+
         .button-mid-top:hover {
             background: rgba(255, 255, 255, 0.2);
             color: black;
         }
+
         .button-mid-top:hover::after {
             top: 0;
             left: 0;
@@ -172,7 +175,8 @@
             left: 50%;
             width: 140px;
             height: 140px;
-            background: rgba(128, 128, 128, 0.2); /* Grigio semitrasparente */
+            background: rgba(128, 128, 128, 0.2);
+            /* Grigio semitrasparente */
             border: none;
             border-radius: 6px;
             transform: translate(-50%, -50%) rotate(45deg);
@@ -193,7 +197,8 @@
         .scattered-shape {
             position: absolute;
             transform: rotate(45deg);
-            border-radius: 8px; /* Angoli più arrotondati */
+            border-radius: 8px;
+            /* Angoli più arrotondati */
             opacity: 0.6;
         }
 
@@ -201,33 +206,133 @@
             width: 25px;
             height: 25px;
         }
+
         .scattered-shape.large {
             width: 80px;
             height: 80px;
         }
 
         /* Colori e Posizioni per i Rombi */
-        .s-1 { background-color: #add8e6; top: 10%; left: 5%; }
-        .s-2 { background-color: #ffe4b5; bottom: 8%; left: 3%; width: 50px; height: 50px;}
-        .s-3 { background-color: #d8bfd8; top: 5%; right: 15%; width: 40px; height: 40px;}
-        .s-4 { background-color: #f08080; top: 50%; right: 2%; width: 60px; height: 60px;}
-        .s-5 { background-color: #98fb98; bottom: 5%; right: 10%; }
-        .s-6 { background-color: #dda0dd; top: 20%; right: 25%; }
-        .s-7 { background-color: #b0e0e6; bottom: 20%; left: 2%; }
-        .s-8 { background-color: #f5deb3; top: 65%; left: 20%; }
-        .s-9 { background-color: #e6e6fa; top: 35%; right: 30%; width: 80px; height: 80px;}
-        .s-10 { background-color: #ffdab9; bottom: 40%; left: 30%; width: 70px; height: 70px;}
-        .s-11 { background-color: #ffb6c1; top: 75%; left: 10%; }
-        .s-12 { background-color: #afeeee; bottom: 25%; right: 8%; }
-        .s-13 { background-color: #f0e68c; top: 25%; left: 40%; }
-        .s-14 { background-color: #d3d3d3; bottom: 60%; right: 20%; }
-        .s-15 { background-color: #dda0dd; top: 85%; right: 35%; }
-        .s-left { background-color: #87ceeb; top: 40%; left: 2%; width: 90px; height: 90px; }
-        .s-17 { background-color: #f5deb3; bottom: 15%; left: 60%; width: 75px; height: 75px;}
+        .s-1 {
+            background-color: #add8e6;
+            top: 10%;
+            left: 5%;
+        }
+
+        .s-2 {
+            background-color: #ffe4b5;
+            bottom: 8%;
+            left: 3%;
+            width: 50px;
+            height: 50px;
+        }
+
+        .s-3 {
+            background-color: #d8bfd8;
+            top: 5%;
+            right: 15%;
+            width: 40px;
+            height: 40px;
+        }
+
+        .s-4 {
+            background-color: #f08080;
+            top: 50%;
+            right: 2%;
+            width: 60px;
+            height: 60px;
+        }
+
+        .s-5 {
+            background-color: #98fb98;
+            bottom: 5%;
+            right: 10%;
+        }
+
+        .s-6 {
+            background-color: #dda0dd;
+            top: 20%;
+            right: 25%;
+        }
+
+        .s-7 {
+            background-color: #b0e0e6;
+            bottom: 20%;
+            left: 2%;
+        }
+
+        .s-8 {
+            background-color: #f5deb3;
+            top: 65%;
+            left: 20%;
+        }
+
+        .s-9 {
+            background-color: #e6e6fa;
+            top: 35%;
+            right: 30%;
+            width: 80px;
+            height: 80px;
+        }
+
+        .s-10 {
+            background-color: #ffdab9;
+            bottom: 40%;
+            left: 30%;
+            width: 70px;
+            height: 70px;
+        }
+
+        .s-11 {
+            background-color: #ffb6c1;
+            top: 75%;
+            left: 10%;
+        }
+
+        .s-12 {
+            background-color: #afeeee;
+            bottom: 25%;
+            right: 8%;
+        }
+
+        .s-13 {
+            background-color: #f0e68c;
+            top: 25%;
+            left: 40%;
+        }
+
+        .s-14 {
+            background-color: #d3d3d3;
+            bottom: 60%;
+            right: 20%;
+        }
+
+        .s-15 {
+            background-color: #dda0dd;
+            top: 85%;
+            right: 35%;
+        }
+
+        .s-left {
+            background-color: #87ceeb;
+            top: 40%;
+            left: 2%;
+            width: 90px;
+            height: 90px;
+        }
+
+        .s-17 {
+            background-color: #f5deb3;
+            bottom: 15%;
+            left: 60%;
+            width: 75px;
+            height: 75px;
+        }
 
         /* --- Quarta Riga (In Basso) --- */
         .row-bottom {
-            background-color: #f08080; /* Crimson chiaro */
+            background-color: #f08080;
+            /* Crimson chiaro */
         }
 
         .button-bottom {
@@ -242,53 +347,90 @@
             cursor: pointer;
             transition: background 0.3s, color 0.3s;
         }
+
         .button-bottom:hover {
             background: rgba(255, 255, 255, 1);
             color: #000000;
         }
     </style>
 </head>
+
 <body>
+    <main>
+        <div class="container">
+            <div class="row row-top">
+                <button class="button-top">THESE</button>
+            </div>
 
-<div class="container">
-    <div class="row row-top">
-        <button class="button-top">THESE</button>
-    </div>
+            <div class="row row-middle-top">
+                <button class="button-mid-top">are</button>
+            </div>
 
-    <div class="row row-middle-top">
-        <button class="button-mid-top">are</button>
-    </div>
+            <div class="row row-middle-bottom">
+                <div class="scattered-shape large s-left"></div>
+                <div class="scattered-shape small s-1"></div>
+                <div class="scattered-shape small s-2"></div>
+                <div class="scattered-shape small s-3"></div>
+                <div class="scattered-shape small s-4"></div>
+                <div class="scattered-shape small s-5"></div>
+                <div class="scattered-shape small s-6"></div>
+                <div class="scattered-shape small s-7"></div>
+                <div class="scattered-shape small s-8"></div>
+                <div class="scattered-shape small s-9"></div>
+                <div class="scattered-shape small s-10"></div>
+                <div class="scattered-shape small s-11"></div>
+                <div class="scattered-shape small s-12"></div>
+                <div class="scattered-shape small s-13"></div>
+                <div class="scattered-shape small s-14"></div>
+                <div class="scattered-shape small s-15"></div>
+                <div class="scattered-shape large s-16"></div>
+                <div class="scattered-shape large s-17"></div>
 
-    <div class="row row-middle-bottom">
-        <div class="scattered-shape large s-left"></div>
-        <div class="scattered-shape small s-1"></div>
-        <div class="scattered-shape small s-2"></div>
-        <div class="scattered-shape small s-3"></div>
-        <div class="scattered-shape small s-4"></div>
-        <div class="scattered-shape small s-5"></div>
-        <div class="scattered-shape small s-6"></div>
-        <div class="scattered-shape small s-7"></div>
-        <div class="scattered-shape small s-8"></div>
-        <div class="scattered-shape small s-9"></div>
-        <div class="scattered-shape small s-10"></div>
-        <div class="scattered-shape small s-11"></div>
-        <div class="scattered-shape small s-12"></div>
-        <div class="scattered-shape small s-13"></div>
-        <div class="scattered-shape small s-14"></div>
-        <div class="scattered-shape small s-15"></div>
-        <div class="scattered-shape large s-16"></div>
-        <div class="scattered-shape large s-17"></div>
+                <div class="diamond-text-container">
+                    <div class="diamond-bg" style="border-radius: 6px;"></div>
+                    <button class="button-mid-bottom" style="font-size: 1.3em; font-weight: bold;">ghost</button>
+                </div>
+            </div>
 
-        <div class="diamond-text-container">
-            <div class="diamond-bg" style="border-radius: 6px;"></div>
-            <button class="button-mid-bottom" style="font-size: 1.3em; font-weight: bold;">ghost</button>
+            <div class="row row-bottom">
+                <button class="button-bottom" style="font-size: 1.3em; font-weight: bold;">buttons</button>
+            </div>
         </div>
-    </div>
+    </main>
+    <!-- Footer - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><a href="https://frazac.github.io/UI_component_mining/" target="_blank">Homepage</a> . <a
+                    href="https://linktree.com/frazac" target="_blank">Contact me</a><br>We only use technical cookies
+                for anonymous, aggregated analytics via matomo.masterismi.com<br>© 2026 Francesco Zaccaria . Licensed
+                under: <a href="https://github.com/frazac/UI_component_mining?tab=GPL-3.0-1-ov-file" target="_blank">GNU
+                    General Public License v3.0</a></p>
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- Matomo - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <script>
+        var _paq = window._paq || window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://matomo.masterismi.com/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '15']);
+            var d = document,
+                g = d.createElement('script'),
+                s = d.getElementsByTagName('script')[0];
+            g.async = true;
+            g.src = u + 'matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo -->
 
-    <div class="row row-bottom">
-        <button class="button-bottom" style="font-size: 1.3em; font-weight: bold;">buttons</button>
-    </div>
-</div>
+
+
 
 </body>
+
 </html>

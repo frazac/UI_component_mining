@@ -1,36 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <title>UI Components Mining . Feedback Paradigm . Francesco Zaccaria</title>
+    <!-- Meta sito - TUTTE LE PAGINE -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UI Components Mining . States of interaction . Francesco Zaccaria</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <link type="text/css" rel="stylesheet" href="tipografia.css">
-    <!-- Matomo -->
-    <script>
-        var _paq = window._paq = window._paq || [];
-        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function () {
-            var u = "https://matomo.masterismi.com/";
-            _paq.push(['setTrackerUrl', u + 'matomo.php']);
-            _paq.push(['setSiteId', '15']);
-            var d = document,
-                g = d.createElement('script'),
-                s = d.getElementsByTagName('script')[0];
-            g.async = true;
-            g.src = u + 'matomo.js';
-            s.parentNode.insertBefore(g, s);
-        })();
-    </script>
-    <!-- End Matomo Code -->
+    <link type="text/css" rel="stylesheet" href="stile.css">
+    <meta name="description"
+        content="A curated exploration of UI components, evolved from systematic classroom mining into a refined catalog of modern design patterns. This collection identifies and enriches interactive elements and functional building blocks discovered across today's digital landscape, providing a specialized resource for UX/UI research.">
+    <meta name="keywords"
+        content="UI components, UX design, interface patterns, web design, user experience, design systems, component library, frontend development, interaction design, digital design patterns">
+    <meta name="author" content="Francesco Zaccaria">
+    <!-- fine Meta sito -->
     <style>
         body {
             font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
             letter-spacing: 0.02em;
             background-color: #eee6e4;
             padding: 60px 40px;
-            display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -44,18 +36,25 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 120px);
+            min-height: 80vh;
         }
 
         /* --- Button Colors --- */
         :root {
-            --primary-bg: #cd6a6a; /* Dusty Rose Default */
-            --text-color: #8b5a5a; /* Dark dusty rose for text */
-            --hover-bg: #cd6a6a; /* Same as primary for hover */
-            --loading-bg: #f5e6e6; /* Light background for loading */
-            --success-bg: #e8a8a8; /* Medium dusty rose for success */
-            --shadow-normal: rgba(205, 106, 106, 0.3); /* Normal shadow */
-            --shadow-debug: rgba(255, 0, 0, 0.7); /* Debug shadow */
+            --primary-bg: #cd6a6a;
+            /* Dusty Rose Default */
+            --text-color: #8b5a5a;
+            /* Dark dusty rose for text */
+            --hover-bg: #cd6a6a;
+            /* Same as primary for hover */
+            --loading-bg: #f5e6e6;
+            /* Light background for loading */
+            --success-bg: #e8a8a8;
+            /* Medium dusty rose for success */
+            --shadow-normal: rgba(205, 106, 106, 0.3);
+            /* Normal shadow */
+            --shadow-debug: rgba(255, 0, 0, 0.7);
+            /* Debug shadow */
         }
 
         .feedback-btn {
@@ -114,9 +113,11 @@
             0% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(0.95);
             }
+
             100% {
                 transform: scale(1);
             }
@@ -126,9 +127,11 @@
             0% {
                 box-shadow: 10px 10px 20px var(--shadow-normal);
             }
+
             50% {
                 box-shadow: 0px 0px 20px var(--shadow-normal);
             }
+
             100% {
                 box-shadow: 10px 10px 20px var(--shadow-normal);
             }
@@ -177,13 +180,15 @@
             border: 3px solid rgba(205, 106, 106, 0.3);
             border-radius: 50%;
             /* transform: translateY(-2px); */
-            animation: none; /* Reset animation */
+            animation: none;
+            /* Reset animation */
         }
 
         .spinner-progress {
             width: 100%;
             height: 100%;
-            animation: none; /* Reset animation */
+            animation: none;
+            /* Reset animation */
         }
 
         .feedback-btn.loading .spinner-progress {
@@ -192,11 +197,14 @@
 
         @keyframes fillCircle {
             0% {
-                stroke-dasharray: 0 57; /* 0% filled (circumference = 2πr ≈ 57) */
+                stroke-dasharray: 0 57;
+                /* 0% filled (circumference = 2πr ≈ 57) */
                 stroke-dashoffset: 0;
             }
+
             100% {
-                stroke-dasharray: 57 57; /* 100% filled */
+                stroke-dasharray: 57 57;
+                /* 100% filled */
                 stroke-dashoffset: 0;
             }
         }
@@ -256,7 +264,7 @@
             background: white;
             border-radius: 50%;
             transition: transform 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .debug-switch.on .debug-switch-slider {
@@ -325,6 +333,7 @@
             color: rgba(205, 106, 106, 0.9);
             border: none;
         }
+
         .hand-cursor {
             position: absolute;
             width: 32px;
@@ -354,82 +363,87 @@
         .feedback-btn.loading .hand-cursor {
             opacity: 0;
             right: -40px;
-            transition: opacity 0.3s ease 2.5s; /* Hide after 2.5s (500ms before loading ends) */
+            transition: opacity 0.3s ease 2.5s;
+            /* Hide after 2.5s (500ms before loading ends) */
         }
-
     </style>
 </head>
+
 <body>
-    <div class="demo-container">
-        <!-- Debug Switch -->
-        <div class="debug-switch-container" id="debugSwitchContainer">
-            <div class="debug-label">DEBUG</div>
-            <div class="debug-switch" id="debugSwitch">
-                <div class="debug-switch-slider"></div>
-            </div>
-        </div>
-        
-        <div class="feedback-btn" id="feedbackBtn">
-            <div class="btn-content">
-                <span class="btn-text">Submit</span>
-                
-                <!-- Hand Cursor -->
-                <div class="hand-cursor"></div>
-                
-                <!-- Loading Spinner -->
-                <div class="loading-spinner">
-                    <svg width="24" height="24">
-                        <!-- <circle class="spinner-circle" cx="12" cy="12" r="9" fill="none" stroke="rgba(205, 106, 106, 0.3)" stroke-width="3"/> -->
-                        <circle class="spinner-progress" cx="12" cy="12" r="9" fill="none" stroke="#cd6a6a" stroke-width="3"/>
-                    </svg>
+    <main>
+        <div class="demo-container">
+            <!-- Debug Switch -->
+            <div class="debug-switch-container" id="debugSwitchContainer">
+                <div class="debug-label">DEBUG</div>
+                <div class="debug-switch" id="debugSwitch">
+                    <div class="debug-switch-slider"></div>
                 </div>
-                
-                <!-- Success Checkmark -->
-                <div class="success-checkmark">✔</div>
+            </div>
+
+            <div class="feedback-btn" id="feedbackBtn">
+                <div class="btn-content">
+                    <span class="btn-text">Submit</span>
+
+                    <!-- Hand Cursor -->
+                    <div class="hand-cursor"></div>
+
+                    <!-- Loading Spinner -->
+                    <div class="loading-spinner">
+                        <svg width="24" height="24">
+                            <!-- <circle class="spinner-circle" cx="12" cy="12" r="9" fill="none" stroke="rgba(205, 106, 106, 0.3)" stroke-width="3"/> -->
+                            <circle class="spinner-progress" cx="12" cy="12" r="9" fill="none" stroke="#cd6a6a"
+                                stroke-width="3" />
+                        </svg>
+                    </div>
+
+                    <!-- Success Checkmark -->
+                    <div class="success-checkmark">✔</div>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
 
     <script>
         // Debug mode control
         let DEBUG_MODE = false; // Set to true to enable click-to-advance debugging
-        
+
         // Debug switch elements
         const debugSwitch = document.getElementById('debugSwitch');
         const debugSwitchContainer = document.getElementById('debugSwitchContainer');
-        
+
         // Create debug controls container
         const debugControlsContainer = document.createElement('div');
         debugControlsContainer.className = 'debug-controls-container';
         debugControlsContainer.id = 'debugControlsContainer';
-        
+
         // Create state indicator
         const stateIndicator = document.createElement('div');
         stateIndicator.className = 'state-indicator';
         stateIndicator.id = 'stateIndicator';
         stateIndicator.textContent = 'STATE: DEFAULT (1000 ms)';
-        
+
         // Create next button
         const nextBtn = document.createElement('button');
         nextBtn.className = 'debug-next-btn';
         nextBtn.id = 'debugNextBtn';
         nextBtn.textContent = 'NEXT';
-        
+
         // Add elements to container
         debugControlsContainer.appendChild(stateIndicator);
         debugControlsContainer.appendChild(nextBtn);
-        
+
         // Show debug switch container
         debugSwitchContainer.classList.add('active');
-        
+
         // Add container to DOM
         document.body.appendChild(debugControlsContainer);
-        
+
         // Debug switch click handler
-        debugSwitch.addEventListener('click', function() {
+        debugSwitch.addEventListener('click', function () {
             DEBUG_MODE = !DEBUG_MODE;
             debugSwitch.classList.toggle('on');
-            
+
             // Update shadow based on debug mode
             if (DEBUG_MODE) {
                 // Update CSS variables for debug mode
@@ -442,60 +456,75 @@
                 document.documentElement.style.setProperty('--shadow-normal', 'rgba(205, 106, 106, 0.3)');
                 btn.style.boxShadow = '10px 10px 20px var(--shadow-normal)';
                 debugControlsContainer.classList.remove('active');
-                
+
                 // Restart auto-cycle animation when debug is disabled
                 currentStateIndex = 0;
                 runStateCycle();
                 console.log('Debug mode: DISABLED - Auto cycle restarted');
             }
         });
-        
+
         // Next button click handler
-        nextBtn.addEventListener('click', function() {
+        nextBtn.addEventListener('click', function () {
             if (DEBUG_MODE) {
                 console.log('Debug: Next button clicked - advancing to next state');
                 runStateCycle();
             }
         });
-        
+
         // Auto-cycle animation states based on keyframes
         const btn = document.getElementById('feedbackBtn');
-        
-        const stateSequence = [
-            { name: 'default', duration: 1000 },
-            { name: 'hover', duration: 1000 },
-            { name: 'pulse', duration: 100 },
-            { name: 'loading', duration: 3000 },
-            { name: 'success', duration: 3000 }
+
+        const stateSequence = [{
+                name: 'default',
+                duration: 1000
+            },
+            {
+                name: 'hover',
+                duration: 1000
+            },
+            {
+                name: 'pulse',
+                duration: 100
+            },
+            {
+                name: 'loading',
+                duration: 3000
+            },
+            {
+                name: 'success',
+                duration: 3000
+            }
         ];
-        
+
         let currentStateIndex = 0;
-        
+
         function updateState(stateName) {
             // Remove all state classes
             btn.classList.remove('default', 'hover', 'pulse', 'loading', 'success');
-            
+
             // Add current state class
             btn.classList.add(stateName);
-            
+
             // Update state indicator in debug mode
             if (DEBUG_MODE) {
                 const currentState = stateSequence.find(s => s.name === stateName);
-                stateIndicator.textContent = 'STATE: ' + stateName.toUpperCase() + ' (' + currentState.duration + ' ms)';
+                stateIndicator.textContent = 'STATE: ' + stateName.toUpperCase() + ' (' + currentState.duration +
+                    ' ms)';
             }
-            
+
             console.log('Current state:', stateName);
         }
-        
+
         function runStateCycle() {
             const currentState = stateSequence[currentStateIndex];
-            
+
             // Update to current state
             updateState(currentState.name);
-            
+
             // Move to next state
             currentStateIndex = (currentStateIndex + 1) % stateSequence.length;
-            
+
             if (DEBUG_MODE) {
                 // In debug mode, wait for click before advancing
                 console.log('Debug mode: Click to advance to next state');
@@ -506,14 +535,14 @@
                 }, currentState.duration);
             }
         }
-        
+
         // Start the cycle
         runStateCycle();
-        
+
         // Click handler
         if (DEBUG_MODE) {
             // In debug mode, click anywhere on background to advance
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 // Don't advance if clicking on the button itself
                 if (e.target !== btn && !btn.contains(e.target)) {
                     console.log('Debug: Background clicked - advancing to next state');
@@ -522,15 +551,48 @@
             });
         } else {
             // In normal mode, click button to restart cycle
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 currentStateIndex = 0;
                 runStateCycle();
             });
         }
-        
+
         // Debug info in console
         console.log('Debug mode:', DEBUG_MODE ? 'ENABLED - Click to advance states' : 'DISABLED - Auto cycle');
         console.log('State sequence:', stateSequence.map(s => `${s.name} (${s.duration}ms)`));
     </script>
+
+    <!-- Footer - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><a href="https://frazac.github.io/UI_component_mining/" target="_blank">Homepage</a> . <a
+                    href="https://linktree.com/frazac" target="_blank">Contact me</a><br>We only use technical cookies
+                for anonymous, aggregated analytics via matomo.masterismi.com<br>© 2026 Francesco Zaccaria . Licensed
+                under: <a href="https://github.com/frazac/UI_component_mining?tab=GPL-3.0-1-ov-file" target="_blank">GNU
+                    General Public License v3.0</a></p>
+        </div>
+    </footer>
+    <!-- End Footer -->
+    <!-- Matomo - THIS SECTION MUST BE IDENTICAL IN ALL PAGES -->
+    <script>
+        var _paq = window._paq || window._paq || [];
+        /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function () {
+            var u = "https://matomo.masterismi.com/";
+            _paq.push(['setTrackerUrl', u + 'matomo.php']);
+            _paq.push(['setSiteId', '15']);
+            var d = document,
+                g = d.createElement('script'),
+                s = d.getElementsByTagName('script')[0];
+            g.async = true;
+            g.src = u + 'matomo.js';
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
+    <!-- End Matomo -->
+
 </body>
+
 </html>
