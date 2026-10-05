@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- Esempio ricostruito: Versioning system (e.g., Git). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Versioning system — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.1fr 1fr; }
+  .storia { position: relative; }
+  .storia svg { position: absolute; left: 0; top: 0; width: 60px; height: 100%; pointer-events: none; }
+  .storia ol { list-style: none; margin: 0; padding: 0; }
+  .storia li button { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 1px; border: 0; background: none; cursor: pointer; text-align: left; padding: 7px 8px 7px 62px; border-radius: 8px; height: 62px; justify-content: center; }
+  .storia li button:hover { background: #fdf3f2; }
+  .storia li button[aria-current="true"] { background: #eef2ff; }
+  .storia .msg { font-size: 15px; font-weight: 500; }
+  .storia .meta { font-size: 13px; color: var(--c-tenue); font-family: ui-monospace, Menlo, monospace; }
+  .ramo { display: inline-block; font-size: 13px; padding: 0 6px; border-radius: 4px; margin-left: 6px; font-family: ui-monospace, Menlo, monospace; font-weight: 400; vertical-align: 1px; }
+  .ramo.main { background: #e0e9ff; color: #3a5ac0; } .ramo.br { background: #fde3e3; color: #a04848; }
+  pre { margin: 0; font: 14px/1.6 ui-monospace, Menlo, monospace; background: #faf8f7; border-radius: 8px; padding: 8px 0; overflow: hidden; }
+  pre div { padding: 0 12px; white-space: pre; }
+  pre .piu { background: #e3f4e6; color: #22673a; } pre .piu::before { content: "+ "; }
+  pre .meno { background: #fbe3e1; color: #9b2c22; text-decoration: line-through; } pre .meno::before { content: "− "; }
+  pre .ug::before { content: "  "; }
+  .nomefile { font: 13px ui-monospace, Menlo, monospace; color: var(--c-tenue); margin: 0 0 6px; }
+  .anteprima { margin-top: 14px; display: flex; align-items: center; gap: 16px; padding: 14px; border-radius: 8px; border: 1px dashed var(--c-linea); }
+  .anteprima small { color: var(--c-tenue); font-size: 15px; }
+  .bottone { border: 0; font: 500 16px var(--f-testo); color: #fff; transition: all .3s; }
+  .azioni { margin-top: 12px; display: flex; gap: 10px; align-items: center; font-size: 15px; }
+  .azioni button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 14px; cursor: pointer; font-size: 15px; }
+  .azioni button:disabled { opacity: .4; cursor: not-allowed; }
+  .azioni span { color: #22673a; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Cronologia: rami e unione</span><span data-l="en">History: branches and merge</span><span data-l="fr">Historique : branches et fusion</span><span data-l="zh">历史：分支与合并</span></span>
+    <div class="storia"><svg id="grafo" aria-hidden="true"></svg><ol id="lista"></ol></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Differenze rispetto alla versione precedente</span><span data-l="en">Changes from the previous version</span><span data-l="fr">Différences avec la version précédente</span><span data-l="zh">与上一版本的差异</span></span>
+    <p class="nomefile">button.css</p>
+    <pre id="diff"></pre>
+    <div class="anteprima"><small><span data-l="it">Risultato</span><span data-l="en">Result</span><span data-l="fr">Résultat</span><span data-l="zh">效果</span></small><button class="bottone" id="bott" type="button"><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button></div>
+    <div class="azioni"><button type="button" id="ripr"></button><span id="ok" role="status"></span></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni versione (commit) registra cosa è cambiato, chi e quando; un ramo prova un’idea a parte e poi si unisce al principale.</span><span data-l="en">Each version (commit) records what changed, who and when; a branch tries an idea separately and is then merged into the main one.</span><span data-l="fr">Chaque version (commit) enregistre ce qui a changé, qui et quand ; une branche essaie une idée à part puis est fusionnée dans la principale.</span><span data-l="zh">每个版本（提交）都记录改了什么、谁改的、何时改的；分支单独尝试一个想法，然后合并回主线。</span></p>
+<script>
+  var C = [
+    { id: 'a1f3c09', r: 'main', col: 0, p: null, m: { it: 'Primo bottone', en: 'First button', fr: 'Premier bouton', zh: '第一个按钮' }, chi: 'FZ', css: { bg: '#888888', pad: '8px 12px', rad: '0' } },
+    { id: 'b72e4d1', r: 'main', col: 0, p: 0, m: { it: 'Colore del marchio', en: 'Brand colour', fr: 'Couleur de la marque', zh: '品牌色' }, chi: 'Anna', css: { bg: '#fa9191', pad: '8px 12px', rad: '0' } },
+    { id: 'c90a7e2', r: 'round-corners', col: 1, p: 1, m: { it: 'Prova: angoli tondi', en: 'Try: round corners', fr: 'Essai : coins arrondis', zh: '尝试：圆角' }, chi: 'Luca', css: { bg: '#fa9191', pad: '8px 12px', rad: '9999px' } },
+    { id: 'd15b8f4', r: 'main', col: 0, p: 1, m: { it: 'Più spazio interno', en: 'More padding', fr: 'Plus de marge interne', zh: '增加内边距' }, chi: 'Anna', css: { bg: '#fa9191', pad: '12px 22px', rad: '0' } },
+    { id: 'e6c2a03', r: 'main', col: 0, p: 3, p2: 2, m: { it: 'Unisci «round-corners»', en: 'Merge “round-corners”', fr: 'Fusionner « round-corners »', zh: '合并“round-corners”' }, chi: 'FZ', css: { bg: '#fa9191', pad: '12px 22px', rad: '9999px' } }
+  ];
+  var scelto = 4, ripristinato = null;
+  var RIP = { it: ['Ripristina questa versione', 'Versione ripristinata come nuovo commit'], en: ['Restore this version', 'Restored as a new commit'], fr: ['Restaurer cette version', 'Restaurée dans un nouveau commit'], zh: ['恢复此版本', '已作为新提交恢复'] };
+  var ORE = ['2 d', '2 d', '1 d', '5 h', '1 h'];
+  function righe(c) { return ['.button {', '  background: ' + c.bg + ';', '  padding: ' + c.pad + ';', c.rad !== '0' ? '  border-radius: ' + c.rad + ';' : null, '}'].filter(function (x) { return x !== null; }); }
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna() {
+    var ol = document.getElementById('lista'); ol.innerHTML = '';
+    var ordine = C.map(function (c, i) { return i; }).reverse();
+    ordine.forEach(function (i) {
+      var c = C[i], li = document.createElement('li');
+      li.innerHTML = '<button type="button"><span class="msg"></span><span class="meta"></span></button>';
+      li.querySelector('.msg').textContent = c.m[l()];
+      var tag = document.createElement('span'); tag.className = 'ramo ' + (c.r === 'main' ? 'main' : 'br'); tag.textContent = c.r;       li.querySelector('.meta').textContent = c.id + ' · ' + c.chi + ' · ' + ORE[i]; li.querySelector('.meta').appendChild(tag);
+      var b = li.querySelector('button'); b.setAttribute('aria-current', String(i === scelto)); b.onclick = function () { scelto = i; ripristinato = null; disegna(); };
+      ol.appendChild(li);
+    });
+    // grafo
+    var g = document.getElementById('grafo'), H = 62, y = function (i) { return (ordine.indexOf(i)) * H + H / 2; }, x = function (c) { return 18 + c * 22; }, s = '';
+    C.forEach(function (c, i) {
+      [c.p, c.p2].forEach(function (p) { if (p == null) return; var a = C[p];
+        s += '<path d="M' + x(c.col) + ' ' + y(i) + ' C' + x(c.col) + ' ' + (y(i) + 30) + ' ' + x(a.col) + ' ' + (y(p) - 30) + ' ' + x(a.col) + ' ' + y(p) + '" fill="none" stroke="' + (c.col || a.col ? 'rgb(223,136,136)' : 'rgb(105,143,255)') + '" stroke-width="3"/>'; });
+    });
+    C.forEach(function (c, i) { s += '<circle cx="' + x(c.col) + '" cy="' + y(i) + '" r="' + (i === scelto ? 8 : 6) + '" fill="' + (i === scelto ? '#111' : '#fff') + '" stroke="' + (c.col ? 'rgb(223,136,136)' : 'rgb(105,143,255)') + '" stroke-width="3"/>'; });
+    g.innerHTML = s; g.setAttribute('viewBox', '0 0 60 ' + C.length * H); g.style.height = C.length * H + 'px';
+    // diff
+    var c = C[scelto], ora = righe(c.css), prima = c.p == null ? [] : righe(C[c.p].css), pre = document.getElementById('diff'); pre.innerHTML = '';
+    var tutte = []; ora.forEach(function (r) { if (prima.indexOf(r) < 0) { var vecchia = prima.filter(function (p) { return ora.indexOf(p) < 0 && p.split(':')[0] === r.split(':')[0]; })[0]; if (vecchia) tutte.push(['meno', vecchia]); tutte.push(['piu', r]); } else tutte.push(['ug', r]); });
+    prima.forEach(function (p) { if (ora.indexOf(p) < 0 && !tutte.some(function (t) { return t[1] === p; })) tutte.splice(tutte.length - 1, 0, ['meno', p]); });
+    tutte.forEach(function (t) { var d = document.createElement('div'); d.className = t[0]; d.textContent = t[1]; pre.appendChild(d); });
+    var b = document.getElementById('bott'); b.style.background = c.css.bg; b.style.padding = c.css.pad; b.style.borderRadius = c.css.rad;
+    var r = document.getElementById('ripr'); r.textContent = RIP[l()][0]; r.disabled = scelto === C.length - 1;
+    document.getElementById('ok').textContent = ripristinato === scelto ? RIP[l()][1] : '';
+  }
+  document.getElementById('ripr').onclick = function () { ripristinato = scelto; disegna(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

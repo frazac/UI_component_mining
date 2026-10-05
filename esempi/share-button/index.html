@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- Esempio ricostruito: Share button or box. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Share button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .articolo .img { height: 120px; border-radius: 8px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); margin-bottom: 14px; }
+  .articolo h2 { font-size: 21px; font-weight: 500; margin: 0 0 8px; line-height: 1.25; }
+  .articolo p { margin: 0 0 16px; font-size: 15px; color: var(--c-tenue); }
+  .azioni { display: flex; gap: 10px; align-items: center; }
+  .condividi { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border-radius: 9999px; border: 1px solid var(--c-linea); background: #fff; cursor: pointer; font-size: 16px; }
+  .condividi:hover { background: #f6f2f1; }
+  .condividi[aria-expanded="true"] { background: var(--c-testo); color: #fff; border-color: var(--c-testo); }
+  .condividi svg { width: 20px; height: 20px; }
+  .solo-icona { width: 42px; padding: 0; justify-content: center; }
+  .pannello { position: relative; }
+  .pannello h3 { font-size: 18px; font-weight: 500; margin: 0 0 14px; }
+  .link { display: flex; gap: 8px; margin-bottom: 18px; }
+  .link input { flex: 1; min-width: 0; height: 42px; border: 1px solid var(--c-linea); border-radius: 8px; padding: 0 10px; font-size: 15px; color: var(--c-tenue); background: #faf8f7; }
+  .copia { height: 42px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--c-blu); color: #fff; cursor: pointer; font-size: 15px; white-space: nowrap; min-width: 92px; }
+  .copia.fatto { background: #2fa55a; }
+  .destinazioni { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .destinazioni button { width: 100%; border: 0; background: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 2px; border-radius: 10px; font-size: 15px; }
+  .destinazioni button:hover { background: #f6f2f1; }
+  .destinazioni i { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; }
+  .destinazioni svg { width: 24px; height: 24px; }
+  .chiuso .contenuto { display: none; }
+  .vuoto { display: none; color: var(--c-tenue); font-size: 15px; }
+  .chiuso .vuoto { display: block; }
+  .esito { min-height: 21px; font-size: 15px; color: var(--c-tenue); margin: 14px 0 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro articolo">
+    <span class="didascalia"><span data-l="it">Il pulsante</span><span data-l="en">The button</span><span data-l="fr">Le bouton</span><span data-l="zh">按钮</span></span>
+    <div class="img" aria-hidden="true"></div>
+    <h2><span data-l="it">Dieci anni di interfacce a gradiente</span><span data-l="en">Ten years of gradient interfaces</span><span data-l="fr">Dix ans d’interfaces en dégradé</span><span data-l="zh">渐变界面的十年</span></h2>
+    <p><span data-l="it">Un articolo di esempio, da inviare a qualcuno.</span><span data-l="en">A sample article, to send to someone.</span><span data-l="fr">Un article d’exemple, à envoyer à quelqu’un.</span><span data-l="zh">一篇示例文章，可以发送给他人。</span></p>
+    <div class="azioni">
+      <button class="condividi" id="apri" type="button" aria-expanded="true" aria-controls="pannello"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5.5" r="2.8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="18.5" r="2.8" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 10.7l7-3.9M8.5 13.3l7 3.9" stroke="currentColor" stroke-width="2"/></svg><span data-l="it">Condividi</span><span data-l="en">Share</span><span data-l="fr">Partager</span><span data-l="zh">分享</span></button>
+      <button class="condividi solo-icona" type="button" aria-label="Share" title="Share" id="apri2"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8.5H6.5a2 2 0 00-2 2V19a2 2 0 002 2h11a2 2 0 002-2v-8.5a2 2 0 00-2-2H16M12 3v12M8 6.5L12 3l4 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+  </div>
+  <div class="riquadro pannello" id="pannello">
+    <span class="didascalia"><span data-l="it">Il riquadro di condivisione</span><span data-l="en">The share box</span><span data-l="fr">L’encadré de partage</span><span data-l="zh">分享框</span></span>
+    <p class="vuoto"><span data-l="it">Chiuso: premi «Condividi».</span><span data-l="en">Closed: press “Share”.</span><span data-l="fr">Fermé : appuyez sur « Partager ».</span><span data-l="zh">已关闭：请按“分享”。</span></p>
+    <div class="contenuto">
+      <h3><span data-l="it">Condividi l’articolo</span><span data-l="en">Share the article</span><span data-l="fr">Partager l’article</span><span data-l="zh">分享文章</span></h3>
+      <div class="link"><input id="indirizzo" readonly value="journal.example/gradienti" aria-label="Link"><button class="copia" id="copia" type="button"></button></div>
+      <ul class="destinazioni" id="dest"></ul>
+      <p class="esito" id="esito" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Sul telefono lo stesso pulsante può aprire il pannello di condivisione del sistema operativo. Icone generiche, nessun marchio.</span><span data-l="en">On a phone the same button can open the operating system’s share sheet. Generic icons, no trademarks.</span><span data-l="fr">Sur un téléphone, le même bouton peut ouvrir la feuille de partage du système. Icônes génériques, aucune marque.</span><span data-l="zh">在手机上，同一个按钮可以打开操作系统的分享面板。图标均为通用图形，不含商标。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var D = [
+    { l: { it: 'Messaggi', en: 'Messages', fr: 'Messages', zh: '消息' }, c: '#e3f3e8', s: '<path d="M4 5h16v11H9l-5 4z" fill="none" stroke="#2fa55a" stroke-width="2" stroke-linejoin="round"/>' },
+    { l: { it: 'Email', en: 'Email', fr: 'E-mail', zh: '邮件' }, c: '#e6ecff', s: '<rect x="3" y="5.5" width="18" height="13" rx="2" fill="none" stroke="#698fff" stroke-width="2"/><path d="M3.5 7l8.5 6 8.5-6" fill="none" stroke="#698fff" stroke-width="2"/>' },
+    { l: { it: 'Social', en: 'Social', fr: 'Réseaux', zh: '社交' }, c: '#fdecec', s: '<circle cx="12" cy="8" r="3.5" fill="none" stroke="#df8888" stroke-width="2"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6" fill="none" stroke="#df8888" stroke-width="2" stroke-linecap="round"/>' },
+    { l: { it: 'Altro…', en: 'More…', fr: 'Plus…', zh: '更多…' }, c: '#f1efee', s: '<circle cx="6" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="18" cy="12" r="1.8"/>' }
+  ];
+  var TX = { copia: { it: 'Copia link', en: 'Copy link', fr: 'Copier', zh: '复制链接' }, copiato: { it: 'Copiato ✓', en: 'Copied ✓', fr: 'Copié ✓', zh: '已复制 ✓' },
+    inviato: { it: 'Aperto: {d} (simulato)', en: 'Opened: {d} (simulated)', fr: 'Ouvert : {d} (simulé)', zh: '已打开：{d}（模拟）' } };
+  var copiato = false, ultimo = null, aperto = true;
+  var pan = document.getElementById('pannello'), apri = document.getElementById('apri');
+  function disegna() {
+    pan.classList.toggle('chiuso', !aperto); apri.setAttribute('aria-expanded', String(aperto));
+    var c = document.getElementById('copia'); c.textContent = t(copiato ? TX.copiato : TX.copia); c.classList.toggle('fatto', copiato);
+    var ul = document.getElementById('dest'); ul.innerHTML = '';
+    D.forEach(function (d) {
+      var li = document.createElement('li'), b = document.createElement('button'); b.type = 'button';
+      b.innerHTML = '<i style="background:' + d.c + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + d.s + '</svg></i><span>' + t(d.l) + '</span>';
+      b.onclick = function () {
+        if (d === D[3] && navigator.share) { navigator.share({ title: 'Gradient', url: 'https://journal.example/gradienti' }).catch(function () {}); return; }
+        ultimo = d; disegna();
+      };
+      li.appendChild(b); ul.appendChild(li);
+    });
+    document.getElementById('esito').textContent = ultimo ? t(TX.inviato).replace('{d}', t(ultimo.l)) : '';
+  }
+  apri.onclick = function () { aperto = !aperto; disegna(); };
+  document.getElementById('apri2').onclick = function () { aperto = true; disegna(); document.getElementById('copia').focus(); };
+  document.getElementById('copia').onclick = function () {
+    var i = document.getElementById('indirizzo'); i.select();
+    try { navigator.clipboard.writeText(i.value).catch(function () {}); } catch (e) {}
+    copiato = true; disegna(); setTimeout(function () { copiato = false; disegna(); }, 1800);
+  };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

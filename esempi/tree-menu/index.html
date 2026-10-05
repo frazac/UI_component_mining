@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tree menu / tree diagram. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tree menu — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: .75fr 1.25fr; align-items: stretch; }
+  .riquadro { min-height: 400px; padding: 22px; }
+  .albero, .albero ul { list-style: none; margin: 0; padding: 0; }
+  .albero ul { margin-left: 13px; padding-left: 10px; border-left: 1px solid var(--c-linea); }
+  .nodo { display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 16px; user-select: none; outline: 0; }
+  .nodo:hover { background: rgba(0,0,0,.05); }
+  [role="treeitem"]:focus-visible > .nodo { outline: 3px solid var(--c-blu); outline-offset: -1px; }
+  [aria-selected="true"] > .nodo { background: rgba(105,143,255,.16); font-weight: 500; }
+  .freccia { width: 14px; height: 14px; flex: none; transition: transform .15s; color: rgba(0,0,0,.5); }
+  [aria-expanded="true"] > .nodo .freccia { transform: rotate(90deg); }
+  .spazio { width: 14px; flex: none; }
+  [role="treeitem"] { outline: 0; }
+  [aria-expanded="false"] > ul { display: none; }
+  .diagramma svg { width: 100%; height: auto; display: block; }
+  .diagramma text { font: 16px var(--f-testo); }
+  .nd rect { fill: #fff; stroke: rgba(0,0,0,.25); transition: fill .2s, stroke .2s; }
+  .nd { cursor: pointer; }
+  .nd:hover rect { stroke: #111; }
+  .nd.sel rect { fill: var(--c-blu); stroke: var(--c-blu); }
+  .nd.sel text { fill: #fff; }
+  .nd.via rect { fill: rgba(105,143,255,.15); stroke: var(--c-blu); }
+  .ramo { fill: none; stroke: rgba(0,0,0,.2); stroke-width: 1.5; }
+  .ramo.via { stroke: var(--c-blu); stroke-width: 2.5; }
+  .percorso { font-size: 15px; color: var(--c-tenue); margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Menu ad albero</span><span data-l="en">Tree menu</span><span data-l="fr">Menu arborescent</span><span data-l="zh">树形菜单</span></span>
+    <ul class="albero" role="tree" id="albero" aria-label="Tree"></ul>
+  </div>
+  <div class="riquadro diagramma">
+    <span class="didascalia"><span data-l="it">Diagramma ad albero (stessi dati)</span><span data-l="en">Tree diagram (same data)</span><span data-l="fr">Diagramme en arbre (mêmes données)</span><span data-l="zh">树状图（相同数据）</span></span>
+    <div id="diag"></div>
+    <p class="percorso" id="percorso"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Frecce su/giù per muoversi, destra/sinistra per aprire e chiudere i rami. La stessa gerarchia, letta come menu o come mappa.</span><span data-l="en">Up/down arrows to move, right/left to open and close branches. The same hierarchy, read as a menu or as a map.</span><span data-l="fr">Flèches haut/bas pour se déplacer, droite/gauche pour ouvrir et fermer les branches. La même hiérarchie, lue comme menu ou comme carte.</span><span data-l="zh">上下方向键移动，左右方向键展开和折叠分支。同一层级，可作为菜单阅读，也可作为地图阅读。</span></p>
+<script>
+  var DATI = { id: 'r', n: { it: 'Corso', en: 'Course', fr: 'Cours', zh: '课程' }, f: [
+    { id: 'a', n: { it: 'Teoria', en: 'Theory', fr: 'Théorie', zh: '理论' }, f: [
+      { id: 'a1', n: { it: 'Componenti', en: 'Components', fr: 'Composants', zh: '组件' } },
+      { id: 'a2', n: { it: 'Pattern', en: 'Patterns', fr: 'Patterns', zh: '模式' } }] },
+    { id: 'b', n: { it: 'Progetti', en: 'Projects', fr: 'Projets', zh: '项目' }, f: [
+      { id: 'b1', n: { it: 'Progetto 1', en: 'Project 1', fr: 'Projet 1', zh: '项目 1' } },
+      { id: 'b2', n: { it: 'Progetto 2', en: 'Project 2', fr: 'Projet 2', zh: '项目 2' } },
+      { id: 'b3', n: { it: 'Progetto 3', en: 'Project 3', fr: 'Projet 3', zh: '项目 3' } }] },
+    { id: 'c', n: { it: 'Risorse', en: 'Resources', fr: 'Ressources', zh: '资源' }, f: [
+      { id: 'c1', n: { it: 'Letture', en: 'Readings', fr: 'Lectures', zh: '阅读' } },
+      { id: 'c2', n: { it: 'Strumenti', en: 'Tools', fr: 'Outils', zh: '工具' } }] }] };
+  var aperti = { r: true, a: true, b: true }, sel = 'b2', focusId = null;
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var padre = {}; (function m(n) { (n.f || []).forEach(function (c) { padre[c.id] = n.id; m(c); }); })(DATI);
+  function trova(id, n) { n = n || DATI; if (n.id === id) return n; for (var i = 0; n.f && i < n.f.length; i++) { var r = trova(id, n.f[i]); if (r) return r; } return null; }
+  function visibili() { var v = []; (function m(n) { v.push(n.id); if (n.f && aperti[n.id]) n.f.forEach(m); })(DATI); return v; }
+  function strada(id) { var s = [id]; while (padre[s[0]]) s.unshift(padre[s[0]]); return s; }
+  var FR = '<svg class="freccia" viewBox="0 0 14 14" aria-hidden="true"><path d="M5 3l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+  function disegna() {
+    var ul = document.getElementById('albero'); ul.innerHTML = '';
+    (function rami(n, dove, liv) {
+      var li = document.createElement('li'); li.setAttribute('role', 'treeitem'); li.dataset.id = n.id; li.setAttribute('aria-level', liv);
+      li.setAttribute('aria-selected', String(n.id === sel)); li.tabIndex = n.id === sel ? 0 : -1;
+      if (n.f) li.setAttribute('aria-expanded', String(!!aperti[n.id]));
+      li.innerHTML = '<div class="nodo">' + (n.f ? FR : '<span class="spazio"></span>') + '<span></span></div>';
+      li.querySelector('.nodo span:last-child').textContent = T(n.n);
+      li.querySelector('.nodo').onclick = function () { if (n.f) aperti[n.id] = !aperti[n.id]; sel = n.id; focusId = n.id; disegna(); };
+      dove.appendChild(li);
+      if (n.f) { var g = document.createElement('ul'); g.setAttribute('role', 'group'); li.appendChild(g); n.f.forEach(function (c) { rami(c, g, liv + 1); }); }
+    })(DATI, ul, 1);
+    diagramma();
+    if (focusId) { var el = ul.querySelector('[data-id="' + focusId + '"]'); if (el) el.focus(); }
+  }
+  document.getElementById('albero').addEventListener('keydown', function (e) {
+    var v = visibili(), i = v.indexOf(sel), n = trova(sel);
+    if (e.key === 'ArrowDown') sel = v[Math.min(v.length - 1, i + 1)];
+    else if (e.key === 'ArrowUp') sel = v[Math.max(0, i - 1)];
+    else if (e.key === 'ArrowRight') { if (n.f && !aperti[sel]) aperti[sel] = true; else if (n.f) sel = n.f[0].id; }
+    else if (e.key === 'ArrowLeft') { if (n.f && aperti[sel]) aperti[sel] = false; else if (padre[sel]) sel = padre[sel]; }
+    else if (e.key === 'Enter' || e.key === ' ') { if (n.f) aperti[sel] = !aperti[sel]; }
+    else if (e.key === 'Home') sel = v[0]; else if (e.key === 'End') sel = v[v.length - 1];
+    else return;
+    e.preventDefault(); focusId = sel; disegna();
+  });
+  function diagramma() {
+    // disposizione: foglie in colonna, genitori centrati sui figli (albero orizzontale)
+    var W = 360, larg = 116, alt = 32, passoY = 42, x0 = 2, dx = (W - larg - x0 * 2) / 2, y = 0, pos = {};
+    (function m(n, liv) { if (n.f && aperti[n.id]) { n.f.forEach(function (c) { m(c, liv + 1); }); var a = pos[n.f[0].id].y, b = pos[n.f[n.f.length - 1].id].y; pos[n.id] = { x: x0 + liv * dx, y: (a + b) / 2 }; } else { pos[n.id] = { x: x0 + liv * dx, y: y }; y += passoY; } })(DATI, 0);
+    var H = y - passoY + alt + 4, via = strada(sel), s = '';
+    (function r(n) { if (!(n.f && aperti[n.id])) return; n.f.forEach(function (c) { var p = pos[n.id], q = pos[c.id], x1 = p.x + larg, y1 = p.y + alt / 2, x2 = q.x, y2 = q.y + alt / 2, mx = (x1 + x2) / 2;
+      s += '<path class="ramo' + (via.indexOf(c.id) >= 0 ? ' via' : '') + '" d="M' + x1 + ' ' + y1 + 'C' + mx + ' ' + y1 + ' ' + mx + ' ' + y2 + ' ' + x2 + ' ' + y2 + '"/>'; r(c); }); })(DATI);
+    (function r(n) { var p = pos[n.id]; var cl = n.id === sel ? ' sel' : via.indexOf(n.id) >= 0 ? ' via' : '';
+      var et = T(n.n) + (n.f && !aperti[n.id] ? ' +' : '');
+      s += '<g class="nd' + cl + '" data-id="' + n.id + '"><rect x="' + p.x + '" y="' + p.y + '" width="' + larg + '" height="' + alt + '" rx="8"/><text x="' + (p.x + larg / 2) + '" y="' + (p.y + 21) + '" text-anchor="middle">' + et.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</text></g>';
+      if (n.f && aperti[n.id]) n.f.forEach(r); })(DATI);
+    var d = document.getElementById('diag'); d.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img">' + s + '</svg>';
+    d.querySelectorAll('.nd').forEach(function (g) { g.onclick = function () { var id = g.dataset.id, n = trova(id); if (n.f) aperti[id] = !aperti[id]; sel = id; focusId = null; disegna(); }; });
+    document.getElementById('percorso').textContent = via.map(function (id) { return T(trova(id).n); }).join(' › ');
+  }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

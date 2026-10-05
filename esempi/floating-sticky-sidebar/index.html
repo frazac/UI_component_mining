@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- Esempio ricostruito: Floating sticky sidebar. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Floating sticky sidebar — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 660px; }
+  .scorre { position: relative; height: 400px; overflow-y: auto; border: 1px solid var(--c-linea); border-radius: 10px; background: #fff; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { .scorre { scroll-behavior: auto; } }
+  .pagina { display: grid; grid-template-columns: 56px 1fr 56px; }
+  .barra { position: sticky; top: 50%; transform: translateY(-50%); align-self: start; margin-top: 200px; display: flex; flex-direction: column; gap: 6px; padding: 8px 6px; margin-left: 8px;
+    background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.14); z-index: 2; }
+  .barra button { width: 34px; height: 34px; border-radius: 8px; border: 0; background: none; cursor: pointer; display: grid; place-content: center; color: #333; position: relative; }
+  .barra button:hover { background: #fdf3f2; color: var(--c-rosa); }
+  .barra svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .barra button .sugg { position: absolute; left: 42px; top: 50%; transform: translateY(-50%); background: #222; color: #fff; font-size: 14px; white-space: nowrap; padding: 4px 8px; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity .15s; }
+  .barra button:hover .sugg, .barra button:focus-visible .sugg { opacity: 1; }
+  .lingue { position: sticky; top: 16px; align-self: start; margin: 16px 8px 0 0; display: flex; flex-direction: column; gap: 4px; padding: 4px; border-radius: 9999px; background: #111; z-index: 2; }
+  .lingue button { border: 0; background: none; color: rgba(255,255,255,.6); width: 38px; height: 30px; border-radius: 9999px; cursor: pointer; font-size: 13px; }
+  .lingue button[aria-pressed="true"] { background: #fff; color: #111; }
+  .testo { padding: 20px 12px 40px; }
+  .testo h3 { margin: 0 0 10px; font-size: 22px; font-weight: 500; }
+  .testo p { margin: 0 0 14px; font-size: 16px; line-height: 1.55; color: #333; }
+  .testo .img { height: 120px; border-radius: 8px; margin: 0 0 14px; background: linear-gradient(120deg, rgb(250,145,145), rgb(105,143,255)); }
+  .avviso { position: absolute; left: 50%; bottom: 14px; transform: translate(-50%, 10px); background: #222; color: #fff; padding: 8px 14px; border-radius: 9999px; font-size: 15px; opacity: 0; transition: .25s; pointer-events: none; }
+  .avviso.on { opacity: 1; transform: translate(-50%, 0); }
+  .cont { position: relative; }
+  .cuore.on { color: #d9443a; } .cuore.on svg { fill: currentColor; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Scorri l’articolo: le due barre restano ferme sui bordi</span><span data-l="en">Scroll the article: both bars stay put at the edges</span><span data-l="fr">Faites défiler l’article : les deux barres restent fixes sur les bords</span><span data-l="zh">滚动文章：两侧的栏保持固定在边缘</span></span>
+    <div class="cont">
+      <div class="scorre" id="scorre" tabindex="0">
+        <div class="pagina">
+          <div class="barra" role="toolbar" aria-orientation="vertical" id="barra">
+            <button type="button" class="cuore" data-a="mi"><svg viewBox="0 0 20 20"><path d="M10 17 C2 11 2 5.5 6 4.5 C8 4 9.3 5.5 10 7 C10.7 5.5 12 4 14 4.5 C18 5.5 18 11 10 17 Z"/></svg><span class="sugg" data-t="mi"></span></button>
+            <button type="button" data-a="link"><svg viewBox="0 0 20 20"><path d="M8.5 11.5 a3 3 0 0 0 4.2 0 l3 -3 a3 3 0 0 0 -4.2 -4.2 l-1 1 M11.5 8.5 a3 3 0 0 0 -4.2 0 l-3 3 a3 3 0 0 0 4.2 4.2 l1 -1"/></svg><span class="sugg" data-t="link"></span></button>
+            <button type="button" data-a="cond"><svg viewBox="0 0 20 20"><circle cx="15" cy="4.5" r="2.2"/><circle cx="5" cy="10" r="2.2"/><circle cx="15" cy="15.5" r="2.2"/><path d="M7 9 L13 5.6 M7 11 L13 14.4"/></svg><span class="sugg" data-t="cond"></span></button>
+            <button type="button" data-a="su"><svg viewBox="0 0 20 20"><path d="M10 16 V4 M5 9 L10 4 L15 9"/></svg><span class="sugg" data-t="su"></span></button>
+          </div>
+          <article class="testo" id="testo"></article>
+          <div class="lingue" role="group" aria-label="Lingua"><button type="button" data-g="it">IT</button><button type="button" data-g="en">EN</button><button type="button" data-g="fr">FR</button><button type="button" data-g="zh">中</button></div>
+        </div>
+      </div>
+      <div class="avviso" id="avviso" role="status"></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">A sinistra: condivisione e strumenti rapidi; a destra: un selettore di lingua. Con «position: sticky» restano visibili senza coprire il testo.</span><span data-l="en">Left: sharing and quick tools; right: a language switcher. With “position: sticky” they stay visible without covering the text.</span><span data-l="fr">À gauche : partage et outils rapides ; à droite : un sélecteur de langue. Avec « position: sticky », ils restent visibles sans couvrir le texte.</span><span data-l="zh">左侧：分享与快捷工具；右侧：语言切换。借助“position: sticky”，它们始终可见又不遮挡正文。</span></p>
+<script>
+  var T = {
+    it: { mi: 'Mi piace', link: 'Copia il link', cond: 'Condividi', su: 'Torna su', copiato: 'Link copiato', condiviso: 'Menu di condivisione (simulato)', tit: 'Il ritorno della carta stampata', p: ['Negli ultimi anni le riviste indipendenti hanno ritrovato lettori affezionati, con tirature piccole e una cura grafica che il web raramente concede.', 'Molti studi di design lavorano oggi su entrambi i fronti: progettano l’edizione stampata e la sua versione digitale, cercando un linguaggio comune.', 'La barra di condivisione accompagna la lettura: resta a portata di mano senza chiedere attenzione, e scompare dove non serve.', 'Su schermi stretti si sposta spesso in basso, come una barra orizzontale, per non togliere spazio alla colonna di testo.', 'Fine dell’articolo. Premi la freccia per tornare all’inizio.'] },
+    en: { mi: 'Like', link: 'Copy link', cond: 'Share', su: 'Back to top', copiato: 'Link copied', condiviso: 'Share menu (simulated)', tit: 'The return of print', p: ['In recent years independent magazines have found loyal readers again, with small print runs and a graphic care the web rarely allows.', 'Many design studios now work on both fronts: they design the printed edition and its digital version, looking for a shared language.', 'The share bar travels with the reading: it stays within reach without asking for attention, and disappears where it is not needed.', 'On narrow screens it often moves to the bottom, as a horizontal bar, so as not to take room from the text column.', 'End of the article. Press the arrow to go back to the top.'] },
+    fr: { mi: 'J’aime', link: 'Copier le lien', cond: 'Partager', su: 'Haut de page', copiato: 'Lien copié', condiviso: 'Menu de partage (simulé)', tit: 'Le retour de l’imprimé', p: ['Ces dernières années, les magazines indépendants ont retrouvé des lecteurs fidèles, avec de petits tirages et un soin graphique que le web permet rarement.', 'Beaucoup de studios de design travaillent aujourd’hui sur les deux fronts : ils conçoivent l’édition imprimée et sa version numérique, en cherchant un langage commun.', 'La barre de partage accompagne la lecture : elle reste à portée de main sans réclamer l’attention, et disparaît là où elle ne sert pas.', 'Sur les écrans étroits, elle passe souvent en bas, en barre horizontale, pour ne pas prendre de place à la colonne de texte.', 'Fin de l’article. Appuyez sur la flèche pour remonter.'] },
+    zh: { mi: '赞', link: '复制链接', cond: '分享', su: '回到顶部', copiato: '链接已复制', condiviso: '分享菜单（模拟）', tit: '纸质出版的回归', p: ['近几年，独立杂志重新找回了忠实读者：印量不大，却有网页难以提供的精致版式。', '如今许多设计工作室两头兼顾：既设计印刷版，也设计数字版，并寻找两者共通的视觉语言。', '分享栏伴随阅读：随手可及，却不争夺注意力；在不需要的地方便会隐去。', '在窄屏上，它常常移到底部，变成横向的栏，以免挤占正文的空间。', '文章结束。点击箭头回到顶部。'] }
+  };
+  var lingua = null, piace = false;
+  function l() { return lingua || (window.Lingua ? Lingua.get() : 'en'); }
+  function disegna() {
+    var t = T[l()], a = document.getElementById('testo');
+    a.innerHTML = '<h3></h3>'; a.firstChild.textContent = t.tit;
+    t.p.forEach(function (x, i) { if (i === 1) { var d = document.createElement('div'); d.className = 'img'; a.appendChild(d); } var p = document.createElement('p'); p.textContent = x; a.appendChild(p); });
+    document.querySelectorAll('.sugg').forEach(function (s) { s.textContent = t[s.dataset.t]; s.parentNode.setAttribute('aria-label', t[s.dataset.t]); });
+    document.querySelectorAll('.lingue button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.g === l())); });
+  }
+  function avvisa(x) { var a = document.getElementById('avviso'); a.textContent = x; a.classList.add('on'); clearTimeout(a._t); a._t = setTimeout(function () { a.classList.remove('on'); }, 1600); }
+  document.getElementById('barra').addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (!b) return; var t = T[l()];
+    if (b.dataset.a === 'mi') { piace = !piace; b.classList.toggle('on', piace); b.setAttribute('aria-pressed', String(piace)); }
+    if (b.dataset.a === 'link') avvisa(t.copiato);
+    if (b.dataset.a === 'cond') avvisa(t.condiviso);
+    if (b.dataset.a === 'su') document.getElementById('scorre').scrollTop = 0;
+  });
+  document.querySelectorAll('.lingue button').forEach(function (b) { b.onclick = function () { lingua = b.dataset.g; disegna(); }; });
+  disegna();
+  document.addEventListener('lingua', function () { lingua = null; disegna(); });
+</script>
+</body>
+</html>

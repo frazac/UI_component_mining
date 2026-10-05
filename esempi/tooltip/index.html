@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tooltip. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tooltip — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .barra { display: flex; gap: 6px; padding: 6px; border: 1px solid var(--c-linea); border-radius: 10px; width: max-content; margin: 34px auto 6px; }
+  .barra button, .info { position: relative; width: 44px; height: 44px; border: 0; border-radius: 8px; background: none; cursor: pointer; display: grid; place-items: center; }
+  .barra button:hover, .barra button:focus-visible { background: var(--c-palco); }
+  .sep { width: 1px; background: var(--c-linea); margin: 6px 2px; }
+  .tip { position: absolute; z-index: 5; left: 50%; bottom: calc(100% + 10px); transform: translate(-50%, 4px); background: #1d1d22; color: #fff; font-size: 15px; line-height: 1.3; padding: 6px 10px; border-radius: 6px; white-space: nowrap; pointer-events: none; opacity: 0; transition: opacity .15s, transform .15s; }
+  .tip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px; border: 6px solid transparent; border-top-color: #1d1d22; }
+  .tip kbd { font: inherit; opacity: .65; margin-left: 8px; }
+  .aperto > .tip { opacity: 1; transform: translate(-50%, 0); }
+  /* posizioni */
+  .tip.sotto { bottom: auto; top: calc(100% + 10px); }
+  .tip.sotto::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: #1d1d22; }
+  .tip.destra { left: calc(100% + 10px); bottom: auto; top: 50%; transform: translate(0, -50%); }
+  .tip.destra::after { left: auto; right: 100%; top: 50%; margin: -6px 0 0; border-top-color: transparent; border-right-color: #1d1d22; }
+  .tip.ricco { white-space: normal; width: 220px; text-align: left; background: #fff; color: var(--c-testo); border: 1px solid var(--c-linea); box-shadow: 0 8px 22px rgba(0,0,0,.14); padding: 12px 14px; }
+  .tip.ricco::after { border-bottom-color: #fff; }
+  .tip.ricco b { font-weight: 500; display: block; margin-bottom: 2px; }
+  .campo { display: flex; align-items: center; gap: 8px; font-size: 17px; }
+  .info { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--c-blu); color: var(--c-blu); font-size: 15px; font-weight: 500; }
+  .vetrina { display: flex; gap: 30px; justify-content: flex-start; align-items: center; padding: 44px 0 46px; }
+  .vetrina .ogg { position: relative; width: 36px; height: 30px; border-radius: 6px; background: var(--c-salmone); }
+  .vetrina .ogg.aperto > .tip { transition: none; }
+  .vetrina-lab { font-size: 15px; color: var(--c-tenue); text-align: center; }
+  .palco.due { grid-template-columns: 1fr 1fr; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Passa il mouse o usa Tab: il suggerimento spiega le icone</span><span data-l="en">Hover or press Tab: the tooltip explains the icons</span><span data-l="fr">Survolez ou appuyez sur Tab : l’infobulle explique les icônes</span><span data-l="zh">悬停或按 Tab：工具提示解释图标的含义</span></span>
+    <div class="barra" role="toolbar" aria-label="Editor">
+      <button type="button" data-tip="g" aria-describedby="t-g"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z" fill="none" stroke="#111" stroke-width="2.6" stroke-linejoin="round"/></svg><span class="tip" role="tooltip" id="t-g"></span></button>
+      <button type="button" data-tip="c" aria-describedby="t-c"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4h8M6 20h8M14 4l-4 16" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg><span class="tip" role="tooltip" id="t-c"></span></button>
+      <button type="button" data-tip="l" aria-describedby="t-l"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 .5l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6-.5l-3 3a4 4 0 0 0 6 6l1-1" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg><span class="tip" role="tooltip" id="t-l"></span></button>
+      <span class="sep"></span>
+      <button type="button" data-tip="d" aria-describedby="t-d"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg><span class="tip" role="tooltip" id="t-d"></span></button>
+    </div>
+  </div>
+  <div class="palco due">
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Posizioni</span><span data-l="en">Placement</span><span data-l="fr">Positions</span><span data-l="zh">位置</span></span>
+      <div class="vetrina">
+        <div><div class="ogg aperto"><span class="tip"><span data-l="it">Sopra</span><span data-l="en">Top</span><span data-l="fr">Haut</span><span data-l="zh">上方</span></span></div></div>
+        <div><div class="ogg aperto"><span class="tip sotto"><span data-l="it">Sotto</span><span data-l="en">Bottom</span><span data-l="fr">Bas</span><span data-l="zh">下方</span></span></div></div>
+        <div><div class="ogg aperto"><span class="tip destra"><span data-l="it">Destra</span><span data-l="en">Right</span><span data-l="fr">Droite</span><span data-l="zh">右侧</span></span></div></div>
+      </div>
+    </div>
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Suggerimento ricco (clic)</span><span data-l="en">Rich tooltip (click)</span><span data-l="fr">Infobulle enrichie (clic)</span><span data-l="zh">富文本提示（点击）</span></span>
+      <div class="campo" style="padding:8px 0 96px">
+        <span><span data-l="it">Codice CVC</span><span data-l="en">CVC code</span><span data-l="fr">Code CVC</span><span data-l="zh">CVC 安全码</span></span>
+        <button class="info aperto" type="button" id="info" aria-expanded="true" aria-controls="t-info">i<span class="tip sotto ricco" id="t-info" role="tooltip"><b><span data-l="it">Dove lo trovo?</span><span data-l="en">Where do I find it?</span><span data-l="fr">Où le trouver ?</span><span data-l="zh">在哪里找到？</span></b><span data-l="it">Tre cifre sul retro della carta.</span><span data-l="en">Three digits on the back of the card.</span><span data-l="fr">Trois chiffres au dos de la carte.</span><span data-l="zh">卡背面的三位数字。</span></span></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il suggerimento compare con un piccolo ritardo, sparisce con Esc e non contiene mai informazioni indispensabili.</span><span data-l="en">The tooltip appears after a short delay, closes with Esc and never holds essential information.</span><span data-l="fr">L’infobulle apparaît après un court délai, se ferme avec Échap et ne contient jamais d’information indispensable.</span><span data-l="zh">工具提示会稍有延迟才出现，按 Esc 关闭，且从不包含必不可少的信息。</span></p>
+<script>
+  var T = {
+    g: { it: 'Grassetto', en: 'Bold', fr: 'Gras', zh: '加粗', k: '⌘B' },
+    c: { it: 'Corsivo', en: 'Italic', fr: 'Italique', zh: '斜体', k: '⌘I' },
+    l: { it: 'Inserisci link', en: 'Insert link', fr: 'Insérer un lien', zh: '插入链接', k: '⌘K' },
+    d: { it: 'Elimina', en: 'Delete', fr: 'Supprimer', zh: '删除', k: '⌫' }
+  };
+  function lingua() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna() {
+    document.querySelectorAll('[data-tip]').forEach(function (b) {
+      var t = T[b.dataset.tip], tip = b.querySelector('.tip');
+      tip.innerHTML = (t[lingua()] || t.en) + '<kbd>' + t.k + '</kbd>';
+      b.setAttribute('aria-label', t[lingua()] || t.en);
+    });
+  }
+  var timer;
+  function chiudi() { document.querySelectorAll('.barra .aperto').forEach(function (x) { x.classList.remove('aperto'); }); }
+  document.querySelectorAll('[data-tip]').forEach(function (b) {
+    b.addEventListener('mouseenter', function () { clearTimeout(timer); timer = setTimeout(function () { chiudi(); b.classList.add('aperto'); }, 400); });
+    b.addEventListener('mouseleave', function () { clearTimeout(timer); b.classList.remove('aperto'); });
+    b.addEventListener('focus', function () { chiudi(); b.classList.add('aperto'); });
+    b.addEventListener('blur', function () { b.classList.remove('aperto'); });
+  });
+  var info = document.getElementById('info');
+  info.addEventListener('click', function () { var a = !info.classList.contains('aperto'); info.classList.toggle('aperto', a); info.setAttribute('aria-expanded', String(a)); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { chiudi(); info.classList.remove('aperto'); info.setAttribute('aria-expanded', 'false'); } });
+  disegna();
+  // la prima icona mostra già il suo suggerimento
+  document.querySelector('[data-tip]').classList.add('aperto');
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

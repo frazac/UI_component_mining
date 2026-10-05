@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- Esempio ricostruito: Language switch. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Language switch — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .menu { position: relative; display: inline-block; }
+  .apri { display: inline-flex; align-items: center; gap: 10px; border: 1.5px solid #cfc9c7; background: #fff; border-radius: 9999px; padding: 8px 16px; cursor: pointer; font-size: 16px; }
+  .apri:hover { border-color: #9d9795; }
+  .apri svg { width: 20px; height: 20px; }
+  .apri code { font: 14px ui-monospace, Menlo, monospace; color: var(--c-tenue); }
+  .lista { position: absolute; top: calc(100% + 6px); left: 0; z-index: 5; list-style: none; margin: 0; padding: 6px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    width: 330px; max-height: 300px; overflow-y: auto; display: none; }
+  .lista.on { display: block; }
+  .lista li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 7px 10px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+  .lista li small { color: var(--c-tenue); font-size: 15px; }
+  .lista li code { font: 13px ui-monospace, Menlo, monospace; color: var(--c-blu); }
+  .lista li:hover, .lista li.attivo { background: #fdf3f2; }
+  .lista li[aria-selected="true"] { font-weight: 500; }
+  .lista li[aria-selected="true"]::after { content: "✓"; color: var(--c-blu); }
+  .testa { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .effetti { margin-top: 18px; display: grid; grid-template-columns: auto 1fr; gap: 8px 18px; font-size: 16px; }
+  .effetti dt { color: var(--c-tenue); font-size: 15px; }
+  .effetti dd { margin: 0; font-variant-numeric: tabular-nums; }
+  .codice { margin-top: 14px; font: 15px ui-monospace, Menlo, monospace; background: #f8f5f4; padding: 8px 12px; border-radius: 8px; }
+  .codice b { color: var(--c-blu); font-weight: 500; } .codice i { color: var(--c-rosa); font-style: normal; }
+  .seg { display: inline-flex; padding: 3px; border-radius: 9999px; background: #f1edeb; }
+  .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 9999px; cursor: pointer; font-size: 15px; }
+  .seg button[aria-pressed="true"] { background: #111; color: #fff; }
+  .modelli { display: flex; gap: 22px; align-items: center; flex-wrap: wrap; font-size: 15px; }
+  .modelli .tag { color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Lingua e paese: codice ISO 639 + ISO 3166</span><span data-l="en">Language and country: ISO 639 + ISO 3166 code</span><span data-l="fr">Langue et pays : code ISO 639 + ISO 3166</span><span data-l="zh">语言与国家/地区：ISO 639 + ISO 3166 代码</span></span>
+    <div class="testa">
+      <div class="menu">
+        <button class="apri" id="apri" type="button" aria-haspopup="listbox" aria-expanded="false"><svg viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M2 10 H18 M10 2 C6 6 6 14 10 18 M10 2 C14 6 14 14 10 18"/></svg><span id="nome"></span><code id="cod"></code></button>
+        <ul class="lista" id="lista" role="listbox" tabindex="-1"></ul>
+      </div>
+    </div>
+    <dl class="effetti">
+      <dt><span data-l="it">Data</span><span data-l="en">Date</span><span data-l="fr">Date</span><span data-l="zh">日期</span></dt><dd id="e-data"></dd>
+      <dt><span data-l="it">Numero</span><span data-l="en">Number</span><span data-l="fr">Nombre</span><span data-l="zh">数字</span></dt><dd id="e-num"></dd>
+      <dt><span data-l="it">Prezzo</span><span data-l="en">Price</span><span data-l="fr">Prix</span><span data-l="zh">价格</span></dt><dd id="e-prezzo"></dd>
+    </dl>
+    <div class="codice" id="codice"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Altri modelli</span><span data-l="en">Other patterns</span><span data-l="fr">Autres modèles</span><span data-l="zh">其他形式</span></span>
+    <div class="modelli">
+      <div class="seg" role="group"><button type="button" aria-pressed="true">IT</button><button type="button" aria-pressed="false">EN</button><button type="button" aria-pressed="false">FR</button><button type="button" aria-pressed="false">中文</button></div>
+      <span class="tag"><span data-l="it">pochi idiomi: pulsanti affiancati</span><span data-l="en">few languages: side-by-side buttons</span><span data-l="fr">peu de langues : boutons côte à côte</span><span data-l="zh">语言较少：并排按钮</span></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni lingua si scrive nel proprio nome (Українська, Ladin, 简体中文) e non con una bandiera: una bandiera indica un paese, non una lingua.</span><span data-l="en">Each language is written in its own name (Українська, Ladin, 简体中文), not with a flag: a flag stands for a country, not a language.</span><span data-l="fr">Chaque langue s’écrit dans son propre nom (Українська, Ladin, 简体中文) et non avec un drapeau : un drapeau désigne un pays, pas une langue.</span><span data-l="zh">每种语言都用其自称书写（Українська、Ladin、简体中文），而不用国旗：国旗代表国家，而不是语言。</span></p>
+<script>
+  var LOCALI = [
+    ['en-US', 'English', 'United States', 'USD'], ['en-GB', 'English', 'United Kingdom', 'GBP'],
+    ['it-IT', 'Italiano', 'Italia', 'EUR'], ['lld-IT', 'Ladin', 'Italia', 'EUR'], ['de-IT', 'Deutsch', 'Italien', 'EUR'],
+    ['fr-FR', 'Français', 'France', 'EUR'], ['fr-CA', 'Français', 'Canada', 'CAD'],
+    ['uk-UA', 'Українська', 'Україна', 'UAH'], ['ru-UA', 'Русский', 'Украина', 'UAH'],
+    ['zh-CN', '简体中文', '中国', 'CNY'], ['zh-TW', '繁體中文', '台灣', 'TWD']
+  ];
+  var scelto = 2, attivo = 2;
+  var apri = document.getElementById('apri'), lista = document.getElementById('lista');
+  function fmt(loc, fn) { try { return fn([loc, loc.split('-')[1] === 'IT' ? 'it-IT' : 'en']); } catch (e) { return '—'; } }
+  function disegna() {
+    var c = LOCALI[scelto];
+    document.getElementById('nome').textContent = c[1] + ' (' + c[2] + ')'; document.getElementById('cod').textContent = c[0];
+    var d = new Date(2026, 9, 5);
+    document.getElementById('e-data').textContent = fmt(c[0], function (l) { return new Intl.DateTimeFormat(l, { dateStyle: 'full' }).format(d); });
+    document.getElementById('e-num').textContent = fmt(c[0], function (l) { return new Intl.NumberFormat(l).format(1234567.89); });
+    document.getElementById('e-prezzo').textContent = fmt(c[0], function (l) { return new Intl.NumberFormat(l, { style: 'currency', currency: c[3] }).format(49.9); });
+    var p = c[0].split('-'); document.getElementById('codice').innerHTML = '&lt;html lang="<b></b>-<i></i>"&gt;';
+    document.querySelector('#codice b').textContent = p[0]; document.querySelector('#codice i').textContent = p[1];
+    lista.innerHTML = '';
+    LOCALI.forEach(function (x, i) {
+      var li = document.createElement('li'); li.setAttribute('role', 'option'); li.id = 'o' + i; li.setAttribute('aria-selected', String(i === scelto));
+      li.setAttribute('lang', x[0]); if (i === attivo) li.classList.add('attivo');
+      li.innerHTML = '<span><span></span> <small></small></span><code></code>';
+      li.querySelector('span span').textContent = x[1]; li.querySelector('small').textContent = x[2]; li.querySelector('code').textContent = x[0];
+      li.onclick = function () { scelto = attivo = i; chiudi(); disegna(); };
+      lista.appendChild(li);
+    });
+    lista.setAttribute('aria-activedescendant', 'o' + attivo);
+  }
+  function chiudi() { lista.classList.remove('on'); apri.setAttribute('aria-expanded', 'false'); apri.focus(); }
+  apri.onclick = function () { var on = !lista.classList.contains('on'); lista.classList.toggle('on', on); apri.setAttribute('aria-expanded', String(on)); if (on) { attivo = scelto; disegna(); lista.classList.add('on'); lista.focus(); } };
+  lista.addEventListener('keydown', function (ev) {
+    if (ev.key === 'ArrowDown') attivo = Math.min(LOCALI.length - 1, attivo + 1);
+    else if (ev.key === 'ArrowUp') attivo = Math.max(0, attivo - 1);
+    else if (ev.key === 'Enter' || ev.key === ' ') { scelto = attivo; chiudi(); disegna(); return; }
+    else if (ev.key === 'Escape') { chiudi(); return; } else return;
+    ev.preventDefault(); disegna(); lista.classList.add('on'); var o = document.getElementById('o' + attivo); o.scrollIntoView({ block: 'nearest' });
+  });
+  document.addEventListener('click', function (ev) { if (!ev.target.closest('.menu') && lista.classList.contains('on')) { lista.classList.remove('on'); apri.setAttribute('aria-expanded', 'false'); } });
+  document.querySelectorAll('.seg button').forEach(function (b) { b.onclick = function () { document.querySelectorAll('.seg button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); }; });
+  disegna();
+</script>
+</body>
+</html>

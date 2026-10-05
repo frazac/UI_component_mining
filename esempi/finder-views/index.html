@@ -1,0 +1,150 @@
+<!doctype html>
+<!-- Esempio ricostruito: macOS Finder views (with preview). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>File browser views — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 18px; }
+  .finestra { border: 1px solid var(--c-linea); border-radius: 12px; overflow: hidden; height: 440px; display: flex; flex-direction: column; }
+  .barra { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--c-palco); border-bottom: 1px solid var(--c-linea); }
+  .pallini { display: flex; gap: 6px; }
+  .pallini i { width: 12px; height: 12px; border-radius: 50%; display: block; background: rgba(0,0,0,.15); }
+  .barra b { font-weight: 500; font-size: 15px; flex: 1; }
+  .viste { display: flex; background: #fff; border-radius: 7px; padding: 2px; gap: 2px; border: 1px solid var(--c-linea); }
+  .viste button { width: 34px; height: 28px; border: 0; background: none; border-radius: 5px; cursor: pointer; display: grid; place-items: center; }
+  .viste button[aria-pressed="true"] { background: var(--c-testo); }
+  .viste button[aria-pressed="true"] svg { stroke: #fff; }
+  .viste svg { stroke: #111; fill: none; stroke-width: 1.8; }
+  .corpo { flex: 1; display: flex; min-height: 0; }
+  .area { flex: 1; overflow: hidden; padding: 10px; min-width: 0; }
+  .anteprima { width: 200px; border-left: 1px solid var(--c-linea); padding: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+  .anteprima .grande { height: 120px; border-radius: 8px; display: grid; place-items: center; }
+  .anteprima b { font-weight: 500; font-size: 16px; word-break: break-word; }
+  .anteprima dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 3px 8px; color: var(--c-tenue); }
+  .anteprima dd { margin: 0; color: var(--c-testo); text-align: right; }
+  .el { border: 0; background: none; cursor: pointer; border-radius: 6px; font-size: 14px; }
+  .el[aria-selected="true"] { background: rgba(105,143,255,.18); }
+  .el:focus-visible { outline: 2px solid var(--c-blu); outline-offset: -2px; }
+  .ic { display: block; border-radius: 4px; flex: none; }
+  /* icone */
+  .v-icone { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
+  .v-icone { align-items: start; align-content: start; }
+  .v-icone .el { display: grid; justify-items: center; align-content: start; gap: 6px; padding: 8px 4px; font-size: 13px; overflow-wrap: anywhere; }
+  .v-icone .box { height: 70px; display: grid; place-items: end center; }
+  /* elenco */
+  .v-elenco .el { display: grid; grid-template-columns: 22px 1fr 70px 60px; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 4px 6px; }
+  .v-elenco .el:nth-child(even):not([aria-selected="true"]) { background: rgba(0,0,0,.03); }
+  .v-elenco .el span:nth-child(n+3) { color: var(--c-tenue); font-size: 13px; }
+  .intesta { display: grid; grid-template-columns: 22px 1fr 70px 60px; gap: 8px; font-size: 13px; color: var(--c-tenue); padding: 0 6px 4px; border-bottom: 1px solid var(--c-linea); margin-bottom: 4px; }
+  /* colonne */
+  .v-colonne { display: flex; height: 100%; margin: -10px; }
+  .colonna { width: 50%; border-right: 1px solid var(--c-linea); padding: 6px; display: grid; align-content: start; gap: 1px; }
+  .colonna .el { display: flex; align-items: center; gap: 8px; text-align: left; padding: 4px 6px; width: 100%; }
+  .colonna .el .fr { margin-left: auto; color: var(--c-tenue); }
+  /* galleria */
+  .v-galleria { display: flex; flex-direction: column; height: 100%; gap: 8px; }
+  .v-galleria .palcoscenico { flex: 1; border-radius: 8px; display: grid; place-items: center; }
+  .v-galleria .striscia { display: flex; gap: 6px; justify-content: center; }
+  .v-galleria .el { padding: 3px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Quattro viste della stessa cartella, con anteprima</span><span data-l="en">Four views of the same folder, with preview</span><span data-l="fr">Quatre présentations du même dossier, avec aperçu</span><span data-l="zh">同一文件夹的四种显示方式，带预览</span></span>
+    <div class="finestra">
+      <div class="barra">
+        <span class="pallini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <b id="cartella"></b>
+        <div class="viste" role="group" id="viste"></div>
+      </div>
+      <div class="corpo">
+        <div class="area" id="area" role="listbox" aria-label="Files"></div>
+        <aside class="anteprima" id="anteprima" aria-live="polite"></aside>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ricostruzione generica di un gestore di file (dopo il Finder di macOS): icone, elenco, colonne, galleria. Frecce per muoversi, clic per scegliere.</span><span data-l="en">Generic rebuild of a file manager (after the macOS Finder): icons, list, columns, gallery. Arrows to move, click to select.</span><span data-l="fr">Reconstruction générique d’un gestionnaire de fichiers (d’après le Finder de macOS) : icônes, liste, colonnes, galerie. Flèches pour se déplacer, clic pour choisir.</span><span data-l="zh">通用文件管理器的重建（参考 macOS 访达）：图标、列表、分栏、画廊。用方向键移动，点击选择。</span></p>
+<script>
+  var VISTE = [
+    { k: 'icone', n: { it: 'Icone', en: 'Icons', fr: 'Icônes', zh: '图标' }, s: '<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>' },
+    { k: 'elenco', n: { it: 'Elenco', en: 'List', fr: 'Liste', zh: '列表' }, s: '<path d="M4 6h16M4 12h16M4 18h16"/>' },
+    { k: 'colonne', n: { it: 'Colonne', en: 'Columns', fr: 'Colonnes', zh: '分栏' }, s: '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="M9 5v14M15 5v14"/>' },
+    { k: 'galleria', n: { it: 'Galleria', en: 'Gallery', fr: 'Galerie', zh: '画廊' }, s: '<rect x="4" y="4" width="16" height="11" rx="1"/><path d="M5 19h3M10.5 19h3M16 19h3"/>' }
+  ];
+  var FILE = [
+    { n: 'logo-bozza.png', t: 'img', c: ['rgb(250,145,145)', 'rgb(105,143,255)'], kb: '84 KB', d: '03/10' },
+    { n: 'moodboard.jpg', t: 'img', c: ['#f0b47a', 'rgb(223,136,136)'], kb: '1,2 MB', d: '02/10' },
+    { n: 'brief.pdf', t: 'pdf', kb: '220 KB', d: '01/10' },
+    { n: 'note.txt', t: 'txt', kb: '3 KB', d: '29/09' },
+    { n: 'schermata.png', t: 'img', c: ['#2c2c34', 'rgb(105,143,255)'], kb: '640 KB', d: '28/09' },
+    { n: 'colori.json', t: 'txt', kb: '1 KB', d: '27/09' }
+  ];
+  var CART = { it: 'Progetto finale', en: 'Final project', fr: 'Projet final', zh: '期末项目' };
+  var TIPO = { img: { it: 'Immagine', en: 'Image', fr: 'Image', zh: '图片' }, pdf: { it: 'Documento PDF', en: 'PDF document', fr: 'Document PDF', zh: 'PDF 文档' }, txt: { it: 'Testo', en: 'Text', fr: 'Texte', zh: '文本' } };
+  var ETI = { tipo: { it: 'Tipo', en: 'Kind', fr: 'Type', zh: '种类' }, dim: { it: 'Dimensione', en: 'Size', fr: 'Taille', zh: '大小' }, data: { it: 'Modificato', en: 'Modified', fr: 'Modifié', zh: '修改日期' }, nome: { it: 'Nome', en: 'Name', fr: 'Nom', zh: '名称' } };
+  var vista = 0, sel = 0;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function icona(f, w) {
+    var h = Math.round(w * 1.25);
+    if (f.t === 'img') return '<span class="ic" style="width:' + w + 'px;height:' + Math.round(w * .78) + 'px;background:linear-gradient(135deg,' + f.c[0] + ',' + f.c[1] + ')"></span>';
+    var col = f.t === 'pdf' ? 'rgb(223,136,136)' : '#999';
+    return '<svg class="ic" width="' + w + '" height="' + h + '" viewBox="0 0 20 25" aria-hidden="true"><path d="M1 1h12l6 6v17H1z" fill="#fff" stroke="#bbb"/><path d="M13 1v6h6" fill="none" stroke="#bbb"/><rect x="4" y="11" width="11" height="1.6" fill="' + col + '"/><rect x="4" y="15" width="9" height="1.6" fill="' + col + '"/><rect x="4" y="19" width="10" height="1.6" fill="' + col + '"/></svg>';
+  }
+  function bottone(f, i, contenuto) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'el'; b.setAttribute('role', 'option');
+    b.setAttribute('aria-selected', String(i === sel)); b.tabIndex = i === sel ? 0 : -1; b.innerHTML = contenuto;
+    b.onclick = function () { sel = i; disegna(true); };
+    return b;
+  }
+  function disegna(fuoco) {
+    document.getElementById('cartella').textContent = L(CART);
+    var v = document.getElementById('viste'); v.innerHTML = '';
+    VISTE.forEach(function (x, k) {
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(k === vista)); b.setAttribute('aria-label', L(x.n)); b.title = L(x.n);
+      b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' + x.s + '</svg>';
+      b.onclick = function () { vista = k; disegna(); }; v.appendChild(b);
+    });
+    var a = document.getElementById('area'); a.innerHTML = ''; var k = VISTE[vista].k; a.className = 'area v-' + k;
+    if (k === 'icone') FILE.forEach(function (f, i) { a.appendChild(bottone(f, i, '<span class="box">' + icona(f, 54) + '</span><span>' + f.n + '</span>')); });
+    if (k === 'elenco') {
+      var h = document.createElement('div'); h.className = 'intesta'; h.innerHTML = '<span></span><span>' + L(ETI.nome) + '</span><span>' + L(ETI.data) + '</span><span>' + L(ETI.dim) + '</span>'; a.appendChild(h);
+      FILE.forEach(function (f, i) { a.appendChild(bottone(f, i, icona(f, 18) + '<span>' + f.n + '</span><span>' + f.d + '</span><span>' + f.kb + '</span>')); });
+    }
+    if (k === 'colonne') {
+      var c1 = document.createElement('div'); c1.className = 'colonna';
+      ['Documenti', L(CART), 'Download'].forEach(function (n, j) {
+        var d = document.createElement('div'); d.className = 'el'; d.style.cursor = 'default'; if (j === 1) d.style.background = 'rgba(0,0,0,.07)';
+        d.innerHTML = '<svg width="18" height="15" viewBox="0 0 20 16" aria-hidden="true"><path d="M1 2h6l2 2h10v11H1z" fill="rgb(105,143,255)" opacity=".8"/></svg><span>' + n + '</span><span class="fr">›</span>'; c1.appendChild(d);
+      });
+      var c2 = document.createElement('div'); c2.className = 'colonna';
+      FILE.forEach(function (f, i) { c2.appendChild(bottone(f, i, icona(f, 18) + '<span>' + f.n + '</span>')); });
+      var w = document.createElement('div'); w.className = 'v-colonne'; w.appendChild(c1); w.appendChild(c2); a.appendChild(w);
+    }
+    if (k === 'galleria') {
+      var f0 = FILE[sel], g = document.createElement('div'); g.className = 'v-galleria';
+      g.innerHTML = '<div class="palcoscenico" style="background:' + (f0.t === 'img' ? 'linear-gradient(135deg,' + f0.c[0] + ',' + f0.c[1] + ')' : 'var(--c-palco)') + '">' + (f0.t === 'img' ? '' : icona(f0, 70)) + '</div>';
+      var s = document.createElement('div'); s.className = 'striscia';
+      FILE.forEach(function (f, i) { s.appendChild(bottone(f, i, icona(f, 34))); });
+      g.appendChild(s); a.appendChild(g);
+    }
+    var f = FILE[sel], p = document.getElementById('anteprima');
+    p.innerHTML = '<div class="grande" style="background:' + (f.t === 'img' ? 'linear-gradient(135deg,' + f.c[0] + ',' + f.c[1] + ')' : 'var(--c-palco)') + '">' + (f.t === 'img' ? '' : icona(f, 56)) + '</div><b>' + f.n + '</b>' +
+      '<dl><dt>' + L(ETI.tipo) + '</dt><dd>' + L(TIPO[f.t]) + '</dd><dt>' + L(ETI.dim) + '</dt><dd>' + f.kb + '</dd><dt>' + L(ETI.data) + '</dt><dd>' + f.d + '</dd></dl>';
+    if (fuoco) { var s2 = a.querySelector('[aria-selected="true"]'); if (s2) s2.focus(); }
+  }
+  document.getElementById('area').addEventListener('keydown', function (e) {
+    var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (d) { e.preventDefault(); sel = (sel + d + FILE.length) % FILE.length; disegna(true); }
+  });
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- Esempio ricostruito: 404 page. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 page — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .finestra { border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--c-linea), 0 10px 30px rgba(0,0,0,.08); background: #fff; }
+  .cornice { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #f1edec; }
+  .pallini { display: flex; gap: 7px; } .pallini i { width: 12px; height: 12px; border-radius: 50%; background: #e0a3a3; } .pallini i + i { background: #e6cf9a; } .pallini i + i + i { background: #a9cfa5; }
+  .indirizzo { flex: 1; display: flex; align-items: center; background: #fff; border-radius: 8px; padding: 0 10px; height: 32px; font-size: 15px; color: var(--c-tenue); }
+  .indirizzo input { border: 0; outline: 0; flex: 1; min-width: 0; font-size: 15px; color: var(--c-testo); background: none; }
+  .indirizzo:focus-within { box-shadow: 0 0 0 2px var(--c-blu); }
+  .pagina { height: 380px; padding: 26px 34px; display: flex; flex-direction: column; justify-content: center; }
+  .errore { display: grid; grid-template-columns: 190px 1fr; gap: 26px; align-items: center; }
+  .errore .grande { font-size: 84px; line-height: 1; font-weight: 500; letter-spacing: -.03em; margin: 0 0 6px; color: var(--c-salmone); }
+  h1 { font-size: 24px; font-weight: 500; margin: 0 0 8px; line-height: 1.2; }
+  .errore p { margin: 0 0 16px; font-size: 16px; color: var(--c-tenue); }
+  .cerca { display: flex; gap: 8px; margin-bottom: 14px; }
+  .cerca input { flex: 1; min-width: 0; height: 40px; border: 1px solid var(--c-linea); border-radius: 8px; padding: 0 12px; font-size: 15px; }
+  .btn { height: 40px; padding: 0 16px; border-radius: 8px; border: 0; background: var(--c-testo); color: #fff; cursor: pointer; font-size: 15px; white-space: nowrap; }
+  .btn:hover { background: #333; }
+  .link { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; }
+  .link a, .home a { color: var(--c-blu); }
+  .home h1 { font-size: 30px; }
+  .home ul { padding-left: 20px; font-size: 17px; line-height: 1.8; }
+  .codice { font-size: 15px; color: var(--c-tenue); }
+  svg.disegno { width: 190px; height: 190px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="finestra">
+    <div class="cornice"><span class="pallini" aria-hidden="true"><i></i><i></i><i></i></span>
+      <label class="indirizzo">studio.example/<input id="url" value="corsi/tipografia-2019" aria-label="Address"></label></div>
+    <div class="pagina" id="pagina" aria-live="polite"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Scrivi un indirizzo e premi Invio: esistono solo la home (indirizzo vuoto), «courses» e «contacts». Una buona 404 spiega e offre una via d’uscita.</span><span data-l="en">Type an address and press Enter: only the home page (empty address), “courses” and “contacts” exist. A good 404 explains and offers a way out.</span><span data-l="fr">Tapez une adresse et appuyez sur Entrée : seules existent l’accueil (adresse vide), « courses » et « contacts ». Une bonne 404 explique et propose une issue.</span><span data-l="zh">输入地址并按回车：只有首页（空地址）、“courses”和“contacts”存在。好的 404 页面会说明原因并提供出路。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = {
+    titolo: { it: 'Questa pagina non c’è (più)', en: 'This page isn’t here (any more)', fr: 'Cette page n’existe pas (ou plus)', zh: '此页面不存在（或已删除）' },
+    testo: { it: 'Forse l’indirizzo è sbagliato o la pagina è stata spostata. Prova a cercare, o riparti dalla home.', en: 'The address may be wrong or the page may have moved. Try searching, or start again from the home page.', fr: 'L’adresse est peut-être erronée ou la page a été déplacée. Essayez une recherche, ou repartez de l’accueil.', zh: '地址可能有误，或页面已被移动。试试搜索，或从首页重新开始。' },
+    cerca: { it: 'Cerca nel sito', en: 'Search the site', fr: 'Rechercher sur le site', zh: '站内搜索' },
+    vai: { it: 'Cerca', en: 'Search', fr: 'Rechercher', zh: '搜索' },
+    home: { it: 'Torna alla home', en: 'Back to home', fr: 'Retour à l’accueil', zh: '返回首页' },
+    corsi: { it: 'Corsi', en: 'Courses', fr: 'Cours', zh: '课程' },
+    contatti: { it: 'Contatti', en: 'Contacts', fr: 'Contacts', zh: '联系方式' },
+    forse: { it: 'Forse cercavi:', en: 'Maybe you were looking for:', fr: 'Vous cherchiez peut-être :', zh: '你可能在找：' },
+    benvenuti: { it: 'Benvenuti nello studio', en: 'Welcome to the studio', fr: 'Bienvenue au studio', zh: '欢迎来到工作室' },
+    rotta: { it: 'Un vecchio link (rotto)', en: 'An old (broken) link', fr: 'Un ancien lien (cassé)', zh: '一个旧的（失效）链接' },
+    pagina: { it: 'Pagina «{p}»: esiste. ', en: 'Page “{p}”: it exists. ', fr: 'Page « {p} » : elle existe. ', zh: '页面“{p}”：存在。' }
+  };
+  var ESISTONO = { '': 'home', 'corsi': 'corsi', 'courses': 'corsi', 'cours': 'corsi', 'contatti': 'contatti', 'contacts': 'contatti' };
+  var url = document.getElementById('url'), pag = document.getElementById('pagina');
+  var DISEGNO = '<svg class="disegno" viewBox="0 0 190 190" aria-hidden="true"><circle cx="95" cy="95" r="88" fill="#f3efee"/>' +
+    '<path d="M20 120c20 0 26-26 46-26" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/><rect x="62" y="80" width="26" height="30" rx="6" fill="#698fff"/><path d="M88 87h10M88 103h10" stroke="#111" stroke-width="5" stroke-linecap="round"/>' +
+    '<path d="M170 70c-20 0-26 26-46 26" fill="none" stroke="#111" stroke-width="5" stroke-linecap="round"/><rect x="112" y="80" width="22" height="30" rx="6" fill="#fa9191"/><rect x="104" y="86" width="8" height="18" rx="2" fill="#fa9191"/>' +
+    '<path d="M96 62l4 10M108 60l-3 11M88 128l6-9M104 130l-2-10" stroke="#df8888" stroke-width="3.5" stroke-linecap="round"/></svg>';
+  function va(p) { url.value = p; disegna(); }
+  function disegna() {
+    var p = url.value.trim().replace(/^\/+|\/+$/g, '').toLowerCase(), dove = ESISTONO[p];
+    if (dove === 'home') {
+      pag.innerHTML = '<div class="home"><h1>' + t(TX.benvenuti) + '</h1><ul><li><a href="#" data-va="courses">' + t(TX.corsi) + '</a></li><li><a href="#" data-va="contacts">' + t(TX.contatti) + '</a></li><li><a href="#" data-va="corsi/tipografia-2019">' + t(TX.rotta) + '</a></li></ul></div>';
+    } else if (dove) {
+      pag.innerHTML = '<div class="home"><h1>' + t(TX[dove]) + '</h1><p class="codice">' + t(TX.pagina).replace('{p}', p) + '</p><p><a href="#" data-va="">' + t(TX.home) + '</a></p></div>';
+    } else {
+      pag.innerHTML = '<div class="errore">' + DISEGNO + '<div><p class="grande">404</p><h1>' + t(TX.titolo) + '</h1><p>' + t(TX.testo) + '</p>' +
+        '<form class="cerca" onsubmit="return false"><input type="search" aria-label="' + t(TX.cerca) + '" placeholder="' + t(TX.cerca) + '"><button class="btn" type="submit">' + t(TX.vai) + '</button></form>' +
+        '<div class="link"><span class="codice">' + t(TX.forse) + '</span><a href="#" data-va="">' + t(TX.home) + '</a><a href="#" data-va="courses">' + t(TX.corsi) + '</a></div></div></div>';
+    }
+    pag.querySelectorAll('[data-va]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); va(a.dataset.va); }; });
+  }
+  url.addEventListener('keydown', function (e) { if (e.key === 'Enter') disegna(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

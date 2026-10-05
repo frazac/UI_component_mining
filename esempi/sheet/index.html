@@ -1,0 +1,117 @@
+<!doctype html>
+<!-- Esempio ricostruito: Sheet (bottom and top). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sheet — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: auto 1fr; max-width: 660px; align-items: center; }
+  .tel { width: 260px; height: 500px; border-radius: 38px; background: #111; padding: 9px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .schermo { position: relative; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: #f6f3f2; }
+  .app { padding: 44px 16px 0; }
+  .app h3 { margin: 0 0 12px; font-size: 18px; font-weight: 500; }
+  .foto { height: 180px; border-radius: 14px; background: linear-gradient(140deg, rgb(250,145,145), rgb(105,143,255)); margin-bottom: 14px; }
+  .app p { margin: 0; font-size: 15px; color: #555; }
+  .velo { position: absolute; inset: 0; background: rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 4; }
+  .velo.on { opacity: 1; pointer-events: auto; }
+  .sheet { position: absolute; left: 0; right: 0; background: #fff; z-index: 5; transition: transform .35s cubic-bezier(.3,.7,.2,1); box-shadow: 0 0 24px rgba(0,0,0,.15); visibility: hidden; }
+  .sheet.on { transform: none !important; visibility: visible; }
+  .basso { bottom: 0; border-radius: 22px 22px 0 0; transform: translateY(100%); padding: 0 0 18px; }
+  .alto { top: 0; border-radius: 0 0 22px 22px; transform: translateY(-100%); padding: 40px 0 0; }
+  .sheet.tira { transition: none; }
+  .maniglia { display: block; width: 100%; height: 22px; border: 0; background: none; cursor: grab; position: relative; touch-action: none; }
+  .maniglia::before { content: ""; position: absolute; left: 50%; top: 8px; width: 40px; height: 5px; margin-left: -20px; border-radius: 3px; background: #ccc; }
+  .sheet h4 { margin: 2px 16px 10px; font-size: 16px; font-weight: 500; }
+  .azioni { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; padding: 0 6px; }
+  .azioni button { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 14px; cursor: pointer; padding: 6px 0; border-radius: 10px; min-width: 0; overflow-wrap: anywhere; }
+  .azioni button:hover { background: #f6f3f2; }
+  .azioni i { width: 44px; height: 44px; border-radius: 12px; display: grid; place-content: center; }
+  .azioni svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lista { margin: 10px 0 0; padding: 0; list-style: none; }
+  .lista li button { width: 100%; text-align: left; border: 0; border-top: 1px solid var(--c-linea); background: none; padding: 11px 16px; font-size: 15px; cursor: pointer; }
+  .lista li button:hover { background: #f6f3f2; }
+  .lista li.rosso button { color: #c0392b; }
+  .notif { margin: 0 12px 8px; padding: 10px 12px; border-radius: 12px; background: #f6f3f2; font-size: 15px; display: flex; gap: 10px; align-items: center; }
+  .notif i { width: 26px; height: 26px; border-radius: 8px; flex: none; }
+  .comandi { display: grid; gap: 10px; }
+  .comandi button { display: flex; align-items: center; gap: 10px; border: 1px solid var(--c-linea); background: #fff; border-radius: 12px; padding: 10px 14px; cursor: pointer; font-size: 15px; text-align: left; }
+  .comandi button:hover { border-color: var(--c-salmone); }
+  .comandi svg { width: 26px; height: 26px; flex: none; }
+  .esito { margin-top: 12px; font-size: 15px; color: var(--c-tenue); min-height: 22px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="tel">
+    <div class="schermo" id="schermo">
+      <div class="app"><h3><span data-l="it">Galleria</span><span data-l="en">Gallery</span><span data-l="fr">Galerie</span><span data-l="zh">图库</span></h3><div class="foto"></div><p><span data-l="it">Tramonto, 18:42</span><span data-l="en">Sunset, 6:42 pm</span><span data-l="fr">Coucher de soleil, 18 h 42</span><span data-l="zh">日落，18:42</span></p></div>
+      <div class="velo" id="velo"></div>
+      <div class="sheet basso" id="s-basso" role="dialog" aria-modal="true" aria-labelledby="t-basso">
+        <button class="maniglia" type="button" data-chiudi aria-label="×"></button>
+        <h4 id="t-basso"><span data-l="it">Condividi foto</span><span data-l="en">Share photo</span><span data-l="fr">Partager la photo</span><span data-l="zh">分享照片</span></h4>
+        <div class="azioni">
+          <button type="button" data-ok><i style="background:var(--c-blu)"><svg viewBox="0 0 22 22"><rect x="3" y="5" width="16" height="12" rx="2"/><path d="M3 7 L11 12 L19 7"/></svg></i><span data-l="it">E-mail</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">邮件</span></button>
+          <button type="button" data-ok><i style="background:#2f9a52"><svg viewBox="0 0 22 22"><path d="M4 5 H18 V15 H9 L5 18 V15 H4 Z"/></svg></i><span data-l="it">Messaggi</span><span data-l="en">Messages</span><span data-l="fr">Messages</span><span data-l="zh">消息</span></button>
+          <button type="button" data-ok><i style="background:#111"><svg viewBox="0 0 22 22"><path d="M9 13 a3 3 0 0 0 4 0 l3 -3 a3 3 0 0 0 -4 -4 l-1 1 M13 9 a3 3 0 0 0 -4 0 l-3 3 a3 3 0 0 0 4 4 l1 -1"/></svg></i><span data-l="it">Link</span><span data-l="en">Link</span><span data-l="fr">Lien</span><span data-l="zh">链接</span></button>
+          <button type="button" data-ok><i style="background:var(--c-rosa)"><svg viewBox="0 0 22 22"><path d="M11 3 V14 M6 9 L11 14 L16 9 M4 18 H18"/></svg></i><span data-l="it">Salva</span><span data-l="en">Save</span><span data-l="fr">Enregistrer</span><span data-l="zh">保存</span></button>
+        </div>
+        <ul class="lista">
+          <li><button type="button" data-ok><span data-l="it">Duplica</span><span data-l="en">Duplicate</span><span data-l="fr">Dupliquer</span><span data-l="zh">复制</span></button></li>
+          <li class="rosso"><button type="button" data-ok><span data-l="it">Elimina</span><span data-l="en">Delete</span><span data-l="fr">Supprimer</span><span data-l="zh">删除</span></button></li>
+        </ul>
+      </div>
+      <div class="sheet alto" id="s-alto" role="dialog" aria-modal="true" aria-labelledby="t-alto">
+        <h4 id="t-alto"><span data-l="it">Notifiche</span><span data-l="en">Notifications</span><span data-l="fr">Notifications</span><span data-l="zh">通知</span></h4>
+        <div class="notif"><i style="background:var(--c-salmone)"></i><span><span data-l="it">Anna ha commentato la foto</span><span data-l="en">Anna commented on the photo</span><span data-l="fr">Anna a commenté la photo</span><span data-l="zh">Anna 评论了这张照片</span></span></div>
+        <div class="notif"><i style="background:var(--c-blu)"></i><span><span data-l="it">Backup completato</span><span data-l="en">Backup complete</span><span data-l="fr">Sauvegarde terminée</span><span data-l="zh">备份完成</span></span></div>
+        <button class="maniglia" type="button" data-chiudi aria-label="×"></button>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Apri un pannello; chiudi trascinando, toccando fuori o con Esc</span><span data-l="en">Open a sheet; close it by dragging, tapping outside or pressing Esc</span><span data-l="fr">Ouvrez un panneau ; fermez-le en le faisant glisser, en touchant à côté ou avec Échap</span><span data-l="zh">打开面板；拖动、点击外部或按 Esc 关闭</span></span>
+    <div class="comandi">
+      <button type="button" id="apri-b"><svg viewBox="0 0 26 26" aria-hidden="true"><rect x="5" y="2" width="16" height="22" rx="3" fill="none" stroke="#111" stroke-width="1.6"/><rect x="5" y="14" width="16" height="10" rx="3" fill="rgb(105,143,255)"/></svg><span><span data-l="it">Pannello dal basso: azioni</span><span data-l="en">Bottom sheet: actions</span><span data-l="fr">Panneau du bas : actions</span><span data-l="zh">底部面板：操作</span></span></button>
+      <button type="button" id="apri-a"><svg viewBox="0 0 26 26" aria-hidden="true"><rect x="5" y="2" width="16" height="22" rx="3" fill="none" stroke="#111" stroke-width="1.6"/><rect x="5" y="2" width="16" height="10" rx="3" fill="rgb(250,145,145)"/></svg><span><span data-l="it">Pannello dall’alto: notifiche</span><span data-l="en">Top sheet: notifications</span><span data-l="fr">Panneau du haut : notifications</span><span data-l="zh">顶部面板：通知</span></span></button>
+    </div>
+    <p class="esito" id="esito" role="status"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il pannello appare dal bordo vicino al gesto che lo apre, oscura il resto senza nasconderlo e mantiene il contesto della schermata.</span><span data-l="en">The sheet slides in from the edge nearest the gesture that opens it, dims the rest without hiding it and keeps the screen’s context.</span><span data-l="fr">Le panneau arrive du bord le plus proche du geste qui l’ouvre, assombrit le reste sans le cacher et garde le contexte de l’écran.</span><span data-l="zh">面板从最靠近触发手势的边缘滑入，调暗其余部分但不遮挡，保留当前屏幕的上下文。</span></p>
+<script>
+  var aperto = null, origine = null;
+  var FATTO = { it: 'Azione scelta: ', en: 'Chosen action: ', fr: 'Action choisie : ', zh: '已选择操作：' };
+  function apri(id, da, quieto) {
+    chiudi(); aperto = document.getElementById(id); origine = da;
+    aperto.classList.add('on'); document.getElementById('velo').classList.add('on');
+    if (!quieto) setTimeout(function () { var f = aperto.querySelector('[data-ok]') || aperto.querySelector('button'); f.focus(); }, 50);
+  }
+  function chiudi() {
+    if (!aperto) return; aperto.classList.remove('on'); aperto.style.transform = ''; document.getElementById('velo').classList.remove('on');
+    aperto = null; if (origine) origine.focus();
+  }
+  document.getElementById('apri-b').onclick = function () { apri('s-basso', this); };
+  document.getElementById('apri-a').onclick = function () { apri('s-alto', this); };
+  document.getElementById('velo').onclick = chiudi;
+  document.addEventListener('keydown', function (ev) {
+    if (!aperto) return;
+    if (ev.key === 'Escape') chiudi();
+    if (ev.key === 'Tab') { var f = aperto.querySelectorAll('button'), a = f[0], z = f[f.length - 1]; if (ev.shiftKey && document.activeElement === a) { ev.preventDefault(); z.focus(); } else if (!ev.shiftKey && document.activeElement === z) { ev.preventDefault(); a.focus(); } }
+  });
+  document.querySelectorAll('[data-ok]').forEach(function (b) { b.addEventListener('click', function () {
+    var l = window.Lingua ? Lingua.get() : 'en', n = b.querySelector('[data-l="' + l + '"]'); document.getElementById('esito').textContent = FATTO[l] + (n ? n.textContent : ''); chiudi(); }); });
+  document.querySelectorAll('[data-chiudi]').forEach(function (m) {
+    var y0 = null, d = 0, s = m.closest('.sheet'), basso = s.classList.contains('basso');
+    m.addEventListener('pointerdown', function (ev) { m.setPointerCapture(ev.pointerId); y0 = ev.clientY; d = 0; s.classList.add('tira'); });
+    m.addEventListener('pointermove', function (ev) { if (y0 === null) return; d = (ev.clientY - y0) * (basso ? 1 : -1); s.style.transform = 'translateY(' + (Math.max(0, d) * (basso ? 1 : -1)) + 'px)'; });
+    m.addEventListener('pointerup', function () { y0 = null; s.classList.remove('tira'); if (d > 60 || d === 0) chiudi(); else s.style.transform = ''; });
+    m.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); chiudi(); } });
+  });
+  apri('s-basso', null, true);
+</script>
+</body>
+</html>

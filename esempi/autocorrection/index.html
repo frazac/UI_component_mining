@@ -1,0 +1,123 @@
+<!doctype html>
+<!-- Esempio ricostruito: Autocorrection and grammar checkers. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autocorrection and grammar checkers — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; position: relative; }
+  .testo { font-size: 20px; line-height: 1.75; margin: 0; }
+  .err { cursor: pointer; text-decoration-line: underline; text-decoration-style: wavy; text-decoration-thickness: 1.5px; text-underline-offset: 4px; border-radius: 3px; border: 0; background: none; padding: 0; font: inherit; color: inherit; }
+  .err.spell { text-decoration-color: #e0443e; }
+  .err.gram { text-decoration-color: rgb(105,143,255); text-decoration-style: double; }
+  .err.stile { text-decoration-color: #e0a020; text-decoration-style: dotted; text-decoration-thickness: 2.5px; }
+  .err[aria-expanded="true"], .err:hover { background: rgba(0,0,0,.06); }
+  .corretto { background: rgba(46,138,90,.12); border-radius: 3px; transition: background 1.5s; }
+  .pop { position: absolute; z-index: 4; width: 250px; background: #fff; border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,.2); padding: 10px; display: grid; gap: 6px; }
+  .pop[hidden] { display: none; }
+  .pop .tipo { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+  .pop .tipo i { width: 10px; height: 10px; border-radius: 50%; display: block; }
+  .pop .perche { font-size: 14px; color: var(--c-tenue); }
+  .pop .sugg { border: 0; background: rgba(105,143,255,.12); color: var(--c-blu); font-weight: 500; font-size: 16px; text-align: left; border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+  .pop .sugg:hover, .pop .sugg:focus-visible { background: var(--c-blu); color: #fff; }
+  .pop .ignora { border: 0; background: none; text-align: left; color: var(--c-tenue); font-size: 14px; cursor: pointer; padding: 4px 10px; }
+  .legenda { display: flex; gap: 18px; flex-wrap: wrap; font-size: 15px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--c-linea); }
+  .legenda span.cam { text-decoration-line: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  .conta { margin-left: auto; color: var(--c-tenue); }
+  .campo { width: 100%; border: 1.5px solid var(--c-linea); border-radius: 10px; padding: 10px 12px; font-size: 18px; }
+  .campo:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.18); }
+  .chip { margin-top: 10px; min-height: 34px; display: flex; gap: 8px; align-items: center; font-size: 15px; color: var(--c-tenue); }
+  .chip button { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 4px 12px; font-size: 15px; cursor: pointer; }
+  .chip s { color: #c03c3c; }
+  .chip b { color: #2e8a5a; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" id="area">
+    <span class="didascalia"><span data-l="it">Correttore: clicca una parola sottolineata</span><span data-l="en">Checker: click an underlined word</span><span data-l="fr">Correcteur : cliquez sur un mot souligné</span><span data-l="zh">检查器：点击带下划线的词</span></span>
+    <p class="testo" id="testo"></p>
+    <div class="legenda">
+      <span class="cam" style="text-decoration-style:wavy;text-decoration-color:#e0443e"><span data-l="it">Ortografia</span><span data-l="en">Spelling</span><span data-l="fr">Orthographe</span><span data-l="zh">拼写</span></span>
+      <span class="cam" style="text-decoration-style:double;text-decoration-color:rgb(105,143,255)"><span data-l="it">Grammatica</span><span data-l="en">Grammar</span><span data-l="fr">Grammaire</span><span data-l="zh">语法</span></span>
+      <span class="cam" style="text-decoration-style:dotted;text-decoration-color:#e0a020;text-decoration-thickness:2.5px"><span data-l="it">Stile</span><span data-l="en">Style</span><span data-l="fr">Style</span><span data-l="zh">文风</span></span>
+      <span class="conta" id="conta" aria-live="polite"></span>
+    </div>
+    <div class="pop" id="pop" hidden role="dialog"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Correzione automatica mentre scrivi</span><span data-l="en">Autocorrect as you type</span><span data-l="fr">Correction automatique pendant la saisie</span><span data-l="zh">输入时自动更正</span></span>
+    <input class="campo" id="campo" autocomplete="off" spellcheck="false" aria-describedby="chip" data-it="Prova: perchè, qual&#39;è, pò + spazio" data-en="Try: teh, recieve, adn + space" data-fr="Essayez : ca, etre, deja + espace" data-zh="试试：teh、recieve + 空格">
+    <div class="chip" id="chip" aria-live="polite"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il colore della sottolineatura dice il tipo di problema; la correzione automatica si può sempre annullare.</span><span data-l="en">The underline colour tells the kind of problem; an autocorrection can always be undone.</span><span data-l="fr">La couleur du soulignement indique le type de problème ; une correction automatique peut toujours être annulée.</span><span data-l="zh">下划线的颜色表示问题类型；自动更正总是可以撤销。</span></p>
+<script>
+  function S(w, f) { return { k: 'spell', w: w, f: f }; } function G(w, f) { return { k: 'gram', w: w, f: f }; } function ST(w, f) { return { k: 'stile', w: w, f: f }; }
+  var TESTI = {
+    it: ['Il progetto ', S('e\'', ['è']), ' stato consegnato in ritardo ', S('perchè', ['perché']), ' il cliente ha cambiato idea; la squadra ', G('hanno dovuto', ['ha dovuto']), ' rifare le tavole ', ST('molto molto', ['molto', 'in grande']), ' in fretta.'],
+    en: ['The ', S('projet', ['project']), ' was delivered late ', S('becuase', ['because']), ' the client changed their mind; the team ', G('have to', ['had to']), ' redo the boards ', ST('very very', ['very', 'really']), ' quickly.'],
+    fr: ['Le ', S('projé', ['projet']), ' a été livré en ', S('retart', ['retard']), ' parce que le client a changé d’avis ; l’équipe ', G('à dû', ['a dû']), ' refaire les planches ', ST('très très', ['très']), ' vite.'],
+    zh: ['这个项目', S('交的', ['交得']), '很晚，因为客户改变了', S('主义', ['主意']), '；团队', G('被迫不得不', ['不得不']), '重新做展板，', ST('非常非常', ['非常']), '赶。']
+  };
+  var NOMI = { spell: { it: 'Ortografia', en: 'Spelling', fr: 'Orthographe', zh: '拼写' }, gram: { it: 'Grammatica', en: 'Grammar', fr: 'Grammaire', zh: '语法' }, stile: { it: 'Stile', en: 'Style', fr: 'Style', zh: '文风' } };
+  var PERCHE = { spell: { it: 'Parola non trovata nel dizionario.', en: 'Word not found in the dictionary.', fr: 'Mot absent du dictionnaire.', zh: '可能是错别字。' }, gram: { it: 'Il verbo non concorda con il soggetto.', en: 'The verb tense does not fit the sentence.', fr: 'Accent fautif : « à » est une préposition.', zh: '表达重复，语法冗余。' }, stile: { it: 'Ripetizione: prova a dirlo una volta sola.', en: 'Repetition: try saying it once.', fr: 'Répétition : dites-le une seule fois.', zh: '重复：试着只说一次。' } };
+  var COL = { spell: '#e0443e', gram: 'rgb(105,143,255)', stile: '#e0a020' };
+  var T = { ignora: { it: 'Ignora', en: 'Ignore', fr: 'Ignorer', zh: '忽略' }, sugg: { it: ' suggerimenti', en: ' suggestions', fr: ' suggestions', zh: ' 条建议' }, ok: { it: 'Nessun problema ✓', en: 'No issues ✓', fr: 'Aucun problème ✓', zh: '没有问题 ✓' },
+    annulla: { it: 'Annulla', en: 'Undo', fr: 'Annuler', zh: '撤销' } };
+  var DIZ = { 'perchè': 'perché', 'qual\'è': 'qual è', 'pò': 'po’', teh: 'the', recieve: 'receive', adn: 'and', ca: 'ça', etre: 'être', deja: 'déjà' };
+  var stato = {};
+  function lg() { return window.Lingua ? Lingua.get() : 'en'; }
+  function L(o) { return o[lg()] || o.en; }
+  function disegna() {
+    var p = document.getElementById('testo'), lingua = lg(), st = stato[lingua] = stato[lingua] || {};
+    p.innerHTML = ''; var n = 0;
+    TESTI[lingua].forEach(function (x, i) {
+      if (typeof x === 'string') return p.appendChild(document.createTextNode(x));
+      if (st[i] != null) { var s = document.createElement('span'); s.textContent = st[i]; if (st.ultimo === i) { s.className = 'corretto'; } p.appendChild(s); return; }
+      n++;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'err ' + x.k; b.textContent = x.w; b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-label', x.w + ' — ' + L(NOMI[x.k]));
+      b.onclick = function () { apri(b, x, i); }; p.appendChild(b);
+    });
+    document.getElementById('conta').textContent = n ? n + L(T.sugg) : L(T.ok);
+    chiudi();
+  }
+  function apri(b, x, i) {
+    var pop = document.getElementById('pop'), area = document.getElementById('area');
+    document.querySelectorAll('.err').forEach(function (e) { e.setAttribute('aria-expanded', 'false'); });
+    b.setAttribute('aria-expanded', 'true');
+    pop.innerHTML = '<span class="tipo" style="color:' + COL[x.k] + '"><i style="background:' + COL[x.k] + '"></i>' + L(NOMI[x.k]) + '</span><span class="perche">' + L(PERCHE[x.k]) + '</span>';
+    x.f.forEach(function (f) { var s = document.createElement('button'); s.type = 'button'; s.className = 'sugg'; s.textContent = f; s.onclick = function () { stato[lg()][i] = f; stato[lg()].ultimo = i; disegna(); }; pop.appendChild(s); });
+    var ig = document.createElement('button'); ig.type = 'button'; ig.className = 'ignora'; ig.textContent = L(T.ignora); ig.onclick = function () { stato[lg()][i] = x.w; disegna(); }; pop.appendChild(ig);
+    var r = b.getBoundingClientRect(), a = area.getBoundingClientRect();
+    pop.hidden = false;
+    pop.style.left = Math.min(r.left - a.left, a.width - 262) + 'px'; pop.style.top = (r.bottom - a.top + 6) + 'px';
+    pop.querySelector('.sugg').focus();
+  }
+  function chiudi() { document.getElementById('pop').hidden = true; document.querySelectorAll('.err').forEach(function (e) { e.setAttribute('aria-expanded', 'false'); }); }
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') chiudi(); });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.pop') && !e.target.closest('.err')) chiudi(); });
+  var campo = document.getElementById('campo'), chip = document.getElementById('chip'), ultima = null;
+  campo.addEventListener('input', function (e) {
+    if (e.inputType !== 'insertText' || e.data !== ' ') return;
+    var v = campo.value, m = v.match(/(\S+) $/); if (!m) return;
+    var giusto = DIZ[m[1].toLowerCase()]; if (!giusto) return;
+    campo.value = v.slice(0, v.length - m[0].length) + giusto + ' ';
+    ultima = { da: m[1], a: giusto };
+    chip.innerHTML = '<s></s> → <b></b>'; chip.querySelector('s').textContent = m[1]; chip.querySelector('b').textContent = giusto;
+    var u = document.createElement('button'); u.type = 'button'; u.textContent = '↶ ' + L(T.annulla);
+    u.onclick = function () { var v2 = campo.value, i = v2.lastIndexOf(ultima.a); if (i >= 0) campo.value = v2.slice(0, i) + ultima.da + v2.slice(i + ultima.a.length); chip.innerHTML = ''; campo.focus(); };
+    chip.appendChild(u);
+  });
+  disegna();
+  // all'apertura il primo suggerimento è già aperto
+  setTimeout(function () { var b = document.querySelector('.err'); if (b) apriPrimo(b); }, 300);
+  function apriPrimo(b) { b.click(); if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); }
+  document.addEventListener('lingua', function () { disegna(); chip.innerHTML = ''; });
+</script>
+</body>
+</html>

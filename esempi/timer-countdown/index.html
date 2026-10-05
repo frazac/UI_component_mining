@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- Esempio ricostruito: Timer, countdown, stopwatch. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timer, countdown, stopwatch — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .evento { grid-column: 1 / -1; }
+  .cifre { font-size: 40px; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -.01em; text-align: center; margin: 4px 0 12px; }
+  .cifre small { font-size: .55em; color: var(--c-tenue); }
+  .tasti { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+  .tasti button { min-width: 74px; height: 40px; padding: 0 14px; border-radius: 9999px; border: 1px solid var(--c-linea); background: #fff; cursor: pointer; font-size: 15px; }
+  .tasti button:hover { background: #f6f2f1; }
+  .tasti .primario { background: var(--c-testo); color: #fff; border-color: var(--c-testo); }
+  .tasti .primario.ferma { background: var(--c-salmone); border-color: var(--c-salmone); color: var(--c-testo); }
+  .tasti button:disabled { opacity: .4; cursor: not-allowed; }
+  .giri { list-style: none; margin: 10px 0 0; padding: 0; font-size: 15px; color: var(--c-tenue); height: 44px; overflow: hidden; font-variant-numeric: tabular-nums; }
+  .giri li { display: flex; justify-content: space-between; border-top: 1px solid var(--c-linea); padding: 2px 4px; }
+  .anello { position: relative; width: 132px; height: 132px; margin: 0 auto 12px; }
+  .anello svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .anello .cifre { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-size: 30px; }
+  .anello.finito .cifre { color: #c0392b; animation: pulsa .6s ease-in-out 3; }
+  @keyframes pulsa { 50% { transform: scale(1.12); } }
+  .preset { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+  .preset button { border: 0; background: #f3efee; border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 15px; }
+  .preset button[aria-pressed="true"] { background: var(--c-blu); color: #fff; }
+  .conto { display: flex; justify-content: center; gap: 14px; }
+  .conto div { min-width: 76px; text-align: center; background: #faf7f6; border-radius: 10px; padding: 8px 6px; }
+  .conto b { display: block; font-size: 34px; font-weight: 500; font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .conto span { font-size: 15px; color: var(--c-tenue); }
+  .evento p { text-align: center; margin: 0 0 10px; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Cronometro: conta in avanti</span><span data-l="en">Stopwatch: counts up</span><span data-l="fr">Chronomètre : compte depuis zéro</span><span data-l="zh">秒表：正计时</span></span>
+    <div class="cifre" id="crono" role="timer" aria-live="off"></div>
+    <div class="tasti"><button type="button" class="primario" id="c-via"></button><button type="button" id="c-giro"></button></div>
+    <ul class="giri" id="giri"></ul>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Timer: conta alla rovescia</span><span data-l="en">Timer: counts down</span><span data-l="fr">Minuteur : décompte</span><span data-l="zh">计时器：倒计时</span></span>
+    <div class="preset" id="preset" role="group"></div>
+    <div class="anello" id="anello"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" fill="none" stroke="#f1ecea" stroke-width="10"/><circle id="arco" cx="60" cy="60" r="52" fill="none" stroke="#fa9191" stroke-width="10" stroke-linecap="round" stroke-dasharray="326.7"/></svg><div class="cifre" id="timer" role="timer"></div></div>
+    <div class="tasti"><button type="button" class="primario" id="t-via"></button><button type="button" id="t-zero"></button></div>
+  </div>
+  <div class="riquadro evento">
+    <span class="didascalia"><span data-l="it">Conto alla rovescia verso un evento</span><span data-l="en">Countdown to an event</span><span data-l="fr">Compte à rebours vers un événement</span><span data-l="zh">距离某个活动的倒计时</span></span>
+    <p id="ev-titolo"></p>
+    <div class="conto" id="conto" role="timer" aria-live="off"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Cifre a larghezza fissa (tabular-nums), così i numeri non ballano mentre cambiano.</span><span data-l="en">Fixed-width digits (tabular-nums), so the numbers don’t jitter as they change.</span><span data-l="fr">Chiffres à chasse fixe (tabular-nums), pour que les nombres ne bougent pas en changeant.</span><span data-l="zh">使用等宽数字（tabular-nums），数字变化时不会左右跳动。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = { via: { it: 'Avvia', en: 'Start', fr: 'Démarrer', zh: '开始' }, pausa: { it: 'Pausa', en: 'Pause', fr: 'Pause', zh: '暂停' }, giro: { it: 'Giro', en: 'Lap', fr: 'Tour', zh: '计圈' },
+    azzera: { it: 'Azzera', en: 'Reset', fr: 'Réinitialiser', zh: '重置' }, riprendi: { it: 'Riprendi', en: 'Resume', fr: 'Reprendre', zh: '继续' },
+    gg: { it: 'giorni', en: 'days', fr: 'jours', zh: '天' }, hh: { it: 'ore', en: 'hours', fr: 'heures', zh: '小时' }, mm: { it: 'minuti', en: 'minutes', fr: 'minutes', zh: '分钟' }, ss: { it: 'secondi', en: 'seconds', fr: 'secondes', zh: '秒' },
+    ev: { it: 'Capodanno {a}', en: 'New Year {a}', fr: 'Nouvel An {a}', zh: '{a} 年新年' } };
+  function due(n) { return (n < 10 ? '0' : '') + n; }
+  // cronometro
+  var cInizio = 0, cAccum = 0, cVa = false, giri = [];
+  function cTempo() { return cAccum + (cVa ? performance.now() - cInizio : 0); }
+  function fmtC(ms) { var cs = Math.floor(ms / 10) % 100, s = Math.floor(ms / 1000) % 60, m = Math.floor(ms / 60000); return due(m) + ':' + due(s) + '<small>.' + due(cs) + '</small>'; }
+  document.getElementById('c-via').onclick = function () { if (cVa) { cAccum = cTempo(); cVa = false; } else { cInizio = performance.now(); cVa = true; } etichette(); };
+  document.getElementById('c-giro').onclick = function () { if (cVa) { giri.unshift(cTempo()); } else { cAccum = 0; giri = []; } etichette(); };
+  // timer
+  var durata = 60e3, resto = 60e3, tFine = 0, tVa = false;
+  function tResto() { return tVa ? Math.max(0, tFine - performance.now()) : resto; }
+  function fmtT(ms) { var s = Math.ceil(ms / 1000); return due(Math.floor(s / 60)) + ':' + due(s % 60); }
+  document.getElementById('t-via').onclick = function () { if (tVa) { resto = tResto(); tVa = false; } else { if (resto <= 0) resto = durata; tFine = performance.now() + resto; tVa = true; document.getElementById('anello').classList.remove('finito'); } etichette(); };
+  document.getElementById('t-zero').onclick = function () { tVa = false; resto = durata; document.getElementById('anello').classList.remove('finito'); etichette(); };
+  function etichette() {
+    var a = document.getElementById('c-via'); a.textContent = t(cVa ? TX.pausa : cAccum ? TX.riprendi : TX.via); a.classList.toggle('ferma', cVa);
+    document.getElementById('c-giro').textContent = t(cVa || !cAccum ? TX.giro : TX.azzera); document.getElementById('c-giro').disabled = !cVa && !cAccum;
+    var b = document.getElementById('t-via'); b.textContent = t(tVa ? TX.pausa : resto < durata && resto > 0 ? TX.riprendi : TX.via); b.classList.toggle('ferma', tVa);
+    document.getElementById('t-zero').textContent = t(TX.azzera);
+    document.getElementById('giri').innerHTML = giri.slice(0, 2).map(function (g, i) { return '<li><span>' + t(TX.giro) + ' ' + (giri.length - i) + '</span><span>' + fmtC(g).replace(/<\/?small>/g, '') + '</span></li>'; }).join('');
+    var pr = document.getElementById('preset'); pr.innerHTML = '';
+    [1, 3, 5].forEach(function (m) { var x = document.createElement('button'); x.type = 'button'; x.textContent = m + ' min'; x.setAttribute('aria-pressed', String(durata === m * 60e3)); x.onclick = function () { durata = m * 60e3; resto = durata; tVa = false; etichette(); }; pr.appendChild(x); });
+    var anno = new Date().getFullYear() + 1; document.getElementById('ev-titolo').textContent = t(TX.ev).replace('{a}', anno);
+  }
+  function giro() {
+    document.getElementById('crono').innerHTML = fmtC(cTempo());
+    var r = tResto(); document.getElementById('timer').textContent = fmtT(r);
+    document.getElementById('arco').setAttribute('stroke-dashoffset', 326.7 * (1 - r / durata));
+    if (tVa && r <= 0) { tVa = false; resto = 0; document.getElementById('anello').classList.add('finito'); etichette(); }
+    var fine = new Date(new Date().getFullYear() + 1, 0, 1), d = Math.max(0, fine - new Date());
+    var v = [[Math.floor(d / 864e5), TX.gg], [Math.floor(d / 36e5) % 24, TX.hh], [Math.floor(d / 6e4) % 60, TX.mm], [Math.floor(d / 1e3) % 60, TX.ss]];
+    document.getElementById('conto').innerHTML = v.map(function (x, i) { return '<div><b>' + (i ? due(x[0]) : x[0]) + '</b><span>' + t(x[1]) + '</span></div>'; }).join('');
+    requestAnimationFrame(giro);
+  }
+  cInizio = performance.now() - 7340; cVa = true; giri = [4120];
+  etichette(); giro();
+  document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>

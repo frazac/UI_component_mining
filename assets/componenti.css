@@ -1,0 +1,150 @@
+/* ==========================================================================
+   UI Design: Components · stile comune di tabella e slide (licenza MIT)
+   Palette e font di masterismi.it, come le slide del corso NABA.
+   Cinese: Space Grotesk non ha glifi CJK, il browser li prende da Noto Sans SC.
+   ========================================================================== */
+
+:root {
+  --c-fondo: #ffffff;
+  --c-testo: #000000;
+  --c-salmone: rgb(250, 145, 145);
+  --c-rosa: rgba(223, 136, 136, 0.85);
+  --c-blu: rgb(105, 143, 255);
+  --c-tenue: rgba(0, 0, 0, 0.45);
+  --c-tenue-forte: rgba(0, 0, 0, 0.6);
+  --c-bordo: rgba(105, 143, 255, 0.5);
+  --c-linea: rgba(0, 0, 0, 0.12);
+  --c-schermo: #e9e9e9;
+  --f-testo: "Space Grotesk", "Noto Sans SC", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  --slide-w: 1280;
+  --margine: 72;
+  --interlinea: 1.3;
+}
+html[data-lingua="zh"] { --interlinea: 1.5; }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--c-fondo); color: var(--c-testo); font-family: var(--f-testo); -webkit-font-smoothing: antialiased; }
+a { color: var(--c-blu); text-decoration: none; border-bottom: 1px solid var(--c-bordo); }
+a:hover { border-bottom-color: var(--c-blu); }
+:focus-visible { outline: 2px solid var(--c-blu); outline-offset: 2px; }
+
+/* --- Lingue --------------------------------------------------------------- */
+html[data-lingua="it"] [data-l]:not([data-l="it"]),
+html[data-lingua="en"] [data-l]:not([data-l="en"]),
+html[data-lingua="fr"] [data-l]:not([data-l="fr"]),
+html[data-lingua="zh"] [data-l]:not([data-l="zh"]) { display: none; }
+html [data-l][data-ripiego] { display: revert !important; }
+
+.lingua-selettore {
+  position: fixed; top: 12px; right: 12px; z-index: 1000; display: flex; gap: 2px; padding: 3px;
+  border-radius: 9999px; background: #fff; box-shadow: 0 6px 18px rgba(0, 0, 0, .18); font: 500 13px/1 var(--f-testo);
+}
+.lingua-selettore button { border: 0; background: none; cursor: pointer; padding: 8px 12px; border-radius: 9999px; color: rgba(0, 0, 0, .55); font: inherit; }
+.lingua-selettore button[aria-pressed="true"] { background: #000; color: #fff; }
+
+/* --- Tabella ---------------------------------------------------------------- */
+.pagina-tabella { padding: 0 clamp(16px, 4vw, 56px) 48px; }
+.testata { max-width: 60rem; padding-top: 64px; }
+.viste { display: flex; gap: 1.25rem; font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.viste a[aria-current] { color: var(--c-testo); border-bottom-color: var(--c-salmone); }
+.testata h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 500; line-height: 1.02; letter-spacing: -0.02em; margin: 1.5rem 0 .75rem; }
+.sottotitolo { font-size: clamp(1.15rem, 2vw, 1.5rem); margin: 0 0 .75rem; line-height: 1.3; }
+.intro { color: var(--c-tenue-forte); line-height: 1.5; margin: 0; }
+
+.filtri {
+  position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+  margin: 32px 0 0; padding: 14px 0; background: var(--c-fondo); border-bottom: 1px solid var(--c-linea);
+}
+.filtri input[type="search"] {
+  flex: 1 1 18rem; min-width: 0; font: inherit; font-size: 16px; padding: 10px 14px;
+  border: 1px solid rgba(0, 0, 0, .25); border-radius: 9999px; background: #fff;
+}
+.filtri select { font: inherit; font-size: 15px; padding: 9px 12px; border: 1px solid rgba(0, 0, 0, .25); border-radius: 9999px; background: #fff; max-width: 100%; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font: inherit; font-size: 14px; padding: 8px 14px; border-radius: 9999px; border: 1px solid rgba(0, 0, 0, .25); background: #fff; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--c-testo); border-color: var(--c-testo); color: #fff; }
+.conteggio { margin: 0 0 0 auto; font-size: 14px; color: var(--c-tenue-forte); }
+
+table.componenti { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 15px; line-height: 1.45; }
+table.componenti thead th { position: sticky; top: var(--alto-filtri, 70px); background: var(--c-fondo); text-align: left; font-weight: 500; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--c-tenue-forte); padding: 10px 12px 8px 0; border-bottom: 1px solid var(--c-linea); z-index: 5; }
+table.componenti td, table.componenti tbody th { vertical-align: top; text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--c-linea); }
+table.componenti tbody th { width: 22%; font-weight: 500; font-size: 17px; line-height: 1.25; }
+table.componenti tbody th a.ancora { color: var(--c-testo); border: 0; }
+table.componenti tbody tr:target { background: rgba(250, 145, 145, .12); }
+table.componenti td.note { width: 52%; }
+table.componenti td.note p, table.componenti td.note ul { margin: 0 0 .5em; }
+table.componenti td.note ul { padding-left: 1.2em; }
+table.componenti td:nth-child(n+3) { color: var(--c-tenue-forte); font-size: 14px; white-space: nowrap; }
+.piccolo { font-size: 13px; color: var(--c-tenue-forte); }
+.piccolo b { font-weight: 500; text-transform: uppercase; letter-spacing: .04em; font-size: 11px; margin-right: .3em; }
+.claude { display: inline-block; margin: 0 0 .5em; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--c-rosa); }
+.vuoto { padding: 2rem 0; color: var(--c-tenue-forte); }
+
+a.link-md { border-bottom: 0; color: var(--c-testo); }
+a.link-md::before { content: "["; }
+a.link-md .u::before { content: "]("; color: var(--c-testo); }
+a.link-md::after { content: ")"; }
+a.link-md .u { color: var(--c-blu); overflow-wrap: anywhere; }
+.piccolo a.link-md { color: var(--c-tenue-forte); margin-right: .4em; }
+
+.colophon { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--c-linea); font-size: 13px; color: var(--c-tenue-forte); }
+.colophon p { margin: .3em 0; }
+
+@media (max-width: 760px) {
+  table.componenti thead { display: none; }
+  table.componenti tr { display: block; padding: 12px 0; border-bottom: 1px solid var(--c-linea); }
+  table.componenti td, table.componenti tbody th { display: block; width: auto !important; border: 0; padding: 2px 0; white-space: normal !important; }
+  table.componenti td:nth-child(n+3) { display: inline; margin-right: .8em; }
+  .conteggio { margin-left: 0; }
+}
+
+/* --- Slide (1280 × 720, misure in px di progetto) --------------------------- */
+.pagina-slide { background: var(--c-schermo); counter-reset: slide; }
+html:has(.pagina-slide) { scroll-snap-type: y mandatory; background: var(--c-schermo); }
+.slide {
+  --px: calc(100cqw / var(--slide-w));
+  container-type: inline-size; position: relative; width: min(100vw, calc(100dvh * 16 / 9)); aspect-ratio: 16 / 9;
+  margin: 0 auto; overflow: hidden; background: var(--c-fondo); scroll-snap-align: center; counter-increment: slide;
+  display: flex; flex-direction: column; justify-content: center; padding: 0 calc(var(--margine) * var(--px));
+}
+.slide + .slide { margin-top: 2vh; }
+.slide::before, .slide::after { position: absolute; bottom: calc(20 * var(--px)); font-size: calc(13 * var(--px)); color: var(--c-tenue); letter-spacing: .02em; }
+.slide::before { content: "UI DESIGN: COMPONENTS — © Francesco Zaccaria — CC BY-NC-SA 4.0"; left: calc(var(--margine) * var(--px)); }
+.slide::after { content: attr(data-cap-en) " — " counter(slide); right: calc(var(--margine) * var(--px)); }
+html[data-lingua="it"] .slide::after { content: attr(data-cap-it) " — " counter(slide); }
+html[data-lingua="fr"] .slide::after { content: attr(data-cap-fr) " — " counter(slide); }
+html[data-lingua="zh"] .slide::after { content: attr(data-cap-zh) " — " counter(slide); }
+.slide.senza-pie::before, .slide.senza-pie::after { content: none; }
+.slide h1, .slide h2, .slide p, .slide ul, .slide figure { margin: 0; }
+.slide a { border-bottom-width: calc(2 * var(--px)); }
+.slide .etichetta { font-size: calc(16 * var(--px)); letter-spacing: .06em; text-transform: uppercase; color: var(--c-rosa); margin-bottom: calc(18 * var(--px)); }
+.slide .strillo { font-size: calc(104 * var(--px)); font-weight: 500; line-height: 1; letter-spacing: -0.02em; }
+
+.s-copertina { justify-content: space-between; padding-block: calc(72 * var(--px)); }
+.s-copertina .meta { font-size: calc(24 * var(--px)); line-height: 1.35; color: var(--c-tenue-forte); }
+.slide.s-sezione { background: var(--c-blu); color: #fff; }
+.s-sezione .etichetta { color: rgba(255, 255, 255, .8); }
+
+.s-componente { display: grid; grid-template-columns: 1fr calc(500 * var(--px)); column-gap: calc(48 * var(--px)); align-items: start; padding-top: calc(64 * var(--px)); padding-bottom: calc(120 * var(--px)); justify-content: stretch; }
+.s-componente .colonna { min-height: 0; }
+.s-componente h2 { font-size: calc(54 * var(--px)); font-weight: 500; line-height: 1.05; letter-spacing: -0.015em; }
+.s-componente .nome-en { font-size: calc(18 * var(--px)); color: var(--c-tenue-forte); margin-top: calc(8 * var(--px)); }
+html[data-lingua="en"] .s-componente .nome-en { display: none; }
+.s-componente .testo { margin-top: calc(26 * var(--px)); }
+.s-componente .testo p, .s-componente .testo li { font-size: calc(22 * var(--px)); line-height: var(--interlinea); }
+.s-componente .testo p + p, .s-componente .testo p + ul, .s-componente .testo ul + p { margin-top: calc(12 * var(--px)); }
+.s-componente .testo ul { padding-left: 1.1em; }
+.s-componente.medio .testo p, .s-componente.medio .testo li { font-size: calc(19 * var(--px)); }
+.s-componente.lungo .testo p, .s-componente.lungo .testo li { font-size: calc(16 * var(--px)); }
+.s-componente .esempio { height: calc(470 * var(--px)); border-radius: calc(10 * var(--px)); overflow: hidden; background: var(--c-schermo); display: flex; }
+.s-componente .esempio iframe { flex: none; border: 0; width: 150%; height: 150%; transform: scale(.6667); transform-origin: 0 0; background: #fff; }
+.s-componente .esempio img { width: 100%; height: 100%; object-fit: cover; }
+.s-componente .esempio.da-ricostruire { align-items: center; justify-content: center; border: calc(2 * var(--px)) dashed rgba(0, 0, 0, .2); background: none; }
+.s-componente .esempio.da-ricostruire p { font-size: calc(16 * var(--px)); color: var(--c-tenue); letter-spacing: .06em; text-transform: uppercase; }
+.slide .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); font-size: calc(13 * var(--px)); line-height: 1.45; color: var(--c-tenue); }
+.slide .fonte-breve a.link-md { color: var(--c-tenue); }
+.s-crediti { gap: calc(16 * var(--px)); }
+.s-crediti h2 { font-size: calc(40 * var(--px)); font-weight: 500; }
+.s-crediti p { font-size: calc(20 * var(--px)); line-height: 1.4; max-width: calc(900 * var(--px)); }
+.pagina-tabella .lingua-selettore { position: absolute; }
+@media print { .lingua-selettore { display: none !important; } }

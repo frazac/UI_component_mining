@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- Esempio ricostruito: Pagination system. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pagination — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .elementi { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+  .elementi div { height: 44px; border-radius: 8px; background: #f6f2f1; display: grid; place-items: center; font-size: 15px; color: var(--c-tenue); }
+  .info { font-size: 15px; color: var(--c-tenue); margin: 0 0 14px; }
+  .pagine ol { list-style: none; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; margin: 0; padding: 0; }
+  .pagine button { min-width: 42px; height: 42px; padding: 0 10px; border: 1px solid transparent; border-radius: 10px; background: none; cursor: pointer; font-size: 16px; }
+  .pagine button:hover { background: #f6f2f1; }
+  .pagine button[aria-current="page"] { background: var(--c-testo); color: #fff; }
+  .pagine button:disabled { color: rgba(0,0,0,.28); cursor: not-allowed; background: none; }
+  .pagine .freccia { border-color: var(--c-linea); display: flex; align-items: center; gap: 4px; }
+  .pagine .puntini { min-width: 28px; text-align: center; color: var(--c-tenue); }
+  .scorri { height: 186px; overflow-y: auto; border-radius: 8px; background: #f6f2f1; padding: 10px; scrollbar-width: thin; }
+  .scorri .voce { background: #fff; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; font-size: 15px; display: flex; justify-content: space-between; }
+  .scorri .voce small { color: var(--c-tenue); font-size: 15px; }
+  .carica { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px; font-size: 15px; color: var(--c-tenue); }
+  .ruota { width: 18px; height: 18px; border: 2px solid var(--c-linea); border-top-color: var(--c-blu); border-radius: 50%; animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Pagine numerate</span><span data-l="en">Numbered pages</span><span data-l="fr">Pages numérotées</span><span data-l="zh">页码分页</span></span>
+    <p class="info" id="info" aria-live="polite"></p>
+    <div class="elementi" id="elementi"></div>
+    <nav class="pagine" aria-label="Pagination"><ol id="pagine"></ol></nav>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Scorrimento infinito: scorri fino in fondo</span><span data-l="en">Infinite scroll: scroll to the bottom</span><span data-l="fr">Défilement infini : allez tout en bas</span><span data-l="zh">无限滚动：滚动到底部</span></span>
+    <div class="scorri" id="scorri" tabindex="0" aria-label="Feed"><div id="feed"></div><div class="carica" id="carica"></div></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Le pagine danno un indirizzo a ogni posizione; lo scorrimento infinito è fluido ma rende difficile tornare a un punto.</span><span data-l="en">Pages give every position an address; infinite scroll is fluid but makes it hard to return to a spot.</span><span data-l="fr">Les pages donnent une adresse à chaque position ; le défilement infini est fluide mais rend difficile le retour à un endroit.</span><span data-l="zh">分页让每个位置都有地址；无限滚动更流畅，但难以回到某个位置。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TOT = 120, PER = 10, PAG = Math.ceil(TOT / PER), pag = 5;
+  var TX = {
+    info: { it: 'Risultati {a}–{b} di {t}', en: 'Results {a}–{b} of {t}', fr: 'Résultats {a} à {b} sur {t}', zh: '第 {a}–{b} 条，共 {t} 条' },
+    prec: { it: 'Precedente', en: 'Previous', fr: 'Précédente', zh: '上一页' },
+    succ: { it: 'Successiva', en: 'Next', fr: 'Suivante', zh: '下一页' },
+    pagina: { it: 'Pagina {n}', en: 'Page {n}', fr: 'Page {n}', zh: '第 {n} 页' },
+    articolo: { it: 'Articolo', en: 'Article', fr: 'Article', zh: '文章' },
+    carico: { it: 'Caricamento…', en: 'Loading…', fr: 'Chargement…', zh: '加载中…' },
+    fine: { it: 'Hai visto tutto', en: 'You’re all caught up', fr: 'Vous avez tout vu', zh: '已经到底了' }
+  };
+  function numeri() {
+    var s = [1];
+    if (pag > 3) s.push('…');
+    for (var i = Math.max(2, pag - 1); i <= Math.min(PAG - 1, pag + 1); i++) s.push(i);
+    if (pag < PAG - 2) s.push('…');
+    s.push(PAG); return s;
+  }
+  function disegna() {
+    var a = (pag - 1) * PER + 1, b = Math.min(TOT, pag * PER);
+    document.getElementById('info').textContent = t(TX.info).replace('{a}', a).replace('{b}', b).replace('{t}', TOT);
+    var el = document.getElementById('elementi'); el.innerHTML = '';
+    for (var i = a; i <= b; i++) el.insertAdjacentHTML('beforeend', '<div>#' + i + '</div>');
+    var ol = document.getElementById('pagine'); ol.innerHTML = '';
+    function bottone(html, cls, va, attivo, etichetta) {
+      var li = document.createElement('li'), btn = document.createElement('button');
+      btn.type = 'button'; btn.innerHTML = html; if (cls) btn.className = cls;
+      if (etichetta) btn.setAttribute('aria-label', etichetta);
+      if (attivo === false) btn.disabled = true;
+      if (va === pag && cls !== 'freccia') btn.setAttribute('aria-current', 'page');
+      btn.onclick = function () { pag = va; disegna(); var c = ol.querySelector('[aria-current]'); if (cls === 'freccia') btn.disabled ? c.focus() : btn.focus(); else c.focus(); };
+      li.appendChild(btn); ol.appendChild(li);
+    }
+    bottone('‹ ' + t(TX.prec), 'freccia', pag - 1, pag > 1);
+    numeri().forEach(function (n) {
+      if (n === '…') { ol.insertAdjacentHTML('beforeend', '<li class="puntini" aria-hidden="true">…</li>'); return; }
+      bottone(String(n), '', n, true, t(TX.pagina).replace('{n}', n));
+    });
+    bottone(t(TX.succ) + ' ›', 'freccia', pag + 1, pag < PAG);
+    disegnaFeed();
+  }
+  // scorrimento infinito
+  var caricati = 6, inCarico = false, MAX = 30;
+  var scorri = document.getElementById('scorri');
+  function disegnaFeed() {
+    var f = document.getElementById('feed'), h = '';
+    for (var i = 1; i <= caricati; i++) h += '<div class="voce"><span>' + t(TX.articolo) + ' ' + i + '</span><small>' + (i * 7 % 23 + 2) + ' min</small></div>';
+    f.innerHTML = h;
+    document.getElementById('carica').innerHTML = inCarico ? '<span class="ruota"></span>' + t(TX.carico) : (caricati >= MAX ? t(TX.fine) : '');
+  }
+  scorri.addEventListener('scroll', function () {
+    if (inCarico || caricati >= MAX) return;
+    if (scorri.scrollTop + scorri.clientHeight > scorri.scrollHeight - 20) {
+      inCarico = true; disegnaFeed();
+      setTimeout(function () { caricati += 6; inCarico = false; disegnaFeed(); }, 700);
+    }
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

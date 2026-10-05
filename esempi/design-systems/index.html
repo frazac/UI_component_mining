@@ -1,0 +1,124 @@
+<!doctype html>
+<!-- Esempio ricostruito: Design systems. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design systems — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .livelli { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; align-items: stretch; position: relative; }
+  .livello { position: relative; border: 1.5px solid var(--c-linea); border-radius: 10px; padding: 12px 10px 10px; background: #fff; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 10px; transition: border-color .2s, transform .2s, box-shadow .2s; }
+  .livello:hover, .livello[aria-pressed="true"] { border-color: var(--c-salmone); box-shadow: 0 6px 16px rgba(250,145,145,.25); transform: translateY(-2px); }
+  .livello + .livello::before { content: ""; position: absolute; left: -11px; top: 50%; width: 10px; height: 2px; background: var(--c-rosa); }
+  .livello + .livello::after { content: ""; position: absolute; left: -5px; top: calc(50% - 4px); border: 5px solid transparent; border-left-color: var(--c-rosa); }
+  .num { font-size: 13px; color: var(--c-rosa); letter-spacing: .08em; }
+  .nome { font-size: 17px; font-weight: 500; line-height: 1.15; }
+  .vista { height: 128px; border-radius: 8px; background: var(--c-palco); padding: 8px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .campioni { display: flex; gap: 4px; }
+  .campioni i { width: 20px; height: 20px; border-radius: 50%; display: block; }
+  .tipo { font-size: 26px; line-height: 1; }
+  .spazi { display: flex; align-items: flex-end; gap: 4px; }
+  .spazi i { display: block; background: var(--c-blu); height: 6px; }
+  .mini-btn { background: var(--c-blu); color: #fff; border-radius: 6px; font-size: 15px; padding: 3px 8px; align-self: flex-start; }
+  .mini-chk { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+  .mini-chk i { width: 14px; height: 14px; border-radius: 3px; background: var(--c-salmone); display: block; }
+  .mini-in { background: #fff; border: 1px solid var(--c-linea); border-radius: 5px; height: 20px; }
+  .riga { height: 6px; border-radius: 3px; background: rgba(0,0,0,.18); }
+  .si-no { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 15px; }
+  .si-no span { border-top: 3px solid; padding-top: 2px; }
+  .si { border-color: #3a9d6a !important; } .no { border-color: #d24a4a !important; }
+  .spiega { margin-top: 18px; min-height: 76px; font-size: 16px; line-height: 1.45; border-left: 3px solid var(--c-salmone); padding: 2px 0 2px 14px; }
+  .spiega b { font-weight: 500; }
+  .fonti { display: flex; gap: 8px; flex-wrap: wrap; }
+  .fonti span.ds { border: 1px solid var(--c-linea); border-radius: 999px; padding: 4px 12px; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Dai token alle linee guida: clicca un livello</span><span data-l="en">From tokens to guidelines: click a level</span><span data-l="fr">Des tokens aux lignes directrices : cliquez sur un niveau</span><span data-l="zh">从令牌到设计准则：点击一个层级</span></span>
+    <div class="livelli" role="group">
+      <button class="livello" type="button" data-i="0" aria-pressed="true">
+        <span class="num">01</span>
+        <span class="nome"><span data-l="it">Token</span><span data-l="en">Tokens</span><span data-l="fr">Tokens</span><span data-l="zh">设计令牌</span></span>
+        <span class="vista" aria-hidden="true">
+          <span class="campioni"><i style="background:var(--c-salmone)"></i><i style="background:var(--c-rosa)"></i><i style="background:var(--c-blu)"></i><i style="background:#111"></i></span>
+          <span class="tipo">Aa</span>
+          <span class="spazi"><i style="width:4px"></i><i style="width:8px"></i><i style="width:16px"></i><i style="width:32px"></i></span>
+        </span>
+      </button>
+      <button class="livello" type="button" data-i="1" aria-pressed="false">
+        <span class="num">02</span>
+        <span class="nome"><span data-l="it">Componenti</span><span data-l="en">Components</span><span data-l="fr">Composants</span><span data-l="zh">组件</span></span>
+        <span class="vista" aria-hidden="true">
+          <span class="mini-btn">OK</span>
+          <span class="mini-chk"><i></i><span class="riga" style="width:50px"></span></span>
+          <span class="mini-in"></span>
+        </span>
+      </button>
+      <button class="livello" type="button" data-i="2" aria-pressed="false">
+        <span class="num">03</span>
+        <span class="nome"><span data-l="it">Pattern</span><span data-l="en">Patterns</span><span data-l="fr">Patterns</span><span data-l="zh">模式</span></span>
+        <span class="vista" aria-hidden="true" style="background:#fff;border:1px solid var(--c-linea)">
+          <span class="riga" style="width:60%;background:#111"></span>
+          <span class="mini-in"></span>
+          <span class="mini-in"></span>
+          <span class="mini-btn" style="align-self:stretch;text-align:center">→</span>
+        </span>
+      </button>
+      <button class="livello" type="button" data-i="3" aria-pressed="false">
+        <span class="num">04</span>
+        <span class="nome"><span data-l="it">Linee guida</span><span data-l="en">Guidelines</span><span data-l="fr">Lignes directrices</span><span data-l="zh">设计准则</span></span>
+        <span class="vista" aria-hidden="true">
+          <span class="riga" style="width:80%"></span><span class="riga" style="width:65%"></span>
+          <span class="si-no"><span class="si">✓</span><span class="no">✕</span></span>
+          <span class="riga" style="width:70%"></span>
+        </span>
+      </button>
+    </div>
+    <p class="spiega" id="spiega" aria-live="polite"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tre design system di riferimento</span><span data-l="en">Three reference design systems</span><span data-l="fr">Trois design systems de référence</span><span data-l="zh">三个参考设计系统</span></span>
+    <div class="fonti"><span class="ds">IBM Carbon</span><span class="ds">Atlassian Design System</span><span class="ds">Google Material Design</span></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni livello usa quello precedente: cambiare un token cambia tutto ciò che è costruito sopra.</span><span data-l="en">Each level is built from the one before: change a token and everything above it changes.</span><span data-l="fr">Chaque niveau s’appuie sur le précédent : modifier un token change tout ce qui est construit dessus.</span><span data-l="zh">每一层都建立在前一层之上：修改一个令牌，上面的一切都会随之改变。</span></p>
+<script>
+  var TESTI = [
+    { it: '<b>Token</b>: le decisioni più piccole, con un nome. Colori, caratteri, spaziature, raggi, ombre: «colore-primario» invece di un codice esadecimale.',
+      en: '<b>Tokens</b>: the smallest decisions, given a name. Colours, type, spacing, radii, shadows: “colour-primary” instead of a hex code.',
+      fr: '<b>Tokens</b> : les plus petites décisions, avec un nom. Couleurs, typographie, espacements, rayons, ombres : « couleur-primaire » au lieu d’un code hexadécimal.',
+      zh: '<b>设计令牌</b>：最小的、有名字的设计决定。颜色、字体、间距、圆角、阴影：用“主色”代替十六进制代码。' },
+    { it: '<b>Componenti</b>: pulsanti, caselle, campi… costruiti con i token, con stati, varianti e codice pronto da usare.',
+      en: '<b>Components</b>: buttons, checkboxes, fields… built from tokens, with states, variants and ready-to-use code.',
+      fr: '<b>Composants</b> : boutons, cases, champs… construits avec les tokens, avec états, variantes et code prêt à l’emploi.',
+      zh: '<b>组件</b>：按钮、复选框、输入框……由令牌构建，带有状态、变体和可直接使用的代码。' },
+    { it: '<b>Pattern</b>: combinazioni di componenti che risolvono un problema ricorrente, come un login, un modulo o una ricerca.',
+      en: '<b>Patterns</b>: combinations of components that solve a recurring problem, such as a login, a form or a search.',
+      fr: '<b>Patterns</b> : combinaisons de composants qui résolvent un problème récurrent, comme une connexion, un formulaire ou une recherche.',
+      zh: '<b>模式</b>：由组件组合而成，解决反复出现的问题，比如登录、表单或搜索。' },
+    { it: '<b>Linee guida</b>: quando e come usare tutto il resto. Principi, cose da fare e da non fare, accessibilità, tono di voce.',
+      en: '<b>Guidelines</b>: when and how to use everything else. Principles, do’s and don’ts, accessibility, tone of voice.',
+      fr: '<b>Lignes directrices</b> : quand et comment utiliser tout le reste. Principes, à faire et à éviter, accessibilité, ton.',
+      zh: '<b>设计准则</b>：何时以及如何使用以上一切。原则、该做与不该做、无障碍、语气。' }
+  ];
+  var scelto = 0, bottoni = document.querySelectorAll('.livello');
+  function disegna() {
+    var l = window.Lingua ? Lingua.get() : 'en';
+    bottoni.forEach(function (b, i) { b.setAttribute('aria-pressed', String(i === scelto)); });
+    document.getElementById('spiega').innerHTML = TESTI[scelto][l] || TESTI[scelto].en;
+  }
+  bottoni.forEach(function (b, i) {
+    b.addEventListener('click', function () { scelto = i; disegna(); });
+    b.addEventListener('mouseenter', function () { scelto = i; disegna(); });
+    b.addEventListener('focus', function () { scelto = i; disegna(); });
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

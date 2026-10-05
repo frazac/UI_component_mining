@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- Esempio ricostruito: Dropdown selector with filtering. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dropdown with filter — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.25fr 1fr; align-items: start; }
+  .vivo { min-height: 440px; }
+  .campo-etichetta { display: block; font-size: 15px; margin: 0 0 6px; }
+  .tendina { position: relative; }
+  .apri { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 14px; border: 1px solid rgba(0,0,0,.25); border-radius: 8px; background: #fff; cursor: pointer; text-align: left; font-size: 17px; }
+  .apri:hover { border-color: #000; }
+  .apri[aria-expanded="true"] { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.25); }
+  .apri svg { flex: none; transition: transform .2s; }
+  .apri[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .apri:disabled { background: var(--c-palco); color: rgba(0,0,0,.4); cursor: not-allowed; border-color: var(--c-linea); }
+  .pannello { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: #fff; border: 1px solid var(--c-linea); border-radius: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.14); padding: 8px; z-index: 5; }
+  .pannello[hidden] { display: none; }
+  .filtro { display: flex; align-items: center; gap: 8px; border: 1px solid var(--c-linea); border-radius: 6px; padding: 7px 10px; margin-bottom: 6px; }
+  .filtro input { border: 0; outline: 0; flex: 1; min-width: 0; font-size: 16px; background: none; }
+  .filtro:focus-within { border-color: var(--c-blu); }
+  .elenco { list-style: none; margin: 0; padding: 0; max-height: 252px; overflow-y: auto; }
+  .elenco li { padding: 7px 10px; border-radius: 6px; font-size: 16px; cursor: pointer; display: flex; justify-content: space-between; gap: 8px; }
+  .elenco li[aria-selected="true"]::after { content: "✓"; color: var(--c-blu); }
+  .elenco li.attivo { background: rgba(105,143,255,.14); }
+  .elenco mark { background: rgba(250,145,145,.45); color: inherit; border-radius: 2px; }
+  .vuoto { padding: 10px; font-size: 15px; color: var(--c-tenue); }
+  .conto { font-size: 15px; color: var(--c-tenue); margin: 4px 2px 0; }
+  .stato + .stato { margin-top: 18px; }
+  .finto { width: 100%; display: flex; justify-content: space-between; padding: 11px 14px; border: 1px solid rgba(0,0,0,.25); border-radius: 8px; font-size: 17px; }
+  .finto.err { border-color: #c0392b; }
+  .msg-err { color: #c0392b; font-size: 15px; margin: 6px 0 0; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro vivo">
+    <span class="didascalia"><span data-l="it">Prova: apri, digita, scegli</span><span data-l="en">Try it: open, type, pick</span><span data-l="fr">Essayez&#8239;: ouvrez, tapez, choisissez</span><span data-l="zh">试一试：打开、输入、选择</span></span>
+    <label class="campo-etichetta" id="et"><span data-l="it">Città della sede</span><span data-l="en">Campus city</span><span data-l="fr">Ville du campus</span><span data-l="zh">校区所在城市</span></label>
+    <div class="tendina">
+      <button class="apri" id="apri" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="et apri"><span id="scelta"></span>
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 6l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+      <div class="pannello" id="pannello" hidden>
+        <div class="filtro">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.8"/></svg>
+          <input id="filtro" type="text" autocomplete="off" role="combobox" aria-controls="elenco" aria-expanded="true" aria-autocomplete="list" data-it="Filtra…" data-en="Filter…" data-fr="Filtrer…" data-zh="筛选…">
+        </div>
+        <ul class="elenco" id="elenco" role="listbox" aria-labelledby="et"></ul>
+        <p class="conto" id="conto" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <div class="stato">
+      <span class="didascalia"><span data-l="it">Chiuso, con valore</span><span data-l="en">Closed, with value</span><span data-l="fr">Fermé, avec valeur</span><span data-l="zh">关闭，已有值</span></span>
+      <div class="finto"><span data-l="it">Milano</span><span data-l="en">Milan</span><span data-l="fr">Milan</span><span data-l="zh">米兰</span><span>▾</span></div>
+    </div>
+    <div class="stato">
+      <span class="didascalia"><span data-l="it">Disabilitato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></span>
+      <button class="apri" type="button" disabled><span><span data-l="it">Scegli…</span><span data-l="en">Choose…</span><span data-l="fr">Choisir…</span><span data-l="zh">请选择…</span></span><span>▾</span></button>
+    </div>
+    <div class="stato">
+      <span class="didascalia"><span data-l="it">Errore</span><span data-l="en">Error</span><span data-l="fr">Erreur</span><span data-l="zh">错误</span></span>
+      <div class="finto err"><span data-l="it">Scegli…</span><span data-l="en">Choose…</span><span data-l="fr">Choisir…</span><span data-l="zh">请选择…</span><span>▾</span></div>
+      <p class="msg-err"><span data-l="it">Scegli una città per continuare.</span><span data-l="en">Pick a city to continue.</span><span data-l="fr">Choisissez une ville pour continuer.</span><span data-l="zh">请选择一个城市以继续。</span></p>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il filtro restringe un elenco lungo mentre si scrive: frecce per muoversi, Invio per scegliere, Esc per chiudere.</span><span data-l="en">The filter narrows a long list as you type: arrows to move, Enter to pick, Esc to close.</span><span data-l="fr">Le filtre réduit une longue liste pendant la saisie&#8239;: flèches pour se déplacer, Entrée pour choisir, Échap pour fermer.</span><span data-l="zh">输入时筛选框会缩小长列表：方向键移动，回车选择，Esc 关闭。</span></p>
+<script>
+  var CITTA = [
+    { it: 'Amsterdam', en: 'Amsterdam', fr: 'Amsterdam', zh: '阿姆斯特丹' }, { it: 'Barcellona', en: 'Barcelona', fr: 'Barcelone', zh: '巴塞罗那' },
+    { it: 'Berlino', en: 'Berlin', fr: 'Berlin', zh: '柏林' }, { it: 'Copenaghen', en: 'Copenhagen', fr: 'Copenhague', zh: '哥本哈根' },
+    { it: 'Firenze', en: 'Florence', fr: 'Florence', zh: '佛罗伦萨' }, { it: 'Lisbona', en: 'Lisbon', fr: 'Lisbonne', zh: '里斯本' },
+    { it: 'Londra', en: 'London', fr: 'Londres', zh: '伦敦' }, { it: 'Madrid', en: 'Madrid', fr: 'Madrid', zh: '马德里' },
+    { it: 'Milano', en: 'Milan', fr: 'Milan', zh: '米兰' }, { it: 'Napoli', en: 'Naples', fr: 'Naples', zh: '那不勒斯' },
+    { it: 'New York', en: 'New York', fr: 'New York', zh: '纽约' }, { it: 'Parigi', en: 'Paris', fr: 'Paris', zh: '巴黎' },
+    { it: 'Pechino', en: 'Beijing', fr: 'Pékin', zh: '北京' }, { it: 'Roma', en: 'Rome', fr: 'Rome', zh: '罗马' },
+    { it: 'Seul', en: 'Seoul', fr: 'Séoul', zh: '首尔' }, { it: 'Shanghai', en: 'Shanghai', fr: 'Shanghai', zh: '上海' },
+    { it: 'Tokyo', en: 'Tokyo', fr: 'Tokyo', zh: '东京' }, { it: 'Torino', en: 'Turin', fr: 'Turin', zh: '都灵' },
+    { it: 'Venezia', en: 'Venice', fr: 'Venise', zh: '威尼斯' }, { it: 'Vienna', en: 'Vienna', fr: 'Vienne', zh: '维也纳' }
+  ];
+  var TESTI = { scegli: { it: 'Scegli…', en: 'Choose…', fr: 'Choisir…', zh: '请选择…' },
+    nulla: { it: 'Nessuna città trovata', en: 'No city found', fr: 'Aucune ville trouvée', zh: '未找到城市' },
+    conto: { it: ' di ', en: ' of ', fr: ' sur ', zh: ' / ' } };
+  function L() { return window.Lingua ? Lingua.get() : 'en'; }
+  function T(o) { return o[L()] || o.en; }
+  var apri = document.getElementById('apri'), pannello = document.getElementById('pannello'), filtro = document.getElementById('filtro'),
+      elenco = document.getElementById('elenco'), conto = document.getElementById('conto'), scelta = -1, attivo = 0, visibili = [];
+  function ordina() { return CITTA.map(function (c, i) { return i; }).sort(function (a, b) { return T(CITTA[a]).localeCompare(T(CITTA[b]), L()); }); }
+  function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function disegna() {
+    document.getElementById('scelta').textContent = scelta < 0 ? T(TESTI.scegli) : T(CITTA[scelta]);
+    var q = filtro.value.trim().toLowerCase();
+    visibili = ordina().filter(function (i) { return T(CITTA[i]).toLowerCase().indexOf(q) >= 0; });
+    if (attivo >= visibili.length) attivo = Math.max(0, visibili.length - 1);
+    elenco.innerHTML = '';
+    if (!visibili.length) { var v = document.createElement('li'); v.className = 'vuoto'; v.setAttribute('role', 'option'); v.setAttribute('aria-disabled', 'true'); v.textContent = T(TESTI.nulla); elenco.appendChild(v); }
+    visibili.forEach(function (i, k) {
+      var li = document.createElement('li'), n = T(CITTA[i]), p = n.toLowerCase().indexOf(q);
+      li.id = 'op' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', String(i === scelta));
+      li.innerHTML = '<span>' + (q ? esc(n.slice(0, p)) + '<mark>' + esc(n.slice(p, p + q.length)) + '</mark>' + esc(n.slice(p + q.length)) : esc(n)) + '</span>';
+      if (k === attivo) { li.className = 'attivo'; filtro.setAttribute('aria-activedescendant', li.id); }
+      li.onmousedown = function (e) { e.preventDefault(); scegli(i); };
+      li.onmousemove = function () { if (attivo !== k) { attivo = k; disegna(); } };
+      elenco.appendChild(li);
+    });
+    conto.textContent = visibili.length + T(TESTI.conto) + CITTA.length;
+    var a = elenco.querySelector('.attivo'); if (a) a.scrollIntoView({ block: 'nearest' });
+  }
+  function mostra(si) { pannello.hidden = !si; apri.setAttribute('aria-expanded', String(si)); if (si) { filtro.value = ''; attivo = Math.max(0, visibili.indexOf(scelta)); disegna(); attivo = Math.max(0, visibili.indexOf(scelta)); disegna(); filtro.focus(); } }
+  function scegli(i) { scelta = i; mostra(false); disegna(); apri.focus(); }
+  apri.onclick = function () { mostra(pannello.hidden); };
+  filtro.oninput = function () { attivo = 0; disegna(); };
+  filtro.onkeydown = function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); attivo = Math.min(visibili.length - 1, attivo + 1); disegna(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); attivo = Math.max(0, attivo - 1); disegna(); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (visibili.length) scegli(visibili[attivo]); }
+    else if (e.key === 'Escape') { mostra(false); apri.focus(); }
+  };
+  document.addEventListener('mousedown', function (e) { if (!pannello.hidden && !e.target.closest('.tendina')) mostra(false); });
+  disegna();
+  // all'apertura della pagina il pannello è già aperto, con un filtro d'esempio, per mostrare il componente in uso
+  pannello.hidden = false; apri.setAttribute('aria-expanded', 'true'); filtro.value = 'na'; disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

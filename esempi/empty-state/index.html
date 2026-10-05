@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- Esempio ricostruito: Empty state. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empty state — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { align-items: stretch; }
+  .riquadro { display: flex; flex-direction: column; min-height: 470px; }
+  .vuoto { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 10px; padding: 10px; }
+  .vuoto h3 { margin: 8px 0 0; font-size: 21px; font-weight: 500; }
+  .vuoto p { margin: 0; font-size: 16px; color: var(--c-tenue); max-width: 30ch; }
+  .btn { margin-top: 8px; border: 0; background: #111; color: #fff; border-radius: 9999px; padding: 11px 20px; font-size: 16px; cursor: pointer; }
+  .btn:hover { background: var(--c-blu); }
+  .link { border: 0; background: none; color: var(--c-blu); font-size: 16px; cursor: pointer; text-decoration: underline; padding: 4px; }
+  .elenco { list-style: none; margin: 0; padding: 0; flex: 1; }
+  .elenco li { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid var(--c-linea); font-size: 16px; animation: entra .25s ease-out; }
+  @keyframes entra { from { opacity: 0; transform: translateY(-6px); } }
+  .elenco .q { width: 34px; height: 34px; border-radius: 8px; flex: none; }
+  .elenco .x { margin-left: auto; border: 0; background: none; color: var(--c-tenue); cursor: pointer; width: 30px; height: 30px; border-radius: 50%; }
+  .elenco .x:hover { background: var(--c-palco); color: #111; }
+  .piede { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; font-size: 15px; color: var(--c-tenue); }
+  .piccolo { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+  .piccolo:hover { background: var(--c-palco); }
+  .cerca { display: flex; gap: 8px; align-items: center; border: 1px solid rgba(0,0,0,.25); border-radius: 9999px; padding: 8px 14px; font-size: 16px; }
+  .cerca input { border: 0; outline: 0; flex: 1; min-width: 0; font-size: 16px; }
+  .cerca:focus-within { border-color: var(--c-blu); }
+  .chip { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 5px 12px; font-size: 15px; cursor: pointer; }
+  .chip:hover { border-color: #111; }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Primo utilizzo</span><span data-l="en">First use</span><span data-l="fr">Première utilisation</span><span data-l="zh">首次使用</span></span>
+    <div id="progetti" style="flex:1;display:flex;flex-direction:column"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Nessun risultato</span><span data-l="en">No results</span><span data-l="fr">Aucun résultat</span><span data-l="zh">无结果</span></span>
+    <label class="cerca"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 11l4 4" stroke="currentColor" stroke-width="1.8"/></svg><input id="q" aria-label="Search" autocomplete="off"></label>
+    <div id="risultati" style="flex:1;display:flex;flex-direction:column"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Uno stato vuoto non è una pagina bianca: spiega perché non c’è niente e propone il passo successivo.</span><span data-l="en">An empty state is not a blank page: it explains why there is nothing and offers the next step.</span><span data-l="fr">Un état vide n’est pas une page blanche&#8239;: il explique pourquoi il n’y a rien et propose l’étape suivante.</span><span data-l="zh">空状态不是一张白纸：它解释为什么什么都没有，并给出下一步。</span></p>
+<script>
+  var TX = {
+    titolo: { it: 'Ancora nessun progetto', en: 'No projects yet', fr: 'Aucun projet pour l’instant', zh: '还没有项目' },
+    testo: { it: 'I progetti che crei compaiono qui. Inizia dal primo: bastano un nome e un colore.', en: 'Projects you create appear here. Start with the first one: a name and a colour are enough.', fr: 'Les projets que vous créez apparaissent ici. Commencez par le premier : un nom et une couleur suffisent.', zh: '你创建的项目会显示在这里。从第一个开始吧：只需一个名称和一种颜色。' },
+    crea: { it: '+ Nuovo progetto', en: '+ New project', fr: '+ Nouveau projet', zh: '+ 新建项目' },
+    progetto: { it: 'Progetto %', en: 'Project %', fr: 'Projet %', zh: '项目 %' },
+    n: { it: '% progetti', en: '% projects', fr: '% projets', zh: '% 个项目' },
+    elimina: { it: 'Elimina', en: 'Delete', fr: 'Supprimer', zh: '删除' },
+    nulla: { it: 'Nessun risultato per «%»', en: 'No results for “%”', fr: 'Aucun résultat pour « % »', zh: '没有“%”的结果' },
+    prova: { it: 'Controlla l’ortografia o prova con:', en: 'Check the spelling or try:', fr: 'Vérifiez l’orthographe ou essayez :', zh: '请检查拼写，或试试：' },
+    azzera: { it: 'Cancella la ricerca', en: 'Clear search', fr: 'Effacer la recherche', zh: '清除搜索' },
+    cerca: { it: 'Cerca un corso…', en: 'Search a course…', fr: 'Chercher un cours…', zh: '搜索课程…' },
+    esempio: { it: 'ceramicca', en: 'ceramicss', fr: 'céramiquee', zh: '陶艺艺' }
+  };
+  var CORSI = [{ it: 'Tipografia', en: 'Typography', fr: 'Typographie', zh: '字体排印' }, { it: 'Fotografia', en: 'Photography', fr: 'Photographie', zh: '摄影' }, { it: 'Ceramica', en: 'Ceramics', fr: 'Céramique', zh: '陶艺' }, { it: 'Interface Design', en: 'Interface Design', fr: 'Interface Design', zh: '界面设计' }, { it: 'Illustrazione', en: 'Illustration', fr: 'Illustration', zh: '插画' }];
+  var COLORI = ['#fa9191', '#698fff', '#4caf7a', '#f4bd4f', '#8a6fd1', '#df8888'];
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var progetti = [], contatore = 0, q = document.getElementById('q'), toccato = false;
+  var ILL = '<svg width="150" height="110" viewBox="0 0 150 110" aria-hidden="true"><rect x="22" y="30" width="106" height="70" rx="10" fill="#f3efee"/><path d="M22 44h106" stroke="#e2dcda" stroke-width="2"/><rect x="40" y="56" width="44" height="8" rx="4" fill="#e2dcda"/><rect x="40" y="72" width="66" height="8" rx="4" fill="#e2dcda"/><circle cx="118" cy="26" r="18" fill="#fa9191"/><path d="M118 18v16M110 26h16" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>';
+  var LENTE = '<svg width="120" height="100" viewBox="0 0 120 100" aria-hidden="true"><circle cx="52" cy="44" r="28" fill="#f3efee" stroke="#698fff" stroke-width="6"/><path d="M73 65l22 22" stroke="#698fff" stroke-width="8" stroke-linecap="round"/><path d="M42 40q10-8 20 0" fill="none" stroke="#c9c2c0" stroke-width="3" stroke-linecap="round"/><circle cx="44" cy="52" r="2.5" fill="#c9c2c0"/><circle cx="60" cy="52" r="2.5" fill="#c9c2c0"/></svg>';
+  function el(h) { var d = document.createElement('div'); d.innerHTML = h; return d.firstChild; }
+  function disegnaProgetti() {
+    var box = document.getElementById('progetti'); box.innerHTML = '';
+    if (!progetti.length) {
+      var v = el('<div class="vuoto">' + ILL + '<h3></h3><p></p><button class="btn" type="button"></button></div>');
+      v.querySelector('h3').textContent = T(TX.titolo); v.querySelector('p').textContent = T(TX.testo);
+      v.querySelector('button').textContent = T(TX.crea); v.querySelector('button').onclick = nuovo;
+      box.appendChild(v); return;
+    }
+    var ul = el('<ul class="elenco"></ul>');
+    progetti.forEach(function (p, i) {
+      var li = el('<li><span class="q"></span><span></span><button class="x" type="button">✕</button></li>');
+      li.firstChild.style.background = p.c; li.children[1].textContent = T(TX.progetto).replace('%', p.n);
+      li.lastChild.setAttribute('aria-label', T(TX.elimina)); li.lastChild.onclick = function () { progetti.splice(i, 1); disegnaProgetti(); };
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+    var piede = el('<div class="piede"><span></span><button class="piccolo" type="button"></button></div>');
+    piede.firstChild.textContent = T(TX.n).replace('%', progetti.length); piede.lastChild.textContent = T(TX.crea); piede.lastChild.onclick = nuovo;
+    box.appendChild(piede);
+  }
+  function nuovo() { if (progetti.length >= 6) return; contatore++; progetti.push({ n: contatore, c: COLORI[contatore % COLORI.length] }); disegnaProgetti(); }
+  function disegnaRisultati() {
+    q.placeholder = T(TX.cerca);
+    var box = document.getElementById('risultati'); box.innerHTML = '';
+    var t = q.value.trim().toLowerCase();
+    var r = CORSI.filter(function (c) { return !t || T(c).toLowerCase().indexOf(t) >= 0; });
+    if (r.length) { var ul = el('<ul class="elenco" style="margin-top:8px"></ul>'); r.forEach(function (c) { var li = el('<li></li>'); li.textContent = T(c); ul.appendChild(li); }); box.appendChild(ul); return; }
+    var v = el('<div class="vuoto">' + LENTE + '<h3></h3><p></p><div class="chips"></div><button class="link" type="button"></button></div>');
+    v.querySelector('h3').textContent = T(TX.nulla).replace('%', q.value.trim()); v.querySelector('p').textContent = T(TX.prova);
+    CORSI.slice(0, 3).forEach(function (c) { var b = el('<button class="chip" type="button"></button>'); b.textContent = T(c); b.onclick = function () { q.value = T(c); toccato = true; disegnaRisultati(); }; v.querySelector('.chips').appendChild(b); });
+    v.querySelector('.link').textContent = T(TX.azzera); v.querySelector('.link').onclick = function () { q.value = ''; toccato = true; disegnaRisultati(); q.focus(); };
+    box.appendChild(v);
+  }
+  q.addEventListener('input', function () { toccato = true; disegnaRisultati(); });
+  q.value = T(TX.esempio);
+  disegnaProgetti(); disegnaRisultati();
+  document.addEventListener('lingua', function () { if (!toccato) q.value = T(TX.esempio); disegnaProgetti(); disegnaRisultati(); });
+</script>
+</body>
+</html>

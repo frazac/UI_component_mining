@@ -1,0 +1,128 @@
+<!doctype html>
+<!-- Esempio ricostruito: Bar (and header). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bar (and header) — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  .testa-didascalia { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .testa-didascalia .didascalia { margin: 0; }
+  .segmenti { display: inline-flex; background: var(--c-palco); border-radius: 999px; padding: 3px; }
+  .segmenti button { border: 0; background: none; border-radius: 999px; padding: 5px 14px; font-size: 15px; cursor: pointer; }
+  .segmenti button[aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  /* intestazione desktop */
+  .finestra { border: 1px solid var(--c-linea); border-radius: 10px; overflow: hidden; }
+  header.sito { display: flex; align-items: center; gap: 18px; padding: 0 16px; height: 62px; border-bottom: 1px solid var(--c-linea); }
+  .marchio { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 17px; white-space: nowrap; }
+  .marchio i { width: 26px; height: 26px; border-radius: 7px; background: var(--c-salmone); display: block; position: relative; }
+  .marchio i::after { content: ""; position: absolute; inset: 7px; border-radius: 50%; background: #fff; }
+  nav.voci { display: flex; gap: 4px; flex: 1; height: 100%; align-items: stretch; }
+  nav.voci a { display: flex; align-items: center; padding: 0 12px; color: var(--c-testo); text-decoration: none; font-size: 16px; position: relative; white-space: nowrap; }
+  nav.voci a:hover { color: var(--c-blu); }
+  /* stile «schede»: linea sotto la voce attiva */
+  .tabs nav.voci a[aria-current]::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--c-blu); }
+  .tabs nav.voci a[aria-current] { color: var(--c-blu); font-weight: 500; }
+  /* stile «pillole» */
+  .pills nav.voci { align-items: center; }
+  .pills nav.voci a { height: 36px; border-radius: 999px; }
+  .pills nav.voci a[aria-current] { background: var(--c-testo); color: #fff; }
+  .azioni { display: flex; gap: 10px; align-items: center; }
+  .tondo { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--c-palco); display: grid; place-items: center; cursor: pointer; }
+  .avatar { background: var(--c-blu); color: #fff; font-size: 14px; font-weight: 500; }
+  .pagina { padding: 18px 16px; display: grid; gap: 8px; }
+  .pagina .r { height: 9px; border-radius: 5px; background: rgba(0,0,0,.08); }
+  .pagina h2 { margin: 0 0 4px; font-size: 20px; font-weight: 500; }
+  /* mobile */
+  .telefoni { display: flex; gap: 24px; justify-content: center; }
+  .tel { width: 250px; height: 200px; border: 1px solid var(--c-linea); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; }
+  .appbar { display: flex; align-items: center; gap: 8px; padding: 14px 12px 10px; border-bottom: 1px solid var(--c-linea); }
+  .appbar b { flex: 1; font-weight: 500; font-size: 17px; text-align: center; }
+  .corpo { flex: 1; padding: 12px; display: grid; gap: 8px; align-content: start; }
+  .corpo .r { height: 7px; border-radius: 4px; background: rgba(0,0,0,.08); }
+  .tabbar { display: flex; border-top: 1px solid var(--c-linea); }
+  .tabbar button { flex: 1; border: 0; background: none; padding: 8px 0 10px; display: grid; justify-items: center; gap: 2px; font-size: 13px; color: var(--c-tenue); cursor: pointer; }
+  .tabbar button[aria-current] { color: var(--c-blu); }
+  .tabbar svg { stroke: currentColor; }
+  .eti { font-size: 15px; color: var(--c-tenue); text-align: center; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <div class="testa-didascalia">
+      <span class="didascalia"><span data-l="it">Intestazione di un sito</span><span data-l="en">Website header</span><span data-l="fr">En-tête d’un site</span><span data-l="zh">网站页眉</span></span>
+      <div class="segmenti" role="group" aria-label="Stile">
+        <button type="button" data-stile="tabs" aria-pressed="true"><span data-l="it">Schede</span><span data-l="en">Tabs</span><span data-l="fr">Onglets</span><span data-l="zh">标签</span></button>
+        <button type="button" data-stile="pills" aria-pressed="false"><span data-l="it">Pillole</span><span data-l="en">Pills</span><span data-l="fr">Pilules</span><span data-l="zh">胶囊</span></button>
+      </div>
+    </div>
+    <div class="finestra tabs" id="finestra">
+      <header class="sito">
+        <span class="marchio"><i></i>Studio</span>
+        <nav class="voci" id="voci" aria-label="Principale"></nav>
+        <span class="azioni">
+          <button class="tondo" type="button" aria-label="Search"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="#111" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="#111" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+          <span class="tondo avatar" aria-hidden="true">FZ</span>
+        </span>
+      </header>
+      <div class="pagina"><h2 id="titolo"></h2><span class="r" style="width:80%"></span><span class="r" style="width:60%"></span></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Su mobile: barra in alto e barra delle schede in basso</span><span data-l="en">On mobile: top app bar and bottom tab bar</span><span data-l="fr">Sur mobile : barre du haut et barre d’onglets en bas</span><span data-l="zh">移动端：顶部应用栏与底部标签栏</span></span>
+    <div class="telefoni">
+      <div class="tel">
+        <div class="appbar">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <b id="titolo-m"></b>
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="#111"/><circle cx="12" cy="12" r="2" fill="#111"/><circle cx="19" cy="12" r="2" fill="#111"/></svg>
+        </div>
+        <div class="corpo"><span class="r"></span><span class="r" style="width:70%"></span><span class="r" style="width:85%"></span><span class="r" style="width:50%"></span></div>
+        <nav class="tabbar" id="tabbar" aria-label="Schede"></nav>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La barra di navigazione cambia nel tempo: le stesse voci possono essere disegnate come schede o come pillole.</span><span data-l="en">The navigation bar changes over time: the same items can be drawn as tabs or as pills.</span><span data-l="fr">La barre de navigation évolue avec le temps : les mêmes entrées peuvent être dessinées en onglets ou en pilules.</span><span data-l="zh">导航栏会随时间演变：同样的条目可以设计成标签式或胶囊式。</span></p>
+<script>
+  var VOCI = [
+    { it: 'Home', en: 'Home', fr: 'Accueil', zh: '首页', ic: '<path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" fill="none" stroke-width="2" stroke-linejoin="round"/>' },
+    { it: 'Progetti', en: 'Projects', fr: 'Projets', zh: '项目', ic: '<rect x="4" y="4" width="7" height="7" rx="1.5" fill="none" stroke-width="2"/><rect x="13" y="4" width="7" height="7" rx="1.5" fill="none" stroke-width="2"/><rect x="4" y="13" width="7" height="7" rx="1.5" fill="none" stroke-width="2"/><rect x="13" y="13" width="7" height="7" rx="1.5" fill="none" stroke-width="2"/>' },
+    { it: 'Corsi', en: 'Courses', fr: 'Cours', zh: '课程', ic: '<path d="M4 6l8-3 8 3-8 3zM7 8v6c3 2 7 2 10 0V8" fill="none" stroke-width="2" stroke-linejoin="round"/>' },
+    { it: 'Contatti', en: 'Contacts', fr: 'Contacts', zh: '联系', ic: '<rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke-width="2"/><path d="M3 7l9 6 9-6" fill="none" stroke-width="2"/>' }
+  ];
+  var attiva = 1;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    var nav = document.getElementById('voci'), tb = document.getElementById('tabbar');
+    nav.innerHTML = ''; tb.innerHTML = '';
+    VOCI.forEach(function (v, i) {
+      var a = document.createElement('a'); a.href = '#'; a.textContent = L(v);
+      if (i === attiva) a.setAttribute('aria-current', 'page');
+      a.onclick = function (e) { e.preventDefault(); attiva = i; disegna(); };
+      nav.appendChild(a);
+      var b = document.createElement('button'); b.type = 'button';
+      b.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">' + v.ic + '</svg><span>' + L(v) + '</span>';
+      if (i === attiva) b.setAttribute('aria-current', 'page');
+      b.onclick = function () { attiva = i; disegna(); };
+      tb.appendChild(b);
+    });
+    document.getElementById('titolo').textContent = L(VOCI[attiva]);
+    document.getElementById('titolo-m').textContent = L(VOCI[attiva]);
+  }
+  document.querySelectorAll('[data-stile]').forEach(function (b) {
+    b.onclick = function () {
+      document.querySelectorAll('[data-stile]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.getElementById('finestra').className = 'finestra ' + b.dataset.stile;
+    };
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

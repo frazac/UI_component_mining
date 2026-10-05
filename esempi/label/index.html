@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- Esempio ricostruito: Label. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.tre { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .riquadro { padding: 22px 20px; }
+  .giudizio { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; margin: -4px 0 14px; padding: 3px 10px; border-radius: 9999px; }
+  .si { background: #e3f4ea; color: #1f7a45; } .no { background: #fde6e2; color: #b03a2a; }
+  .campo { margin-bottom: 14px; }
+  .campo > label, .lab { display: block; font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .campo input { width: 100%; border: 1px solid rgba(0,0,0,.3); border-radius: 8px; padding: 10px 12px; font-size: 16px; outline: 0; background: #fff; }
+  .campo input:focus { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .aiuto { font-size: 15px; color: var(--c-tenue); margin-top: 4px; }
+  .obbl { color: #b03a2a; }
+  /* etichetta flottante */
+  .flot { position: relative; margin-bottom: 14px; }
+  .flot input { width: 100%; border: 1px solid rgba(0,0,0,.3); border-radius: 8px; padding: 20px 12px 6px; font-size: 16px; outline: 0; }
+  .flot input:focus { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .flot label { position: absolute; left: 13px; top: 14px; font-size: 16px; color: var(--c-tenue); pointer-events: none; transition: transform .15s, font-size .15s, top .15s, color .15s; transform-origin: left top; }
+  .flot input:focus + label, .flot input:not(:placeholder-shown) + label { top: 6px; font-size: 15px; transform: scale(.82); color: var(--c-blu); }
+  .flot input:not(:focus):not(:placeholder-shown) + label { color: var(--c-tenue); }
+  .altre { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: center; }
+  .altre .demo { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 15px; color: var(--c-tenue); text-align: center; }
+  .btn-ico { display: inline-flex; align-items: center; gap: 8px; border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 8px 14px; font-size: 16px; color: #111; }
+  .etich { display: inline-flex; gap: 6px; }
+  .etich > span { font-size: 15px; padding: 3px 10px; border-radius: 4px; background: var(--c-salmone); color: #111; }
+  .etich > span + span { background: #e1e8ff; }
+  .tondo { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #111; display: grid; place-items: center; background: #fff; }
+</style>
+</head>
+<body>
+<div class="palco tre">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Label sopra il campo</span><span data-l="en">Label above the field</span><span data-l="fr">Libellé au-dessus</span><span data-l="zh">标签在字段上方</span></span>
+    <span class="giudizio si">✓ <span data-l="it">sempre visibile</span><span data-l="en">always visible</span><span data-l="fr">toujours visible</span><span data-l="zh">始终可见</span></span>
+    <div class="campo"><label for="a1"><span data-l="it">Nome</span><span data-l="en">First name</span><span data-l="fr">Prénom</span><span data-l="zh">名字</span> <span class="obbl" aria-hidden="true">*</span></label><input id="a1" required autocomplete="off"></div>
+    <div class="campo"><label for="a2"><span data-l="it">Email</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮箱</span></label><input id="a2" type="email" aria-describedby="a2h" autocomplete="off"><div class="aiuto" id="a2h"><span data-l="it">La useremo solo per il corso.</span><span data-l="en">Used only for the course.</span><span data-l="fr">Utilisé seulement pour le cours.</span><span data-l="zh">仅用于课程。</span></div></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Solo segnaposto</span><span data-l="en">Placeholder only</span><span data-l="fr">Texte indicatif seul</span><span data-l="zh">仅占位文字</span></span>
+    <span class="giudizio no">✕ <span data-l="it">sparisce scrivendo</span><span data-l="en">vanishes as you type</span><span data-l="fr">disparaît à la saisie</span><span data-l="zh">输入时消失</span></span>
+    <div class="campo"><input id="b1" value="Ada" aria-label="First name" data-it="Nome" data-en="First name" data-fr="Prénom" data-zh="名字" autocomplete="off"></div>
+    <div class="campo"><input id="b2" aria-label="Email" data-it="Email" data-en="Email" data-fr="E-mail" data-zh="电子邮箱" autocomplete="off"></div>
+    <p class="aiuto"><span data-l="it">Scrivi qui: dopo, che cosa chiedeva il campo?</span><span data-l="en">Type here: afterwards, what did the field ask?</span><span data-l="fr">Tapez ici&#8239;: ensuite, que demandait le champ&#8239;?</span><span data-l="zh">在这里输入：之后还记得字段问的是什么吗？</span></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Label flottante</span><span data-l="en">Floating label</span><span data-l="fr">Libellé flottant</span><span data-l="zh">浮动标签</span></span>
+    <span class="giudizio si">✓ <span data-l="it">resta, più piccola</span><span data-l="en">stays, smaller</span><span data-l="fr">reste, plus petit</span><span data-l="zh">保留，变小</span></span>
+    <div class="flot"><input id="c1" placeholder=" " autocomplete="off" value="Ada"><label for="c1"><span data-l="it">Nome</span><span data-l="en">First name</span><span data-l="fr">Prénom</span><span data-l="zh">名字</span></label></div>
+    <div class="flot"><input id="c2" placeholder=" " autocomplete="off"><label for="c2"><span data-l="it">Email</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮箱</span></label></div>
+  </div>
+</div>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Non solo nei form</span><span data-l="en">Not only in forms</span><span data-l="fr">Pas seulement dans les formulaires</span><span data-l="zh">不只用于表单</span></span>
+    <div class="altre">
+      <div class="demo"><span class="btn-ico"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7l4 4 4-4M2 14h12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span data-l="it">Scarica</span><span data-l="en">Download</span><span data-l="fr">Télécharger</span><span data-l="zh">下载</span></span><span data-l="it">icona + label</span><span data-l="en">icon + label</span><span data-l="fr">icône + libellé</span><span data-l="zh">图标 + 标签</span></div>
+      <div class="demo"><span class="tondo" title="?"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v9M4 7l4 4 4-4M2 14h12" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span><span data-l="it">solo icona: serve un nome accessibile</span><span data-l="en">icon only: needs an accessible name</span><span data-l="fr">icône seule&#8239;: il faut un nom accessible</span><span data-l="zh">仅图标：需要无障碍名称</span></div>
+      <div class="demo"><span class="etich"><span><span data-l="it">Nuovo</span><span data-l="en">New</span><span data-l="fr">Nouveau</span><span data-l="zh">新品</span></span><span><span data-l="it">Bozza</span><span data-l="en">Draft</span><span data-l="fr">Brouillon</span><span data-l="zh">草稿</span></span></span><span data-l="it">label di contenuto</span><span data-l="en">content labels</span><span data-l="fr">libellés de contenu</span><span data-l="zh">内容标签</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La label dà un nome all’elemento. Nei form va legata al campo (for/id) e deve restare visibile.</span><span data-l="en">The label names the element. In forms it is tied to the field (for/id) and must stay visible.</span><span data-l="fr">Le libellé nomme l’élément. Dans un formulaire, il est lié au champ (for/id) et doit rester visible.</span><span data-l="zh">标签为元素命名。在表单中它与字段关联（for/id），并且必须保持可见。</span></p>
+</body>
+</html>

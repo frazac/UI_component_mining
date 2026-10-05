@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Esempio ricostruito: Dark and light mode switch. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark mode switch — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .controlli { display: flex; flex-wrap: wrap; gap: 20px 40px; padding: 20px 28px; }
+  .controlli .didascalia { margin-bottom: 10px; }
+  /* interruttore a due stati */
+  .interruttore { display: flex; align-items: center; gap: 14px; font-size: 17px; cursor: pointer; border: 0; background: none; padding: 0; text-align: left; }
+  .binario { position: relative; width: 74px; height: 38px; border-radius: 9999px; background: #cfe0ff; transition: background .3s; flex: none; }
+  .pomello { position: absolute; top: 4px; left: 4px; width: 30px; height: 30px; border-radius: 50%; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.25); display: grid; place-items: center; transition: transform .3s cubic-bezier(.4,1.4,.6,1); }
+  [aria-checked="true"] .binario { background: #2b2f45; }
+  [aria-checked="true"] .pomello { transform: translateX(36px); background: #1b1e2e; }
+  .sole, .luna { position: absolute; transition: opacity .3s, transform .3s; }
+  .luna { opacity: 0; transform: rotate(-60deg); }
+  [aria-checked="true"] .sole { opacity: 0; transform: rotate(60deg); }
+  [aria-checked="true"] .luna { opacity: 1; transform: none; }
+  /* controllo segmentato a tre opzioni */
+  .segmenti { display: inline-flex; padding: 4px; background: var(--c-palco); border-radius: 9999px; gap: 2px; }
+  .segmenti button { display: flex; align-items: center; gap: 6px; border: 0; background: none; border-radius: 9999px; padding: 8px 12px; font-size: 15px; cursor: pointer; color: rgba(0,0,0,.6); }
+  .segmenti button[aria-checked="true"] { background: #fff; color: #111; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .info { font-size: 15px; color: var(--c-tenue); margin: 6px 0 0; min-height: 21px; }
+  /* anteprima con i token di colore */
+  .anteprima { --sf: #ffffff; --tx: #111; --tn: rgba(0,0,0,.55); --ln: rgba(0,0,0,.1); --sc: #f3efee; --ac: rgb(105,143,255);
+    background: var(--sf); color: var(--tx); border-radius: 12px; border: 1px solid var(--ln); padding: 20px; transition: background .4s, color .4s; }
+  .anteprima.scuro { --sf: #15171f; --tx: #f1eeee; --tn: rgba(255,255,255,.6); --ln: rgba(255,255,255,.12); --sc: #232633; --ac: rgb(150,178,255); }
+  .anteprima h3 { margin: 0 0 6px; font-size: 21px; font-weight: 500; }
+  .anteprima p { margin: 0 0 14px; font-size: 15px; color: var(--tn); }
+  .schede { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .scheda { background: var(--sc); border-radius: 10px; padding: 14px; display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; transition: background .4s; }
+  .scheda .img { width: 56px; height: 56px; border-radius: 8px; background: linear-gradient(135deg, var(--c-salmone), var(--ac)); }
+  .scheda b { display: block; font-weight: 500; font-size: 16px; }
+  .scheda span { font-size: 15px; color: var(--tn); }
+  .anteprima .cta { border: 0; background: var(--ac); color: #0b0d14; border-radius: 9999px; padding: 9px 16px; font-size: 15px; }
+  .valori { font: 15px/1.6 ui-monospace, Menlo, monospace; color: var(--tn); margin-top: 14px; border-top: 1px solid var(--ln); padding-top: 10px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro controlli">
+    <div>
+      <span class="didascalia"><span data-l="it">Interruttore</span><span data-l="en">Toggle</span><span data-l="fr">Interrupteur</span><span data-l="zh">开关</span></span>
+      <button class="interruttore" type="button" role="switch" aria-checked="false" id="sw">
+        <span class="binario"><span class="pomello">
+          <svg class="sole" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="4" fill="#f4b23f"/><g stroke="#f4b23f" stroke-width="1.6" stroke-linecap="round"><path d="M9 1v2M9 15v2M1 9h2M15 9h2M3.3 3.3l1.4 1.4M13.3 13.3l1.4 1.4M3.3 14.7l1.4-1.4M13.3 4.7l1.4-1.4"/></g></svg>
+          <svg class="luna" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M12.5 13.5A6 6 0 017 2.5a6.5 6.5 0 106.5 9.8 6 6 0 01-1 1.2z" fill="#e8e3ff"/></svg>
+        </span></span>
+        <span><span data-l="it">Tema scuro</span><span data-l="en">Dark theme</span><span data-l="fr">Thème sombre</span><span data-l="zh">深色主题</span></span>
+      </button>
+    </div>
+    <div>
+      <span class="didascalia"><span data-l="it">Tre opzioni</span><span data-l="en">Three options</span><span data-l="fr">Trois options</span><span data-l="zh">三个选项</span></span>
+      <div class="segmenti" role="radiogroup" aria-label="Theme" id="seg">
+        <button type="button" role="radio" data-v="chiaro"><svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="4" fill="currentColor"/><g stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 1v2M9 15v2M1 9h2M15 9h2"/></g></svg><span data-l="it">Chiaro</span><span data-l="en">Light</span><span data-l="fr">Clair</span><span data-l="zh">浅色</span></button>
+        <button type="button" role="radio" data-v="sistema"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><rect x="1" y="2" width="14" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 15h6" stroke="currentColor" stroke-width="1.6"/></svg><span data-l="it">Sistema</span><span data-l="en">System</span><span data-l="fr">Système</span><span data-l="zh">系统</span></button>
+        <button type="button" role="radio" data-v="scuro"><svg width="14" height="14" viewBox="0 0 18 18" aria-hidden="true"><path d="M12.5 13.5A6 6 0 017 2.5a6.5 6.5 0 106.5 9.8 6 6 0 01-1 1.2z" fill="currentColor"/></svg><span data-l="it">Scuro</span><span data-l="en">Dark</span><span data-l="fr">Sombre</span><span data-l="zh">深色</span></button>
+      </div>
+      <p class="info" id="info"></p>
+    </div>
+  </div>
+  <div class="riquadro" style="padding:16px">
+    <div class="anteprima" id="ant">
+      <h3><span data-l="it">Mostra di fine anno</span><span data-l="en">End-of-year show</span><span data-l="fr">Exposition de fin d’année</span><span data-l="zh">年终作品展</span></h3>
+      <p><span data-l="it">Gli stessi componenti, due serie di colori.</span><span data-l="en">The same components, two sets of colours.</span><span data-l="fr">Les mêmes composants, deux jeux de couleurs.</span><span data-l="zh">同样的组件，两套颜色。</span></p>
+      <div class="schede"><div class="scheda"><span class="img"></span><div><b><span data-l="it">Interface Design</span><span data-l="en">Interface Design</span><span data-l="fr">Interface Design</span><span data-l="zh">界面设计</span></b><span><span data-l="it">Aula 4 · 18:00</span><span data-l="en">Room 4 · 6 pm</span><span data-l="fr">Salle 4 · 18 h</span><span data-l="zh">4 号教室 · 18:00</span></span></div></div>
+      <div class="scheda"><span class="img" style="filter:hue-rotate(60deg)"></span><div><b><span data-l="it">Tipografia</span><span data-l="en">Typography</span><span data-l="fr">Typographie</span><span data-l="zh">字体排印</span></b><span><span data-l="it">Aula 2 · 19:30</span><span data-l="en">Room 2 · 7:30 pm</span><span data-l="fr">Salle 2 · 19 h 30</span><span data-l="zh">2 号教室 · 19:30</span></span></div></div></div>
+      <button class="cta" type="button" tabindex="-1"><span data-l="it">Prenota</span><span data-l="en">Book</span><span data-l="fr">Réserver</span><span data-l="zh">预约</span></button>
+      <div class="valori" id="valori"></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il tema scuro non è un’inversione: ogni colore ha il suo valore scuro (token). «Sistema» segue l’impostazione del dispositivo.</span><span data-l="en">A dark theme is not an inversion: each colour has its own dark value (token). “System” follows the device setting.</span><span data-l="fr">Le thème sombre n’est pas une inversion&#8239;: chaque couleur a sa valeur sombre (token). «&#8239;Système&#8239;» suit le réglage de l’appareil.</span><span data-l="zh">深色主题不是简单反色：每种颜色都有自己的深色值（令牌）。“系统”会跟随设备设置。</span></p>
+<script>
+  var scelta = 'scuro', mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var TX = { segue: { it: 'Ora il sistema è: %', en: 'The system is now: %', fr: 'Le système est en ce moment : %', zh: '当前系统为：%' }, scuro: { it: 'scuro', en: 'dark', fr: 'sombre', zh: '深色' }, chiaro: { it: 'chiaro', en: 'light', fr: 'clair', zh: '浅色' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function scuro() { return scelta === 'scuro' || (scelta === 'sistema' && mq.matches); }
+  function disegna() {
+    var s = scuro();
+    document.getElementById('sw').setAttribute('aria-checked', String(s));
+    document.querySelectorAll('#seg button').forEach(function (b) { var on = b.dataset.v === scelta; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+    document.getElementById('ant').classList.toggle('scuro', s);
+    document.getElementById('info').textContent = scelta === 'sistema' ? T(TX.segue).replace('%', T(mq.matches ? TX.scuro : TX.chiaro)) : '';
+    document.getElementById('valori').textContent = s ? '--surface: #15171f;  --text: #f1eeee;' : '--surface: #ffffff;  --text: #111111;';
+  }
+  document.getElementById('sw').onclick = function () { scelta = scuro() ? 'chiaro' : 'scuro'; disegna(); };
+  var seg = Array.prototype.slice.call(document.querySelectorAll('#seg button'));
+  seg.forEach(function (b, i) {
+    b.onclick = function () { scelta = b.dataset.v; disegna(); };
+    b.onkeydown = function (e) { var d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (!d) return; e.preventDefault(); var n = seg[(i + d + 3) % 3]; scelta = n.dataset.v; disegna(); n.focus(); };
+  });
+  mq.addEventListener('change', disegna);
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

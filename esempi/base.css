@@ -1,0 +1,44 @@
+/* ==========================================================================
+   Esempi ricostruiti · base comune (licenza MIT)
+   Ogni esempio è esempi/<id>/index.html: si apre da solo e dentro le slide
+   (iframe di circa 750 × 705 px, ridotto a due terzi). Palette di masterismi.it.
+   ========================================================================== */
+:root {
+  --c-fondo: #ffffff;
+  --c-testo: #111111;
+  --c-salmone: rgb(250, 145, 145);
+  --c-rosa: rgb(223, 136, 136);
+  --c-blu: rgb(105, 143, 255);
+  --c-tenue: rgba(0, 0, 0, 0.5);
+  --c-linea: rgba(0, 0, 0, 0.12);
+  --c-palco: #f3efee;
+  --raggio: 12px;
+  --f-testo: "Space Grotesk", "Noto Sans SC", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--c-palco); color: var(--c-testo); font: 18px/1.4 var(--f-testo);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; padding: 40px;
+  -webkit-font-smoothing: antialiased;
+}
+/* palco: uno o più riquadri bianchi con una didascalia sopra */
+.palco { display: grid; gap: 24px; width: 100%; max-width: 920px; }
+.palco.due { grid-template-columns: repeat(2, 1fr); }
+.palco.tre { grid-template-columns: repeat(3, 1fr); }
+.riquadro { background: var(--c-fondo); border-radius: var(--raggio); padding: 28px; box-shadow: 0 1px 2px rgba(0,0,0,.06); min-width: 0; }
+.didascalia { display: block; margin: 0 0 14px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); }
+.nota { font-size: 14px; color: var(--c-tenue); margin: 0; text-align: center; max-width: 720px; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* lingue: <span data-l="it">…</span><span data-l="en">…</span>… (vedi assets/lingua.js) */
+html[data-lingua="it"] [data-l]:not([data-l="it"]),
+html[data-lingua="en"] [data-l]:not([data-l="en"]),
+html[data-lingua="fr"] [data-l]:not([data-l="fr"]),
+html[data-lingua="zh"] [data-l]:not([data-l="zh"]) { display: none; }
+html [data-l][data-ripiego] { display: revert !important; }
+.lingua-selettore { position: fixed; top: 12px; right: 12px; z-index: 1000; display: flex; gap: 2px; padding: 3px; border-radius: 9999px; background: #fff; box-shadow: 0 6px 18px rgba(0,0,0,.18); font: 500 13px/1 var(--f-testo); }
+.lingua-selettore button { border: 0; background: none; cursor: pointer; padding: 8px 12px; border-radius: 9999px; color: rgba(0,0,0,.55); }
+.lingua-selettore button[aria-pressed="true"] { background: #000; color: #fff; }

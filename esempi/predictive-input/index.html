@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Esempio ricostruito: Predictive input (and predictive drop-down lists). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Predictive input — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { min-height: 470px; }
+  .campo { position: relative; }
+  .scatola { display: flex; align-items: center; gap: 10px; border: 2px solid #111; border-radius: 12px; padding: 0 14px; background: #fff; }
+  .scatola:focus-within { border-color: var(--c-blu); box-shadow: 0 0 0 4px rgba(105,143,255,.2); }
+  .aperto .scatola { border-radius: 12px 12px 0 0; }
+  .sovrapp { position: relative; flex: 1; min-width: 0; }
+  .sovrapp input, .fantasma { font-size: 19px; padding: 12px 0; width: 100%; border: 0; outline: 0; background: transparent; font-family: var(--f-testo); letter-spacing: normal; }
+  .fantasma { position: absolute; inset: 0; color: rgba(0,0,0,.3); pointer-events: none; white-space: pre; overflow: hidden; }
+  .fantasma b { visibility: hidden; font-weight: 400; }
+  .sovrapp input { position: relative; }
+  .tab { font-size: 13px; border: 1px solid var(--c-linea); border-radius: 4px; padding: 2px 6px; color: var(--c-tenue); white-space: nowrap; }
+  .tab[hidden] { display: none; }
+  .elenco { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border: 2px solid var(--c-blu); border-top: 1px solid var(--c-linea); border-radius: 0 0 12px 12px; list-style: none; margin: 0; padding: 6px; z-index: 3; box-shadow: 0 14px 30px rgba(0,0,0,.12); }
+  .elenco[hidden] { display: none; }
+  .elenco li { display: flex; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; font-size: 17px; cursor: pointer; }
+  .elenco li.attivo { background: rgba(105,143,255,.14); }
+  .elenco li b { font-weight: 500; }
+  .elenco li span.q { font-weight: 400; color: rgba(0,0,0,.55); }
+  .elenco li svg { flex: none; color: rgba(0,0,0,.4); }
+  .elenco .gruppo { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); padding: 8px 10px 4px; cursor: default; }
+  .elenco li .tipo { margin-left: auto; font-size: 15px; color: var(--c-tenue); }
+  .scelto { margin-top: 280px; font-size: 16px; color: var(--c-tenue); }
+  .legenda { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 14px; font-size: 15px; color: var(--c-tenue); }
+  .legenda kbd { font: inherit; font-size: 13px; border: 1px solid var(--c-linea); border-radius: 4px; padding: 1px 6px; margin-right: 4px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Digita: completamento in linea e suggerimenti</span><span data-l="en">Type: inline completion and suggestions</span><span data-l="fr">Tapez&#8239;: complétion en ligne et suggestions</span><span data-l="zh">输入：行内补全与建议</span></span>
+    <div class="campo" id="campo">
+      <div class="scatola">
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="sovrapp"><div class="fantasma" id="fantasma" aria-hidden="true"></div><input id="q" type="text" autocomplete="off" role="combobox" aria-autocomplete="both" aria-controls="elenco" aria-expanded="false" aria-label="Search"></div>
+        <span class="tab" id="tab" hidden>Tab ↹</span>
+      </div>
+      <ul class="elenco" id="elenco" role="listbox" hidden></ul>
+    </div>
+    <p class="scelto" id="scelto" aria-live="polite"></p>
+    <div class="legenda"><span><kbd>Tab</kbd><span data-l="it">accetta il completamento</span><span data-l="en">accept completion</span><span data-l="fr">accepter la complétion</span><span data-l="zh">接受补全</span></span><span><kbd>↑ ↓</kbd><span data-l="it">scegli</span><span data-l="en">choose</span><span data-l="fr">choisir</span><span data-l="zh">选择</span></span><span><kbd>Esc</kbd><span data-l="it">chiudi</span><span data-l="en">close</span><span data-l="fr">fermer</span><span data-l="zh">关闭</span></span></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’input predittivo anticipa ciò che si sta per scrivere: in grassetto la parte che il sistema propone, non quella già digitata.</span><span data-l="en">Predictive input anticipates what you are about to type: in bold, the part the system proposes, not what you already typed.</span><span data-l="fr">La saisie prédictive anticipe ce que l’on va écrire&#8239;: en gras, la partie proposée par le système, pas celle déjà tapée.</span><span data-l="zh">预测输入会预判你接下来要输入的内容：加粗的是系统建议的部分，而不是你已输入的部分。</span></p>
+<script>
+  var VOCI = [
+    { t: { it: 'tipografia variabile', en: 'typography basics', fr: 'typographie variable', zh: '字体排印基础' }, p: 98 },
+    { t: { it: 'tipografia per lo schermo', en: 'typography for screens', fr: 'typographie pour l’écran', zh: '字体排印与屏幕' }, p: 80 },
+    { t: { it: 'tipi di pulsante', en: 'types of buttons', fr: 'types de boutons', zh: '字体搭配' }, p: 60 },
+    { t: { it: 'tipografia svizzera', en: 'typography swiss style', fr: 'typographie suisse', zh: '字体排印 瑞士风格' }, p: 55 },
+    { t: { it: 'menu ad albero', en: 'menu patterns', fr: 'menu arborescent', zh: '菜单模式' }, p: 70 },
+    { t: { it: 'menu a tre puntini', en: 'menu with three dots', fr: 'menu à trois points', zh: '菜单 三个点' }, p: 66 },
+    { t: { it: 'modale o pagina?', en: 'modal or page?', fr: 'modale ou page ?', zh: '模态框还是页面？' }, p: 50 },
+    { t: { it: 'colore e contrasto', en: 'colour and contrast', fr: 'couleur et contraste', zh: '色彩与对比度' }, p: 77 },
+    { t: { it: 'colori del tema scuro', en: 'colours for dark mode', fr: 'couleurs du thème sombre', zh: '色彩 深色模式' }, p: 64 }
+  ];
+  var RECENTI = [{ it: 'griglia a 12 colonne', en: '12-column grid', fr: 'grille à 12 colonnes', zh: '12 栏网格' }, { it: 'stati dei componenti', en: 'component states', fr: 'états des composants', zh: '组件状态' }];
+  var TX = { recenti: { it: 'Ricerche recenti', en: 'Recent searches', fr: 'Recherches récentes', zh: '最近搜索' }, sugg: { it: 'Suggerimenti', en: 'Suggestions', fr: 'Suggestions', zh: '建议' },
+    cerca: { it: 'Cerco: «%»', en: 'Searching: “%”', fr: 'Recherche : « % »', zh: '搜索：“%”' }, esempio: { it: 'tipo', en: 'typ', fr: 'typo', zh: '字体' },
+    segnaposto: { it: 'Cerca nelle lezioni…', en: 'Search the lessons…', fr: 'Chercher dans les cours…', zh: '搜索课程…' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var q = document.getElementById('q'), el = document.getElementById('elenco'), campo = document.getElementById('campo'), lista = [], attivo = -1, toccato = false;
+  function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  var OROLOGIO = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 4.5V8l2.5 1.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>';
+  var LENTE = '<svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2"/></svg>';
+  function aggiorna(apri) {
+    q.placeholder = T(TX.segnaposto);
+    var v = q.value, t = v.toLowerCase();
+    if (!t) lista = RECENTI.map(function (r) { return { s: T(r), rec: true }; });
+    else lista = VOCI.map(function (x) { return { s: T(x.t), p: x.p }; }).filter(function (x) { return x.s.toLowerCase().indexOf(t) === 0; }).sort(function (a, b) { return b.p - a.p; }).slice(0, 5);
+    if (attivo >= lista.length) attivo = -1;
+    // completamento in linea: la prima previsione che inizia con il testo digitato
+    var primo = t && lista[0] && !lista[0].rec ? lista[0].s : '';
+    var f = document.getElementById('fantasma');
+    f.innerHTML = primo ? '<b>' + esc(v) + '</b>' + esc(primo.slice(v.length)) : '';
+    document.getElementById('tab').hidden = !primo || primo.length === v.length;
+    el.innerHTML = '<li class="gruppo" role="presentation">' + esc(T(t ? TX.sugg : TX.recenti)) + '</li>';
+    lista.forEach(function (x, i) {
+      var li = document.createElement('li'); li.id = 'o' + i; li.setAttribute('role', 'option'); if (i === attivo) li.className = 'attivo';
+      li.innerHTML = (x.rec ? OROLOGIO : LENTE) + '<span>' + (x.rec ? esc(x.s) : '<span class="q">' + esc(x.s.slice(0, v.length)) + '</span><b>' + esc(x.s.slice(v.length)) + '</b>') + '</span>';
+      li.onmousedown = function (e) { e.preventDefault(); scegli(x.s); };
+      el.appendChild(li);
+    });
+    var vis = apri && lista.length > 0; el.hidden = !vis; campo.classList.toggle('aperto', vis); q.setAttribute('aria-expanded', String(vis));
+    if (attivo >= 0) q.setAttribute('aria-activedescendant', 'o' + attivo); else q.removeAttribute('aria-activedescendant');
+  }
+  function scegli(s) { q.value = s; attivo = -1; aggiorna(false); document.getElementById('scelto').textContent = T(TX.cerca).replace('%', s); }
+  q.addEventListener('input', function () { toccato = true; attivo = -1; document.getElementById('scelto').textContent = ''; aggiorna(true); });
+  q.addEventListener('focus', function () { aggiorna(true); });
+  q.addEventListener('blur', function () { aggiorna(false); });
+  q.addEventListener('keydown', function (e) {
+    if (e.key === 'Tab' && !document.getElementById('tab').hidden) { e.preventDefault(); q.value = lista[0].s; attivo = -1; aggiorna(true); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); attivo = Math.min(lista.length - 1, attivo + 1); aggiorna(true); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); attivo = Math.max(-1, attivo - 1); aggiorna(true); }
+    else if (e.key === 'Enter') { e.preventDefault(); scegli(attivo >= 0 ? lista[attivo].s : q.value); }
+    else if (e.key === 'Escape') { aggiorna(false); }
+  });
+  function esempio() { q.value = T(TX.esempio); attivo = 0; aggiorna(true); }
+  esempio();
+  document.addEventListener('lingua', function () { if (!toccato) esempio(); else aggiorna(!el.hidden); });
+</script>
+</body>
+</html>

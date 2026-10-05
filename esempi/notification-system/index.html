@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- Esempio ricostruito: Notification system. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notification system — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.35fr 1fr; }
+  .app { position: relative; height: 430px; border-radius: 12px; background: #faf8f7; box-shadow: 0 0 0 1px var(--c-linea); overflow: hidden; }
+  .testata { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #fff; border-bottom: 1px solid var(--c-linea); font-weight: 500; }
+  .campana { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+  .campana:hover, .campana[aria-expanded="true"] { background: #f3efee; }
+  .campana svg { width: 24px; height: 24px; }
+  .badge { position: absolute; top: 3px; right: 2px; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 10px; background: #e0412f; color: #fff; font-size: 12px; font-weight: 500; display: grid; place-items: center; border: 2px solid #fff; }
+  .badge[hidden] { display: none; }
+  .centro { position: absolute; right: 10px; top: 58px; width: 300px; max-width: calc(100% - 20px); background: #fff; border-radius: 12px; box-shadow: 0 0 0 1px var(--c-linea), 0 14px 34px rgba(0,0,0,.16); z-index: 3; }
+  .centro[hidden] { display: none; }
+  .centro header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--c-linea); font-weight: 500; font-size: 16px; }
+  .centro header button { border: 0; background: none; color: var(--c-blu); cursor: pointer; font-size: 15px; padding: 0; }
+  .centro ul { list-style: none; margin: 0; padding: 4px; max-height: 300px; overflow-y: auto; }
+  .centro li { display: grid; grid-template-columns: 32px 1fr 10px; gap: 10px; align-items: start; padding: 9px 10px; border-radius: 8px; font-size: 15px; line-height: 1.3; cursor: pointer; }
+  .centro li:hover { background: #faf7f6; }
+  .centro li small { display: block; color: var(--c-tenue); font-size: 13px; margin-top: 2px; }
+  .centro li .ic { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; }
+  .centro li .punto { width: 9px; height: 9px; border-radius: 50%; background: var(--c-blu); margin-top: 6px; }
+  .centro li.letta .punto { visibility: hidden; }
+  .centro li.letta { color: var(--c-tenue); }
+  .vuoto { padding: 20px; text-align: center; color: var(--c-tenue); font-size: 15px; }
+  .banner { position: absolute; left: 10px; right: 10px; top: 10px; z-index: 4; display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: rgba(255,255,255,.96); border-radius: 14px; box-shadow: 0 10px 28px rgba(0,0,0,.2); font-size: 15px; transform: translateY(-150%); opacity: 0; transition: transform .35s cubic-bezier(.2,.9,.3,1.2), opacity .2s; }
+  .banner.su { transform: none; opacity: 1; }
+  .banner .ic { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; flex: none; }
+  .banner small { display: block; color: var(--c-tenue); font-size: 13px; }
+  .righe { padding: 16px; display: grid; gap: 10px; } .righe i { display: block; height: 10px; border-radius: 5px; background: rgba(0,0,0,.07); }
+  .comandi { display: grid; gap: 8px; margin-bottom: 18px; }
+  .comandi button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 7px 14px; cursor: pointer; font-size: 15px; text-align: left; }
+  .comandi button:hover { background: #f6f2f1; }
+  .pref label { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 0; font-size: 15px; cursor: pointer; }
+  .interruttore { appearance: none; -webkit-appearance: none; width: 40px; height: 24px; border-radius: 12px; background: rgba(0,0,0,.2); position: relative; cursor: pointer; transition: background .2s; flex: none; margin: 0; }
+  .interruttore::after { content: ""; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .interruttore:checked { background: var(--c-blu); } .interruttore:checked::after { transform: translateX(16px); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <div class="app">
+      <div class="banner" id="banner" role="status" aria-live="polite"></div>
+      <div class="testata"><span><span data-l="it">Progetti</span><span data-l="en">Projects</span><span data-l="fr">Projets</span><span data-l="zh">项目</span></span>
+        <button class="campana" id="campana" type="button" aria-expanded="true" aria-controls="centro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/><path d="M10 20.5a2 2 0 004 0" fill="none" stroke="#111" stroke-width="2"/></svg><span class="badge" id="badge"></span></button></div>
+      <div class="righe" aria-hidden="true"><i style="width:60%"></i><i></i><i style="width:85%"></i><i style="width:40%"></i><i></i><i style="width:70%"></i></div>
+      <div class="centro" id="centro"><header><span id="titolo"></span><button type="button" id="tutte"></button></header><ul id="lista"></ul></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Simula un evento</span><span data-l="en">Simulate an event</span><span data-l="fr">Simuler un événement</span><span data-l="zh">模拟事件</span></span>
+    <div class="comandi" id="comandi"></div>
+    <span class="didascalia"><span data-l="it">Preferenze</span><span data-l="en">Preferences</span><span data-l="fr">Préférences</span><span data-l="zh">偏好设置</span></span>
+    <div class="pref" id="pref"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Banner per l’evento, badge per il numero di non lette, centro notifiche per ritrovarle. Chi usa l’app sceglie cosa ricevere.</span><span data-l="en">A banner for the event, a badge for the unread count, a notification center to find them again. Users choose what they receive.</span><span data-l="fr">Une bannière pour l’événement, un badge pour les non-lues, un centre de notifications pour les retrouver. L’utilisateur choisit ce qu’il reçoit.</span><span data-l="zh">横幅提示事件，徽标显示未读数量，通知中心便于回看。用户可以选择接收哪些通知。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TIPI = {
+    commento: { c: '#e6ecff', i: '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z" fill="none" stroke="#698fff" stroke-width="2.2" stroke-linejoin="round"/></svg>', n: { it: 'Commenti', en: 'Comments', fr: 'Commentaires', zh: '评论' }, m: { it: 'Giulia ha commentato «Poster v3»', en: 'Giulia commented on “Poster v3”', fr: 'Giulia a commenté « Affiche v3 »', zh: 'Giulia 评论了“海报 v3”' } },
+    scadenza: { c: '#fdecec', i: '<svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" fill="none" stroke="#df8888" stroke-width="2.2"/><path d="M12 9v4l3 2" fill="none" stroke="#df8888" stroke-width="2.2" stroke-linecap="round"/></svg>', n: { it: 'Scadenze', en: 'Deadlines', fr: 'Échéances', zh: '截止日期' }, m: { it: 'Consegna dell’Assignment 1 domani', en: 'Assignment 1 due tomorrow', fr: 'Rendu du devoir 1 demain', zh: '作业 1 明天截止' } },
+    sistema: { c: '#f1efee', i: '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 4v3M12 17v3M4 12h3M17 12h3M6.3 6.3l2.1 2.1M15.6 15.6l2.1 2.1M6.3 17.7l2.1-2.1M15.6 8.4l2.1-2.1" stroke="#666" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="12" r="3" fill="#666"/></svg>', n: { it: 'Sistema', en: 'System', fr: 'Système', zh: '系统' }, m: { it: 'Nuova versione disponibile', en: 'New version available', fr: 'Nouvelle version disponible', zh: '有新版本可用' } }
+  };
+  var TX = { titolo: { it: 'Notifiche', en: 'Notifications', fr: 'Notifications', zh: '通知' }, tutte: { it: 'Segna tutte lette', en: 'Mark all read', fr: 'Tout marquer lu', zh: '全部标为已读' },
+    vuoto: { it: 'Nessuna notifica', en: 'No notifications', fr: 'Aucune notification', zh: '暂无通知' }, ora: { it: 'adesso', en: 'now', fr: 'à l’instant', zh: '刚刚' },
+    min: { it: '{n} min fa', en: '{n} min ago', fr: 'il y a {n} min', zh: '{n} 分钟前' }, silenzio: { it: '(silenziata: solo nel centro)', en: '(muted: centre only)', fr: '(muette : centre seulement)', zh: '（已静音：仅在通知中心）' } };
+  var attivi = { commento: true, scadenza: true, sistema: false };
+  var NOT = [{ k: 'commento', m: 3, l: false }, { k: 'scadenza', m: 40, l: false }, { k: 'sistema', m: 120, l: true }];
+  var timerB;
+  function quando(m) { return m ? t(TX.min).replace('{n}', m) : t(TX.ora); }
+  function disegna() {
+    var nl = NOT.filter(function (x) { return !x.l; }).length, b = document.getElementById('badge');
+    b.hidden = !nl; b.textContent = nl; document.getElementById('campana').setAttribute('aria-label', t(TX.titolo) + ': ' + nl);
+    document.getElementById('titolo').textContent = t(TX.titolo); document.getElementById('tutte').textContent = t(TX.tutte);
+    var ul = document.getElementById('lista'); ul.innerHTML = NOT.length ? '' : '<li class="vuoto">' + t(TX.vuoto) + '</li>';
+    NOT.forEach(function (x) {
+      var T = TIPI[x.k], li = document.createElement('li'); li.className = x.l ? 'letta' : ''; li.tabIndex = 0;
+      li.innerHTML = '<span class="ic" style="background:' + T.c + '" aria-hidden="true">' + T.i + '</span><span>' + t(T.m) + '<small>' + t(T.n) + ' · ' + quando(x.m) + '</small></span><span class="punto"></span>';
+      li.onclick = li.onkeydown = function (e) { if (e.type === 'keydown' && e.key !== 'Enter') return; x.l = true; disegna(); };
+      ul.appendChild(li);
+    });
+    document.getElementById('comandi').innerHTML = '';
+    Object.keys(TIPI).forEach(function (k) {
+      var btn = document.createElement('button'); btn.type = 'button'; btn.innerHTML = '<span style="display:inline-flex;vertical-align:-3px;margin-right:6px">' + TIPI[k].i + '</span>' + t(TIPI[k].n);
+      btn.onclick = function () { arriva(k); }; document.getElementById('comandi').appendChild(btn);
+    });
+    var pref = document.getElementById('pref'); pref.innerHTML = '';
+    Object.keys(TIPI).forEach(function (k) {
+      var l = document.createElement('label'); l.innerHTML = '<span>' + t(TIPI[k].n) + '</span>';
+      var c = document.createElement('input'); c.type = 'checkbox'; c.className = 'interruttore'; c.setAttribute('role', 'switch'); c.checked = attivi[k];
+      c.onchange = function () { attivi[k] = c.checked; }; l.appendChild(c); pref.appendChild(l);
+    });
+  }
+  function arriva(k) {
+    NOT.forEach(function (x) { x.m += 1; });
+    NOT.unshift({ k: k, m: 0, l: false }); if (NOT.length > 5) NOT.pop();
+    var ban = document.getElementById('banner');
+    if (attivi[k]) {
+      ban.innerHTML = '<span class="ic" style="background:' + TIPI[k].c + '" aria-hidden="true">' + TIPI[k].i + '</span><span>' + t(TIPI[k].m) + '<small>' + t(TIPI[k].n) + ' · ' + t(TX.ora) + '</small></span>';
+      ban.classList.add('su'); clearTimeout(timerB); timerB = setTimeout(function () { ban.classList.remove('su'); }, 2600);
+    }
+    disegna();
+  }
+  var campana = document.getElementById('campana'), centro = document.getElementById('centro');
+  campana.onclick = function () { centro.hidden = !centro.hidden; campana.setAttribute('aria-expanded', String(!centro.hidden)); };
+  document.getElementById('tutte').onclick = function () { NOT.forEach(function (x) { x.l = true; }); disegna(); };
+  disegna();
+  setTimeout(function () { arriva('commento'); }, 900);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

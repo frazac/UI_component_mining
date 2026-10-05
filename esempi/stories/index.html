@@ -1,0 +1,146 @@
+<!doctype html>
+<!-- Esempio ricostruito: Stories. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stories — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .riquadro { padding: 22px; }
+  .tel { width: 250px; height: 440px; margin: 0 auto; border: 8px solid #1d1d22; border-radius: 30px; overflow: hidden; position: relative; background: #fff; }
+  .cerchi { display: flex; gap: 10px; padding: 14px 10px 10px; border-bottom: 1px solid var(--c-linea); }
+  .cerchio { border: 0; background: none; padding: 0; cursor: pointer; display: grid; justify-items: center; gap: 4px; font-size: 13px; width: 50px; }
+  .anello { width: 50px; height: 50px; border-radius: 50%; padding: 2.5px; background: linear-gradient(135deg, rgb(250,145,145), rgb(105,143,255)); }
+  .anello.vista { background: rgba(0,0,0,.18); }
+  .anello span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid #fff; color: #fff; font-weight: 500; font-size: 15px; }
+  .cerchio:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 2px; border-radius: 8px; }
+  .feed { padding: 12px; display: grid; gap: 8px; }
+  .feed i { display: block; height: 120px; border-radius: 8px; background: var(--c-palco); }
+  .feed b { display: block; height: 8px; width: 70%; border-radius: 4px; background: rgba(0,0,0,.08); }
+  .visore { position: absolute; inset: 0; color: #fff; display: flex; flex-direction: column; }
+  .visore[hidden] { display: none; }
+  .barre { display: flex; gap: 3px; padding: 10px 8px 6px; position: relative; z-index: 2; }
+  .barre i { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.4); overflow: hidden; display: block; }
+  .barre i b { display: block; height: 100%; width: 0; background: #fff; }
+  .chi { display: flex; align-items: center; gap: 8px; padding: 0 10px; font-size: 14px; position: relative; z-index: 2; }
+  .chi .av { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; border: 1.5px solid #fff; }
+  .chi .chiudi { margin-left: auto; border: 0; background: none; color: #fff; font-size: 22px; cursor: pointer; width: 32px; height: 32px; }
+  .contenuto { flex: 1; display: grid; place-items: center; text-align: center; padding: 20px; font-size: 22px; font-weight: 500; line-height: 1.2; }
+  .zone { position: absolute; inset: 70px 0 0; display: flex; z-index: 1; }
+  .zone button { flex: 1; border: 0; background: none; cursor: pointer; }
+  .zone button:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+  .pausa-ic { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 54px; height: 54px; border-radius: 50%; background: rgba(0,0,0,.35); display: none; place-items: center; z-index: 2; pointer-events: none; }
+  .in-pausa .pausa-ic { display: grid; }
+  .spiega { display: grid; gap: 14px; font-size: 16px; }
+  .spiega div { display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: start; }
+  .spiega small { display: block; color: var(--c-tenue); font-size: 15px; }
+  .mini { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tocca un cerchio</span><span data-l="en">Tap a circle</span><span data-l="fr">Touchez un cercle</span><span data-l="zh">点一个圆圈</span></span>
+    <div class="tel">
+      <div class="cerchi" id="cerchi"></div>
+      <div class="feed" aria-hidden="true"><i></i><b></b><b style="width:50%"></b></div>
+      <div class="visore" id="visore" hidden role="dialog" aria-modal="true">
+        <div class="barre" id="barre"></div>
+        <div class="chi"><span class="av" id="v-av"></span><span id="v-nome"></span><button class="chiudi" type="button" id="chiudi" aria-label="Close">×</button></div>
+        <div class="contenuto" id="v-testo"></div>
+        <div class="zone"><button type="button" id="z-prec"></button><button type="button" id="z-succ"></button></div>
+        <span class="pausa-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 12 12"><rect x="2" y="1" width="3" height="10" fill="#fff"/><rect x="7" y="1" width="3" height="10" fill="#fff"/></svg></span>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Le regole del formato</span><span data-l="en">The rules of the format</span><span data-l="fr">Les règles du format</span><span data-l="zh">这种形式的规则</span></span>
+    <div class="spiega">
+      <div><span class="mini" style="background:linear-gradient(135deg,rgb(250,145,145),rgb(105,143,255))"></span><span><span data-l="it">Anello colorato</span><span data-l="en">Coloured ring</span><span data-l="fr">Anneau coloré</span><span data-l="zh">彩色圆环</span><small><span data-l="it">C’è qualcosa di nuovo da vedere.</span><span data-l="en">There is something new to see.</span><span data-l="fr">Il y a du nouveau à voir.</span><span data-l="zh">有新内容可看。</span></small></span></div>
+      <div><span class="mini" style="background:rgba(0,0,0,.18)"></span><span><span data-l="it">Anello grigio</span><span data-l="en">Grey ring</span><span data-l="fr">Anneau gris</span><span data-l="zh">灰色圆环</span><small><span data-l="it">Già visto.</span><span data-l="en">Already seen.</span><span data-l="fr">Déjà vu.</span><span data-l="zh">已看过。</span></small></span></div>
+      <div><span class="mini" style="background:var(--c-palco)"><svg width="20" height="8" viewBox="0 0 20 8"><rect y="2" width="6" height="3" rx="1.5" fill="#111"/><rect x="7" y="2" width="6" height="3" rx="1.5" fill="#111" opacity=".5"/><rect x="14" y="2" width="6" height="3" rx="1.5" fill="#111" opacity=".25"/></svg></span><span><span data-l="it">Barre in alto</span><span data-l="en">Bars at the top</span><span data-l="fr">Barres en haut</span><span data-l="zh">顶部进度条</span><small><span data-l="it">Quante storie e quanto manca.</span><span data-l="en">How many stories and how long is left.</span><span data-l="fr">Combien d’histoires et le temps restant.</span><span data-l="zh">共有几条、还剩多久。</span></small></span></div>
+      <div><span class="mini" style="background:var(--c-palco);font-size:15px">⇆</span><span><span data-l="it">Tocco a sinistra / destra</span><span data-l="en">Tap left / right</span><span data-l="fr">Toucher à gauche / droite</span><span data-l="zh">点左侧 / 右侧</span><small><span data-l="it">Indietro / avanti; tieni premuto per fermare.</span><span data-l="en">Back / forward; press and hold to pause.</span><span data-l="fr">Retour / suivant ; maintenir pour mettre en pause.</span><span data-l="zh">后退 / 前进；按住可暂停。</span></small></span></div>
+      <div><span class="mini" style="background:var(--c-palco);font-size:15px">24h</span><span><span data-l="it">Effimere</span><span data-l="en">Ephemeral</span><span data-l="fr">Éphémères</span><span data-l="zh">限时</span><small><span data-l="it">Di solito spariscono dopo un giorno.</span><span data-l="en">They usually disappear after a day.</span><span data-l="fr">Elles disparaissent en général après un jour.</span><span data-l="zh">通常一天后消失。</span></small></span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ricostruzione generica del formato nato con Snapchat e Instagram e poi copiato quasi ovunque. Con la tastiera: frecce ed Esc.</span><span data-l="en">Generic rebuild of the format born with Snapchat and Instagram and then copied almost everywhere. Keyboard: arrows and Esc.</span><span data-l="fr">Reconstruction générique du format né avec Snapchat et Instagram puis copié presque partout. Clavier : flèches et Échap.</span><span data-l="zh">对源自 Snapchat 和 Instagram、后来几乎处处可见的形式的通用重建。键盘：方向键与 Esc。</span></p>
+<script>
+  var PERSONE = [
+    { n: 'Sara', c: 'rgb(250,145,145)', s: [{ it: 'Prima bozza del poster!', en: 'First poster draft!', fr: 'Premier jet de l’affiche !', zh: '海报初稿！' }, { it: 'Seconda: più bianco', en: 'Second: more white', fr: 'Deuxième : plus de blanc', zh: '第二版：更多留白' }] },
+    { n: 'Luca', c: 'rgb(105,143,255)', s: [{ it: 'Lezione alle 10', en: 'Class at 10', fr: 'Cours à 10 h', zh: '10 点上课' }] },
+    { n: 'Ada', c: '#2c2c34', s: [{ it: 'Mostra aperta', en: 'Show is open', fr: 'L’expo est ouverte', zh: '展览开幕' }, { it: 'Venite!', en: 'Come by!', fr: 'Venez !', zh: '快来！' }, { it: 'Ultimo giorno', en: 'Last day', fr: 'Dernier jour', zh: '最后一天' }] },
+    { n: 'Teo', c: '#f0b47a', s: [{ it: 'Nuovo font', en: 'New typeface', fr: 'Nouvelle police', zh: '新字体' }] }
+  ];
+  var DUR = 3500, ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var p = -1, s = 0, t0 = 0, trascorso = 0, pausa = false, raf;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function cerchi() {
+    var box = document.getElementById('cerchi'); box.innerHTML = '';
+    PERSONE.forEach(function (x, k) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'cerchio';
+      b.innerHTML = '<span class="anello' + (x.vista ? ' vista' : '') + '"><span style="background:' + x.c + '">' + x.n[0] + '</span></span>' + x.n;
+      b.onclick = function () { apri(k); }; box.appendChild(b);
+    });
+  }
+  function apri(k, quieto) { p = k; s = 0; trascorso = 0; pausa = false; document.getElementById('visore').hidden = false; mostra(); if (!quieto) document.getElementById('z-succ').focus(); avvia(); }
+  function chiudi() { var k = p; p = -1; cancelAnimationFrame(raf); document.getElementById('visore').hidden = true; cerchi(); if (k >= 0 && document.activeElement !== document.body) document.querySelectorAll('.cerchio')[k].focus(); }
+  function mostra() {
+    var x = PERSONE[p], v = document.getElementById('visore');
+    v.style.background = 'linear-gradient(160deg,' + x.c + ', #1d1d22)';
+    document.getElementById('v-av').textContent = x.n[0]; document.getElementById('v-av').style.background = x.c;
+    document.getElementById('v-nome').textContent = x.n + ' · ' + (2 + p * 3) + ' h';
+    document.getElementById('v-testo').textContent = L(x.s[s]);
+    var b = document.getElementById('barre'); b.innerHTML = '';
+    x.s.forEach(function (q, j) { var i = document.createElement('i'); i.innerHTML = '<b style="width:' + (j < s ? 100 : 0) + '%"></b>'; b.appendChild(i); });
+  }
+  function avanti() { var x = PERSONE[p]; if (s < x.s.length - 1) { s++; } else { x.vista = true; if (p < PERSONE.length - 1) { p++; s = 0; } else return chiudi(); } trascorso = 0; mostra(); }
+  function indietro() { if (s > 0) s--; else if (p > 0) { p--; s = 0; } trascorso = 0; mostra(); }
+  function avvia() {
+    t0 = performance.now() - trascorso;
+    cancelAnimationFrame(raf);
+    (function passo(now) {
+      if (p < 0) return;
+      if (!pausa && !ridotto) {
+        trascorso = now - t0;
+        var bar = document.querySelectorAll('#barre b')[s]; if (bar) bar.style.width = Math.min(100, trascorso / DUR * 100) + '%';
+        if (trascorso >= DUR) { avanti(); t0 = now; trascorso = 0; }
+      } else t0 = now - trascorso;
+      if (ridotto) { var b2 = document.querySelectorAll('#barre b')[s]; if (b2) b2.style.width = '100%'; }
+      raf = requestAnimationFrame(passo);
+    })(performance.now());
+  }
+  function fermo(v) { pausa = v; document.getElementById('visore').classList.toggle('in-pausa', v); }
+  document.getElementById('z-prec').onclick = indietro;
+  document.getElementById('z-succ').onclick = avanti;
+  ['z-prec', 'z-succ'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('pointerdown', function () { el._t = setTimeout(function () { fermo(true); el._lungo = true; }, 250); });
+    el.addEventListener('pointerup', function (e) { clearTimeout(el._t); if (el._lungo) { el._lungo = false; fermo(false); e.preventDefault(); el._salta = true; } });
+    el.addEventListener('click', function (e) { if (el._salta) { el._salta = false; e.stopImmediatePropagation(); } }, true);
+  });
+  document.getElementById('chiudi').onclick = chiudi;
+  document.addEventListener('keydown', function (e) {
+    if (p < 0) return;
+    if (e.key === 'Escape') chiudi();
+    if (e.key === 'ArrowRight') avanti();
+    if (e.key === 'ArrowLeft') indietro();
+    if (e.key === ' ') { e.preventDefault(); fermo(!pausa); }
+  });
+  function etichette() {
+    document.getElementById('z-prec').setAttribute('aria-label', L({ it: 'Storia precedente', en: 'Previous story', fr: 'Histoire précédente', zh: '上一条' }));
+    document.getElementById('z-succ').setAttribute('aria-label', L({ it: 'Storia successiva', en: 'Next story', fr: 'Histoire suivante', zh: '下一条' }));
+    if (p >= 0) mostra();
+  }
+  PERSONE[3].vista = true;
+  cerchi(); etichette();
+  // all'apertura della pagina si vede già una storia in corso
+  apri(0, true); s = 1; trascorso = DUR * 0.4; mostra(); avvia();
+  document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>

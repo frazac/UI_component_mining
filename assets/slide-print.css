@@ -1,0 +1,10 @@
+/* Slide in stampa / PDF: una per pagina, 1280 × 720 px, senza margini (licenza MIT). */
+@page { size: 1280px 720px; margin: 0; }
+html, body { background: var(--c-fondo); scroll-snap-type: none; }
+.slide {
+  width: 1280px; height: 720px; aspect-ratio: auto; margin: 0; break-after: page; break-inside: avoid;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+}
+.slide + .slide { margin-top: 0; }
+.slide:last-child { break-after: auto; }
+.s-componente .esempio iframe { width: 100%; height: 100%; transform: none; }

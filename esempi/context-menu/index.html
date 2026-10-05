@@ -1,0 +1,124 @@
+<!doctype html>
+<!-- Esempio ricostruito: Contextual menu. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contextual menu — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .area { position: relative; min-height: 330px; }
+  .file { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .file button { width: 100%; border: 0; background: none; border-radius: 10px; padding: 14px 8px 10px; display: flex; flex-direction: column;
+    align-items: center; gap: 8px; cursor: default; font-size: 15px; -webkit-user-select: none; user-select: none; }
+  .file button:hover { background: #f6f2f1; }
+  .file button[aria-selected="true"] { background: #e6ecff; }
+  .file svg { width: 54px; height: 64px; }
+  .menu { position: absolute; z-index: 5; min-width: 230px; margin: 0; padding: 6px; list-style: none; background: #fff; border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--c-linea), 0 12px 32px rgba(0,0,0,.18); font-size: 16px; animation: apri .12s ease-out; }
+  @keyframes apri { from { opacity: 0; transform: scale(.96); } }
+  .menu[hidden] { display: none; }
+  .menu li[role="menuitem"] { display: flex; justify-content: space-between; gap: 24px; padding: 7px 12px; border-radius: 6px; cursor: default; outline: none; }
+  .menu li[role="menuitem"]:hover, .menu li[role="menuitem"]:focus { background: var(--c-blu); color: #fff; }
+  .menu li[role="menuitem"]:hover kbd, .menu li[role="menuitem"]:focus kbd { color: #fff; }
+  .menu li[aria-disabled="true"] { color: rgba(0,0,0,.32); }
+  .menu li[aria-disabled="true"]:hover, .menu li[aria-disabled="true"]:focus { background: #f3f3f3; color: rgba(0,0,0,.32); }
+  .menu li.pericolo { color: #c0392b; }
+  .menu li.pericolo:hover, .menu li.pericolo:focus { background: #c0392b; color: #fff; }
+  .menu kbd { font: inherit; font-size: 15px; color: var(--c-tenue); }
+  .menu li[role="separator"] { height: 1px; background: var(--c-linea); margin: 5px 6px; }
+  .esito { margin: 18px 0 0; min-height: 22px; font-size: 15px; color: var(--c-tenue); text-align: center; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Clic destro (o pressione prolungata) su un file</span><span data-l="en">Right-click (or long press) a file</span><span data-l="fr">Clic droit (ou appui long) sur un fichier</span><span data-l="zh">右键点击（或长按）一个文件</span></span>
+    <div class="area" id="area">
+      <ul class="file" id="file" role="listbox" aria-label="Files"></ul>
+      <ul class="menu" id="menu" role="menu" hidden></ul>
+    </div>
+    <p class="esito" id="esito" aria-live="polite"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Da tastiera: seleziona un file con Tab e premi Maiusc+F10; frecce per scorrere, Invio per scegliere, Esc per chiudere.</span><span data-l="en">Keyboard: Tab to a file and press Shift+F10; arrows to move, Enter to choose, Esc to close.</span><span data-l="fr">Au clavier : Tab jusqu’à un fichier puis Maj+F10 ; flèches pour parcourir, Entrée pour choisir, Échap pour fermer.</span><span data-l="zh">键盘：用 Tab 选中文件后按 Shift+F10；方向键移动，回车选择，Esc 关闭。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var FILE = [
+    { it: 'Relazione.doc', en: 'Report.doc', fr: 'Rapport.doc', zh: '报告.doc', c: '#698fff' },
+    { it: 'Locandina.png', en: 'Poster.png', fr: 'Affiche.png', zh: '海报.png', c: '#fa9191' },
+    { it: 'Bilancio.xls', en: 'Budget.xls', fr: 'Budget.xls', zh: '预算.xls', c: '#5bb98c' },
+    { it: 'Intervista.mp3', en: 'Interview.mp3', fr: 'Entretien.mp3', zh: '访谈.mp3', c: '#c49bff' },
+    { it: 'Note.txt', en: 'Notes.txt', fr: 'Notes.txt', zh: '笔记.txt', c: '#999' },
+    { it: 'Prototipo.html', en: 'Prototype.html', fr: 'Prototype.html', zh: '原型.html', c: '#df8888' }
+  ];
+  var VOCI = [
+    { id: 'apri', it: 'Apri', en: 'Open', fr: 'Ouvrir', zh: '打开', k: '↵' },
+    { id: 'copia', it: 'Copia', en: 'Copy', fr: 'Copier', zh: '复制', k: '⌘C' },
+    { id: 'incolla', it: 'Incolla', en: 'Paste', fr: 'Coller', zh: '粘贴', k: '⌘V', off: true },
+    { id: 'rinomina', it: 'Rinomina…', en: 'Rename…', fr: 'Renommer…', zh: '重命名…', k: 'F2' },
+    { id: 'duplica', it: 'Duplica', en: 'Duplicate', fr: 'Dupliquer', zh: '创建副本', k: '⌘D' },
+    '-',
+    { id: 'elimina', it: 'Sposta nel cestino', en: 'Move to bin', fr: 'Mettre à la corbeille', zh: '移到废纸篓', k: '⌫', pericolo: true }
+  ];
+  var ESITO = { it: '«{a}» su {f}', en: '“{a}” on {f}', fr: '« {a} » sur {f}', zh: '对 {f} 执行“{a}”' };
+  var scelto = 1, aperto = true, pos = { x: 250, y: 120 }, ultimo = '';
+  var area = document.getElementById('area'), menu = document.getElementById('menu');
+  function icona(c) {
+    return '<svg viewBox="0 0 54 64" aria-hidden="true"><path d="M4 4h32l14 14v42H4z" fill="#fff" stroke="' + c + '" stroke-width="3" stroke-linejoin="round"/><path d="M36 4v14h14" fill="none" stroke="' + c + '" stroke-width="3" stroke-linejoin="round"/><rect x="12" y="30" width="30" height="4" rx="2" fill="' + c + '" opacity=".5"/><rect x="12" y="40" width="22" height="4" rx="2" fill="' + c + '" opacity=".5"/></svg>';
+  }
+  function disegna() {
+    var ul = document.getElementById('file'); ul.innerHTML = '';
+    FILE.forEach(function (f, i) {
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'option'); b.setAttribute('aria-selected', String(i === scelto));
+      b.setAttribute('aria-haspopup', 'menu');
+      b.innerHTML = icona(f.c) + '<span>' + t(f) + '</span>';
+      b.onclick = function () { scelto = i; chiudi(); disegna(); };
+      b.oncontextmenu = function (ev) { ev.preventDefault(); var r = area.getBoundingClientRect(); apri(i, ev.clientX - r.left, ev.clientY - r.top); };
+      b.onkeydown = function (ev) { if ((ev.shiftKey && ev.key === 'F10') || ev.key === 'ContextMenu') { ev.preventDefault(); apri(i, b.offsetLeft + b.offsetWidth / 2, b.offsetTop + b.offsetHeight / 2, true); } };
+      var timer; b.addEventListener('touchstart', function (ev) { var p = ev.touches[0]; timer = setTimeout(function () { var r = area.getBoundingClientRect(); apri(i, p.clientX - r.left, p.clientY - r.top); }, 500); }, { passive: true });
+      b.addEventListener('touchend', function () { clearTimeout(timer); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    disegnaMenu();
+    document.getElementById('esito').textContent = ultimo ? ESITO[Lingua.get()].replace('{a}', t(ultimo.v)).replace('{f}', t(FILE[ultimo.f])) : '';
+  }
+  function disegnaMenu() {
+    menu.innerHTML = '';
+    VOCI.forEach(function (v) {
+      var li = document.createElement('li');
+      if (v === '-') { li.setAttribute('role', 'separator'); menu.appendChild(li); return; }
+      li.setAttribute('role', 'menuitem'); li.tabIndex = -1;
+      if (v.off) li.setAttribute('aria-disabled', 'true');
+      if (v.pericolo) li.className = 'pericolo';
+      li.innerHTML = '<span>' + t(v) + '</span><kbd>' + v.k + '</kbd>';
+      li.onclick = function () { if (v.off) return; ultimo = { v: v, f: scelto }; var f = scelto; chiudi(); disegna(); focusFile(f); };
+      menu.appendChild(li);
+    });
+    menu.hidden = !aperto;
+    if (aperto) {
+      var w = 240, h = 260, x = Math.min(pos.x, area.clientWidth - w), y = Math.min(pos.y, area.clientHeight - h + 40);
+      menu.style.left = Math.max(0, x) + 'px'; menu.style.top = Math.max(0, y) + 'px';
+    }
+  }
+  function voci() { return Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]')); }
+  function apri(i, x, y, tastiera) { scelto = i; aperto = true; pos = { x: x, y: y }; disegna(); var v = voci(); (v[0]).focus(); }
+  function chiudi() { aperto = false; menu.hidden = true; }
+  function focusFile(i) { var b = document.querySelectorAll('#file button')[i]; if (b) b.focus(); }
+  menu.addEventListener('keydown', function (ev) {
+    var v = voci(), i = v.indexOf(document.activeElement);
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); v[(i + 1) % v.length].focus(); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); v[(i - 1 + v.length) % v.length].focus(); }
+    else if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); document.activeElement.click(); }
+    else if (ev.key === 'Escape' || ev.key === 'Tab') { ev.preventDefault(); var f = scelto; chiudi(); focusFile(f); }
+  });
+  document.addEventListener('mousedown', function (ev) { if (aperto && !menu.contains(ev.target)) { chiudi(); } });
+  area.addEventListener('contextmenu', function (ev) { if (!ev.target.closest('#file button')) ev.preventDefault(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- Esempio ricostruito: Colour picker. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colour picker — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 640px; }
+  .pannello { display: grid; grid-template-columns: 260px 30px 1fr; gap: 18px; align-items: start; }
+  .sv { position: relative; width: 260px; height: 260px; border-radius: 8px; cursor: crosshair; touch-action: none;
+    background: linear-gradient(to top, #000, transparent), linear-gradient(to right, #fff, transparent); }
+  .tinta { position: relative; width: 30px; height: 260px; border-radius: 8px; cursor: ns-resize; touch-action: none;
+    background: linear-gradient(to bottom, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00); }
+  .mirino { position: absolute; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4), inset 0 0 0 1px rgba(0,0,0,.3); pointer-events: none; }
+  .cursore { position: absolute; left: -3px; right: -3px; height: 8px; margin-top: -4px; border-radius: 4px; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.4); pointer-events: none; }
+  .sv:focus-visible, .tinta:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 3px; }
+  .lato { display: flex; flex-direction: column; gap: 12px; font-size: 15px; }
+  .confronto { display: flex; height: 52px; border-radius: 8px; overflow: hidden; border: 1px solid var(--c-linea); }
+  .confronto span { flex: 1; display: flex; align-items: flex-end; padding: 4px 6px; font-size: 13px; }
+  .valori { display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; align-items: center; }
+  .valori input { width: 100%; border: 1.5px solid #cfc9c7; border-radius: 6px; padding: 5px 8px; font: 15px/1.2 ui-monospace, Menlo, monospace; }
+  .valori input:focus { outline: none; border-color: var(--c-blu); }
+  .valori input[aria-invalid="true"] { border-color: #c0392b; }
+  .valori label { color: var(--c-tenue); }
+  .campioni { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .campioni button { aspect-ratio: 1; border: 1px solid rgba(0,0,0,.12); border-radius: 6px; cursor: pointer; padding: 0; }
+  .campioni button:hover { transform: scale(1.1); }
+  .contrasto { font-size: 15px; padding: 6px 10px; border-radius: 6px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Trascina nel quadrato e sulla barra della tinta, o usa le frecce</span><span data-l="en">Drag in the square and on the hue bar, or use the arrow keys</span><span data-l="fr">Faites glisser dans le carré et sur la barre de teinte, ou utilisez les flèches</span><span data-l="zh">在方块和色相条上拖动，或使用方向键</span></span>
+    <div class="pannello">
+      <div class="sv" id="sv" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100"><span class="mirino" id="mirino"></span></div>
+      <div class="tinta" id="tinta" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="360"><span class="cursore" id="cursore"></span></div>
+      <div class="lato">
+        <div class="confronto"><span id="nuovo"><span data-l="it">nuovo</span><span data-l="en">new</span><span data-l="fr">nouveau</span><span data-l="zh">新</span></span><span id="prima" style="background:rgb(250,145,145)"><span data-l="it">attuale</span><span data-l="en">current</span><span data-l="fr">actuel</span><span data-l="zh">当前</span></span></div>
+        <div class="valori">
+          <label for="hex">HEX</label><input id="hex" spellcheck="false">
+          <label for="rgb">RGB</label><input id="rgb" readonly>
+          <label for="hsb">HSB</label><input id="hsb" readonly>
+        </div>
+        <div class="campioni" id="campioni"></div>
+        <div class="contrasto" id="contrasto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Come nelle suite grafiche: tinta su una barra, saturazione e luminosità in un quadrato, valori numerici modificabili, campioni salvati.</span><span data-l="en">As in graphics suites: hue on a bar, saturation and brightness in a square, editable numeric values, saved swatches.</span><span data-l="fr">Comme dans les suites graphiques : la teinte sur une barre, saturation et luminosité dans un carré, valeurs numériques modifiables, nuancier.</span><span data-l="zh">与图形软件类似：色相在色条上，饱和度和亮度在方块里，可编辑数值，以及保存的色板。</span></p>
+<script>
+  var h = 0, s = 42, v = 98;
+  var CAMP = ['#fa9191', '#df8888', '#698fff', '#111111', '#f3efee', '#2f9a52', '#e08a2c', '#ffd166', '#06d6a0', '#8338ec', '#ffffff', '#7a7a7a'];
+  var TESTO = { it: 'Testo nero', en: 'Black text', fr: 'Texte noir', zh: '黑色文字' }, TESTOB = { it: 'Testo bianco', en: 'White text', fr: 'Texte blanc', zh: '白色文字' };
+  function rgb() { var S = s / 100, V = v / 100, f = function (n) { var k = (n + h / 60) % 6; return Math.round(255 * (V - V * S * Math.max(0, Math.min(k, 4 - k, 1)))); }; return [f(5), f(3), f(1)]; }
+  function hex(c) { return '#' + c.map(function (x) { return x.toString(16).padStart(2, '0'); }).join(''); }
+  function daRgb(r, g, b) { r /= 255; g /= 255; b /= 255; var M = Math.max(r, g, b), m = Math.min(r, g, b), d = M - m, hh = 0;
+    if (d) hh = M === r ? ((g - b) / d) % 6 : M === g ? (b - r) / d + 2 : (r - g) / d + 4; h = Math.round((hh * 60 + 360) % 360); s = Math.round(M ? d / M * 100 : 0); v = Math.round(M * 100); }
+  function lum(c) { var a = c.map(function (x) { x /= 255; return x <= .03928 ? x / 12.92 : Math.pow((x + .055) / 1.055, 2.4); }); return .2126 * a[0] + .7152 * a[1] + .0722 * a[2]; }
+  function disegna(daHex) {
+    var c = rgb(), H = hex(c);
+    document.getElementById('sv').style.backgroundColor = 'hsl(' + h + ',100%,50%)';
+    var m = document.getElementById('mirino'); m.style.left = s + '%'; m.style.top = (100 - v) + '%'; m.style.background = H;
+    document.getElementById('cursore').style.top = (h / 360 * 100) + '%';
+    document.getElementById('nuovo').style.background = H;
+    var L = lum(c); document.getElementById('nuovo').style.color = L > .35 ? '#111' : '#fff';
+    if (!daHex) { document.getElementById('hex').value = H; document.getElementById('hex').removeAttribute('aria-invalid'); }
+    document.getElementById('rgb').value = c.join(', ');
+    document.getElementById('hsb').value = h + '°, ' + s + '%, ' + v + '%';
+    document.getElementById('sv').setAttribute('aria-valuetext', 'S ' + s + '%, B ' + v + '%');
+    document.getElementById('tinta').setAttribute('aria-valuenow', h);
+    var lg = window.Lingua ? Lingua.get() : 'en', cn = (1.05) / (L + .05), cb = (L + .05) / .05, k = document.getElementById('contrasto');
+    k.style.background = H; k.style.color = cn > cb ? '#fff' : '#111';
+    k.textContent = (cn > cb ? TESTOB[lg] : TESTO[lg]) + ' · ' + Math.max(cn, cb).toFixed(1) + ':1';
+  }
+  function trascina(el, fn) {
+    el.addEventListener('pointerdown', function (ev) { el.setPointerCapture(ev.pointerId); fn(ev); el.focus(); });
+    el.addEventListener('pointermove', function (ev) { if (el.hasPointerCapture(ev.pointerId)) fn(ev); });
+  }
+  function lim(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  trascina(document.getElementById('sv'), function (ev) { var r = ev.currentTarget.getBoundingClientRect(); s = Math.round(lim((ev.clientX - r.left) / r.width, 0, 1) * 100); v = Math.round(100 - lim((ev.clientY - r.top) / r.height, 0, 1) * 100); disegna(); });
+  trascina(document.getElementById('tinta'), function (ev) { var r = ev.currentTarget.getBoundingClientRect(); h = Math.round(lim((ev.clientY - r.top) / r.height, 0, 1) * 359); disegna(); });
+  document.getElementById('sv').addEventListener('keydown', function (ev) { var d = { ArrowLeft: [-2, 0], ArrowRight: [2, 0], ArrowUp: [0, 2], ArrowDown: [0, -2] }[ev.key]; if (!d) return; ev.preventDefault(); s = lim(s + d[0], 0, 100); v = lim(v + d[1], 0, 100); disegna(); });
+  document.getElementById('tinta').addEventListener('keydown', function (ev) { var d = { ArrowUp: -3, ArrowDown: 3 }[ev.key]; if (!d) return; ev.preventDefault(); h = (h + d + 360) % 360; disegna(); });
+  document.getElementById('hex').addEventListener('input', function () {
+    var m = this.value.trim().match(/^#?([0-9a-f]{6})$/i);
+    this.setAttribute('aria-invalid', String(!m)); if (m) { var n = parseInt(m[1], 16); daRgb(n >> 16, (n >> 8) & 255, n & 255); disegna(true); }
+  });
+  CAMP.forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.style.background = c; b.setAttribute('aria-label', c); b.title = c;
+    b.onclick = function () { var n = parseInt(c.slice(1), 16); daRgb(n >> 16, (n >> 8) & 255, n & 255); disegna(); }; document.getElementById('campioni').appendChild(b); });
+  daRgb(250, 145, 145); h = 200; disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

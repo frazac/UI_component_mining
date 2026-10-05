@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- Esempio ricostruito: Atomic design. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atomic design — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .scala { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; align-items: stretch; }
+  .gradino { border: 1px solid var(--c-linea); border-radius: 10px; background: #fff; padding: 10px 8px 12px; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; transition: border-color .2s, box-shadow .2s, transform .2s; position: relative; }
+  .gradino:hover { border-color: var(--c-salmone); }
+  .gradino[aria-pressed="true"] { border-color: var(--c-salmone); box-shadow: 0 0 0 3px var(--c-salmone) inset; }
+  .gradino + .gradino::before { content: "→"; position: absolute; left: -11px; top: 44px; color: var(--c-tenue); font-size: 15px; transform: translateX(-50%); }
+  .disegno { height: 92px; width: 100%; display: flex; align-items: center; justify-content: center; }
+  .disegno svg { width: 100%; height: 92px; }
+  .nome { font-size: 16px; font-weight: 500; }
+  .num { font-size: 13px; color: var(--c-tenue); }
+  .spiega { margin-top: 18px; min-height: 96px; font-size: 16px; line-height: 1.45; }
+  .spiega h2 { margin: 0 0 4px; font-size: 20px; font-weight: 500; color: var(--c-rosa); }
+  .spiega p { margin: 0; }
+  .grafico { display: grid; grid-template-columns: 1fr; }
+  .chimica { display: flex; gap: 14px; justify-content: center; align-items: center; font-size: 15px; color: var(--c-tenue); margin-top: 6px; }
+  .chimica b { color: var(--c-blu); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Dalle parti più piccole all’interfaccia completa</span><span data-l="en">From the smallest parts to the whole interface</span><span data-l="fr">Des plus petites parties à l’interface complète</span><span data-l="zh">从最小的部件到完整的界面</span></span>
+    <div class="scala" id="scala">
+      <button class="gradino" data-i="0" aria-pressed="true">
+        <span class="disegno"><svg viewBox="0 0 110 92" aria-hidden="true">
+          <rect x="12" y="10" width="40" height="8" rx="2" fill="#111"/>
+          <rect x="12" y="30" width="86" height="20" rx="5" fill="none" stroke="#999" stroke-width="1.5"/>
+          <rect x="12" y="62" width="44" height="20" rx="10" fill="rgb(105,143,255)"/>
+          <circle cx="82" cy="72" r="9" fill="rgb(250,145,145)"/></svg></span>
+        <span class="num">1</span>
+        <span class="nome"><span data-l="it">Atomi</span><span data-l="en">Atoms</span><span data-l="fr">Atomes</span><span data-l="zh">原子</span></span>
+      </button>
+      <button class="gradino" data-i="1" aria-pressed="false">
+        <span class="disegno"><svg viewBox="0 0 110 92" aria-hidden="true">
+          <rect x="6" y="22" width="98" height="48" rx="8" fill="#f3efee"/>
+          <rect x="12" y="30" width="40" height="7" rx="2" fill="#111"/>
+          <rect x="12" y="44" width="58" height="18" rx="5" fill="#fff" stroke="#999" stroke-width="1.5"/>
+          <rect x="74" y="44" width="24" height="18" rx="9" fill="rgb(105,143,255)"/></svg></span>
+        <span class="num">2</span>
+        <span class="nome"><span data-l="it">Molecole</span><span data-l="en">Molecules</span><span data-l="fr">Molécules</span><span data-l="zh">分子</span></span>
+      </button>
+      <button class="gradino" data-i="2" aria-pressed="false">
+        <span class="disegno"><svg viewBox="0 0 110 92" aria-hidden="true">
+          <rect x="4" y="28" width="102" height="36" rx="6" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+          <circle cx="16" cy="46" r="6" fill="rgb(250,145,145)"/>
+          <rect x="27" y="43" width="12" height="5" rx="2" fill="#111"/><rect x="42" y="43" width="12" height="5" rx="2" fill="#111"/>
+          <rect x="60" y="38" width="44" height="16" rx="8" fill="#f3efee" stroke="#ccc"/>
+          <rect x="88" y="41" width="13" height="10" rx="5" fill="rgb(105,143,255)"/></svg></span>
+        <span class="num">3</span>
+        <span class="nome"><span data-l="it">Organismi</span><span data-l="en">Organisms</span><span data-l="fr">Organismes</span><span data-l="zh">有机体</span></span>
+      </button>
+      <button class="gradino" data-i="3" aria-pressed="false">
+        <span class="disegno"><svg viewBox="0 0 110 92" aria-hidden="true">
+          <rect x="18" y="4" width="74" height="84" rx="5" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+          <rect x="24" y="10" width="62" height="10" rx="2" fill="none" stroke="#999" stroke-dasharray="3 2"/>
+          <rect x="24" y="26" width="62" height="26" rx="2" fill="none" stroke="#999" stroke-dasharray="3 2"/>
+          <rect x="24" y="58" width="29" height="24" rx="2" fill="none" stroke="#999" stroke-dasharray="3 2"/>
+          <rect x="57" y="58" width="29" height="24" rx="2" fill="none" stroke="#999" stroke-dasharray="3 2"/></svg></span>
+        <span class="num">4</span>
+        <span class="nome"><span data-l="it">Template</span><span data-l="en">Templates</span><span data-l="fr">Gabarits</span><span data-l="zh">模板</span></span>
+      </button>
+      <button class="gradino" data-i="4" aria-pressed="false">
+        <span class="disegno"><svg viewBox="0 0 110 92" aria-hidden="true">
+          <rect x="18" y="4" width="74" height="84" rx="5" fill="#fff" stroke="#bbb" stroke-width="1.5"/>
+          <rect x="24" y="10" width="62" height="10" rx="2" fill="#f3efee"/><circle cx="29" cy="15" r="3" fill="rgb(250,145,145)"/>
+          <rect x="24" y="26" width="62" height="26" rx="2" fill="rgb(223,136,136)"/>
+          <path d="M28 48 L42 36 L52 44 L60 38 L82 48 Z" fill="#fff" opacity=".7"/>
+          <rect x="24" y="58" width="29" height="13" rx="2" fill="rgb(105,143,255)"/><rect x="24" y="74" width="22" height="4" rx="1" fill="#111"/>
+          <rect x="57" y="58" width="29" height="13" rx="2" fill="rgb(250,145,145)"/><rect x="57" y="74" width="20" height="4" rx="1" fill="#111"/></svg></span>
+        <span class="num">5</span>
+        <span class="nome"><span data-l="it">Pagine</span><span data-l="en">Pages</span><span data-l="fr">Pages</span><span data-l="zh">页面</span></span>
+      </button>
+    </div>
+    <div class="spiega" id="spiega" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">La metafora chimica</span><span data-l="en">The chemistry metaphor</span><span data-l="fr">La métaphore chimique</span><span data-l="zh">化学隐喻</span></span>
+    <div class="chimica">
+      <span><b>H</b> + <b>O</b></span><span>→</span><span><b>H₂O</b></span><span>→</span>
+      <span><span data-l="it">etichetta + campo + pulsante → modulo di ricerca</span><span data-l="en">label + input + button → search form</span><span data-l="fr">libellé + champ + bouton → formulaire de recherche</span><span data-l="zh">标签 + 输入框 + 按钮 → 搜索表单</span></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Da Brad Frost, «Atomic Design». Gli atomi e le molecole sono componenti; template e pagine li mettono in contesto.</span><span data-l="en">After Brad Frost, “Atomic Design”. Atoms and molecules are components; templates and pages put them in context.</span><span data-l="fr">D’après Brad Frost, « Atomic Design ». Les atomes et les molécules sont des composants ; gabarits et pages les mettent en contexte.</span><span data-l="zh">参考 Brad Frost《Atomic Design》。原子和分子是组件；模板和页面把它们放进具体语境。</span></p>
+<script>
+  var TESTI = [
+    { it: ['Atomi', 'I mattoni più piccoli: un’etichetta, un campo di input, un pulsante, un colore. Da soli dicono poco.'],
+      en: ['Atoms', 'The smallest building blocks: a label, an input, a button, a colour. On their own they say little.'],
+      fr: ['Atomes', 'Les plus petites briques : un libellé, un champ, un bouton, une couleur. Seuls, ils disent peu de chose.'],
+      zh: ['原子', '最小的构建单元：一个标签、一个输入框、一个按钮、一种颜色。单独存在时意义有限。'] },
+    { it: ['Molecole', 'Semplici gruppi di atomi che lavorano insieme: etichetta, campo e pulsante diventano un modulo di ricerca.'],
+      en: ['Molecules', 'Simple groups of atoms working together: label, input and button become a search form.'],
+      fr: ['Molécules', 'De simples groupes d’atomes qui fonctionnent ensemble : libellé, champ et bouton deviennent un formulaire de recherche.'],
+      zh: ['分子', '协同工作的简单原子组合：标签、输入框和按钮组成一个搜索表单。'] },
+    { it: ['Organismi', 'Sezioni complesse fatte di molecole e atomi: un’intestazione con logo, navigazione e ricerca.'],
+      en: ['Organisms', 'Complex sections made of molecules and atoms: a header with logo, navigation and search.'],
+      fr: ['Organismes', 'Des sections complexes faites de molécules et d’atomes : un en-tête avec logo, navigation et recherche.'],
+      zh: ['有机体', '由分子和原子构成的复杂区块：带有标志、导航和搜索的页眉。'] },
+    { it: ['Template', 'La struttura della pagina, senza contenuti reali: dove vanno gli organismi e quanto spazio occupano.'],
+      en: ['Templates', 'The page structure without real content: where the organisms go and how much room they take.'],
+      fr: ['Gabarits', 'La structure de la page sans contenu réel : où vont les organismes et quelle place ils occupent.'],
+      zh: ['模板', '没有真实内容的页面结构：有机体放在哪里、占多大空间。'] },
+    { it: ['Pagine', 'Il template con contenuti reali (testi, immagini): qui si verifica se il sistema regge.'],
+      en: ['Pages', 'The template with real content (text, images): this is where you test whether the system holds up.'],
+      fr: ['Pages', 'Le gabarit avec un contenu réel (textes, images) : c’est là qu’on vérifie si le système tient.'],
+      zh: ['页面', '填入真实内容（文字、图片）的模板：在这里检验整个系统是否经得起考验。'] }
+  ];
+  var scelto = 0;
+  function disegna() {
+    var l = window.Lingua ? Lingua.get() : 'en', t = TESTI[scelto][l];
+    document.getElementById('spiega').innerHTML = '<h2></h2><p></p>';
+    document.querySelector('#spiega h2').textContent = (scelto + 1) + ' · ' + t[0];
+    document.querySelector('#spiega p').textContent = t[1];
+    document.querySelectorAll('.gradino').forEach(function (b, i) { b.setAttribute('aria-pressed', String(i === scelto)); });
+  }
+  document.querySelectorAll('.gradino').forEach(function (b, i) {
+    b.addEventListener('click', function () { scelto = i; disegna(); });
+    b.addEventListener('mouseenter', function () { scelto = i; disegna(); });
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

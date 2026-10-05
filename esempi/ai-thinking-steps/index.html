@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Esempio ricostruito: AI "thinking" and process-step feedback. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI thinking steps — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .chat { height: 500px; display: flex; flex-direction: column; }
+  .flusso { flex: 1; overflow: hidden; }
+  .domanda { margin-left: auto; max-width: 80%; width: fit-content; background: var(--c-palco); border-radius: 18px 18px 4px 18px; padding: 10px 14px; font-size: 16px; }
+  .risposta { display: grid; grid-template-columns: 28px 1fr; gap: 12px; margin-top: 16px; }
+  .logo { width: 28px; height: 28px; border-radius: 8px; background: var(--c-salmone); display: grid; place-items: center; }
+  .logo.pensa svg { animation: gira 2s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .puntini { display: inline-flex; gap: 5px; padding: 10px 0; }
+  .puntini i { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.45); animation: salta 1.2s infinite; }
+  .puntini i:nth-child(2) { animation-delay: .15s; } .puntini i:nth-child(3) { animation-delay: .3s; }
+  @keyframes salta { 0%, 60%, 100% { transform: none; opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+  .riassunto { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; padding: 4px 0; font-size: 15px; color: var(--c-tenue); cursor: pointer; }
+  .riassunto:hover { color: #111; }
+  .riassunto svg { transition: transform .2s; }
+  .riassunto[aria-expanded="false"] svg { transform: rotate(-90deg); }
+  .fasi { list-style: none; margin: 6px 0 10px; padding: 0 0 0 4px; border-left: 2px solid var(--c-linea); }
+  .fasi[hidden] { display: none; }
+  .fasi li { display: flex; align-items: center; gap: 10px; padding: 5px 0 5px 12px; font-size: 15px; color: var(--c-tenue); animation: entra .25s ease-out; }
+  .fasi li.ora { color: #111; }
+  .fasi li.ora span:last-child { background: linear-gradient(90deg, #111 0 40%, rgba(0,0,0,.35) 50%, #111 60% 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: scorre 1.6s linear infinite; }
+  @keyframes scorre { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+  @keyframes entra { from { opacity: 0; transform: translateY(-4px); } }
+  .segno { width: 18px; height: 18px; flex: none; display: grid; place-items: center; }
+  .anello { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--c-linea); border-top-color: var(--c-blu); animation: gira .8s linear infinite; }
+  .fonti { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 40px; }
+  .fonti span { font-size: 15px; background: var(--c-palco); border-radius: 9999px; padding: 2px 10px; color: rgba(0,0,0,.65); }
+  .testo { font-size: 16px; line-height: 1.5; }
+  .testo p { margin: 0 0 8px; }
+  .comandi { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--c-linea); padding-top: 12px; }
+  .btn { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 7px 16px; font-size: 15px; cursor: pointer; }
+  .btn:hover { background: var(--c-palco); }
+  .stato { font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro chat">
+    <div class="flusso" id="flusso" aria-live="polite"></div>
+    <div class="comandi"><span class="stato" id="stato"></span><button class="btn" type="button" id="ancora"><span data-l="it">↻ Chiedi di nuovo</span><span data-l="en">↻ Ask again</span><span data-l="fr">↻ Redemander</span><span data-l="zh">↻ 再问一次</span></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Prima tre puntini («sto pensando»), poi le fasi del processo: mostrare che cosa succede rende l’attesa comprensibile e la risposta verificabile.</span><span data-l="en">First three dots (“thinking”), then the steps of the process: showing what happens makes the wait understandable and the answer verifiable.</span><span data-l="fr">D’abord trois points («&#8239;je réfléchis&#8239;»), puis les étapes du processus&#8239;: montrer ce qui se passe rend l’attente compréhensible et la réponse vérifiable.</span><span data-l="zh">先是三个点（“思考中”），然后是过程步骤：展示正在发生什么，让等待变得可理解，回答也可核查。</span></p>
+<script>
+  var TX = {
+    domanda: { it: 'Quali musei di design posso visitare a Milano questo fine settimana?', en: 'Which design museums can I visit in Milan this weekend?', fr: 'Quels musées de design puis-je visiter à Milan ce week-end ?', zh: '这个周末我可以在米兰参观哪些设计博物馆？' },
+    fasi: [
+      { it: 'Capisco la domanda', en: 'Understanding the question', fr: 'Je comprends la question', zh: '理解问题' },
+      { it: 'Cerco sul web: «musei design Milano orari»', en: 'Searching the web: “design museums Milan hours”', fr: 'Recherche sur le web : « musées design Milan horaires »', zh: '网络搜索：“米兰 设计博物馆 开放时间”' },
+      { it: 'Leggo 3 fonti', en: 'Reading 3 sources', fr: 'Lecture de 3 sources', zh: '阅读 3 个来源' },
+      { it: 'Confronto gli orari del fine settimana', en: 'Comparing weekend opening hours', fr: 'Comparaison des horaires du week-end', zh: '比较周末开放时间' },
+      { it: 'Scrivo la risposta', en: 'Writing the answer', fr: 'Rédaction de la réponse', zh: '撰写回答' }
+    ],
+    pensato: { it: 'Ragionato per % s', en: 'Thought for % s', fr: 'Réflexion pendant % s', zh: '思考了 % 秒' },
+    pensa: { it: 'Sto pensando…', en: 'Thinking…', fr: 'Réflexion…', zh: '思考中…' },
+    fatto: { it: 'Risposta pronta', en: 'Answer ready', fr: 'Réponse prête', zh: '回答已完成' },
+    r1: { it: 'Sabato e domenica sono aperti tutti e tre i luoghi che ho trovato, con orari diversi.', en: 'All three places I found are open on Saturday and Sunday, with different hours.', fr: 'Les trois lieux trouvés sont ouverts samedi et dimanche, avec des horaires différents.', zh: '我找到的三个地方周六和周日都开放，但时间不同。' },
+    r2: { it: 'Conviene controllare le mostre temporanee sul sito di ciascuno prima di andare.', en: 'It’s worth checking each one’s temporary exhibitions on its website before going.', fr: 'Mieux vaut vérifier les expositions temporaires sur le site de chacun avant d’y aller.', zh: '出发前最好在各自网站上查看临时展览。' }
+  };
+  var FONTI = ['museo-a.example', 'guida.example', 'comune.example'];
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var passo = -1, aperto = true, timer = null, DUR = 5;
+  var STELLA = '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 0l1.6 5.4L14 7l-5.4 1.6L7 14l-1.6-5.4L0 7l5.4-1.6z" fill="#fff"/></svg>';
+  var OK = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#e3f4ea"/><path d="M4.5 8.2l2.2 2.2 4.6-4.8" fill="none" stroke="#1f7a45" stroke-width="1.8"/></svg>';
+  function disegna() {
+    var f = document.getElementById('flusso'), n = TX.fasi.length, finito = passo >= n;
+    var h = '<div class="domanda"></div><div class="risposta"><span class="logo' + (finito ? '' : ' pensa') + '">' + STELLA + '</span><div>';
+    if (passo < 0) h += '<span class="puntini" aria-label="…"><i></i><i></i><i></i></span>';
+    else {
+      h += '<button class="riassunto" type="button" aria-expanded="' + aperto + '"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span></span></button><ol class="fasi"' + (aperto ? '' : ' hidden') + '>';
+      for (var k = 0; k <= Math.min(passo, n - 1); k++) h += '<li class="' + (k === passo ? 'ora' : '') + '"><span class="segno">' + (k < passo ? OK : '<span class="anello"></span>') + '</span><span></span></li>';
+      h += '</ol>';
+      if (passo >= 2) h += '<div class="fonti" style="padding-left:0;margin:-2px 0 10px">' + FONTI.map(function (x) { return '<span>' + x + '</span>'; }).join('') + '</div>';
+      if (finito) h += '<div class="testo"><p></p><p></p></div>';
+    }
+    h += '</div></div>';
+    f.innerHTML = h;
+    f.querySelector('.domanda').textContent = T(TX.domanda);
+    var r = f.querySelector('.riassunto');
+    if (r) { r.lastChild.textContent = finito ? T(TX.pensato).replace('%', DUR) : T(TX.pensa); r.onclick = function () { aperto = !aperto; disegna(); }; }
+    f.querySelectorAll('.fasi li').forEach(function (li, k) { li.lastChild.textContent = T(TX.fasi[k]); });
+    if (finito) { var p = f.querySelectorAll('.testo p'); p[0].textContent = T(TX.r1); p[1].textContent = T(TX.r2); }
+    document.getElementById('stato').textContent = finito ? T(TX.fatto) : T(TX.pensa);
+  }
+  function avanza() { passo++; if (passo >= TX.fasi.length) aperto = false; disegna(); if (passo < TX.fasi.length) timer = setTimeout(avanza, passo < 0 ? 1500 : 1100); }
+  function avvia(pausa) { clearTimeout(timer); passo = -1; aperto = true; disegna(); timer = setTimeout(avanza, pausa); }
+  document.getElementById('ancora').onclick = function () { avvia(1500); };
+  // all'apertura la sequenza si ferma a metà (fase 3) per un istante, poi prosegue
+  passo = 2; disegna(); timer = setTimeout(avanza, 4000);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<!-- Esempio ricostruito: Cart. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cart — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .negozio { padding: 0; position: relative; overflow: hidden; height: 450px; }
+  .testata { display: flex; align-items: center; justify-content: space-between; padding: 14px 22px; border-bottom: 1px solid var(--c-linea); }
+  .marchio { font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
+  .icona-carrello { position: relative; border: 0; background: none; width: 46px; height: 46px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+  .icona-carrello:hover { background: var(--c-palco); }
+  .badge { position: absolute; top: 2px; right: 0; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 9999px; background: var(--c-salmone); color: #111; font-size: 13px; font-weight: 500; display: grid; place-items: center; border: 2px solid #fff; }
+  .badge[hidden] { display: none; }
+  .badge.salta { animation: salta .35s ease; }
+  @keyframes salta { 40% { transform: scale(1.35); } }
+  .prodotti { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 20px 22px; }
+  .prodotto { display: flex; flex-direction: column; gap: 6px; }
+  .foto { height: 170px; border-radius: 10px; display: grid; place-items: center; }
+  .nome { font-size: 16px; font-weight: 500; }
+  .prezzo { font-size: 15px; color: var(--c-tenue); }
+  .agg { margin-top: 4px; border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 7px 10px; font-size: 15px; cursor: pointer; }
+  .agg:hover { background: #111; color: #fff; }
+  .agg.fatto { background: #111; color: #fff; }
+  .velo { position: absolute; inset: 0; background: rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .cassetto { position: absolute; top: 0; right: 0; bottom: 0; width: 330px; background: #fff; box-shadow: -10px 0 30px rgba(0,0,0,.15); transform: translateX(105%); visibility: hidden; transition: transform .3s ease, visibility 0s .3s; display: flex; flex-direction: column; }
+  .aperto .velo { opacity: 1; pointer-events: auto; }
+  .aperto .cassetto { transform: none; visibility: visible; transition: transform .3s ease; }
+  .cassetto h2 { margin: 0; font-size: 19px; font-weight: 500; padding: 18px 20px; border-bottom: 1px solid var(--c-linea); display: flex; justify-content: space-between; align-items: center; }
+  .chiudi { border: 0; background: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; }
+  .chiudi:hover { background: var(--c-palco); }
+  .righe { flex: 1; overflow-y: auto; list-style: none; margin: 0; padding: 6px 20px; }
+  .righe li { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--c-linea); }
+  .righe .mini { width: 52px; height: 52px; border-radius: 8px; }
+  .righe .n { font-size: 15px; }
+  .righe .p { font-size: 15px; color: var(--c-tenue); }
+  .qta { display: flex; align-items: center; border: 1px solid var(--c-linea); border-radius: 9999px; }
+  .qta button { border: 0; background: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 17px; }
+  .qta button:hover { background: var(--c-palco); }
+  .qta span { min-width: 18px; text-align: center; font-size: 15px; }
+  .totale { padding: 16px 20px; border-top: 1px solid var(--c-linea); }
+  .totale div { display: flex; justify-content: space-between; font-size: 17px; margin-bottom: 12px; }
+  .cassa { width: 100%; border: 0; background: #111; color: #fff; border-radius: 9999px; padding: 12px; font-size: 16px; cursor: pointer; }
+  .cassa:hover { background: var(--c-blu); }
+  .cassa:disabled { background: #e3e0df; color: rgba(0,0,0,.4); cursor: default; }
+  .vuoto { text-align: center; color: var(--c-tenue); padding: 50px 10px; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro negozio" id="negozio">
+    <div class="testata">
+      <span class="marchio">studio·shop</span>
+      <button class="icona-carrello" type="button" id="apri" aria-haspopup="dialog">
+        <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><path d="M2 3h4l3 13h12l3-9H8" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="10.5" cy="21" r="1.8" fill="#111"/><circle cx="19.5" cy="21" r="1.8" fill="#111"/></svg>
+        <span class="badge" id="badge" hidden></span>
+      </button>
+    </div>
+    <div class="prodotti" id="prodotti"></div>
+    <div class="velo" id="velo"></div>
+    <div class="cassetto" role="dialog" aria-labelledby="t-car" id="cassetto">
+      <h2><span id="t-car"></span><button class="chiudi" type="button" id="chiudi" aria-label="Close">✕</button></h2>
+      <ul class="righe" id="righe"></ul>
+      <div class="totale"><div><span data-l="it">Subtotale</span><span data-l="en">Subtotal</span><span data-l="fr">Sous-total</span><span data-l="zh">小计</span><b id="tot"></b></div>
+        <button class="cassa" type="button" id="cassa"><span data-l="it">Vai alla cassa</span><span data-l="en">Checkout</span><span data-l="fr">Passer commande</span><span data-l="zh">去结算</span></button></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il carrello è una metafora del mondo reale. Il badge conta gli articoli e dà un riscontro immediato a ogni aggiunta.</span><span data-l="en">The cart is a real-world metaphor. The badge counts the items and gives instant feedback on every addition.</span><span data-l="fr">Le panier est une métaphore du monde réel. Le badge compte les articles et réagit à chaque ajout.</span><span data-l="zh">购物车是一个现实世界的隐喻。徽标统计商品数量，每次添加都会即时反馈。</span></p>
+<script>
+  var P = [
+    { n: { it: 'Tazza grigia', en: 'Grey mug', fr: 'Tasse grise', zh: '灰色马克杯' }, p: 14, bg: '#ece8e7', svg: '<svg width="80" height="80" viewBox="0 0 80 80"><rect x="18" y="20" width="36" height="44" rx="6" fill="#8a8584"/><path d="M54 30h6a8 8 0 010 16h-6" fill="none" stroke="#8a8584" stroke-width="6"/></svg>' },
+    { n: { it: 'Poster «Griglia»', en: '“Grid” poster', fr: 'Affiche « Grille »', zh: '“网格”海报' }, p: 25, bg: '#f9e0dc', svg: '<svg width="80" height="100" viewBox="0 0 80 100"><rect x="6" y="4" width="68" height="92" fill="#fff"/><circle cx="40" cy="40" r="20" fill="#fa9191"/><rect x="16" y="72" width="48" height="5" fill="#111"/><rect x="16" y="82" width="30" height="4" fill="#698fff"/></svg>' },
+    { n: { it: 'Quaderno a punti', en: 'Dot-grid notebook', fr: 'Carnet à points', zh: '点阵笔记本' }, p: 9, bg: '#e1e8ff', svg: '<svg width="76" height="96" viewBox="0 0 76 96"><rect x="6" y="4" width="64" height="88" rx="4" fill="#698fff"/><rect x="6" y="4" width="10" height="88" fill="#4b6fdc"/><rect x="28" y="30" width="30" height="8" rx="2" fill="#fff"/></svg>' }
+  ];
+  var TX = { agg: { it: 'Aggiungi', en: 'Add to cart', fr: 'Ajouter', zh: '加入购物车' }, fatto: { it: 'Aggiunto ✓', en: 'Added ✓', fr: 'Ajouté ✓', zh: '已加入 ✓' },
+    car: { it: 'Carrello', en: 'Cart', fr: 'Panier', zh: '购物车' }, vuoto: { it: 'Il carrello è vuoto.', en: 'Your cart is empty.', fr: 'Votre panier est vide.', zh: '购物车是空的。' },
+    articoli: { it: 'Carrello, % articoli', en: 'Cart, % items', fr: 'Panier, % articles', zh: '购物车，% 件商品' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var q = [1, 0, 2], negozio = document.getElementById('negozio');
+  function euro(v) { return new Intl.NumberFormat(window.Lingua ? Lingua.get() : 'en', { style: 'currency', currency: 'EUR' }).format(v); }
+  function disegna(salta) {
+    var n = q.reduce(function (a, b) { return a + b; }, 0), b = document.getElementById('badge');
+    b.hidden = !n; b.textContent = n; if (salta) { b.classList.remove('salta'); void b.offsetWidth; b.classList.add('salta'); }
+    document.getElementById('apri').setAttribute('aria-label', T(TX.articoli).replace('%', n));
+    var pr = document.getElementById('prodotti'); pr.innerHTML = '';
+    P.forEach(function (p, i) {
+      var d = document.createElement('div'); d.className = 'prodotto';
+      d.innerHTML = '<div class="foto" aria-hidden="true">' + p.svg + '</div><span class="nome"></span><span class="prezzo"></span><button class="agg" type="button"></button>';
+      d.querySelector('.foto').style.background = p.bg; d.querySelector('.nome').textContent = T(p.n); d.querySelector('.prezzo').textContent = euro(p.p);
+      var bt = d.querySelector('.agg'); bt.textContent = T(TX.agg);
+      bt.onclick = function () { q[i]++; disegna(true); bt.textContent = T(TX.fatto); bt.classList.add('fatto'); setTimeout(function () { bt.textContent = T(TX.agg); bt.classList.remove('fatto'); }, 1100); };
+      pr.appendChild(d);
+    });
+    document.getElementById('t-car').textContent = T(TX.car) + ' (' + n + ')';
+    var r = document.getElementById('righe'); r.innerHTML = '';
+    if (!n) r.innerHTML = '<li class="vuoto" style="display:block"></li>', r.firstChild.textContent = T(TX.vuoto);
+    P.forEach(function (p, i) {
+      if (!q[i]) return;
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="mini"></span><span><div class="n"></div><div class="p"></div></span><span class="qta"><button type="button" aria-label="−">−</button><span></span><button type="button" aria-label="+">+</button></span>';
+      li.querySelector('.mini').style.background = p.bg; li.querySelector('.n').textContent = T(p.n); li.querySelector('.p').textContent = euro(p.p * q[i]);
+      li.querySelector('.qta span').textContent = q[i];
+      li.querySelectorAll('.qta button')[0].onclick = function () { q[i]--; disegna(true); };
+      li.querySelectorAll('.qta button')[1].onclick = function () { q[i]++; disegna(true); };
+      r.appendChild(li);
+    });
+    document.getElementById('tot').textContent = euro(P.reduce(function (a, p, i) { return a + p.p * q[i]; }, 0));
+    document.getElementById('cassa').disabled = !n;
+  }
+  function apri(si) { negozio.classList.toggle('aperto', si); if (si) document.getElementById('chiudi').focus(); else document.getElementById('apri').focus(); }
+  document.getElementById('apri').onclick = function () { apri(true); };
+  document.getElementById('chiudi').onclick = function () { apri(false); };
+  document.getElementById('velo').onclick = function () { apri(false); };
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && negozio.classList.contains('aperto')) apri(false); });
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<!-- Esempio ricostruito: Accordion. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accordion — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { min-height: 500px; }
+  .testa { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .testa .didascalia { margin: 0; }
+  .opzione { display: flex; align-items: center; gap: 8px; font-size: 15px; cursor: pointer; user-select: none; }
+  .opzione input { width: 18px; height: 18px; accent-color: var(--c-blu); }
+  .fisarmonica { border-top: 1px solid var(--c-linea); }
+  .sezione { border-bottom: 1px solid var(--c-linea); }
+  .sezione h3 { margin: 0; }
+  .sezione button { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 0; background: none; padding: 16px 6px; font-size: 19px; font-weight: 500; text-align: left; cursor: pointer; border-radius: 6px; }
+  .sezione button:hover { color: var(--c-blu); }
+  .segno { position: relative; width: 18px; height: 18px; flex: none; }
+  .segno::before, .segno::after { content: ""; position: absolute; left: 0; top: 8px; width: 18px; height: 2px; background: currentColor; transition: transform .25s; }
+  .segno::after { transform: rotate(90deg); }
+  [aria-expanded="true"] .segno::after { transform: rotate(0); }
+  .pannello { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .pannello.aperto { grid-template-rows: 1fr; }
+  .pannello > div { overflow: hidden; }
+  .pannello p { margin: 0 6px 18px; font-size: 16px; color: rgba(0,0,0,.72); max-width: 60ch; }
+  .pannello:not(.aperto) > div { visibility: hidden; transition: visibility 0s .3s; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <div class="testa">
+      <span class="didascalia"><span data-l="it">Domande frequenti</span><span data-l="en">Frequently asked questions</span><span data-l="fr">Questions fréquentes</span><span data-l="zh">常见问题</span></span>
+      <label class="opzione"><input type="checkbox" id="una"><span data-l="it">Una sola aperta</span><span data-l="en">One open at a time</span><span data-l="fr">Une seule ouverte</span><span data-l="zh">一次只展开一个</span></label>
+    </div>
+    <div class="fisarmonica" id="fis">
+      <div class="sezione"><h3><button type="button" aria-expanded="true" aria-controls="p1" id="b1"><span><span data-l="it">Quando inizia il corso?</span><span data-l="en">When does the course start?</span><span data-l="fr">Quand commence le cours&#8239;?</span><span data-l="zh">课程什么时候开始？</span></span><span class="segno" aria-hidden="true"></span></button></h3>
+        <div class="pannello aperto" id="p1" role="region" aria-labelledby="b1"><div><p><span data-l="it">A ottobre, con quindici lezioni settimanali: un’ora di teoria e un’ora e mezza di laboratorio.</span><span data-l="en">In October, with fifteen weekly lessons: one hour of theory and an hour and a half of lab.</span><span data-l="fr">En octobre, avec quinze séances hebdomadaires&#8239;: une heure de théorie et une heure et demie d’atelier.</span><span data-l="zh">十月开始，共十五次每周课程：一小时理论，一个半小时实践。</span></p></div></div></div>
+      <div class="sezione"><h3><button type="button" aria-expanded="false" aria-controls="p2" id="b2"><span><span data-l="it">Serve saper programmare?</span><span data-l="en">Do I need to know how to code?</span><span data-l="fr">Faut-il savoir programmer&#8239;?</span><span data-l="zh">需要会编程吗？</span></span><span class="segno" aria-hidden="true"></span></button></h3>
+        <div class="pannello" id="p2" role="region" aria-labelledby="b2"><div><p><span data-l="it">No. Basta la curiosità: HTML e CSS si imparano strada facendo, con esempi come questo.</span><span data-l="en">No. Curiosity is enough: HTML and CSS are learnt along the way, with examples like this one.</span><span data-l="fr">Non. La curiosité suffit&#8239;: HTML et CSS s’apprennent en chemin, avec des exemples comme celui-ci.</span><span data-l="zh">不需要。有好奇心就够了：HTML 和 CSS 会在过程中通过这样的例子学会。</span></p></div></div></div>
+      <div class="sezione"><h3><button type="button" aria-expanded="false" aria-controls="p3" id="b3"><span><span data-l="it">Come si viene valutati?</span><span data-l="en">How is the course assessed?</span><span data-l="fr">Comment est-on évalué&#8239;?</span><span data-l="zh">如何评分？</span></span><span class="segno" aria-hidden="true"></span></button></h3>
+        <div class="pannello" id="p3" role="region" aria-labelledby="b3"><div><p><span data-l="it">Con tre progetti consegnati durante il semestre e una presentazione finale.</span><span data-l="en">Through three projects handed in during the semester and a final presentation.</span><span data-l="fr">Avec trois projets rendus pendant le semestre et une présentation finale.</span><span data-l="zh">通过学期中提交的三个项目和一次期末展示。</span></p></div></div></div>
+      <div class="sezione"><h3><button type="button" aria-expanded="false" aria-controls="p4" id="b4"><span><span data-l="it">Quale software si usa?</span><span data-l="en">Which software is used?</span><span data-l="fr">Quels logiciels utilise-t-on&#8239;?</span><span data-l="zh">使用什么软件？</span></span><span class="segno" aria-hidden="true"></span></button></h3>
+        <div class="pannello" id="p4" role="region" aria-labelledby="b4"><div><p><span data-l="it">Un editor di design a scelta e il browser. I file restano tuoi, in formati aperti.</span><span data-l="en">A design editor of your choice and the browser. Files stay yours, in open formats.</span><span data-l="fr">Un éditeur de design au choix et le navigateur. Les fichiers restent à vous, en formats ouverts.</span><span data-l="zh">任选一款设计编辑器和浏览器。文件归你所有，采用开放格式。</span></p></div></div></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni titolo è un pulsante (aria-expanded): l’accordion accorcia la pagina e lascia scegliere che cosa leggere.</span><span data-l="en">Each heading is a button (aria-expanded): the accordion shortens the page and lets people choose what to read.</span><span data-l="fr">Chaque titre est un bouton (aria-expanded)&#8239;: l’accordéon raccourcit la page et laisse choisir quoi lire.</span><span data-l="zh">每个标题都是一个按钮（aria-expanded）：手风琴缩短页面，让人选择要读的内容。</span></p>
+<script>
+  var bottoni = Array.prototype.slice.call(document.querySelectorAll('#fis button'));
+  function imposta(b, si) { b.setAttribute('aria-expanded', String(si)); document.getElementById(b.getAttribute('aria-controls')).classList.toggle('aperto', si); }
+  bottoni.forEach(function (b, i) {
+    b.onclick = function () {
+      var si = b.getAttribute('aria-expanded') !== 'true';
+      if (si && document.getElementById('una').checked) bottoni.forEach(function (x) { if (x !== b) imposta(x, false); });
+      imposta(b, si);
+    };
+    b.onkeydown = function (e) {
+      var j = { ArrowDown: i + 1, ArrowUp: i - 1, Home: 0, End: bottoni.length - 1 }[e.key];
+      if (j === undefined) return; e.preventDefault(); bottoni[(j + bottoni.length) % bottoni.length].focus();
+    };
+  });
+  document.getElementById('una').onchange = function () {
+    if (!this.checked) return; var primo = bottoni.filter(function (b) { return b.getAttribute('aria-expanded') === 'true'; })[0];
+    bottoni.forEach(function (b) { if (b !== primo) imposta(b, false); });
+  };
+</script>
+</body>
+</html>

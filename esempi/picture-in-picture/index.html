@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- Esempio ricostruito: Picture-in-Picture. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Picture-in-Picture — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 660px; }
+  .schermo { position: relative; height: 380px; border-radius: 10px; overflow: hidden; background: linear-gradient(150deg, #c9d6ff, #f6d5d0); }
+  .fin { position: absolute; background: #fff; border-radius: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.18); overflow: hidden; }
+  .fin .tit { display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: #f1edeb; font-size: 14px; color: var(--c-tenue); }
+  .fin .tit i { width: 10px; height: 10px; border-radius: 50%; background: #d8d0cd; }
+  .video-pag { left: 16px; top: 16px; width: 330px; height: 250px; }
+  .appunti { left: 230px; top: 110px; width: 360px; height: 250px; z-index: 1; }
+  .appunti .corpo { padding: 12px; display: grid; gap: 8px; }
+  .appunti .corpo i { display: block; height: 10px; border-radius: 5px; background: #ece7e5; } .appunti .corpo i:nth-child(1) { width: 50%; background: var(--c-blu); height: 14px; } .appunti .corpo i:nth-child(5) { width: 70%; }
+  .posto { margin: 10px; height: 150px; border-radius: 6px; background: #2a2a2a; color: rgba(255,255,255,.7); display: grid; place-content: center; font-size: 15px; text-align: center; padding: 10px; }
+  .video { position: absolute; overflow: hidden; background: #1c1a24; transition: left .35s, top .35s, width .35s, height .35s, border-radius .35s; }
+  .video .cielo { position: absolute; inset: 0; background: linear-gradient(180deg, #2a2f5a, rgb(105,143,255) 60%, rgb(250,145,145)); }
+  .video .sole { position: absolute; width: 22%; aspect-ratio: 1; border-radius: 50%; background: #ffe3b0; left: 39%; animation: sorge 8s ease-in-out infinite alternate; }
+  @keyframes sorge { from { top: 70%; } to { top: 15%; } }
+  .video .onde { position: absolute; left: 0; right: 0; bottom: 0; height: 26%; background: #343a6e; }
+  .video.dentro { left: 26px; top: 50px; width: 310px; height: 150px; border-radius: 6px; z-index: 0; }
+  .video.fuori { width: 200px; height: 112px; border-radius: 10px; z-index: 5; box-shadow: 0 10px 26px rgba(0,0,0,.35); cursor: grab; touch-action: none; }
+  .video.trascina { transition: none; cursor: grabbing; }
+  .comandi { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: space-between; padding: 6px; opacity: 0; transition: opacity .2s; background: linear-gradient(rgba(0,0,0,.4), transparent 50%); }
+  .video.fuori:hover .comandi, .video.fuori:focus-within .comandi { opacity: 1; }
+  .comandi button { width: 28px; height: 28px; border-radius: 50%; border: 0; background: rgba(255,255,255,.85); cursor: pointer; display: grid; place-content: center; padding: 0; }
+  .comandi svg { width: 14px; height: 14px; }
+  .dentro .comandi { display: none; }
+  .barra { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .pip { display: inline-flex; align-items: center; gap: 8px; border: 0; background: var(--c-testo); color: #fff; padding: 9px 16px; border-radius: 9999px; cursor: pointer; font-size: 15px; }
+  .pip svg { width: 20px; height: 16px; }
+  .pip[aria-pressed="true"] { background: var(--c-blu); }
+  .aiuto { font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Il video esce dalla pagina e resta sopra le altre finestre</span><span data-l="en">The video leaves the page and stays on top of other windows</span><span data-l="fr">La vidéo sort de la page et reste au-dessus des autres fenêtres</span><span data-l="zh">视频离开页面，悬浮在其他窗口之上</span></span>
+    <div class="schermo" id="schermo">
+      <div class="fin video-pag"><div class="tit"><i></i><i></i><i></i><span>video.example</span></div><div class="posto" id="posto"></div></div>
+      <div class="fin appunti"><div class="tit"><i></i><i></i><i></i><span><span data-l="it">Appunti</span><span data-l="en">Notes</span><span data-l="fr">Notes</span><span data-l="zh">笔记</span></span></div><div class="corpo"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="video dentro" id="video">
+        <div class="cielo"></div><div class="sole"></div><div class="onde"></div>
+        <div class="comandi"><button type="button" id="torna"><svg viewBox="0 0 14 14"><rect x="1" y="2" width="12" height="10" rx="1.5" fill="none" stroke="#111" stroke-width="1.5"/><path d="M4 9 L9 4 M5 4 H9 V8" stroke="#111" stroke-width="1.5" fill="none"/></svg></button><button type="button" id="chiudi"><svg viewBox="0 0 14 14"><path d="M3 3 L11 11 M11 3 L3 11" stroke="#111" stroke-width="1.8"/></svg></button></div>
+      </div>
+    </div>
+    <div class="barra"><button class="pip" type="button" id="pip" aria-pressed="false"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="10" y="8" width="7" height="5" rx="1" fill="currentColor"/></svg><span id="pip-t"></span></button><span class="aiuto" id="aiuto"></span></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Simulazione: nel browser la stessa funzione si ottiene con l’API Picture-in-Picture (requestPictureInPicture) su un elemento video.</span><span data-l="en">Simulation: in the browser the same feature comes from the Picture-in-Picture API (requestPictureInPicture) on a video element.</span><span data-l="fr">Simulation : dans le navigateur, la même fonction s’obtient avec l’API Picture-in-Picture (requestPictureInPicture) sur un élément vidéo.</span><span data-l="zh">模拟演示：在浏览器中，可对 video 元素调用画中画 API（requestPictureInPicture）实现同样的功能。</span></p>
+<script>
+  var T = { it: ['Picture-in-Picture', 'Esci da Picture-in-Picture', 'Trascina la finestrina: si aggancia all’angolo più vicino.', 'Il video è in riproduzione in Picture-in-Picture', 'Torna alla scheda', 'Chiudi'],
+    en: ['Picture-in-Picture', 'Exit Picture-in-Picture', 'Drag the mini window: it snaps to the nearest corner.', 'This video is playing in Picture-in-Picture', 'Back to tab', 'Close'],
+    fr: ['Picture-in-Picture', 'Quitter Picture-in-Picture', 'Faites glisser la mini-fenêtre : elle se cale dans le coin le plus proche.', 'Cette vidéo est lue en Picture-in-Picture', 'Revenir à l’onglet', 'Fermer'],
+    zh: ['画中画', '退出画中画', '拖动小窗口：它会吸附到最近的角落。', '此视频正在以画中画模式播放', '返回标签页', '关闭'] };
+  var fuori = false, angolo = 3, v = document.getElementById('video'), s = document.getElementById('schermo');
+  function t() { return T[window.Lingua ? Lingua.get() : 'en']; }
+  function angoli() { var W = s.clientWidth, H = s.clientHeight, m = 12; return [[m, m], [W - 200 - m, m], [m, H - 112 - m], [W - 200 - m, H - 112 - m]]; }
+  function disegna() {
+    v.classList.toggle('fuori', fuori); v.classList.toggle('dentro', !fuori);
+    if (fuori) { var a = angoli()[angolo]; v.style.left = a[0] + 'px'; v.style.top = a[1] + 'px'; } else { v.style.left = ''; v.style.top = ''; }
+    var b = document.getElementById('pip'); b.setAttribute('aria-pressed', String(fuori)); document.getElementById('pip-t').textContent = fuori ? t()[1] : t()[0];
+    document.getElementById('aiuto').textContent = fuori ? t()[2] : '';
+    document.getElementById('posto').textContent = fuori ? t()[3] : '';
+    document.getElementById('torna').setAttribute('aria-label', t()[4]); document.getElementById('chiudi').setAttribute('aria-label', t()[5]);
+  }
+  document.getElementById('pip').onclick = function () { fuori = !fuori; disegna(); };
+  document.getElementById('torna').onclick = function () { fuori = false; disegna(); };
+  document.getElementById('chiudi').onclick = function () { fuori = false; disegna(); };
+  var x0, y0, l0, t0, mosso;
+  v.addEventListener('pointerdown', function (ev) { if (!fuori || ev.target.closest('button')) return; v.setPointerCapture(ev.pointerId); x0 = ev.clientX; y0 = ev.clientY; l0 = v.offsetLeft; t0 = v.offsetTop; mosso = false; v.classList.add('trascina'); });
+  v.addEventListener('pointermove', function (ev) { if (!v.hasPointerCapture(ev.pointerId)) return; mosso = true; v.style.left = (l0 + ev.clientX - x0) + 'px'; v.style.top = (t0 + ev.clientY - y0) + 'px'; });
+  v.addEventListener('pointerup', function () { v.classList.remove('trascina'); if (!mosso) return;
+    var cx = v.offsetLeft + 100, cy = v.offsetTop + 56; angolo = (cx > s.clientWidth / 2 ? 1 : 0) + (cy > s.clientHeight / 2 ? 2 : 0); disegna(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

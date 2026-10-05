@@ -1,0 +1,136 @@
+<!doctype html>
+<!-- Esempio ricostruito: Interface/product onboarding (walkthroughs and coach marks). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 18px; }
+  .app { position: relative; height: 470px; border: 1px solid var(--c-linea); border-radius: 12px; overflow: hidden; display: grid; grid-template-columns: 150px 1fr; grid-template-rows: 54px 1fr; }
+  .testa { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding: 0 14px; border-bottom: 1px solid var(--c-linea); }
+  .marchio { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .marchio i { width: 22px; height: 22px; border-radius: 6px; background: var(--c-salmone); display: block; }
+  .cerca { flex: 1; max-width: 260px; height: 34px; border-radius: 999px; background: var(--c-palco); display: flex; align-items: center; gap: 8px; padding: 0 12px; font-size: 15px; color: var(--c-tenue); }
+  .nuovo { margin-left: auto; border: 0; background: var(--c-testo); color: #fff; border-radius: 8px; padding: 7px 12px; font-size: 15px; cursor: default; }
+  .lato { border-right: 1px solid var(--c-linea); padding: 12px 8px; display: grid; align-content: start; gap: 4px; font-size: 15px; }
+  .lato > span { padding: 6px 10px; border-radius: 6px; }
+  .lato > span:first-child { background: rgba(105,143,255,.12); color: var(--c-blu); }
+  .corpo { padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-content: start; }
+  .card { height: 100px; border-radius: 8px; background: var(--c-palco); }
+  .card:nth-child(1) { background: linear-gradient(135deg, rgba(250,145,145,.5), rgba(105,143,255,.4)); }
+  .riavvia { position: absolute; right: 14px; bottom: 14px; border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+  .riavvia[hidden] { display: none; }
+  /* faro: un buco nel velo scuro */
+  .faro { position: absolute; z-index: 5; border-radius: 10px; box-shadow: 0 0 0 9999px rgba(29,29,34,.55); transition: all .35s cubic-bezier(.3,.7,.2,1); pointer-events: none; }
+  .faro::after { content: ""; position: absolute; inset: -6px; border-radius: 14px; border: 2px solid var(--c-salmone); animation: pulsa 1.6s infinite; }
+  @keyframes pulsa { 50% { inset: -10px; opacity: .3; } }
+  .faro[hidden], .bolla[hidden], .benvenuto[hidden] { display: none; }
+  .bolla { position: absolute; z-index: 6; width: 270px; background: #fff; border-radius: 12px; padding: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.25); display: grid; gap: 8px; transition: left .35s, top .35s; }
+  .bolla h3 { margin: 0; font-size: 17px; font-weight: 500; }
+  .bolla p { margin: 0; font-size: 15px; line-height: 1.4; color: rgba(0,0,0,.72); }
+  .bolla .piede { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+  .punti { display: flex; gap: 5px; margin-right: auto; }
+  .punti i { width: 7px; height: 7px; border-radius: 50%; background: var(--c-linea); display: block; }
+  .punti i.on { background: var(--c-blu); width: 18px; border-radius: 4px; }
+  .btn { border: 1px solid var(--c-linea); background: #fff; border-radius: 8px; padding: 6px 12px; font-size: 15px; cursor: pointer; }
+  .btn.primo { background: var(--c-blu); border-color: var(--c-blu); color: #fff; }
+  .salta { border: 0; background: none; color: var(--c-tenue); font-size: 14px; cursor: pointer; padding: 0; justify-self: start; text-decoration: underline; text-underline-offset: 3px; }
+  .benvenuto { position: absolute; inset: 0; z-index: 7; background: rgba(29,29,34,.55); display: grid; place-items: center; }
+  .benvenuto > div { background: #fff; border-radius: 14px; width: 330px; padding: 22px; text-align: center; display: grid; gap: 10px; justify-items: center; }
+  .benvenuto h2 { margin: 0; font-size: 22px; font-weight: 500; }
+  .benvenuto p { margin: 0; font-size: 15px; color: rgba(0,0,0,.72); }
+  .illu { width: 90px; height: 90px; border-radius: 22px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); position: relative; }
+  .illu::after { content: ""; position: absolute; inset: 26px; border-radius: 50%; border: 6px solid #fff; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Primo avvio: benvenuto, poi tre segnalini</span><span data-l="en">First run: welcome, then three coach marks</span><span data-l="fr">Premier lancement : bienvenue, puis trois coach marks</span><span data-l="zh">首次启动：欢迎页，然后三个指引标记</span></span>
+    <div class="app" id="app">
+      <div class="testa">
+        <span class="marchio"><i></i>Studio</span>
+        <span class="cerca" id="t-cerca"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span data-l="it">Cerca</span><span data-l="en">Search</span><span data-l="fr">Rechercher</span><span data-l="zh">搜索</span></span>
+        <button class="nuovo" type="button" id="t-nuovo" tabindex="-1"><span data-l="it">+ Nuovo progetto</span><span data-l="en">+ New project</span><span data-l="fr">+ Nouveau projet</span><span data-l="zh">+ 新建项目</span></button>
+      </div>
+      <nav class="lato" id="t-lato" aria-hidden="true">
+        <span><span data-l="it">Progetti</span><span data-l="en">Projects</span><span data-l="fr">Projets</span><span data-l="zh">项目</span></span>
+        <span><span data-l="it">Condivisi</span><span data-l="en">Shared</span><span data-l="fr">Partagés</span><span data-l="zh">共享</span></span>
+        <span><span data-l="it">Modelli</span><span data-l="en">Templates</span><span data-l="fr">Modèles</span><span data-l="zh">模板</span></span>
+        <span><span data-l="it">Cestino</span><span data-l="en">Trash</span><span data-l="fr">Corbeille</span><span data-l="zh">回收站</span></span>
+      </nav>
+      <div class="corpo" aria-hidden="true"><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div><div class="card"></div></div>
+      <button class="riavvia" type="button" id="riavvia" hidden><span data-l="it">↺ Rivedi il tour</span><span data-l="en">↺ Replay the tour</span><span data-l="fr">↺ Revoir la visite</span><span data-l="zh">↺ 重新查看引导</span></button>
+      <div class="faro" id="faro" hidden></div>
+      <div class="bolla" id="bolla" hidden role="dialog" aria-live="polite"></div>
+      <div class="benvenuto" id="benvenuto" role="dialog" aria-labelledby="b-tit">
+        <div>
+          <span class="illu" aria-hidden="true"></span>
+          <h2 id="b-tit"><span data-l="it">Ti diamo il benvenuto in Studio</span><span data-l="en">Welcome to Studio</span><span data-l="fr">Bienvenue dans Studio</span><span data-l="zh">欢迎使用 Studio</span></h2>
+          <p><span data-l="it">Tre cose da sapere, in trenta secondi.</span><span data-l="en">Three things to know, in thirty seconds.</span><span data-l="fr">Trois choses à savoir, en trente secondes.</span><span data-l="zh">三件事，三十秒了解。</span></p>
+          <button class="btn primo" type="button" id="inizia"><span data-l="it">Mostrami</span><span data-l="en">Show me</span><span data-l="fr">Montrez-moi</span><span data-l="zh">带我看看</span></button>
+          <button class="salta" type="button" id="salta0"><span data-l="it">Salta, esploro da me</span><span data-l="en">Skip, I’ll explore on my own</span><span data-l="fr">Passer pour l’instant</span><span data-l="zh">跳过，我自己探索</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Breve, saltabile, ripetibile: il tour indica le parti dell’interfaccia senza bloccarla a lungo. Tastiera: frecce ed Esc.</span><span data-l="en">Short, skippable, repeatable: the tour points at parts of the interface without blocking it for long. Keyboard: arrows and Esc.</span><span data-l="fr">Courte, facultative, répétable : la visite montre les parties de l’interface sans la bloquer longtemps. Clavier : flèches et Échap.</span><span data-l="zh">简短、可跳过、可重看：引导指出界面的各个部分，而不会长时间阻碍使用。键盘：方向键与 Esc。</span></p>
+<script>
+  var PASSI = [
+    { el: 't-nuovo', t: { it: 'Crea un progetto', en: 'Create a project', fr: 'Créez un projet', zh: '创建项目' }, d: { it: 'Tutto parte da qui: un progetto vuoto o da un modello.', en: 'Everything starts here: a blank project or a template.', fr: 'Tout commence ici : un projet vide ou un modèle.', zh: '一切从这里开始：空白项目或使用模板。' } },
+    { el: 't-cerca', t: { it: 'Trova tutto', en: 'Find anything', fr: 'Trouvez tout', zh: '查找一切' }, d: { it: 'Cerca file, persone e commenti. Scorciatoia: /', en: 'Search files, people and comments. Shortcut: /', fr: 'Cherchez fichiers, personnes et commentaires. Raccourci : /', zh: '搜索文件、成员和评论。快捷键：/' } },
+    { el: 't-lato', t: { it: 'Le tue cartelle', en: 'Your folders', fr: 'Vos dossiers', zh: '你的文件夹' }, d: { it: 'Progetti, condivisi e modelli sono sempre a sinistra.', en: 'Projects, shared items and templates are always on the left.', fr: 'Projets, partages et modèles sont toujours à gauche.', zh: '项目、共享和模板始终位于左侧。' } }
+  ];
+  var T = { avanti: { it: 'Avanti', en: 'Next', fr: 'Suivant', zh: '下一步' }, fine: { it: 'Fatto', en: 'Done', fr: 'Terminé', zh: '完成' }, indietro: { it: 'Indietro', en: 'Back', fr: 'Retour', zh: '上一步' }, salta: { it: 'Salta il tour', en: 'Skip tour', fr: 'Passer la visite', zh: '跳过引导' }, di: { it: ' di ', en: ' of ', fr: ' sur ', zh: ' / ' } };
+  var passo = -1, app = document.getElementById('app'), faro = document.getElementById('faro'), bolla = document.getElementById('bolla');
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function mostra(fuoco) {
+    if (passo < 0) { faro.hidden = bolla.hidden = true; return; }
+    var p = PASSI[passo], el = document.getElementById(p.el), r = el.getBoundingClientRect(), a = app.getBoundingClientRect();
+    var x = r.left - a.left, y = r.top - a.top;
+    faro.hidden = false; Object.assign(faro.style, { left: x - 4 + 'px', top: y - 4 + 'px', width: r.width + 8 + 'px', height: r.height + 8 + 'px' });
+    bolla.hidden = false;
+    bolla.innerHTML = '<h3>' + L(p.t) + '</h3><p>' + L(p.d) + '</p><div class="piede"><span class="punti" aria-label="' + (passo + 1) + L(T.di) + PASSI.length + '">' +
+      PASSI.map(function (q, k) { return '<i' + (k === passo ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' +
+      (passo > 0 ? '<button class="btn" type="button" data-v="-1">' + L(T.indietro) + '</button>' : '') +
+      '<button class="btn primo" type="button" data-v="1">' + (passo === PASSI.length - 1 ? L(T.fine) : L(T.avanti)) + '</button></div>' +
+      '<button class="salta" type="button" data-v="x">' + L(T.salta) + '</button>';
+    var bx = Math.max(8, Math.min(x + r.width / 2 - 135, a.width - 278)), by = y + r.height + 16;
+    if (by + 190 > a.height) by = Math.max(8, y - 200);
+    if (p.el === 't-lato') { bx = x + r.width + 16; by = y + 20; }
+    bolla.style.left = bx + 'px'; bolla.style.top = by + 'px';
+    if (fuoco) bolla.querySelector('.primo').focus();
+  }
+  function vai(n, fuoco) {
+    passo = n;
+    if (passo >= PASSI.length || passo < -1) passo = -1;
+    document.getElementById('riavvia').hidden = passo >= 0 || !document.getElementById('benvenuto').hidden;
+    mostra(fuoco);
+    if (passo === -1 && fuoco) document.getElementById('riavvia').focus();
+  }
+  bolla.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.v === 'x') vai(-1, true); else vai(passo + Number(b.dataset.v), true);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (passo < 0) return;
+    if (e.key === 'Escape') vai(-1, true);
+    if (e.key === 'ArrowRight') vai(passo + 1, true);
+    if (e.key === 'ArrowLeft' && passo > 0) vai(passo - 1, true);
+  });
+  document.getElementById('inizia').onclick = function () { document.getElementById('benvenuto').hidden = true; vai(0, true); };
+  document.getElementById('salta0').onclick = function () { document.getElementById('benvenuto').hidden = true; vai(-1, true); };
+  document.getElementById('riavvia').onclick = function () { document.getElementById('benvenuto').hidden = false; document.getElementById('riavvia').hidden = true; document.getElementById('inizia').focus(); };
+  document.addEventListener('lingua', function () { mostra(false); });
+  window.addEventListener('resize', function () { mostra(false); });
+  // all'apertura il tour è già al primo segnalino
+  document.getElementById('benvenuto').hidden = true;
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { vai(0, false); }); else vai(0, false);
+</script>
+</body>
+</html>

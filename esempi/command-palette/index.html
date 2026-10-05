@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- Esempio ricostruito: Command palette. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Command palette — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .finestra { position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px var(--c-linea), 0 10px 30px rgba(0,0,0,.08); background: #fff; height: 470px; display: flex; flex-direction: column; transition: background .3s, color .3s; }
+  .cornice { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #f1edec; font-size: 15px; color: var(--c-tenue); }
+  .pallini { display: flex; gap: 7px; } .pallini i { width: 12px; height: 12px; border-radius: 50%; background: #e0a3a3; } .pallini i + i { background: #e6cf9a; } .pallini i + i + i { background: #a9cfa5; }
+  .corpo { flex: 1; display: flex; min-height: 0; }
+  .lato { width: 150px; border-right: 1px solid var(--c-linea); padding: 12px; font-size: 15px; transition: width .25s, padding .25s; overflow: hidden; white-space: nowrap; }
+  .senza-lato .lato { width: 0; padding: 12px 0; border: 0; }
+  .lato div { padding: 3px 6px; border-radius: 4px; } .lato div.a { background: rgba(105,143,255,.15); }
+  pre { margin: 0; padding: 14px 18px; font: 15px/1.6 ui-monospace, Menlo, monospace; flex: 1; overflow: hidden; transition: font-size .2s; }
+  .scuro { background: #1d1d22; color: #e8e8ea; } .scuro .cornice { background: #2a2a30; } .scuro .lato { border-color: #333; }
+  .k { color: #c0392b; } .s { color: #2f8a52; } .c { color: #999; }
+  .scuro .k { color: #fa9191; } .scuro .s { color: #8fd3a6; }
+  .velo { position: absolute; inset: 0; background: rgba(0,0,0,.18); display: flex; justify-content: center; align-items: flex-start; padding-top: 54px; }
+  .velo[hidden] { display: none; }
+  .palette { width: 460px; max-width: calc(100% - 32px); background: #fff; color: var(--c-testo); border-radius: 12px; box-shadow: 0 18px 50px rgba(0,0,0,.3); overflow: hidden; animation: cala .15s ease-out; }
+  @keyframes cala { from { opacity: 0; transform: translateY(-8px); } }
+  .palette .cerca { display: flex; align-items: center; gap: 10px; padding: 0 14px; border-bottom: 1px solid var(--c-linea); }
+  .palette input { flex: 1; border: 0; outline: 0; height: 50px; font-size: 17px; background: none; }
+  .palette ul { list-style: none; margin: 0; padding: 6px; max-height: 270px; overflow-y: auto; }
+  .palette li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+  .palette li[aria-selected="true"] { background: var(--c-blu); color: #fff; }
+  .palette li[aria-selected="true"] kbd { color: #fff; border-color: rgba(255,255,255,.5); }
+  .palette li b { font-weight: 500; text-decoration: underline; text-decoration-color: var(--c-salmone); text-decoration-thickness: 2px; }
+  .palette li small { color: var(--c-tenue); font-size: 15px; margin-right: 6px; }
+  .palette li[aria-selected="true"] small { color: rgba(255,255,255,.8); }
+  kbd { font: 13px/1 var(--f-testo); border: 1px solid var(--c-linea); border-radius: 5px; padding: 4px 6px; color: var(--c-tenue); white-space: nowrap; }
+  .vuoto { padding: 16px; color: var(--c-tenue); font-size: 15px; }
+  .apri { position: absolute; right: 14px; bottom: 14px; border: 0; border-radius: 8px; background: var(--c-testo); color: #fff; padding: 8px 12px; cursor: pointer; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+  .apri kbd { color: #fff; border-color: rgba(255,255,255,.4); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="finestra" id="fin">
+    <div class="cornice"><span class="pallini" aria-hidden="true"><i></i><i></i><i></i></span><span>progetto — index.js</span></div>
+    <div class="corpo">
+      <div class="lato" aria-hidden="true"><div>src</div><div class="a">index.js</div><div>style.css</div><div>README.md</div></div>
+<pre id="codice" aria-hidden="true"><span class="c">// esempio</span>
+<span class="k">function</span> saluta(nome) {
+  <span class="k">return</span> <span class="s">'Ciao, '</span> + nome;
+}
+
+<span class="k">const</span> lingue = [<span class="s">'it'</span>, <span class="s">'en'</span>, <span class="s">'fr'</span>, <span class="s">'zh'</span>];
+lingue.forEach(saluta);</pre>
+    </div>
+    <button class="apri" type="button" id="apri"><span data-l="it">Comandi</span><span data-l="en">Commands</span><span data-l="fr">Commandes</span><span data-l="zh">命令</span> <kbd>Ctrl K</kbd></button>
+    <div class="velo" id="velo">
+      <div class="palette" role="dialog" aria-modal="true" aria-label="Command palette">
+        <div class="cerca"><span aria-hidden="true" style="color:var(--c-tenue)">›</span><input id="q" role="combobox" aria-expanded="true" aria-controls="lista" aria-autocomplete="list" autocomplete="off"></div>
+        <ul id="lista" role="listbox"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota" id="nota"><span data-l="it">Ctrl K (o ⌘K) apre la palette; scrivi per filtrare, frecce e Invio per eseguire, Esc per chiudere.</span><span data-l="en">Ctrl K (or ⌘K) opens the palette; type to filter, arrows and Enter to run, Esc to close.</span><span data-l="fr">Ctrl K (ou ⌘K) ouvre la palette ; tapez pour filtrer, flèches et Entrée pour exécuter, Échap pour fermer.</span><span data-l="zh">Ctrl K（或 ⌘K）打开命令面板；输入以筛选，方向键和回车执行，Esc 关闭。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var fin = document.getElementById('fin'), cod = document.getElementById('codice'), dim = 15;
+  var CMD = [
+    { g: { it: 'Vista', en: 'View', fr: 'Affichage', zh: '视图' }, l: { it: 'Tema scuro / chiaro', en: 'Toggle dark theme', fr: 'Thème sombre / clair', zh: '切换深色主题' }, k: 'Ctrl ⇧ T', f: function () { fin.classList.toggle('scuro'); } },
+    { g: { it: 'Vista', en: 'View', fr: 'Affichage', zh: '视图' }, l: { it: 'Mostra / nascondi barra laterale', en: 'Toggle sidebar', fr: 'Afficher / masquer la barre latérale', zh: '显示 / 隐藏侧边栏' }, k: 'Ctrl B', f: function () { fin.classList.toggle('senza-lato'); } },
+    { g: { it: 'Testo', en: 'Text', fr: 'Texte', zh: '文本' }, l: { it: 'Ingrandisci il testo', en: 'Increase font size', fr: 'Agrandir le texte', zh: '增大字号' }, k: 'Ctrl +', f: function () { dim = Math.min(22, dim + 2); cod.style.fontSize = dim + 'px'; } },
+    { g: { it: 'Testo', en: 'Text', fr: 'Texte', zh: '文本' }, l: { it: 'Rimpicciolisci il testo', en: 'Decrease font size', fr: 'Réduire le texte', zh: '减小字号' }, k: 'Ctrl −', f: function () { dim = Math.max(11, dim - 2); cod.style.fontSize = dim + 'px'; } },
+    { g: { it: 'File', en: 'File', fr: 'Fichier', zh: '文件' }, l: { it: 'Apri file…', en: 'Open file…', fr: 'Ouvrir un fichier…', zh: '打开文件…' }, k: 'Ctrl P', f: function () {} },
+    { g: { it: 'File', en: 'File', fr: 'Fichier', zh: '文件' }, l: { it: 'Salva tutto', en: 'Save all', fr: 'Tout enregistrer', zh: '全部保存' }, k: 'Ctrl ⇧ S', f: function () {} },
+    { g: { it: 'Git', en: 'Git', fr: 'Git', zh: 'Git' }, l: { it: 'Crea un nuovo ramo…', en: 'Create new branch…', fr: 'Créer une branche…', zh: '新建分支…' }, k: '', f: function () {} },
+    { g: { it: 'Aiuto', en: 'Help', fr: 'Aide', zh: '帮助' }, l: { it: 'Scorciatoie da tastiera', en: 'Keyboard shortcuts', fr: 'Raccourcis clavier', zh: '键盘快捷键' }, k: 'Ctrl /', f: function () {} }
+  ];
+  var VUOTO = { it: 'Nessun comando trovato', en: 'No matching commands', fr: 'Aucune commande trouvée', zh: '未找到命令' };
+  var SEGNA = { it: 'Scrivi un comando…', en: 'Type a command…', fr: 'Tapez une commande…', zh: '输入命令…' };
+  var velo = document.getElementById('velo'), q = document.getElementById('q'), lista = document.getElementById('lista'), sel = 0, trovati = [];
+  // corrispondenza «sparsa»: le lettere nell'ordine, anche non vicine
+  function corrisponde(testo, cerca) {
+    if (!cerca) return { ok: true, html: testo };
+    var i = 0, html = '', lo = testo.toLowerCase(), cq = cerca.toLowerCase().replace(/\s+/g, '');
+    for (var j = 0; j < testo.length; j++) { if (i < cq.length && lo[j] === cq[i]) { html += '<b>' + testo[j] + '</b>'; i++; } else html += testo[j]; }
+    return { ok: i === cq.length, html: html };
+  }
+  function filtra() {
+    q.placeholder = t(SEGNA);
+    trovati = CMD.map(function (c) { var m = corrisponde(t(c.l), q.value); return m.ok ? { c: c, html: m.html } : null; }).filter(Boolean);
+    sel = Math.min(sel, Math.max(0, trovati.length - 1));
+    lista.innerHTML = trovati.length ? '' : '<li class="vuoto" role="option" aria-disabled="true">' + t(VUOTO) + '</li>';
+    trovati.forEach(function (x, i) {
+      var li = document.createElement('li'); li.id = 'c' + i; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', String(i === sel));
+      li.innerHTML = '<span><small>' + t(x.c.g) + ':</small>' + x.html + '</span>' + (x.c.k ? '<kbd>' + x.c.k + '</kbd>' : '');
+      li.onmousemove = function () { if (sel !== i) { sel = i; segna(); } };
+      li.onclick = function () { esegui(i); };
+      lista.appendChild(li);
+    });
+    q.setAttribute('aria-activedescendant', trovati.length ? 'c' + sel : '');
+  }
+  function segna() { lista.querySelectorAll('li[role="option"]').forEach(function (li, i) { li.setAttribute('aria-selected', String(i === sel)); }); q.setAttribute('aria-activedescendant', 'c' + sel); var e = document.getElementById('c' + sel); if (e) e.scrollIntoView({ block: 'nearest' }); }
+  function esegui(i) { var x = trovati[i]; if (!x) return; chiudi(); x.c.f(); }
+  function apri() { velo.hidden = false; q.value = ''; sel = 0; filtra(); q.focus(); }
+  function chiudi() { velo.hidden = true; document.getElementById('apri').focus(); }
+  q.addEventListener('input', function () { sel = 0; filtra(); });
+  q.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); sel = (sel + 1) % trovati.length; segna(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); sel = (sel - 1 + trovati.length) % trovati.length; segna(); }
+    else if (e.key === 'Enter') { e.preventDefault(); esegui(sel); }
+    else if (e.key === 'Escape') { e.preventDefault(); chiudi(); }
+  });
+  velo.addEventListener('mousedown', function (e) { if (e.target === velo) chiudi(); });
+  document.getElementById('apri').onclick = apri;
+  document.addEventListener('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); velo.hidden ? apri() : chiudi(); } });
+  q.value = 'tema'; filtra(); q.value = ''; filtra();
+  document.addEventListener('lingua', filtra);
+</script>
+</body>
+</html>

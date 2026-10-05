@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- Esempio ricostruito: Calendar and date picker. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Date picker — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 220px 1fr; }
+  .modo { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; }
+  .modo button { border: 1px solid var(--c-linea); background: #fff; border-radius: 8px; padding: 8px 12px; cursor: pointer; text-align: left; font-size: 15px; }
+  .modo button[aria-pressed="true"] { background: var(--c-testo); border-color: var(--c-testo); color: #fff; }
+  .campo { margin-bottom: 12px; }
+  .campo span.e { display: block; font-size: 15px; color: var(--c-tenue); margin-bottom: 4px; }
+  .campo output { display: flex; align-items: center; gap: 8px; height: 42px; border: 1px solid var(--c-linea); border-radius: 8px; padding: 0 10px; font-size: 16px; }
+  .campo output.attivo { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .campo output:empty::before { content: "—"; color: var(--c-tenue); }
+  .notti { font-size: 15px; color: var(--c-tenue); margin: 6px 0 0; min-height: 21px; }
+  .testa { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .testa h2 { font-size: 19px; font-weight: 500; margin: 0; text-transform: capitalize; }
+  .testa button { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--c-linea); background: #fff; cursor: pointer; font-size: 18px; }
+  .testa button:hover { background: #f6f2f1; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  th { font-weight: 400; font-size: 15px; color: var(--c-tenue); padding: 4px 0 8px; }
+  td { padding: 2px 0; text-align: center; }
+  td button { width: 42px; height: 42px; border: 0; border-radius: 50%; background: none; cursor: pointer; font-size: 16px; font-variant-numeric: tabular-nums; position: relative; }
+  td button:hover:not(:disabled) { background: #f3efee; }
+  td button.oggi::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%; background: var(--c-salmone); }
+  td button:disabled { color: rgba(0,0,0,.25); cursor: not-allowed; text-decoration: line-through; }
+  td.in { background: #e6ecff; }
+  td.inizio { background: linear-gradient(to right, transparent 50%, #e6ecff 50%); }
+  td.fine { background: linear-gradient(to left, transparent 50%, #e6ecff 50%); }
+  td.inizio.fine { background: none; }
+  td button[aria-selected="true"] { background: var(--c-blu); color: #fff; }
+  td.fuori button { visibility: hidden; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Modalità</span><span data-l="en">Mode</span><span data-l="fr">Mode</span><span data-l="zh">模式</span></span>
+    <div class="modo" role="group" id="modo">
+      <button type="button" data-m="1" aria-pressed="false"><span data-l="it">Data singola</span><span data-l="en">Single date</span><span data-l="fr">Date unique</span><span data-l="zh">单个日期</span></button>
+      <button type="button" data-m="2" aria-pressed="true"><span data-l="it">Intervallo</span><span data-l="en">Date range</span><span data-l="fr">Plage de dates</span><span data-l="zh">日期范围</span></button>
+    </div>
+    <div class="campo"><span class="e"><span data-l="it">Arrivo</span><span data-l="en">Check-in</span><span data-l="fr">Arrivée</span><span data-l="zh">入住</span></span><output id="o1"></output></div>
+    <div class="campo" id="c2"><span class="e"><span data-l="it">Partenza</span><span data-l="en">Check-out</span><span data-l="fr">Départ</span><span data-l="zh">退房</span></span><output id="o2"></output></div>
+    <p class="notti" id="notti" aria-live="polite"></p>
+  </div>
+  <div class="riquadro">
+    <div class="testa"><button type="button" id="prec" aria-label="Previous month">‹</button><h2 id="mese" aria-live="polite"></h2><button type="button" id="succ" aria-label="Next month">›</button></div>
+    <table role="grid" id="griglia"><thead><tr id="giorni"></tr></thead><tbody id="corpo"></tbody></table>
+  </div>
+</div>
+<p class="nota"><span data-l="it">I giorni passati sono disattivati; il puntino indica oggi. Da tastiera: frecce per spostarsi, Invio per scegliere, Pagina su/giù per il mese.</span><span data-l="en">Past days are disabled; the dot marks today. Keyboard: arrows to move, Enter to choose, Page Up/Down for the month.</span><span data-l="fr">Les jours passés sont désactivés ; le point indique aujourd’hui. Au clavier : flèches pour se déplacer, Entrée pour choisir, Page préc./suiv. pour le mois.</span><span data-l="zh">过去的日期不可选；圆点表示今天。键盘：方向键移动，回车选择，Page Up/Down 切换月份。</span></p>
+<script>
+  var LOC = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', zh: 'zh-CN' };
+  function L() { return LOC[window.Lingua ? Lingua.get() : 'en']; }
+  var NOTTI = { it: ['{n} notte', '{n} notti'], en: ['{n} night', '{n} nights'], fr: ['{n} nuit', '{n} nuits'], zh: ['{n} 晚', '{n} 晚'] };
+  var SCEGLI = { it: 'Scegli la partenza', en: 'Choose check-out', fr: 'Choisissez le départ', zh: '请选择退房日期' };
+  var oggi = new Date(); oggi.setHours(0, 0, 0, 0);
+  function piu(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  var modo = 2, a = piu(oggi, 4), b = piu(oggi, 8), fuoco = new Date(a), vista = new Date(a.getFullYear(), a.getMonth(), 1);
+  function stesso(x, y) { return x && y && x.getTime() === y.getTime(); }
+  function fmt(d) { return d ? d.toLocaleDateString(L(), { weekday: 'short', day: 'numeric', month: 'short' }) : ''; }
+  function disegna(focalizza) {
+    document.querySelectorAll('#modo button').forEach(function (x) { x.setAttribute('aria-pressed', String(+x.dataset.m === modo)); });
+    document.getElementById('c2').style.display = modo === 2 ? '' : 'none';
+    document.getElementById('o1').textContent = fmt(a); document.getElementById('o2').textContent = fmt(b);
+    document.getElementById('o1').classList.toggle('attivo', !a || (modo === 1)); document.getElementById('o2').classList.toggle('attivo', modo === 2 && a && !b);
+    var lg = Lingua.get(), n = a && b ? Math.round((b - a) / 864e5) : 0;
+    document.getElementById('notti').textContent = modo === 2 ? (n ? NOTTI[lg][n > 1 ? 1 : 0].replace('{n}', n) : a ? SCEGLI[lg] : '') : '';
+    document.getElementById('mese').textContent = vista.toLocaleDateString(L(), { month: 'long', year: 'numeric' });
+    var g = document.getElementById('giorni'); g.innerHTML = '';
+    for (var i = 0; i < 7; i++) { var d = new Date(2024, 0, 1 + i); g.insertAdjacentHTML('beforeend', '<th scope="col" abbr="' + d.toLocaleDateString(L(), { weekday: 'long' }) + '">' + d.toLocaleDateString(L(), { weekday: lg === 'zh' ? 'short' : 'narrow' }) + '</th>'); }
+    var corpo = document.getElementById('corpo'); corpo.innerHTML = '';
+    var primo = (vista.getDay() + 6) % 7, giorno = piu(vista, -primo), tr;
+    for (var c = 0; c < 42; c++) {
+      if (c % 7 === 0) { tr = document.createElement('tr'); corpo.appendChild(tr); }
+      var td = document.createElement('td'), btn = document.createElement('button'), q = new Date(giorno);
+      btn.type = 'button'; btn.textContent = q.getDate(); btn.tabIndex = stesso(q, fuoco) ? 0 : -1;
+      btn.setAttribute('aria-label', q.toLocaleDateString(L(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }));
+      if (q.getMonth() !== vista.getMonth()) td.className = 'fuori';
+      if (q < oggi) btn.disabled = true;
+      if (stesso(q, oggi)) btn.classList.add('oggi');
+      var sel = stesso(q, a) || stesso(q, b); btn.setAttribute('aria-selected', String(!!sel));
+      if (modo === 2 && a && b && q > a && q < b && q.getMonth() === vista.getMonth()) td.classList.add('in');
+      if (modo === 2 && a && b && q.getMonth() === vista.getMonth()) { if (stesso(q, a)) td.classList.add('inizio'); if (stesso(q, b)) td.classList.add('fine'); }
+      (function (q) { btn.onclick = function () { scegli(q); }; })(q);
+      td.appendChild(btn); tr.appendChild(td); giorno = piu(giorno, 1);
+    }
+    if (focalizza) { var f = corpo.querySelector('button[tabindex="0"]'); if (f) f.focus(); }
+  }
+  function scegli(q) {
+    if (q < oggi) return;
+    fuoco = q;
+    if (modo === 1) { a = q; b = null; }
+    else if (!a || b || q <= a) { a = q; b = null; } else b = q;
+    disegna(true);
+  }
+  function sposta(n, mesi) {
+    fuoco = mesi ? new Date(fuoco.getFullYear(), fuoco.getMonth() + mesi, Math.min(fuoco.getDate(), 28)) : piu(fuoco, n);
+    if (fuoco.getMonth() !== vista.getMonth() || fuoco.getFullYear() !== vista.getFullYear()) vista = new Date(fuoco.getFullYear(), fuoco.getMonth(), 1);
+    disegna(true);
+  }
+  document.getElementById('corpo').addEventListener('keydown', function (e) {
+    var k = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+    if (k) { e.preventDefault(); sposta(k); }
+    else if (e.key === 'PageUp') { e.preventDefault(); sposta(0, -1); } else if (e.key === 'PageDown') { e.preventDefault(); sposta(0, 1); }
+  });
+  document.getElementById('prec').onclick = function () { vista = new Date(vista.getFullYear(), vista.getMonth() - 1, 1); fuoco = new Date(vista); disegna(); };
+  document.getElementById('succ').onclick = function () { vista = new Date(vista.getFullYear(), vista.getMonth() + 1, 1); fuoco = new Date(vista); disegna(); };
+  document.querySelectorAll('#modo button').forEach(function (x) { x.onclick = function () { modo = +x.dataset.m; if (modo === 1) b = null; disegna(); }; });
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

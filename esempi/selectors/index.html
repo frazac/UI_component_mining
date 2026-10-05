@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- Esempio ricostruito: Selectors. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selectors — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  legend { padding: 0; margin-bottom: 4px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); }
+  .regola { font-size: 15px; color: var(--c-tenue); margin: 0 0 6px; min-height: 42px; }
+  label.opz { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 16px; }
+  label.opz.spento { cursor: not-allowed; color: rgba(0,0,0,.35); }
+  /* radio e checkbox disegnati sopra gli input veri (nascosti ma accessibili) */
+  .opz input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .seg { flex: none; width: 22px; height: 22px; border: 2px solid rgba(0,0,0,.45); display: grid; place-items: center; transition: border-color .15s, background .15s; }
+  .radio .seg { border-radius: 50%; }
+  .radio .seg::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c-blu); transform: scale(0); transition: transform .15s; }
+  .radio input:checked + .seg { border-color: var(--c-blu); }
+  .radio input:checked + .seg::after { transform: scale(1); }
+  .check .seg { border-radius: 5px; }
+  .check .seg svg { opacity: 0; }
+  .check input:checked + .seg { background: var(--c-blu); border-color: var(--c-blu); }
+  .check input:checked + .seg svg { opacity: 1; }
+  .opz:hover input:not(:disabled) + .seg { border-color: var(--c-blu); }
+  .opz input:focus-visible + .seg { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .opz input:disabled + .seg { border-color: rgba(0,0,0,.18); background: rgba(0,0,0,.05); }
+  /* switch */
+  .sw { flex: none; width: 46px; height: 26px; border-radius: 13px; background: rgba(0,0,0,.25); position: relative; transition: background .2s; }
+  .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .2s; }
+  .sw-in:checked + .sw { background: var(--c-blu); }
+  .sw-in:checked + .sw::after { transform: translateX(20px); }
+  .sw-in:focus-visible + .sw { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .sw-in:disabled + .sw { opacity: .4; }
+  .opz.sw-riga { justify-content: space-between; }
+  .esito { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--c-linea); font-size: 15px; min-height: 44px; }
+  .riquadro { transition: background .25s, color .25s; }
+  .scuro { background: #1d1d22; color: #f3efee; }
+  .scuro .regola { color: rgba(255,255,255,.6); }
+  .scuro .esito { border-color: rgba(255,255,255,.2); }
+  .scuro label.opz.spento { color: rgba(255,255,255,.35); }
+  .esito b { font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="palco tre">
+  <div class="riquadro">
+    <fieldset class="radio">
+      <legend><span data-l="it">Pulsanti di opzione</span><span data-l="en">Radio buttons</span><span data-l="fr">Boutons radio</span><span data-l="zh">单选按钮</span></legend>
+      <p class="regola"><span data-l="it">Una sola scelta fra poche opzioni.</span><span data-l="en">One choice among a few options.</span><span data-l="fr">Un seul choix parmi peu d’options.</span><span data-l="zh">在少数选项中只选一个。</span></p>
+      <label class="opz"><input type="radio" name="sped" value="0" checked><span class="seg"></span><span><span data-l="it">Standard</span><span data-l="en">Standard</span><span data-l="fr">Standard</span><span data-l="zh">标准</span></span></label>
+      <label class="opz"><input type="radio" name="sped" value="1"><span class="seg"></span><span><span data-l="it">Espressa</span><span data-l="en">Express</span><span data-l="fr">Express</span><span data-l="zh">加急</span></span></label>
+      <label class="opz"><input type="radio" name="sped" value="2"><span class="seg"></span><span><span data-l="it">Ritiro in negozio</span><span data-l="en">Store pickup</span><span data-l="fr">Retrait en magasin</span><span data-l="zh">门店自提</span></span></label>
+      <label class="opz spento"><input type="radio" name="sped" value="3" disabled><span class="seg"></span><span><span data-l="it">Drone (non disponibile)</span><span data-l="en">Drone (unavailable)</span><span data-l="fr">Drone (indisponible)</span><span data-l="zh">无人机（不可用）</span></span></label>
+    </fieldset>
+    <div class="esito" id="esito-r" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <fieldset class="check">
+      <legend><span data-l="it">Caselle di controllo</span><span data-l="en">Checkboxes</span><span data-l="fr">Cases à cocher</span><span data-l="zh">复选框</span></legend>
+      <p class="regola"><span data-l="it">Più scelte, anche nessuna.</span><span data-l="en">Several choices, or none.</span><span data-l="fr">Plusieurs choix, ou aucun.</span><span data-l="zh">可多选，也可不选。</span></p>
+      <label class="opz"><input type="checkbox" value="0" checked><span class="seg"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span data-l="it">Tipografia</span><span data-l="en">Typography</span><span data-l="fr">Typographie</span><span data-l="zh">字体排印</span></span></label>
+      <label class="opz"><input type="checkbox" value="1"><span class="seg"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span data-l="it">Colore</span><span data-l="en">Colour</span><span data-l="fr">Couleur</span><span data-l="zh">色彩</span></span></label>
+      <label class="opz"><input type="checkbox" value="2" checked><span class="seg"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span data-l="it">Movimento</span><span data-l="en">Motion</span><span data-l="fr">Mouvement</span><span data-l="zh">动效</span></span></label>
+      <label class="opz spento"><input type="checkbox" value="3" disabled><span class="seg"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2.5 7.5l3 3 6-7" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><span data-l="it">Suono (presto)</span><span data-l="en">Sound (soon)</span><span data-l="fr">Son (bientôt)</span><span data-l="zh">声音（即将推出）</span></span></label>
+    </fieldset>
+    <div class="esito" id="esito-c" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <fieldset>
+      <legend><span data-l="it">Interruttori</span><span data-l="en">Switches</span><span data-l="fr">Interrupteurs</span><span data-l="zh">开关</span></legend>
+      <p class="regola"><span data-l="it">Acceso o spento, subito.</span><span data-l="en">On or off, right away.</span><span data-l="fr">Activé ou désactivé, tout de suite.</span><span data-l="zh">开或关，立即生效。</span></p>
+      <label class="opz sw-riga"><span><span data-l="it">Tema scuro</span><span data-l="en">Dark theme</span><span data-l="fr">Thème sombre</span><span data-l="zh">深色主题</span></span><input class="sw-in" type="checkbox" role="switch" id="scuro"><span class="sw"></span></label>
+      <label class="opz sw-riga"><span><span data-l="it">Notifiche</span><span data-l="en">Notifications</span><span data-l="fr">Notifications</span><span data-l="zh">通知</span></span><input class="sw-in" type="checkbox" role="switch" checked><span class="sw"></span></label>
+      <label class="opz sw-riga spento"><span><span data-l="it">Sincronizza</span><span data-l="en">Sync</span><span data-l="fr">Synchroniser</span><span data-l="zh">同步</span></span><input class="sw-in" type="checkbox" role="switch" disabled><span class="sw"></span></label>
+    </fieldset>
+    <div class="esito" id="esito-s" aria-live="polite"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La scelta del selettore dipende dal numero di opzioni e dal contesto. L’ultima riga di ogni gruppo è disattivata.</span><span data-l="en">Which selector to use depends on the number of options and the context. The last row of each group is disabled.</span><span data-l="fr">Le choix du sélecteur dépend du nombre d’options et du contexte. La dernière ligne de chaque groupe est désactivée.</span><span data-l="zh">选择哪种控件取决于选项数量和使用情境。每组最后一行为禁用状态。</span></p>
+<script>
+  var T = {
+    r: { it: 'Scelta: ', en: 'Chosen: ', fr: 'Choix : ', zh: '已选：' },
+    c: { it: ' selezionate', en: ' selected', fr: ' sélectionnées', zh: ' 项已选' },
+    s1: { it: 'Tema scuro attivo', en: 'Dark theme on', fr: 'Thème sombre activé', zh: '深色主题已开启' },
+    s0: { it: 'Tema chiaro attivo', en: 'Light theme on', fr: 'Thème clair activé', zh: '浅色主题已开启' }
+  };
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function testo(input) { var s = input.closest('label').querySelector('[data-l="' + (window.Lingua ? Lingua.get() : 'en') + '"]'); return s ? s.textContent : ''; }
+  function disegna() {
+    var r = document.querySelector('input[name="sped"]:checked');
+    document.getElementById('esito-r').innerHTML = L(T.r) + '<b>' + testo(r) + '</b>';
+    var n = document.querySelectorAll('.check input:checked').length;
+    document.getElementById('esito-c').innerHTML = '<b>' + n + '</b>' + L(T.c);
+    var sc = document.getElementById('scuro').checked;
+    var box = document.getElementById('esito-s');
+    box.textContent = L(sc ? T.s1 : T.s0);
+    box.closest('.riquadro').classList.toggle('scuro', sc);
+  }
+  document.addEventListener('change', disegna);
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

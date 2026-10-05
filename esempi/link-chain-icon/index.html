@@ -1,0 +1,119 @@
+<!doctype html>
+<!-- Esempio ricostruito: Hyperlink chain icon. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hyperlink chain icon — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  .editor { border: 1px solid var(--c-linea); border-radius: 10px; }
+  .strumenti { display: flex; gap: 4px; padding: 6px; border-bottom: 1px solid var(--c-linea); position: relative; }
+  .strumenti button { width: 38px; height: 36px; border: 0; border-radius: 6px; background: none; cursor: pointer; display: grid; place-items: center; }
+  .strumenti button:hover, .strumenti button[aria-expanded="true"] { background: var(--c-palco); }
+  .strumenti button:disabled { opacity: .3; cursor: default; }
+  .testo { padding: 14px 16px; font-size: 18px; line-height: 1.5; }
+  .testo a { color: var(--c-blu); text-underline-offset: 3px; }
+  .parola { background: rgba(105,143,255,.22); border-radius: 3px; }
+  .finestrella { position: absolute; left: 90px; top: 46px; z-index: 3; background: #fff; border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,.18); padding: 10px; display: flex; gap: 6px; width: 340px; }
+  .finestrella[hidden] { display: none; }
+  .finestrella input { flex: 1; min-width: 0; border: 1px solid var(--c-linea); border-radius: 6px; padding: 6px 10px; font-size: 15px; }
+  .finestrella button.ok { width: auto; padding: 0 12px; background: var(--c-blu); color: #fff; border-radius: 6px; border: 0; cursor: pointer; font-size: 15px; }
+  .articolo h3 { margin: 0; font-size: 19px; font-weight: 500; display: flex; align-items: center; gap: 6px; position: relative; padding: 6px 0; }
+  .articolo p { margin: 0 0 6px; font-size: 16px; color: rgba(0,0,0,.7); }
+  .ancora { width: 30px; height: 30px; border: 0; border-radius: 6px; background: none; cursor: pointer; display: grid; place-items: center; opacity: .35; transition: opacity .15s; color: var(--c-tenue); }
+  .articolo h3:hover .ancora, .ancora:focus-visible, .ancora.copiata { opacity: 1; }
+  .ancora:hover { background: var(--c-palco); color: var(--c-blu); }
+  .ancora.copiata { color: #2e8a5a; }
+  .avviso { position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 20px); background: #1d1d22; color: #fff; font-size: 15px; padding: 8px 14px; border-radius: 8px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }
+  .avviso.su { opacity: 1; transform: translate(-50%, 0); }
+  .avviso code { color: var(--c-salmone); }
+  .varianti { display: flex; gap: 8px; align-items: center; justify-content: center; }
+  .varianti figure { flex: 1; text-align: center; margin: 0; display: grid; justify-items: center; gap: 4px; font-size: 14px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Nell’editor: «inserisci link» sulla parola selezionata</span><span data-l="en">In the editor: “insert link” on the selected word</span><span data-l="fr">Dans l’éditeur : « insérer un lien » sur le mot sélectionné</span><span data-l="zh">编辑器中：为选中的词“插入链接”</span></span>
+    <div class="editor">
+      <div class="strumenti" role="toolbar">
+        <button type="button" disabled aria-label="Bold"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z" fill="none" stroke="#111" stroke-width="2.6"/></svg></button>
+        <button type="button" disabled aria-label="Italic"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4h8M6 20h8M14 4l-4 16" fill="none" stroke="#111" stroke-width="2.2"/></svg></button>
+        <button type="button" id="b-link" aria-expanded="false" aria-controls="fin"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path class="catena" d="M10 14a4 4 0 0 0 6 .5l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6-.5l-3 3a4 4 0 0 0 6 6l1-1" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg></button>
+        <form class="finestrella" id="fin" hidden>
+          <input id="url" value="https://" aria-label="URL">
+          <button class="ok" type="submit"><span data-l="it">Applica</span><span data-l="en">Apply</span><span data-l="fr">Appliquer</span><span data-l="zh">应用</span></button>
+        </form>
+      </div>
+      <div class="testo" id="testo"></div>
+    </div>
+  </div>
+  <div class="palco due" style="grid-template-columns:1.4fr 1fr">
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Ancore: copia il link a una sezione</span><span data-l="en">Anchors: copy the link to a section</span><span data-l="fr">Ancres : copier le lien d’une section</span><span data-l="zh">锚点：复制某一节的链接</span></span>
+      <div class="articolo" id="articolo"></div>
+    </div>
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Varianti</span><span data-l="en">Variants</span><span data-l="fr">Variantes</span><span data-l="zh">变体</span></span>
+      <div class="varianti">
+        <figure><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><g transform="rotate(45 12 12)"><path d="M10 14a4 4 0 0 0 6 .5l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6-.5l-3 3a4 4 0 0 0 6 6l1-1" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/></g></svg><span data-l="it">Orizzontale</span><span data-l="en">Horizontal</span><span data-l="fr">Horizontale</span><span data-l="zh">水平</span></figure>
+        <figure><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 6.5l1-1a4 4 0 0 1 5.5 5.5l-1 1M11 17.5l-1 1A4 4 0 0 1 4.5 13l1-1" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/><path d="M4 4l3 3M20 20l-3-3M9 3v2.5M3 9h2.5M15 21v-2.5M21 15h-2.5" stroke="rgb(223,136,136)" stroke-width="2" stroke-linecap="round"/></svg><span data-l="it">Rimuovi link</span><span data-l="en">Unlink</span><span data-l="fr">Supprimer le lien</span><span data-l="zh">取消链接</span></figure>
+        <figure><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15l6-6" stroke="#111" stroke-width="2" stroke-linecap="round"/><path d="M11 6l1.5-1.5a4.5 4.5 0 0 1 6.4 6.4L17.5 12.5M12.5 17.5L11 19a4.5 4.5 0 0 1-6.4-6.4L6 11" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg><span data-l="it">Diagonale</span><span data-l="en">Diagonal</span><span data-l="fr">Diagonale</span><span data-l="zh">斜向</span></figure>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="avviso" id="avviso" role="status"></div>
+<p class="nota"><span data-l="it">Due anelli di catena agganciati: l’icona dice «collegato a qualcos’altro», per inserire, copiare o condividere un indirizzo.</span><span data-l="en">Two interlocking chain links: the icon says “connected to something else”, to insert, copy or share an address.</span><span data-l="fr">Deux maillons accrochés : l’icône dit « relié à autre chose », pour insérer, copier ou partager une adresse.</span><span data-l="zh">两个相扣的链环：这个图标表示“与别处相连”，用于插入、复制或分享网址。</span></p>
+<script>
+  var T = {
+    testo: { it: ['Il programma del ', 'corso', ' è online da lunedì.'], en: ['The ', 'course', ' syllabus is online from Monday.'], fr: ['Le programme du ', 'cours', ' est en ligne dès lundi.'], zh: ['', '课程', '大纲周一起上线。'] },
+    ins: { it: 'Inserisci link', en: 'Insert link', fr: 'Insérer un lien', zh: '插入链接' },
+    sez: [
+      { id: 'obiettivi', t: { it: 'Obiettivi', en: 'Goals', fr: 'Objectifs', zh: '目标' }, p: { it: 'Cosa saprai fare alla fine del corso.', en: 'What you will be able to do by the end.', fr: 'Ce que vous saurez faire à la fin.', zh: '课程结束时你能做到什么。' } },
+      { id: 'calendario', t: { it: 'Calendario', en: 'Schedule', fr: 'Calendrier', zh: '日程' }, p: { it: 'Quindici lezioni, una a settimana.', en: 'Fifteen lessons, one a week.', fr: 'Quinze cours, un par semaine.', zh: '十五节课，每周一节。' } }],
+    copia: { it: 'Link copiato: ', en: 'Link copied: ', fr: 'Lien copié : ', zh: '链接已复制：' },
+    cop: { it: 'Copia il link a «', en: 'Copy link to “', fr: 'Copier le lien vers « ', zh: '复制链接到“' }, cop2: { it: '»', en: '”', fr: ' »', zh: '”' }
+  };
+  var linkato = null;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var CATENA = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 6 .5l3-3a4 4 0 0 0-6-6l-1 1M14 10a4 4 0 0 0-6-.5l-3 3a4 4 0 0 0 6 6l1-1" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
+  function disegna() {
+    var p = L(T.testo), el = document.getElementById('testo');
+    el.innerHTML = '';
+    el.appendChild(document.createTextNode(p[0]));
+    var w;
+    if (linkato) { w = document.createElement('a'); w.href = linkato; w.title = linkato; w.onclick = function (e) { e.preventDefault(); }; }
+    else { w = document.createElement('span'); w.className = 'parola'; }
+    w.textContent = p[1]; el.appendChild(w);
+    el.appendChild(document.createTextNode(p[2]));
+    document.getElementById('b-link').setAttribute('aria-label', L(T.ins));
+    var art = document.getElementById('articolo'); art.innerHTML = '';
+    T.sez.forEach(function (s) {
+      var h = document.createElement('h3'); h.id = s.id; h.textContent = L(s.t);
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'ancora'; b.innerHTML = CATENA;
+      b.setAttribute('aria-label', L(T.cop) + L(s.t) + L(T.cop2));
+      b.onclick = function () {
+        var url = 'esempio.it/corso#' + s.id;
+        try { navigator.clipboard && navigator.clipboard.writeText('https://' + url); } catch (e) { /* niente */ }
+        b.classList.add('copiata'); setTimeout(function () { b.classList.remove('copiata'); }, 1600);
+        var av = document.getElementById('avviso'); av.innerHTML = L(T.copia) + '<code>#' + s.id + '</code>'; av.classList.add('su');
+        clearTimeout(av.t); av.t = setTimeout(function () { av.classList.remove('su'); }, 1800);
+      };
+      h.appendChild(b); art.appendChild(h);
+      var pp = document.createElement('p'); pp.textContent = L(s.p); art.appendChild(pp);
+    });
+  }
+  var bl = document.getElementById('b-link'), fin = document.getElementById('fin');
+  bl.onclick = function () { var a = fin.hidden; fin.hidden = !a; bl.setAttribute('aria-expanded', String(a)); if (a) { var u = document.getElementById('url'); u.focus(); u.setSelectionRange(u.value.length, u.value.length); } };
+  fin.addEventListener('submit', function (e) { e.preventDefault(); var v = document.getElementById('url').value.trim(); linkato = v.length > 8 ? v : 'https://esempio.it/corso'; fin.hidden = true; bl.setAttribute('aria-expanded', 'false'); disegna(); bl.focus(); });
+  fin.addEventListener('keydown', function (e) { if (e.key === 'Escape') { fin.hidden = true; bl.setAttribute('aria-expanded', 'false'); bl.focus(); } });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!doctype html>
+<!-- Esempio ricostruito: Mobile display parts: notch, Dynamic Island, detents. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mobile display parts — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: auto 1fr; max-width: 680px; align-items: center; }
+  .tel { width: 250px; height: 500px; border-radius: 40px; background: #111; padding: 9px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .schermo { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: linear-gradient(170deg, #dfe6ff, #f6dcd7); }
+  .stato { position: absolute; top: 0; left: 0; right: 0; height: 40px; display: flex; justify-content: space-between; align-items: center; padding: 6px 22px 0; font-size: 13px; font-weight: 500; z-index: 3; }
+  .taglio { position: absolute; top: 0; left: 50%; transform: translateX(-50%); background: #000; z-index: 4; transition: all .4s cubic-bezier(.3,.7,.2,1); display: flex; align-items: center; justify-content: space-between; color: #fff; font-size: 13px; overflow: hidden; }
+  .notch .taglio { width: 120px; height: 28px; border-radius: 0 0 16px 16px; }
+  .isola .taglio { top: 10px; width: 92px; height: 28px; border-radius: 16px; }
+  .isola.attiva .taglio { width: 200px; height: 34px; padding: 0 12px; }
+  .taglio .att { opacity: 0; transition: opacity .2s; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+  .isola.attiva .taglio .att { opacity: 1; transition-delay: .2s; }
+  .att i { width: 10px; height: 10px; border-radius: 50%; background: #3fcf6a; }
+  .sicure .zona { opacity: 1; }
+  .zona { position: absolute; left: 0; right: 0; opacity: 0; transition: opacity .3s; z-index: 2; pointer-events: none; background: repeating-linear-gradient(45deg, rgba(250,145,145,.45) 0 6px, rgba(250,145,145,.15) 6px 12px); }
+  .zona.su { top: 0; height: 44px; } .zona.giu { bottom: 0; height: 22px; }
+  .app { position: absolute; top: 48px; left: 14px; right: 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .app i { aspect-ratio: 1; border-radius: 12px; background: rgba(255,255,255,.7); }
+  .app i:nth-child(3n) { background: rgba(105,143,255,.6); } .app i:nth-child(4n+1) { background: rgba(250,145,145,.7); }
+  .foglio { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; background: #fff; border-radius: 22px 22px 0 0; box-shadow: 0 -6px 20px rgba(0,0,0,.15); z-index: 3;
+    transition: transform .35s cubic-bezier(.3,.7,.2,1); touch-action: none; }
+  .maniglia { display: block; margin: 0 auto; width: 100%; height: 26px; border: 0; background: none; cursor: grab; position: relative; }
+  .maniglia::before { content: ""; position: absolute; left: 50%; top: 8px; width: 40px; height: 5px; margin-left: -20px; border-radius: 3px; background: #ccc; }
+  .foglio h4 { margin: 0 16px 8px; font-size: 16px; font-weight: 500; }
+  .foglio p { margin: 0 16px 8px; font-size: 15px; color: #555; }
+  .tacche { position: absolute; right: -2px; top: 0; bottom: 0; width: 0; z-index: 5; pointer-events: none; }
+  .tacche span { position: absolute; right: 4px; font-size: 12px; color: var(--c-blu); transform: translateY(-50%); background: #fff; padding: 1px 5px; border-radius: 6px; opacity: 0; transition: opacity .3s; white-space: nowrap; }
+  .mostra-t .tacche span { opacity: 1; }
+  .gruppo { margin-bottom: 14px; }
+  .gruppo b { display: block; font-weight: 500; font-size: 15px; margin-bottom: 6px; }
+  .seg { display: inline-flex; padding: 3px; border-radius: 9999px; background: #f1edeb; flex-wrap: wrap; }
+  .seg button { border: 0; background: none; padding: 6px 12px; border-radius: 9999px; cursor: pointer; font-size: 15px; }
+  .seg button[aria-pressed="true"] { background: #111; color: #fff; }
+  .opz { display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer; margin-top: 8px; }
+  .opz input { width: 18px; height: 18px; accent-color: var(--c-blu); margin: 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="tel">
+    <div class="schermo isola" id="schermo">
+      <div class="stato"><span>9:41</span><span>5G ▮</span></div>
+      <div class="taglio"><span class="att"><i></i><span id="att-t"></span></span><span class="att">02:14</span></div>
+      <div class="zona su"></div><div class="zona giu"></div>
+      <div class="app"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="foglio" id="foglio">
+        <button class="maniglia" id="maniglia" type="button"></button>
+        <h4 id="f-t"></h4><p id="f-p"></p>
+      </div>
+      <div class="tacche" id="tacche"></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <div class="gruppo"><b><span data-l="it">Ritaglio della fotocamera</span><span data-l="en">Camera cut-out</span><span data-l="fr">Découpe de la caméra</span><span data-l="zh">摄像头开孔</span></b>
+      <div class="seg" id="seg-t"><button type="button" data-v="notch" aria-pressed="false"><span data-l="it">Notch</span><span data-l="en">Notch</span><span data-l="fr">Encoche</span><span data-l="zh">刘海</span></button><button type="button" data-v="isola" aria-pressed="true"><span data-l="it">Isola</span><span data-l="en">Island</span><span data-l="fr">Îlot</span><span data-l="zh">灵动岛</span></button></div>
+      <label class="opz"><input type="checkbox" id="attiv"><span><span data-l="it">Attività in corso (timer)</span><span data-l="en">Live activity (timer)</span><span data-l="fr">Activité en direct (minuteur)</span><span data-l="zh">实时活动（计时器）</span></span></label>
+      <label class="opz"><input type="checkbox" id="sicure"><span><span data-l="it">Mostra le aree non sicure</span><span data-l="en">Show the unsafe areas</span><span data-l="fr">Afficher les zones non sûres</span><span data-l="zh">显示非安全区域</span></span></label>
+    </div>
+    <div class="gruppo"><b><span data-l="it">Detent del pannello (o trascina la maniglia)</span><span data-l="en">Sheet detents (or drag the handle)</span><span data-l="fr">Crans du panneau (ou faites glisser la poignée)</span><span data-l="zh">面板停靠高度（或拖动把手）</span></b>
+      <div class="seg" id="seg-d"><button type="button" data-v="0" aria-pressed="false"><span data-l="it">Piccolo</span><span data-l="en">Small</span><span data-l="fr">Petit</span><span data-l="zh">小</span></button><button type="button" data-v="1" aria-pressed="true"><span data-l="it">Medio</span><span data-l="en">Medium</span><span data-l="fr">Moyen</span><span data-l="zh">中</span></button><button type="button" data-v="2" aria-pressed="false"><span data-l="it">Grande</span><span data-l="en">Large</span><span data-l="fr">Grand</span><span data-l="zh">大</span></button></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Telefono generico disegnato in CSS. L’interfaccia evita le aree non sicure e usa il ritaglio per mostrare attività in corso; il pannello si ferma solo ai detent.</span><span data-l="en">A generic phone drawn in CSS. The interface avoids the unsafe areas and uses the cut-out to show live activities; the sheet rests only at its detents.</span><span data-l="fr">Téléphone générique dessiné en CSS. L’interface évite les zones non sûres et utilise la découpe pour les activités en direct ; le panneau ne s’arrête qu’à ses crans.</span><span data-l="zh">用 CSS 绘制的通用手机。界面避开非安全区域，并利用开孔显示实时活动；面板只停在其停靠高度。</span></p>
+<script>
+  var T = { it: ['Percorso', 'Trascina la maniglia: il pannello scatta al detent più vicino.', 'Timer', ['piccolo', 'medio', 'grande']], en: ['Route', 'Drag the handle: the sheet snaps to the nearest detent.', 'Timer', ['small', 'medium', 'large']], fr: ['Itinéraire', 'Faites glisser la poignée : le panneau se cale sur le cran le plus proche.', 'Minuteur', ['petit', 'moyen', 'grand']], zh: ['路线', '拖动把手：面板会吸附到最近的停靠高度。', '计时器', ['小', '中', '大']] };
+  var ALTEZZE = [0.18, 0.5, 0.9], detent = 1;
+  var schermo = document.getElementById('schermo'), foglio = document.getElementById('foglio');
+  function H() { return schermo.clientHeight; }
+  function posa(frazione, anima) { foglio.style.transition = anima === false ? 'none' : ''; foglio.style.transform = 'translateY(' + (H() * (1 - frazione)) + 'px)'; }
+  function testi() {
+    var t = T[window.Lingua ? Lingua.get() : 'en'];
+    document.getElementById('f-t').textContent = t[0]; document.getElementById('f-p').textContent = t[1]; document.getElementById('att-t').textContent = t[2];
+    var tc = document.getElementById('tacche'); tc.innerHTML = '';
+    ALTEZZE.forEach(function (a, i) { var s = document.createElement('span'); s.style.top = (H() * (1 - a)) + 'px'; s.textContent = '— ' + t[3][i]; tc.appendChild(s); });
+    document.getElementById('maniglia').setAttribute('aria-label', t[3][detent]);
+  }
+  function vai(i) { detent = i; posa(ALTEZZE[i]); document.querySelectorAll('#seg-d button').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.v === i)); }); testi(); }
+  document.querySelectorAll('#seg-d button').forEach(function (b) { b.onclick = function () { vai(+b.dataset.v); }; });
+  document.querySelectorAll('#seg-t button').forEach(function (b) { b.onclick = function () {
+    document.querySelectorAll('#seg-t button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+    schermo.classList.toggle('notch', b.dataset.v === 'notch'); schermo.classList.toggle('isola', b.dataset.v === 'isola');
+    document.getElementById('attiv').disabled = b.dataset.v === 'notch'; }; });
+  document.getElementById('attiv').onchange = function () { schermo.classList.toggle('attiva', this.checked); };
+  document.getElementById('sicure').onchange = function () { schermo.classList.toggle('sicure', this.checked); };
+  var m = document.getElementById('maniglia'), y0 = 0, f0 = 0;
+  m.addEventListener('pointerdown', function (ev) { m.setPointerCapture(ev.pointerId); y0 = ev.clientY; f0 = ALTEZZE[detent]; schermo.classList.add('mostra-t'); });
+  m.addEventListener('pointermove', function (ev) { if (!m.hasPointerCapture(ev.pointerId)) return; var f = Math.max(.1, Math.min(.95, f0 - (ev.clientY - y0) / H())); posa(f, false); m._f = f; });
+  m.addEventListener('pointerup', function () { schermo.classList.remove('mostra-t'); if (m._f == null) { vai((detent + 1) % 3); return; }
+    var best = 0; ALTEZZE.forEach(function (a, i) { if (Math.abs(a - m._f) < Math.abs(ALTEZZE[best] - m._f)) best = i; }); m._f = null; vai(best); });
+  m.addEventListener('keydown', function (ev) { if (ev.key === 'ArrowUp') { ev.preventDefault(); vai(Math.min(2, detent + 1)); } if (ev.key === 'ArrowDown') { ev.preventDefault(); vai(Math.max(0, detent - 1)); } });
+  vai(1); posa(ALTEZZE[1], false);
+  document.addEventListener('lingua', testi);
+</script>
+</body>
+</html>

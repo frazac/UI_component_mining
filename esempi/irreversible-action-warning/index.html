@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- Esempio ricostruito: Warning before irreversible actions. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Warning before irreversible actions — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.3fr 1fr; }
+  .riquadro { padding: 22px; position: relative; overflow: hidden; }
+  .pericolo { border: 1.5px solid #e2a3a3; border-radius: 10px; padding: 4px 14px; }
+  .voce { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--c-linea); }
+  .voce:last-child { border-bottom: 0; }
+  .voce b { font-weight: 500; font-size: 16px; display: block; }
+  .voce small { color: var(--c-tenue); font-size: 14px; display: block; }
+  .btn { border-radius: 8px; padding: 7px 12px; font-size: 15px; cursor: pointer; border: 1.5px solid var(--c-linea); background: #fff; white-space: nowrap; }
+  .btn.rosso { border-color: #c03c3c; color: #c03c3c; }
+  .btn.rosso:hover { background: #c03c3c; color: #fff; }
+  .btn.pieno { background: #c03c3c; color: #fff; border-color: #c03c3c; }
+  .btn.pieno:disabled { background: #e9b9b9; border-color: #e9b9b9; cursor: not-allowed; }
+  .stato-prog { margin-top: 14px; font-size: 15px; color: var(--c-tenue); }
+  .stato-prog b { color: var(--c-testo); font-weight: 500; }
+  .velo { position: absolute; inset: 0; background: rgba(29,29,34,.45); display: grid; place-items: center; padding: 16px; z-index: 3; }
+  .velo[hidden] { display: none; }
+  .finestra { background: #fff; border-radius: 12px; padding: 18px; width: 100%; max-width: 360px; box-shadow: 0 16px 40px rgba(0,0,0,.3); display: grid; gap: 10px; }
+  .finestra h2 { margin: 0; font-size: 19px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .finestra p { margin: 0; font-size: 15px; line-height: 1.4; }
+  .finestra code { background: var(--c-palco); padding: 1px 6px; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 14px; }
+  .finestra input { border: 1.5px solid var(--c-linea); border-radius: 8px; padding: 8px 10px; font-size: 16px; }
+  .finestra input:focus { outline: none; border-color: #c03c3c; box-shadow: 0 0 0 3px rgba(192,60,60,.15); }
+  .riga-b { display: flex; justify-content: flex-end; gap: 8px; }
+  .livelli { display: grid; gap: 12px; }
+  .livello { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; font-size: 15px; }
+  .livello b { font-weight: 500; font-size: 16px; display: block; }
+  .livello small { color: var(--c-tenue); font-size: 14px; }
+  .tacche { display: flex; gap: 2px; margin-top: 4px; }
+  .tacche i { width: 9px; height: 18px; border-radius: 2px; background: var(--c-linea); display: block; }
+  .tacche i.on { background: #c03c3c; }
+  .ok { color: #2e8a5a; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" id="area">
+    <span class="didascalia"><span data-l="it">Zona pericolosa</span><span data-l="en">Danger zone</span><span data-l="fr">Zone dangereuse</span><span data-l="zh">危险操作区</span></span>
+    <div class="pericolo">
+      <div class="voce"><span><b><span data-l="it">Archivia il progetto</span><span data-l="en">Archive project</span><span data-l="fr">Archiver le projet</span><span data-l="zh">归档项目</span></b><small><span data-l="it">Si può ripristinare.</span><span data-l="en">Can be restored.</span><span data-l="fr">Peut être restauré.</span><span data-l="zh">可以恢复。</span></small></span><button class="btn" type="button" id="archivia"><span data-l="it">Archivia</span><span data-l="en">Archive</span><span data-l="fr">Archiver</span><span data-l="zh">归档</span></button></div>
+      <div class="voce"><span><b><span data-l="it">Elimina il progetto</span><span data-l="en">Delete project</span><span data-l="fr">Supprimer le projet</span><span data-l="zh">删除项目</span></b><small><span data-l="it">Definitivo: file e commenti spariscono.</span><span data-l="en">Permanent: files and comments are gone.</span><span data-l="fr">Définitif : fichiers et commentaires disparaissent.</span><span data-l="zh">永久性：文件和评论都会消失。</span></small></span><button class="btn rosso" type="button" id="elimina"><span data-l="it">Elimina…</span><span data-l="en">Delete…</span><span data-l="fr">Supprimer…</span><span data-l="zh">删除…</span></button></div>
+    </div>
+    <p class="stato-prog" id="stato" aria-live="polite"></p>
+    <div class="velo" id="velo" hidden>
+      <div class="finestra" role="alertdialog" aria-modal="true" aria-labelledby="f-tit" aria-describedby="f-desc">
+        <h2 id="f-tit"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2z" fill="#c03c3c"/><path d="M12 10v5" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="18" r="1.3" fill="#fff"/></svg><span data-l="it">Eliminare il progetto?</span><span data-l="en">Delete this project?</span><span data-l="fr">Supprimer ce projet ?</span><span data-l="zh">删除此项目？</span></h2>
+        <p id="f-desc"><span data-l="it">L’azione non si può annullare. Per confermare scrivi </span><span data-l="en">This cannot be undone. To confirm, type </span><span data-l="fr">Cette action est irréversible. Pour confirmer, tapez </span><span data-l="zh">此操作无法撤销。如需确认，请输入 </span><code>poster-2026</code></p>
+        <input id="conferma" autocomplete="off" spellcheck="false" aria-label="poster-2026">
+        <div class="riga-b">
+          <button class="btn" type="button" id="annulla"><span data-l="it">Annulla</span><span data-l="en">Cancel</span><span data-l="fr">Annuler</span><span data-l="zh">取消</span></button>
+          <button class="btn pieno" type="button" id="definitivo" disabled><span data-l="it">Elimina per sempre</span><span data-l="en">Delete forever</span><span data-l="fr">Supprimer définitivement</span><span data-l="zh">永久删除</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Più il danno è grave, più attrito</span><span data-l="en">The worse the damage, the more friction</span><span data-l="fr">Plus le dommage est grave, plus il y a de friction</span><span data-l="zh">后果越严重，阻力越大</span></span>
+    <div class="livelli">
+      <div class="livello"><span class="tacche"><i class="on"></i><i></i><i></i></span><span><b><span data-l="it">Annulla dopo</span><span data-l="en">Undo afterwards</span><span data-l="fr">Annuler après</span><span data-l="zh">事后撤销</span></b><small><span data-l="it">Azione subito, con «Annulla» per qualche secondo.</span><span data-l="en">Act at once, with “Undo” for a few seconds.</span><span data-l="fr">Action immédiate, avec « Annuler » quelques secondes.</span><span data-l="zh">立即执行，几秒内可“撤销”。</span></small></span></div>
+      <div class="livello"><span class="tacche"><i class="on"></i><i class="on"></i><i></i></span><span><b><span data-l="it">Chiedi conferma</span><span data-l="en">Ask to confirm</span><span data-l="fr">Demander confirmation</span><span data-l="zh">请求确认</span></b><small><span data-l="it">Una finestra con un verbo chiaro, non «OK».</span><span data-l="en">A dialog with a clear verb, not “OK”.</span><span data-l="fr">Une fenêtre avec un verbe clair, pas « OK ».</span><span data-l="zh">对话框使用明确的动词，而不是“确定”。</span></small></span></div>
+      <div class="livello"><span class="tacche"><i class="on"></i><i class="on"></i><i class="on"></i></span><span><b><span data-l="it">Fai scrivere il nome</span><span data-l="en">Make them type the name</span><span data-l="fr">Faire taper le nom</span><span data-l="zh">要求输入名称</span></b><small><span data-l="it">Per ciò che non si può recuperare.</span><span data-l="en">For what cannot be recovered.</span><span data-l="fr">Pour ce qui est irrécupérable.</span><span data-l="zh">用于无法恢复的操作。</span></small></span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il pulsante rosso si attiva solo quando il nome coincide; Esc o «Annulla» chiudono senza fare nulla.</span><span data-l="en">The red button only turns on when the name matches; Esc or “Cancel” close without doing anything.</span><span data-l="fr">Le bouton rouge ne s’active que si le nom correspond ; Échap ou « Annuler » ferment sans rien faire.</span><span data-l="zh">只有名称一致时红色按钮才会启用；按 Esc 或“取消”则关闭且不做任何操作。</span></p>
+<script>
+  var T = {
+    prog: { it: 'Progetto: ', en: 'Project: ', fr: 'Projet : ', zh: '项目：' },
+    attivo: { it: 'attivo', en: 'active', fr: 'actif', zh: '进行中' }, arch: { it: 'archiviato', en: 'archived', fr: 'archivé', zh: '已归档' }, elim: { it: 'eliminato', en: 'deleted', fr: 'supprimé', zh: '已删除' },
+    rip: { it: 'Ripristina', en: 'Restore', fr: 'Restaurer', zh: '恢复' }, demo: { it: 'Ricrea (demo)', en: 'Recreate (demo)', fr: 'Recréer (démo)', zh: '重新创建（演示）' }
+  };
+  var stato = 'attivo', velo = document.getElementById('velo'), inp = document.getElementById('conferma');
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    var s = document.getElementById('stato');
+    s.innerHTML = L(T.prog) + 'poster-2026 · <b' + (stato === 'attivo' ? ' class="ok"' : '') + '>' + L(T[stato === 'attivo' ? 'attivo' : stato === 'arch' ? 'arch' : 'elim']) + '</b> ';
+    if (stato !== 'attivo') { var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.style.marginLeft = '8px'; b.textContent = stato === 'arch' ? L(T.rip) : L(T.demo); b.onclick = function () { stato = 'attivo'; disegna(); }; s.appendChild(b); }
+    document.getElementById('archivia').disabled = document.getElementById('elimina').disabled = stato !== 'attivo';
+  }
+  document.getElementById('archivia').onclick = function () { stato = 'arch'; disegna(); };
+  document.getElementById('elimina').onclick = function () { velo.hidden = false; inp.value = ''; document.getElementById('definitivo').disabled = true; document.getElementById('annulla').focus(); };
+  function chiudi() { velo.hidden = true; document.getElementById('elimina').focus(); }
+  document.getElementById('annulla').onclick = chiudi;
+  inp.addEventListener('input', function () { document.getElementById('definitivo').disabled = inp.value.trim() !== 'poster-2026'; });
+  document.getElementById('definitivo').onclick = function () { stato = 'elim'; velo.hidden = true; disegna(); };
+  velo.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') chiudi();
+    if (e.key === 'Tab') { // il focus resta dentro la finestra
+      var f = velo.querySelectorAll('input, button:not(:disabled)'), primo = f[0], ultimo = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === primo) { e.preventDefault(); ultimo.focus(); }
+      else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primo.focus(); }
+    }
+  });
+  disegna();
+  // all'apertura la finestra di conferma è già visibile, con il nome scritto a metà
+  velo.hidden = false; inp.value = 'poster-20';
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

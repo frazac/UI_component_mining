@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- Esempio ricostruito: Notification or "toast". © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toast — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .app { position: relative; overflow: hidden; height: 470px; padding: 24px 26px; }
+  .comandi { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 8px 16px; font-size: 16px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+  .btn:hover { background: var(--c-palco); }
+  .pallino { width: 10px; height: 10px; border-radius: 50%; }
+  .finta { margin-top: 22px; display: grid; grid-template-columns: 120px 1fr; gap: 16px; }
+  .finta .img { height: 120px; border-radius: 10px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); }
+  .finta p { height: 12px; border-radius: 6px; background: var(--c-palco); margin: 6px 0 14px; }
+  .pila { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); display: flex; flex-direction: column-reverse; gap: 10px; width: min(440px, 90%); }
+  .toast { display: flex; align-items: center; gap: 12px; background: #1b1b1b; color: #fff; border-radius: 12px; padding: 12px 12px 12px 16px; font-size: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    position: relative; overflow: hidden; animation: entra .25s ease-out; }
+  .toast.esce { animation: esce .2s ease-in forwards; }
+  @keyframes entra { from { transform: translateY(20px); opacity: 0; } }
+  @keyframes esce { to { transform: translateY(10px); opacity: 0; } }
+  .toast .ico { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #111; font-size: 14px; font-weight: 500; }
+  .toast .testo { flex: 1; }
+  .toast .azione { border: 0; background: none; color: var(--c-salmone); font-size: 16px; font-weight: 500; cursor: pointer; padding: 6px 8px; border-radius: 6px; }
+  .toast .x { border: 0; background: none; color: rgba(255,255,255,.7); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; }
+  .toast button:hover { background: rgba(255,255,255,.12); }
+  .toast .tempo { position: absolute; left: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.5); width: 100%; transform-origin: left; animation: tempo linear forwards; }
+  .toast:hover .tempo, .toast:focus-within .tempo { animation-play-state: paused; }
+  @keyframes tempo { to { transform: scaleX(0); } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro app">
+    <span class="didascalia"><span data-l="it">Genera un toast</span><span data-l="en">Trigger a toast</span><span data-l="fr">Déclenchez un toast</span><span data-l="zh">触发一条轻提示</span></span>
+    <div class="comandi">
+      <button class="btn" type="button" data-t="ok"><span class="pallino" style="background:#4caf7a"></span><span data-l="it">Salva</span><span data-l="en">Save</span><span data-l="fr">Enregistrer</span><span data-l="zh">保存</span></button>
+      <button class="btn" type="button" data-t="info"><span class="pallino" style="background:var(--c-blu)"></span><span data-l="it">Copia il link</span><span data-l="en">Copy link</span><span data-l="fr">Copier le lien</span><span data-l="zh">复制链接</span></button>
+      <button class="btn" type="button" data-t="cestino"><span class="pallino" style="background:var(--c-salmone)"></span><span data-l="it">Sposta nel cestino</span><span data-l="en">Move to trash</span><span data-l="fr">Mettre à la corbeille</span><span data-l="zh">移到回收站</span></button>
+      <button class="btn" type="button" data-t="err"><span class="pallino" style="background:#e0533f"></span><span data-l="it">Errore di rete</span><span data-l="en">Network error</span><span data-l="fr">Erreur réseau</span><span data-l="zh">网络错误</span></button>
+    </div>
+    <div class="finta" aria-hidden="true"><div class="img"></div><div><p style="width:70%"></p><p style="width:95%"></p><p style="width:85%"></p><p style="width:60%"></p></div></div>
+    <div class="pila" id="pila" role="status" aria-live="polite"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Breve, non bloccante, sparisce da solo (qui in 5 s; il tempo si ferma se ci passi sopra). Al massimo un’azione, come «Annulla».</span><span data-l="en">Brief, non-blocking, disappears on its own (here after 5 s; the timer pauses on hover). At most one action, such as “Undo”.</span><span data-l="fr">Bref, non bloquant, disparaît tout seul (ici après 5 s&#8239;; le minuteur s’arrête au survol). Une action au plus, comme «&#8239;Annuler&#8239;».</span><span data-l="zh">简短、不打断操作、自动消失（此处 5 秒；悬停时计时暂停）。最多只有一个操作，比如“撤销”。</span></p>
+<script>
+  var TIPI = {
+    ok: { ico: '✓', c: '#7fd6a2', t: { it: 'Modifiche salvate', en: 'Changes saved', fr: 'Modifications enregistrées', zh: '更改已保存' } },
+    info: { ico: 'i', c: '#a9bfff', t: { it: 'Link copiato negli appunti', en: 'Link copied to clipboard', fr: 'Lien copié dans le presse-papiers', zh: '链接已复制到剪贴板' } },
+    cestino: { ico: '↺', c: 'var(--c-salmone)', t: { it: '1 file spostato nel cestino', en: '1 file moved to trash', fr: '1 fichier mis à la corbeille', zh: '已将 1 个文件移到回收站' }, a: { it: 'Annulla', en: 'Undo', fr: 'Annuler', zh: '撤销' } },
+    err: { ico: '!', c: '#ff8f7d', t: { it: 'Connessione persa. Riprovo…', en: 'Connection lost. Retrying…', fr: 'Connexion perdue. Nouvel essai…', zh: '连接已断开，正在重试…' }, a: { it: 'Riprova', en: 'Retry', fr: 'Réessayer', zh: '重试' } }
+  };
+  var ANNULLATO = { it: 'Ripristinato', en: 'Restored', fr: 'Restauré', zh: '已恢复' };
+  var CHIUDI = { it: 'Chiudi', en: 'Dismiss', fr: 'Fermer', zh: '关闭' };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var pila = document.getElementById('pila'), DURATA = 5000;
+  function togli(el) { if (el.classList.contains('esce')) return; el.classList.add('esce'); setTimeout(function () { el.remove(); }, 200); }
+  function mostra(tipo, testo) {
+    var d = TIPI[tipo];
+    if (pila.children.length >= 3) togli(pila.children[0]);
+    var el = document.createElement('div'); el.className = 'toast';
+    el.innerHTML = '<span class="ico"></span><span class="testo"></span>' + (d.a ? '<button class="azione" type="button"></button>' : '') +
+      '<button class="x" type="button"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8"/></svg></button><span class="tempo"></span>';
+    el.querySelector('.ico').textContent = d.ico; el.querySelector('.ico').style.background = d.c;
+    el.querySelector('.testo').textContent = testo || T(d.t);
+    el.querySelector('.x').setAttribute('aria-label', T(CHIUDI));
+    el.querySelector('.x').onclick = function () { togli(el); };
+    if (d.a) { el.querySelector('.azione').textContent = T(d.a); el.querySelector('.azione').onclick = function () { togli(el); if (tipo === 'cestino') mostra('ok', T(ANNULLATO)); }; }
+    var barra = el.querySelector('.tempo'); barra.style.animationDuration = DURATA + 'ms';
+    barra.addEventListener('animationend', function () { togli(el); });
+    pila.appendChild(el);
+  }
+  document.querySelectorAll('[data-t]').forEach(function (b) { b.onclick = function () { mostra(b.dataset.t); }; });
+  // al caricamento: un toast d'esempio, che resta finché non si interagisce
+  var iniziale = true;
+  function esempio() { pila.innerHTML = ''; mostra('cestino'); pila.lastChild.querySelector('.tempo').style.animationPlayState = 'paused'; }
+  esempio();
+  document.addEventListener('click', function avvia() { iniziale = false; var t = pila.querySelector('.tempo'); if (t) t.style.animationPlayState = ''; document.removeEventListener('click', avvia); });
+  document.addEventListener('lingua', function () { if (iniziale) esempio(); });
+</script>
+</body>
+</html>

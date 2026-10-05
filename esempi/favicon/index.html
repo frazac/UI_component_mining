@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- Esempio ricostruito: Favicon. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favicon — UI Design: Components</title>
+<link rel="icon" id="vera-icona" href="data:,">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  .schede { display: flex; align-items: flex-end; gap: 2px; background: #e4dfdd; border-radius: 10px 10px 0 0; padding: 8px 8px 0; }
+  .scheda { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px 8px 0 0; font-size: 15px; min-width: 0; flex: 1; max-width: 190px; color: rgba(0,0,0,.65); }
+  .scheda span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .scheda.attiva { background: #fff; color: var(--c-testo); }
+  .scheda canvas, .scheda svg { flex: none; width: 16px; height: 16px; image-rendering: pixelated; }
+  .indirizzo { background: #fff; border: 1px solid #e4dfdd; border-top: 0; border-radius: 0 0 10px 10px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--c-tenue); }
+  .editor { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; }
+  .griglia { display: grid; grid-template-columns: repeat(16, 14px); grid-template-rows: repeat(16, 14px); border: 1px solid var(--c-linea); width: max-content; cursor: crosshair; touch-action: none; background: repeating-conic-gradient(#f3efee 0 25%, #fff 0 50%) 0 0 / 14px 14px; }
+  .griglia button { border: 0; padding: 0; background: transparent; border-right: 1px solid rgba(0,0,0,.05); border-bottom: 1px solid rgba(0,0,0,.05); }
+  .griglia button:focus-visible { outline: 2px solid var(--c-blu); outline-offset: -2px; z-index: 1; }
+  .colori { display: flex; gap: 8px; margin-bottom: 14px; }
+  .colori button { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--c-linea); cursor: pointer; }
+  .colori button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--c-testo); }
+  .colori .gomma { background: repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 0 0 / 8px 8px; }
+  .anteprime { display: flex; align-items: flex-end; gap: 18px; }
+  .anteprime figure { margin: 0; display: grid; justify-items: center; gap: 6px; font-size: 14px; color: var(--c-tenue); }
+  .anteprime canvas { image-rendering: pixelated; }
+  .app canvas { border-radius: 14px; box-shadow: 0 2px 6px rgba(0,0,0,.15); background: #fff; }
+  .piccolo { font-size: 15px; color: var(--c-tenue); margin: 14px 0 0; }
+  .azzera { border: 0; background: none; color: var(--c-blu); cursor: pointer; padding: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">L’icona riconosce il sito fra le schede</span><span data-l="en">The icon identifies the site among tabs</span><span data-l="fr">L’icône identifie le site parmi les onglets</span><span data-l="zh">图标让你在标签页中认出网站</span></span>
+    <div class="schede" aria-hidden="true">
+      <div class="scheda attiva"><canvas width="16" height="16" class="usa"></canvas><span><span data-l="it">Il mio portfolio</span><span data-l="en">My portfolio</span><span data-l="fr">Mon portfolio</span><span data-l="zh">我的作品集</span></span></div>
+      <div class="scheda"><svg viewBox="0 0 16 16"><rect width="16" height="16" rx="3" fill="#698fff"/><rect x="3" y="4.5" width="10" height="7" rx="1" fill="#fff"/><path d="M3.5 5l4.5 3.5L12.5 5" fill="none" stroke="#698fff" stroke-width="1.3"/></svg><span><span data-l="it">Posta in arrivo</span><span data-l="en">Inbox</span><span data-l="fr">Boîte de réception</span><span data-l="zh">收件箱</span></span></div>
+      <div class="scheda"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="8" fill="#2c2c34"/><path d="M6 4.5l5 3.5-5 3.5z" fill="#fff"/></svg><span><span data-l="it">Video</span><span data-l="en">Video</span><span data-l="fr">Vidéo</span><span data-l="zh">视频</span></span></div>
+      <div class="scheda"><svg viewBox="0 0 16 16"><rect width="16" height="16" rx="8" fill="#f0b47a"/><rect x="4" y="4" width="8" height="2" fill="#fff"/><rect x="4" y="8" width="5" height="2" fill="#fff"/></svg><span><span data-l="it">Note</span><span data-l="en">Notes</span><span data-l="fr">Notes</span><span data-l="zh">笔记</span></span></div>
+    </div>
+    <div class="indirizzo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2"/></svg>portfolio.esempio.it</div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Disegna la tua favicon, 16 × 16 pixel</span><span data-l="en">Draw your favicon, 16 × 16 pixels</span><span data-l="fr">Dessinez votre favicon, 16 × 16 pixels</span><span data-l="zh">画出你的网站图标，16 × 16 像素</span></span>
+    <div class="editor">
+      <div class="griglia" id="griglia" role="grid" aria-label="16 × 16"></div>
+      <div>
+        <div class="colori" id="colori" role="group" aria-label="Colori"></div>
+        <div class="anteprime">
+          <figure><canvas width="16" height="16" class="usa" style="width:16px;height:16px"></canvas>16 px</figure>
+          <figure><canvas width="16" height="16" class="usa" style="width:32px;height:32px"></canvas>32 px</figure>
+          <figure class="app"><canvas width="16" height="16" class="usa" style="width:64px;height:64px"></canvas><span><span data-l="it">Schermata Home</span><span data-l="en">Home screen</span><span data-l="fr">Écran d’accueil</span><span data-l="zh">主屏幕</span></span></figure>
+        </div>
+        <p class="piccolo"><span data-l="it">Cambia anche l’icona vera di questa pagina.</span><span data-l="en">It also changes this page’s real icon.</span><span data-l="fr">Cela change aussi la vraie icône de cette page.</span><span data-l="zh">也会改变本页面真正的图标。</span> <button class="azzera" type="button" id="azzera"><span data-l="it">Ricomincia</span><span data-l="en">Start over</span><span data-l="fr">Recommencer</span><span data-l="zh">重新开始</span></button></p>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Favicon sta per «favourite icon»: nacque per i preferiti, oggi vive nelle schede, nella cronologia e sulla schermata Home.</span><span data-l="en">Favicon stands for “favourite icon”: born for bookmarks, it now lives in tabs, history and on the home screen.</span><span data-l="fr">Favicon signifie « favourite icon » : née pour les favoris, elle vit aujourd’hui dans les onglets, l’historique et l’écran d’accueil.</span><span data-l="zh">favicon 即“favourite icon”（收藏夹图标）：诞生于书签，如今出现在标签页、历史记录和主屏幕上。</span></p>
+<script>
+  var COL = ['#111111', 'rgb(250,145,145)', 'rgb(105,143,255)', '#ffffff', null];
+  var colore = COL[1], pixel = [], premuto = false;
+  // disegno iniziale: una «F» su un quadrato salmone arrotondato
+  function iniziale() {
+    pixel = [];
+    for (var y = 0; y < 16; y++) for (var x = 0; x < 16; x++) {
+      var angolo = (x < 2 || x > 13) && (y < 2 || y > 13) && !((x === 1 || x === 14) && (y === 1 || y === 14));
+      var dentro = !angolo;
+      var f = (x >= 5 && x <= 6 && y >= 3 && y <= 12) || (y >= 3 && y <= 4 && x >= 5 && x <= 11) || (y >= 7 && y <= 8 && x >= 5 && x <= 9);
+      pixel.push(dentro ? (f ? '#ffffff' : COL[1]) : null);
+    }
+  }
+  var griglia = document.getElementById('griglia');
+  function costruisci() {
+    griglia.innerHTML = '';
+    pixel.forEach(function (c, i) {
+      var b = document.createElement('button'); b.type = 'button'; b.tabIndex = i === 0 ? 0 : -1;
+      b.setAttribute('aria-label', (i % 16 + 1) + ',' + (Math.floor(i / 16) + 1));
+      b.style.background = c || 'transparent';
+      b.addEventListener('pointerdown', function (e) { premuto = true; dipingi(i); e.preventDefault(); });
+      b.addEventListener('pointerenter', function () { if (premuto) dipingi(i); });
+      b.addEventListener('keydown', function (e) {
+        var d = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 16, ArrowUp: -16 }[e.key];
+        if (d) { e.preventDefault(); var j = Math.max(0, Math.min(255, i + d)); griglia.children[j].focus(); }
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); dipingi(i); }
+      });
+      griglia.appendChild(b);
+    });
+  }
+  document.addEventListener('pointerup', function () { premuto = false; });
+  function dipingi(i) { pixel[i] = colore; griglia.children[i].style.background = colore || 'transparent'; rendi(); }
+  function rendi() {
+    var tela = document.createElement('canvas'); tela.width = tela.height = 16;
+    var g = tela.getContext('2d');
+    pixel.forEach(function (c, i) { if (c) { g.fillStyle = c; g.fillRect(i % 16, Math.floor(i / 16), 1, 1); } });
+    document.querySelectorAll('canvas.usa').forEach(function (cv) { var h = cv.getContext('2d'); h.clearRect(0, 0, 16, 16); h.drawImage(tela, 0, 0); });
+    document.getElementById('vera-icona').href = tela.toDataURL('image/png');
+  }
+  var pal = document.getElementById('colori');
+  COL.forEach(function (c) {
+    var b = document.createElement('button'); b.type = 'button';
+    if (c) b.style.background = c; else { b.className = 'gomma'; }
+    b.setAttribute('aria-label', c || 'eraser'); b.setAttribute('aria-pressed', String(c === colore));
+    b.onclick = function () { colore = c; pal.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); };
+    pal.appendChild(b);
+  });
+  document.getElementById('azzera').onclick = function () { iniziale(); costruisci(); rendi(); };
+  iniziale(); costruisci(); rendi();
+</script>
+</body>
+</html>

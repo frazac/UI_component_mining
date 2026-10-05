@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- Esempio ricostruito: FAQ. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FAQ — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  h1 { font-size: 26px; font-weight: 500; margin: 0 0 14px; }
+  .cerca { display: flex; align-items: center; gap: 8px; border: 1px solid var(--c-linea); border-radius: 10px; padding: 0 12px; height: 42px; margin-bottom: 10px; }
+  .cerca:focus-within { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .cerca input { border: 0; outline: 0; flex: 1; min-width: 0; font-size: 16px; background: none; }
+  .lista { border-top: 1px solid var(--c-linea); }
+  .voce { border-bottom: 1px solid var(--c-linea); }
+  .voce h2 { margin: 0; font-size: 17px; font-weight: 500; }
+  .voce button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 13px 4px; border: 0; background: none; cursor: pointer; text-align: left; font-weight: 500; }
+  .voce button:hover { color: var(--c-blu); }
+  .segno { flex: none; width: 26px; height: 26px; border-radius: 50%; background: #f3efee; position: relative; transition: background .2s, transform .25s; }
+  .segno::before, .segno::after { content: ""; position: absolute; left: 7px; right: 7px; top: 12px; height: 2px; background: currentColor; border-radius: 1px; }
+  .segno::after { transform: rotate(90deg); transition: transform .25s; }
+  [aria-expanded="true"] .segno { background: var(--c-salmone); transform: rotate(180deg); }
+  [aria-expanded="true"] .segno::after { transform: rotate(0); }
+  .risposta { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .25s ease; }
+  .risposta > div { overflow: hidden; }
+  .risposta p { margin: 0 4px 14px; font-size: 16px; color: rgba(0,0,0,.7); }
+  .aperta .risposta { grid-template-rows: 1fr; }
+  mark { background: #ffe1e1; color: inherit; border-radius: 3px; }
+  .piede { margin: 14px 0 0; font-size: 15px; color: var(--c-tenue); }
+  .piede a { color: var(--c-blu); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <h1><span data-l="it">Domande frequenti</span><span data-l="en">Frequently asked questions</span><span data-l="fr">Questions fréquentes</span><span data-l="zh">常见问题</span></h1>
+    <label class="cerca"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="#111" stroke-width="2"/><path d="M15.5 15.5L20 20" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg><input type="search" id="q" data-it="Cerca tra le domande" data-en="Search the questions" data-fr="Chercher dans les questions" data-zh="搜索问题" aria-label="Search"></label>
+    <div class="lista" id="lista"></div>
+    <p class="piede" id="piede"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Le domande si leggono di colpo, le risposte si aprono solo quando servono (fisarmonica). Tab e Invio da tastiera.</span><span data-l="en">Questions can be scanned at a glance; answers open only when needed (accordion). Tab and Enter on the keyboard.</span><span data-l="fr">On parcourt les questions d’un coup d’œil ; les réponses ne s’ouvrent qu’au besoin (accordéon). Tab et Entrée au clavier.</span><span data-l="zh">问题一目了然，答案只在需要时展开（手风琴）。键盘使用 Tab 和回车。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var FAQ = [
+    { d: { it: 'Come mi iscrivo a un corso?', en: 'How do I enrol in a course?', fr: 'Comment m’inscrire à un cours ?', zh: '如何报名课程？' },
+      r: { it: 'Dalla pagina del corso, con il pulsante «Iscriviti». Ricevi una conferma via email entro un giorno.', en: 'From the course page, with the “Enrol” button. You will get an email confirmation within a day.', fr: 'Depuis la page du cours, avec le bouton « S’inscrire ». Vous recevez une confirmation par e-mail sous un jour.', zh: '在课程页面点击“报名”按钮。一天内你会收到确认邮件。' } },
+    { d: { it: 'Posso cambiare corso dopo l’iscrizione?', en: 'Can I switch course after enrolling?', fr: 'Puis-je changer de cours après l’inscription ?', zh: '报名后可以更换课程吗？' },
+      r: { it: 'Sì, entro due settimane dall’inizio delle lezioni, scrivendo alla segreteria.', en: 'Yes, within two weeks of the start of classes, by writing to the student office.', fr: 'Oui, dans les deux semaines suivant le début des cours, en écrivant au secrétariat.', zh: '可以，在开课后两周内联系教务处即可。' } },
+    { d: { it: 'Ci sono borse di studio?', en: 'Are there scholarships?', fr: 'Y a-t-il des bourses d’études ?', zh: '有奖学金吗？' },
+      r: { it: 'Sì, per merito e per reddito. I bandi escono ogni anno a giugno.', en: 'Yes, based on merit and on income. Calls open every year in June.', fr: 'Oui, sur critères de mérite et de revenus. Les appels ouvrent chaque année en juin.', zh: '有，按成绩和家庭收入评定。每年六月发布申请通知。' } },
+    { d: { it: 'Dove trovo l’orario delle lezioni?', en: 'Where can I find the timetable?', fr: 'Où trouver l’emploi du temps ?', zh: '在哪里查看课程表？' },
+      r: { it: 'Nell’area personale, alla voce «Calendario». Si aggiorna in tempo reale.', en: 'In your personal area, under “Calendar”. It updates in real time.', fr: 'Dans votre espace personnel, rubrique « Calendrier ». Il se met à jour en temps réel.', zh: '在个人中心的“日历”中查看，实时更新。' } },
+    { d: { it: 'Le lezioni vengono registrate?', en: 'Are classes recorded?', fr: 'Les cours sont-ils enregistrés ?', zh: '课程会录像吗？' },
+      r: { it: 'Le parti teoriche sì; i laboratori no, perché si lavora in aula.', en: 'The theory parts are; the workshops are not, because the work happens in class.', fr: 'Les parties théoriques oui ; les ateliers non, car on travaille en salle.', zh: '理论部分会录像；工作坊不录，因为需要在教室里实际操作。' } }
+  ];
+  var TX = { nessuna: { it: 'Nessuna domanda contiene «{q}».', en: 'No question contains “{q}”.', fr: 'Aucune question ne contient « {q} ».', zh: '没有包含“{q}”的问题。' },
+    piede: { it: 'Non hai trovato la risposta? <a href="#">Scrivici</a>.', en: 'Didn’t find your answer? <a href="#">Write to us</a>.', fr: 'Pas de réponse ? <a href="#">Écrivez-nous</a>.', zh: '没有找到答案？<a href="#">联系我们</a>。' } };
+  var aperte = { 0: true }, q = '';
+  function esc(s) { return s.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function ev(s) { if (!q) return esc(s); var i = s.toLowerCase().indexOf(q.toLowerCase()); return i < 0 ? esc(s) : esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length)); }
+  function disegna() {
+    var l = document.getElementById('lista'); l.innerHTML = ''; var n = 0;
+    FAQ.forEach(function (f, i) {
+      var d = t(f.d), r = t(f.r), lq = q.toLowerCase();
+      if (q && d.toLowerCase().indexOf(lq) < 0 && r.toLowerCase().indexOf(lq) < 0) return;
+      n++;
+      var aperta = !!aperte[i] || (q && r.toLowerCase().indexOf(lq) >= 0);
+      var div = document.createElement('div'); div.className = 'voce' + (aperta ? ' aperta' : '');
+      div.innerHTML = '<h2><button type="button" aria-expanded="' + aperta + '" aria-controls="r' + i + '" id="d' + i + '"><span>' + ev(d) + '</span><span class="segno" aria-hidden="true"></span></button></h2>' +
+        '<div class="risposta" id="r' + i + '" role="region" aria-labelledby="d' + i + '"><div><p>' + ev(r) + '</p></div></div>';
+      div.querySelector('button').onclick = function () { aperte[i] = !div.classList.contains('aperta'); div.classList.toggle('aperta', aperte[i]); this.setAttribute('aria-expanded', String(aperte[i])); };
+      l.appendChild(div);
+    });
+    if (!n) l.innerHTML = '<p style="padding:14px 4px;margin:0;color:var(--c-tenue)">' + esc(t(TX.nessuna)).replace('{q}', esc(q)) + '</p>';
+    document.getElementById('piede').innerHTML = t(TX.piede);
+  }
+  document.getElementById('q').addEventListener('input', function (e) { q = e.target.value.trim(); disegna(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

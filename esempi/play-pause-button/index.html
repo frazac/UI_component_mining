@@ -1,0 +1,88 @@
+<!doctype html>
+<!-- Esempio ricostruito: Play/pause button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Play/pause button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .video { position: relative; height: 200px; border-radius: 10px; overflow: hidden; background: #1c1a24; }
+  .cielo { position: absolute; inset: 0; background: linear-gradient(180deg, #2a2f5a, rgb(105,143,255) 55%, rgb(250,145,145)); }
+  .sole { position: absolute; width: 80px; height: 80px; border-radius: 50%; background: #ffe3b0; left: 50%; margin-left: -40px; top: 140px; box-shadow: 0 0 40px #ffd28a; animation: sorge 12s linear -5s infinite; animation-play-state: paused; }
+  @keyframes sorge { from { top: 170px; } to { top: 20px; } }
+  .onde { position: absolute; left: -10%; right: -10%; bottom: 0; height: 56px; background: repeating-linear-gradient(90deg, #343a6e 0 40px, #3d4580 40px 80px); animation: onde 3s linear infinite; animation-play-state: paused; }
+  @keyframes onde { to { transform: translateX(80px); } }
+  .in-corso .sole, .in-corso .onde { animation-play-state: running; }
+  .grande { position: absolute; inset: 0; margin: auto; width: 72px; height: 72px; border-radius: 50%; border: 0; background: rgba(255,255,255,.9); cursor: pointer; display: grid; place-content: center; transition: opacity .3s, transform .2s; }
+  .grande:hover { transform: scale(1.08); }
+  .in-corso .grande { opacity: 0; } .in-corso:hover .grande, .in-corso .grande:focus-visible { opacity: .9; }
+  .ctrl { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .pp { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--c-testo); color: #fff; cursor: pointer; display: grid; place-content: center; flex: none; }
+  .pp:hover { background: #333; }
+  .pp svg, .grande svg { width: 22px; height: 22px; }
+  .grande svg { width: 30px; height: 30px; }
+  .binario { flex: 1; height: 6px; border-radius: 3px; background: #eee8e6; overflow: hidden; }
+  .avanz { height: 100%; width: 0; background: var(--c-salmone); }
+  .tempo { font-size: 15px; font-variant-numeric: tabular-nums; color: var(--c-tenue); min-width: 92px; text-align: right; }
+  .stati { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; text-align: center; font-size: 15px; }
+  .stati > div { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .f.hov { background: #333; box-shadow: 0 0 0 6px rgba(0,0,0,.08); }
+  .f.foc { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .f.dis { background: #cfc9c7; cursor: not-allowed; }
+  .f.car::after { content: ""; width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.35); border-top-color: #fff; animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Un solo pulsante che alterna due azioni (anche con la barra spaziatrice)</span><span data-l="en">One button toggling two actions (Space bar works too)</span><span data-l="fr">Un seul bouton qui alterne deux actions (aussi avec la barre d’espace)</span><span data-l="zh">一个按钮切换两种操作（也可按空格键）</span></span>
+    <div class="video" id="video">
+      <div class="cielo"></div><div class="sole"></div><div class="onde"></div>
+      <button class="grande" type="button" id="grande"></button>
+    </div>
+    <div class="ctrl"><button class="pp" type="button" id="pp"></button><div class="binario"><div class="avanz" id="avanz"></div></div><span class="tempo" id="tempo">0:00 / 0:12</span></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati</span><span data-l="en">States</span><span data-l="fr">États</span><span data-l="zh">状态</span></span>
+    <div class="stati">
+      <div><span class="pp f" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M6 3 L19 11 L6 19 Z" fill="#fff"/></svg></span><span data-l="it">Play</span><span data-l="en">Play</span><span data-l="fr">Lecture</span><span data-l="zh">播放</span></div>
+      <div><span class="pp f" aria-hidden="true"><svg viewBox="0 0 22 22"><rect x="5" y="3" width="4" height="16" rx="1" fill="#fff"/><rect x="13" y="3" width="4" height="16" rx="1" fill="#fff"/></svg></span><span data-l="it">Pausa</span><span data-l="en">Pause</span><span data-l="fr">Pause</span><span data-l="zh">暂停</span></div>
+      <div><span class="pp f hov" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M6 3 L19 11 L6 19 Z" fill="#fff"/></svg></span><span data-l="it">Al passaggio</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span></div>
+      <div><span class="pp f foc" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M6 3 L19 11 L6 19 Z" fill="#fff"/></svg></span><span data-l="it">Focus</span><span data-l="en">Focus</span><span data-l="fr">Focus</span><span data-l="zh">焦点</span></div>
+      <div><span class="pp f car" aria-hidden="true"></span><span data-l="it">Caricamento</span><span data-l="en">Buffering</span><span data-l="fr">Chargement</span><span data-l="zh">缓冲中</span></div>
+      <div><span class="pp f dis" aria-hidden="true"><svg viewBox="0 0 22 22"><path d="M6 3 L19 11 L6 19 Z" fill="#fff"/></svg></span><span data-l="it">Disattivato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’icona mostra l’azione che il pulsante farà, non lo stato attuale: durante la riproduzione si vede la pausa.</span><span data-l="en">The icon shows the action the button will perform, not the current state: while playing, you see pause.</span><span data-l="fr">L’icône montre l’action que le bouton va effectuer, pas l’état actuel : pendant la lecture, on voit la pause.</span><span data-l="zh">图标显示按钮将要执行的操作，而不是当前状态：播放时显示的是暂停。</span></p>
+<script>
+  var PLAY = '<svg viewBox="0 0 22 22" aria-hidden="true"><path d="M6 3 L19 11 L6 19 Z" fill="currentColor"/></svg>';
+  var PAUSA = '<svg viewBox="0 0 22 22" aria-hidden="true"><rect x="5" y="3" width="4" height="16" rx="1" fill="currentColor"/><rect x="13" y="3" width="4" height="16" rx="1" fill="currentColor"/></svg>';
+  var L = { it: ['Riproduci', 'Metti in pausa'], en: ['Play', 'Pause'], fr: ['Lire', 'Mettre en pause'], zh: ['播放', '暂停'] };
+  var va = false, t = 0, durata = 12, ultimo = 0;
+  function disegna() {
+    var l = window.Lingua ? Lingua.get() : 'en';
+    ['pp', 'grande'].forEach(function (id) { var b = document.getElementById(id); b.innerHTML = va ? PAUSA : PLAY; b.setAttribute('aria-label', L[l][va ? 1 : 0]); b.title = L[l][va ? 1 : 0]; });
+    document.getElementById('grande').style.color = '#111';
+    document.getElementById('video').classList.toggle('in-corso', va);
+  }
+  function fmt(s) { s = Math.floor(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function passo(ora) {
+    if (va) { t += (ora - ultimo) / 1000; if (t >= durata) { t = 0; va = false; disegna(); } }
+    ultimo = ora;
+    document.getElementById('avanz').style.width = (t / durata * 100) + '%';
+    document.getElementById('tempo').textContent = fmt(t) + ' / ' + fmt(durata);
+    requestAnimationFrame(passo);
+  }
+  function commuta() { va = !va; disegna(); }
+  document.getElementById('pp').onclick = commuta; document.getElementById('grande').onclick = commuta;
+  document.addEventListener('keydown', function (ev) { if (ev.code === 'Space' && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); commuta(); } });
+  disegna(); requestAnimationFrame(function (o) { ultimo = o; passo(o); });
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

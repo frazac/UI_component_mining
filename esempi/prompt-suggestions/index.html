@@ -1,0 +1,86 @@
+<!doctype html>
+<!-- Esempio ricostruito: Sample queries and prompt suggestions. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt suggestions — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  .saluto { font-size: 24px; font-weight: 500; text-align: center; margin: 4px 0 14px; }
+  .scrivi { display: flex; gap: 8px; align-items: flex-end; border: 1.5px solid var(--c-linea); border-radius: 16px; padding: 8px 8px 8px 14px; transition: border-color .2s, box-shadow .2s; }
+  .scrivi:focus-within { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.18); }
+  .scrivi textarea { flex: 1; border: 0; resize: none; font-size: 17px; line-height: 1.4; height: 50px; outline: none; background: none; }
+  .invia { width: 38px; height: 38px; flex: none; border-radius: 50%; border: 0; background: var(--c-testo); cursor: pointer; display: grid; place-items: center; }
+  .invia:disabled { background: rgba(0,0,0,.15); cursor: default; }
+  .proposte { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+  .proposta { border: 1px solid var(--c-linea); background: #fff; border-radius: 12px; padding: 9px 12px; text-align: left; cursor: pointer; font-size: 15px; line-height: 1.3; display: flex; gap: 10px; align-items: flex-start; transition: border-color .15s, background .15s; }
+  .proposta:hover { border-color: var(--c-blu); background: rgba(105,143,255,.05); }
+  .proposta b { display: block; font-weight: 500; }
+  .proposta small { color: var(--c-tenue); font-size: 14px; }
+  .proposta .ic { flex: none; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; }
+  .inviato { margin-top: 12px; font-size: 15px; color: var(--c-tenue); min-height: 21px; }
+  .inviato b { color: var(--c-testo); font-weight: 500; }
+  .cerca { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--c-linea); border-radius: 999px; padding: 8px 14px; }
+  .cerca input { border: 0; flex: 1; font-size: 16px; outline: none; min-width: 0; }
+  .cerca:focus-within { border-color: var(--c-blu); }
+  .prova { margin-top: 10px; font-size: 15px; color: var(--c-tenue); display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .prova button { border: 0; background: var(--c-palco); border-radius: 999px; padding: 4px 12px; font-size: 15px; cursor: pointer; }
+  .prova button:hover { background: rgba(105,143,255,.15); color: var(--c-blu); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Assistente: suggerimenti di prompt sotto il campo</span><span data-l="en">Assistant: prompt suggestions below the field</span><span data-l="fr">Assistant : suggestions de prompts sous le champ</span><span data-l="zh">助手：输入框下方的提示词建议</span></span>
+    <p class="saluto"><span data-l="it">Da dove cominciamo?</span><span data-l="en">Where shall we start?</span><span data-l="fr">Par où commencer ?</span><span data-l="zh">我们从哪里开始？</span></p>
+    <form class="scrivi" id="modulo">
+      <textarea id="prompt" aria-label="Prompt" data-it="Chiedi qualcosa…" data-en="Ask anything…" data-fr="Demandez ce que vous voulez…" data-zh="问点什么…"></textarea>
+      <button class="invia" id="invia" type="submit" disabled aria-label="Send"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </form>
+    <div class="proposte" id="proposte"></div>
+    <div class="inviato" id="inviato" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Ricerca: esempi di domande</span><span data-l="en">Search: sample queries</span><span data-l="fr">Recherche : exemples de requêtes</span><span data-l="zh">搜索：示例查询</span></span>
+    <div class="cerca"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="#111" stroke-width="2.2"/><path d="M15.5 15.5L21 21" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg><input id="cerca" aria-label="Search" data-it="Cerca nell’archivio" data-en="Search the archive" data-fr="Rechercher dans les archives" data-zh="搜索档案"></div>
+    <div class="prova" id="prova"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Gli esempi insegnano cosa si può chiedere e superano il blocco della pagina bianca; un clic li copia nel campo, da modificare prima di inviare.</span><span data-l="en">Examples teach what can be asked and beat blank-page block; a click copies them into the field, to edit before sending.</span><span data-l="fr">Les exemples montrent ce que l’on peut demander et vainquent la page blanche ; un clic les copie dans le champ, à modifier avant l’envoi.</span><span data-l="zh">示例告诉用户可以问什么，帮助克服“无从下笔”；点击即可填入输入框，发送前还能修改。</span></p>
+<script>
+  var P = [
+    { c: 'rgb(250,145,145)', i: '<path d="M4 20l4-1 11-11-3-3L5 16z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>', t: { it: 'Scrivi un brief', en: 'Write a brief', fr: 'Rédige un brief', zh: '写一份设计简报' }, s: { it: 'per l’app di una biblioteca', en: 'for a library app', fr: 'pour l’appli d’une bibliothèque', zh: '为图书馆应用' } },
+    { c: 'rgb(105,143,255)', i: '<circle cx="12" cy="12" r="7" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 8v4l3 2" stroke="#fff" stroke-width="2" stroke-linecap="round"/>', t: { it: 'Pianifica', en: 'Plan', fr: 'Planifie', zh: '规划' }, s: { it: 'tre settimane di test con utenti', en: 'three weeks of user testing', fr: 'trois semaines de tests utilisateurs', zh: '三周的用户测试' } },
+    { c: '#2c2c34', i: '<path d="M5 6h14M5 12h10M5 18h6" stroke="#fff" stroke-width="2" stroke-linecap="round"/>', t: { it: 'Riassumi', en: 'Summarise', fr: 'Résume', zh: '总结' }, s: { it: 'le 10 euristiche di Nielsen', en: 'Nielsen’s 10 heuristics', fr: 'les 10 heuristiques de Nielsen', zh: '尼尔森十大可用性原则' } },
+    { c: '#f0b47a', i: '<path d="M12 4l2 5 5 .5-4 3.5 1.5 5L12 15l-4.5 3 1.5-5-4-3.5L10 9z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/>', t: { it: 'Proponi', en: 'Suggest', fr: 'Propose', zh: '推荐' }, s: { it: 'tre palette per un museo', en: 'three palettes for a museum', fr: 'trois palettes pour un musée', zh: '为博物馆设计三套配色' } }
+  ];
+  var Q = [{ it: 'manifesti anni ’60', en: '1960s posters', fr: 'affiches années 60', zh: '60 年代海报' }, { it: 'Bauhaus colore', en: 'Bauhaus colour', fr: 'Bauhaus couleur', zh: '包豪斯 色彩' }, { it: 'tesi 2024', en: 'theses 2024', fr: 'mémoires 2024', zh: '2024 毕业论文' }];
+  var T = { prova: { it: 'Prova:', en: 'Try:', fr: 'Essayez :', zh: '试试：' }, inviato: { it: 'Inviato: ', en: 'Sent: ', fr: 'Envoyé : ', zh: '已发送：' }, demo: { it: ' (demo, nessuna risposta)', en: ' (demo, no reply)', fr: ' (démo, sans réponse)', zh: '（演示，不会回复）' } };
+  var ta = document.getElementById('prompt'), inv = document.getElementById('invia');
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    var box = document.getElementById('proposte'); box.innerHTML = '';
+    P.forEach(function (p) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'proposta';
+      b.innerHTML = '<span class="ic" style="background:' + p.c + '"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">' + p.i + '</svg></span><span><b>' + L(p.t) + '</b><small>' + L(p.s) + '</small></span>';
+      b.onclick = function () { ta.value = L(p.t) + ' ' + L(p.s); ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); inv.disabled = false; };
+      box.appendChild(b);
+    });
+    var pr = document.getElementById('prova'); pr.innerHTML = '<span>' + L(T.prova) + '</span>';
+    Q.forEach(function (q) { var b = document.createElement('button'); b.type = 'button'; b.textContent = L(q); b.onclick = function () { var c = document.getElementById('cerca'); c.value = L(q); c.focus(); }; pr.appendChild(b); });
+  }
+  ta.addEventListener('input', function () { inv.disabled = !ta.value.trim(); });
+  ta.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (ta.value.trim()) document.getElementById('modulo').requestSubmit(); } });
+  document.getElementById('modulo').addEventListener('submit', function (e) {
+    e.preventDefault(); var o = document.getElementById('inviato');
+    o.innerHTML = L(T.inviato) + '<b></b>' + L(T.demo); o.querySelector('b').textContent = '«' + ta.value.trim() + '»'; ta.value = ''; inv.disabled = true;
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

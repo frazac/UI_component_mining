@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- Esempio ricostruito: Carousel. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carousel — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .carosello { position: relative; }
+  .vetro { overflow: hidden; border-radius: 10px; }
+  .nastro { display: flex; transition: transform .45s cubic-bezier(.2,.7,.2,1); }
+  .diapo { flex: 0 0 100%; height: 300px; position: relative; display: flex; align-items: flex-end; padding: 22px; color: #fff; overflow: hidden; }
+  .diapo h3 { margin: 0; font-size: 26px; font-weight: 500; position: relative; text-shadow: 0 1px 8px rgba(0,0,0,.2); }
+  .diapo p { margin: 2px 0 0; font-size: 16px; position: relative; opacity: .95; }
+  .forma { position: absolute; border-radius: 50%; }
+  .freccia { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); box-shadow: 0 2px 8px rgba(0,0,0,.18); cursor: pointer; display: grid; place-items: center; }
+  .freccia:hover { background: #fff; }
+  .freccia.prec { left: 12px; } .freccia.succ { right: 12px; }
+  .comandi { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; }
+  .punti { display: flex; gap: 8px; }
+  .punti button { width: 12px; height: 12px; border-radius: 6px; border: 0; padding: 0; background: rgba(0,0,0,.2); cursor: pointer; transition: width .25s, background .25s; }
+  .punti button[aria-current="true"] { width: 30px; background: var(--c-blu); }
+  .pausa { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 5px 14px 5px 10px; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .conta { font-size: 15px; color: var(--c-tenue); font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Una diapositiva alla volta: frecce, punti o tastiera</span><span data-l="en">One slide at a time: arrows, dots or keyboard</span><span data-l="fr">Une diapositive à la fois : flèches, points ou clavier</span><span data-l="zh">一次显示一张：箭头、圆点或键盘</span></span>
+    <section class="carosello" aria-roledescription="carousel" aria-label="Mostre" id="car" tabindex="0">
+      <div class="vetro"><div class="nastro" id="nastro" aria-live="off"></div></div>
+      <button class="freccia prec" type="button" id="prec"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="freccia succ" type="button" id="succ"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="comandi">
+        <button class="pausa" type="button" id="pausa"></button>
+        <div class="punti" id="punti"></div>
+        <span class="conta" id="conta"></span>
+      </div>
+    </section>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Lo scorrimento automatico si ferma al passaggio del mouse, al focus e con «Pausa»; con il movimento ridotto non parte.</span><span data-l="en">Autoplay stops on hover, on focus and with “Pause”; with reduced motion it does not start.</span><span data-l="fr">Le défilement automatique s’arrête au survol, au focus et avec « Pause » ; avec le mouvement réduit, il ne démarre pas.</span><span data-l="zh">自动轮播在悬停、获得焦点或点击“暂停”时停止；开启“减弱动态效果”时不会自动播放。</span></p>
+<script>
+  var DIAPO = [
+    { c: ['#fa9191', '#df8888'], t: { it: 'Mostra di fine anno', en: 'End-of-year show', fr: 'Exposition de fin d’année', zh: '年终展' }, s: { it: 'Dal 12 al 20 giugno', en: '12 to 20 June', fr: 'Du 12 au 20 juin', zh: '6 月 12 日至 20 日' } },
+    { c: ['#698fff', '#4a6fd8'], t: { it: 'Open day', en: 'Open day', fr: 'Journée portes ouvertes', zh: '开放日' }, s: { it: 'Sabato, dalle 10', en: 'Saturday, from 10 am', fr: 'Samedi, dès 10 h', zh: '周六上午 10 点起' } },
+    { c: ['#2c2c34', '#55556a'], t: { it: 'Talk: interfacce e IA', en: 'Talk: interfaces and AI', fr: 'Conférence : interfaces et IA', zh: '讲座：界面与人工智能' }, s: { it: 'Aula magna, ore 18', en: 'Main hall, 6 pm', fr: 'Grand amphi, 18 h', zh: '大礼堂，晚上 6 点' } },
+    { c: ['#f0b47a', '#fa9191'], t: { it: 'Workshop di tipografia', en: 'Typography workshop', fr: 'Atelier de typographie', zh: '字体排印工作坊' }, s: { it: 'Iscrizioni aperte', en: 'Registration open', fr: 'Inscriptions ouvertes', zh: '报名开放中' } }
+  ];
+  var T = {
+    prec: { it: 'Diapositiva precedente', en: 'Previous slide', fr: 'Diapositive précédente', zh: '上一张' },
+    succ: { it: 'Diapositiva successiva', en: 'Next slide', fr: 'Diapositive suivante', zh: '下一张' },
+    vai: { it: 'Vai alla diapositiva ', en: 'Go to slide ', fr: 'Aller à la diapositive ', zh: '跳到第 ' },
+    pausa: { it: 'Pausa', en: 'Pause', fr: 'Pause', zh: '暂停' },
+    play: { it: 'Riproduci', en: 'Play', fr: 'Lecture', zh: '播放' },
+    di: { it: ' di ', en: ' of ', fr: ' sur ', zh: ' / ' }
+  };
+  var i = 0, gira = !matchMedia('(prefers-reduced-motion: reduce)').matches, sospeso = false, timer;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function costruisci() {
+    var n = document.getElementById('nastro'); n.innerHTML = '';
+    DIAPO.forEach(function (d, k) {
+      var s = document.createElement('div'); s.className = 'diapo'; s.setAttribute('role', 'group'); s.setAttribute('aria-roledescription', 'slide');
+      s.setAttribute('aria-label', (k + 1) + L(T.di) + DIAPO.length);
+      s.style.background = 'linear-gradient(135deg,' + d.c[0] + ',' + d.c[1] + ')';
+      s.innerHTML = '<span class="forma" style="width:260px;height:260px;right:-50px;top:-70px;background:rgba(255,255,255,.18)"></span>' +
+        '<span class="forma" style="width:120px;height:120px;right:150px;top:60px;border:3px solid rgba(255,255,255,.35)"></span>' +
+        '<div><h3>' + L(d.t) + '</h3><p>' + L(d.s) + '</p></div>';
+      n.appendChild(s);
+    });
+    var p = document.getElementById('punti'); p.innerHTML = '';
+    DIAPO.forEach(function (d, k) {
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', L(T.vai) + (k + 1));
+      b.onclick = function () { vai(k); }; p.appendChild(b);
+    });
+    document.getElementById('prec').setAttribute('aria-label', L(T.prec));
+    document.getElementById('succ').setAttribute('aria-label', L(T.succ));
+    vai(i);
+  }
+  function vai(k) {
+    i = (k + DIAPO.length) % DIAPO.length;
+    document.getElementById('nastro').style.transform = 'translateX(' + (-100 * i) + '%)';
+    document.querySelectorAll('#punti button').forEach(function (b, j) { b.setAttribute('aria-current', String(j === i)); });
+    document.querySelectorAll('.diapo').forEach(function (s, j) { s.setAttribute('aria-hidden', String(j !== i)); });
+    document.getElementById('conta').textContent = (i + 1) + ' / ' + DIAPO.length;
+    var pz = document.getElementById('pausa');
+    pz.innerHTML = gira ? '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" fill="#111"/><rect x="7" y="1" width="3" height="10" fill="#111"/></svg>' + L(T.pausa)
+                        : '<svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z" fill="#111"/></svg>' + L(T.play);
+    document.getElementById('nastro').setAttribute('aria-live', gira ? 'off' : 'polite');
+  }
+  function ciclo() { clearInterval(timer); timer = setInterval(function () { if (gira && !sospeso) vai(i + 1); }, 4000); }
+  document.getElementById('prec').onclick = function () { vai(i - 1); };
+  document.getElementById('succ').onclick = function () { vai(i + 1); };
+  document.getElementById('pausa').onclick = function () { gira = !gira; vai(i); };
+  var car = document.getElementById('car');
+  car.addEventListener('mouseenter', function () { sospeso = true; });
+  car.addEventListener('mouseleave', function () { sospeso = false; });
+  car.addEventListener('focusin', function () { sospeso = true; });
+  car.addEventListener('focusout', function () { sospeso = false; });
+  car.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') vai(i - 1); if (e.key === 'ArrowRight') vai(i + 1); });
+  costruisci(); ciclo();
+  document.addEventListener('lingua', costruisci);
+</script>
+</body>
+</html>

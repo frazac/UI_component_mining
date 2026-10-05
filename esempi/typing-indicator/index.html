@@ -1,0 +1,92 @@
+<!doctype html>
+<!-- Esempio ricostruito: Typing indicator. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typing indicator — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.5fr 1fr; }
+  .chat { height: 340px; display: flex; flex-direction: column; border: 1px solid var(--c-linea); border-radius: 12px; overflow: hidden; }
+  .testa { padding: 8px 12px; background: #f6f3f2; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+  .testa i { width: 30px; height: 30px; border-radius: 50%; background: var(--c-salmone); }
+  .testa small { display: block; color: var(--c-tenue); font-size: 14px; min-height: 16px; }
+  .msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .m { max-width: 78%; padding: 8px 12px; border-radius: 16px; font-size: 15px; line-height: 1.35; animation: entra .2s ease-out; }
+  .m.loro { background: #f1edeb; align-self: flex-start; border-bottom-left-radius: 4px; }
+  .m.mio { background: var(--c-blu); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  @keyframes entra { from { transform: translateY(6px); opacity: 0; } }
+  .puntini { display: inline-flex; gap: 4px; align-items: center; height: 20px; }
+  .puntini i { width: 8px; height: 8px; border-radius: 50%; background: #8a8584; animation: salta 1.2s infinite ease-in-out; }
+  .puntini i:nth-child(2) { animation-delay: .15s; } .puntini i:nth-child(3) { animation-delay: .3s; }
+  @keyframes salta { 0%, 60%, 100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-5px); opacity: 1; } }
+  .pulsa i { animation-name: pulsa; } @keyframes pulsa { 0%, 60%, 100% { opacity: .25; transform: scale(.8); } 30% { opacity: 1; transform: scale(1.1); } }
+  .scrivi { display: flex; gap: 8px; padding: 8px; border-top: 1px solid var(--c-linea); }
+  .scrivi input { flex: 1; border: 1.5px solid #cfc9c7; border-radius: 9999px; padding: 7px 14px; font-size: 15px; min-width: 0; }
+  .scrivi input:focus { outline: none; border-color: var(--c-blu); }
+  .scrivi button { border: 0; background: var(--c-testo); color: #fff; border-radius: 9999px; padding: 0 16px; cursor: pointer; font-size: 15px; }
+  .varianti { display: grid; gap: 18px; font-size: 15px; }
+  .varianti > div { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .varianti small { color: var(--c-tenue); font-size: 15px; }
+  .bolla { background: #f1edeb; padding: 8px 12px; border-radius: 16px; border-bottom-left-radius: 4px; }
+  .testuale { color: var(--c-tenue); font-style: italic; }
+  .testuale::after { content: ""; animation: tre 1.5s steps(4) infinite; }
+  @keyframes tre { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+  .ai { display: flex; gap: 8px; align-items: center; }
+  .ai i { width: 14px; height: 14px; border-radius: 50%; background: conic-gradient(rgb(250,145,145), rgb(105,143,255), rgb(250,145,145)); animation: gira 1s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Scrivi un messaggio: l’altra persona «sta scrivendo»</span><span data-l="en">Send a message: the other person is “typing”</span><span data-l="fr">Envoyez un message : l’autre personne « écrit »</span><span data-l="zh">发一条消息：对方“正在输入”</span></span>
+    <div class="chat">
+      <div class="testa"><i></i><span>Anna<small id="stato" aria-live="polite"></small></span></div>
+      <div class="msgs" id="msgs" role="log"></div>
+      <form class="scrivi" id="form"><input id="inp" autocomplete="off"><button type="submit" id="invia"></button></form>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Varianti</span><span data-l="en">Variants</span><span data-l="fr">Variantes</span><span data-l="zh">变体</span></span>
+    <div class="varianti">
+      <div><small><span data-l="it">Puntini che saltano</span><span data-l="en">Bouncing dots</span><span data-l="fr">Points qui sautent</span><span data-l="zh">跳动的圆点</span></small><span class="bolla"><span class="puntini"><i></i><i></i><i></i></span></span></div>
+      <div><small><span data-l="it">Puntini che pulsano</span><span data-l="en">Pulsing dots</span><span data-l="fr">Points qui pulsent</span><span data-l="zh">闪烁的圆点</span></small><span class="bolla"><span class="puntini pulsa"><i></i><i></i><i></i></span></span></div>
+      <div><small><span data-l="it">Solo testo</span><span data-l="en">Text only</span><span data-l="fr">Texte seul</span><span data-l="zh">纯文字</span></small><span class="testuale"><span data-l="it">Luca sta scrivendo</span><span data-l="en">Luca is typing</span><span data-l="fr">Luca est en train d’écrire</span><span data-l="zh">Luca 正在输入</span></span></div>
+      <div><small><span data-l="it">Assistente IA</span><span data-l="en">AI assistant</span><span data-l="fr">Assistant IA</span><span data-l="zh">AI 助手</span></small><span class="ai"><i></i><span><span data-l="it">Sto pensando…</span><span data-l="en">Thinking…</span><span data-l="fr">Réflexion…</span><span data-l="zh">思考中…</span></span></span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’indicatore dice che una risposta sta arrivando: riduce l’attesa percepita e scompare appena il messaggio è inviato.</span><span data-l="en">The indicator says a reply is on its way: it shortens the perceived wait and disappears as soon as the message is sent.</span><span data-l="fr">L’indicateur annonce qu’une réponse arrive : il réduit l’attente perçue et disparaît dès que le message est envoyé.</span><span data-l="zh">指示器表示回复即将到来：它缩短感知等待时间，消息一发出就消失。</span></p>
+<script>
+  var T = {
+    it: { ph: 'Scrivi un messaggio', invia: 'Invia', scrive: 'sta scrivendo…', online: 'in linea', primo: 'Ciao! Hai visto le slide di oggi?', risposte: ['Sì, le ho appena aperte.', 'Ottimo, ci vediamo a lezione', 'Ti mando il link più tardi.', 'Interessante, ne parliamo domani.'], tipo: 'Anna sta scrivendo' },
+    en: { ph: 'Type a message', invia: 'Send', scrive: 'typing…', online: 'online', primo: 'Hi! Have you seen today’s slides?', risposte: ['Yes, I just opened them.', 'Great, see you in class', 'I’ll send you the link later.', 'Interesting, let’s talk tomorrow.'], tipo: 'Anna is typing' },
+    fr: { ph: 'Écrire un message', invia: 'Envoyer', scrive: 'écrit…', online: 'en ligne', primo: 'Salut ! Tu as vu les diapos d’aujourd’hui ?', risposte: ['Oui, je viens de les ouvrir.', 'Super, à tout à l’heure en cours', 'Je t’envoie le lien plus tard.', 'Intéressant, on en parle demain.'], tipo: 'Anna est en train d’écrire' },
+    zh: { ph: '输入消息', invia: '发送', scrive: '正在输入…', online: '在线', primo: '嗨！你看过今天的幻灯片了吗？', risposte: ['看了，刚打开。', '太好了，课上见', '我晚点把链接发给你。', '有意思，明天聊。'], tipo: 'Anna 正在输入' }
+  };
+  var storia = [{ chi: 'loro', k: 'primo' }], scrive = false, n = 0;
+  function t() { return T[window.Lingua ? Lingua.get() : 'en']; }
+  function disegna() {
+    var box = document.getElementById('msgs'); box.innerHTML = '';
+    storia.forEach(function (m) { var d = document.createElement('div'); d.className = 'm ' + m.chi; d.textContent = m.testo || (m.k === 'primo' ? t().primo : t().risposte[m.r]); box.appendChild(d); });
+    if (scrive) { var d = document.createElement('div'); d.className = 'm loro'; d.setAttribute('aria-label', t().tipo); d.innerHTML = '<span class="puntini"><i></i><i></i><i></i></span>'; box.appendChild(d); }
+    box.scrollTop = box.scrollHeight;
+    document.getElementById('stato').textContent = scrive ? t().scrive : t().online;
+    document.getElementById('inp').placeholder = t().ph; document.getElementById('invia').textContent = t().invia;
+  }
+  document.getElementById('form').addEventListener('submit', function (ev) {
+    ev.preventDefault(); var inp = document.getElementById('inp'), v = inp.value.trim(); if (!v) return;
+    storia.push({ chi: 'mio', testo: v }); inp.value = ''; disegna();
+    setTimeout(function () { scrive = true; disegna(); }, 500);
+    setTimeout(function () { scrive = false; storia.push({ chi: 'loro', r: n++ % 4 }); disegna(); }, 2600);
+  });
+  scrive = true; disegna();
+  setTimeout(function () { scrive = false; disegna(); }, 6000);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

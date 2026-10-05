@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tabs with audio indicator. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tab audio indicator — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .browser { padding: 0; overflow: hidden; box-shadow: 0 18px 40px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.08); }
+  .barra-schede { display: flex; align-items: flex-end; gap: 2px; padding: 10px 10px 0; background: #e6e1df; }
+  .pallini { display: flex; gap: 7px; padding: 0 10px 12px 4px; }
+  .pallini i { width: 12px; height: 12px; border-radius: 50%; background: #c9c2c0; }
+  .scheda { display: flex; align-items: center; gap: 8px; min-width: 0; flex: 1; max-width: 190px; padding: 9px 10px; border-radius: 10px 10px 0 0; background: transparent; border: 0; cursor: pointer; font-size: 15px; text-align: left; position: relative; }
+  .scheda:hover { background: rgba(255,255,255,.45); }
+  .scheda[aria-selected="true"] { background: #fff; }
+  .favicon { width: 16px; height: 16px; border-radius: 4px; flex: none; }
+  .scheda .nome { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .audio { flex: none; width: 24px; height: 24px; border: 0; background: none; padding: 0; border-radius: 6px; display: grid; place-items: center; cursor: pointer; color: #111; }
+  .audio:hover { background: rgba(0,0,0,.08); }
+  .audio[hidden] { display: none; }
+  .onde path { animation: onda 1s ease-in-out infinite; transform-origin: 6px 8px; }
+  .onde path:nth-child(2) { animation-delay: .2s; }
+  @keyframes onda { 50% { opacity: .25; } }
+  .indirizzo { display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-bottom: 1px solid var(--c-linea); }
+  .indirizzo span { flex: 1; background: var(--c-palco); border-radius: 9999px; padding: 6px 14px; font-size: 15px; color: var(--c-tenue); }
+  .pagina { height: 300px; padding: 22px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
+  .player { border-radius: 12px; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; color: #fff; position: relative; }
+  .player .play { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); cursor: pointer; display: grid; place-items: center; }
+  .player .play:hover { transform: scale(1.05); }
+  .avanz { height: 4px; border-radius: 2px; background: rgba(255,255,255,.35); overflow: hidden; }
+  .avanz i { display: block; height: 100%; width: 30%; background: #fff; }
+  .spiega { font-size: 15px; color: var(--c-tenue); }
+  .spiega h3 { color: var(--c-testo); font-size: 19px; font-weight: 500; margin: 0 0 8px; }
+  .spiega ul { padding-left: 18px; margin: 8px 0 0; }
+  .spiega li { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro browser">
+    <div class="barra-schede" role="tablist" id="schede"><span class="pallini" aria-hidden="true"><i></i><i></i><i></i></span></div>
+    <div class="indirizzo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M9 2L4 7l5 5" fill="none" stroke="#999" stroke-width="1.8"/></svg><span id="url"></span></div>
+    <div class="pagina" id="pagina" role="tabpanel"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’icona dell’altoparlante dice da quale scheda arriva il suono, anche quando non è in primo piano; un clic la silenzia.</span><span data-l="en">The speaker icon tells which tab the sound comes from, even when it is in the background; a click mutes it.</span><span data-l="fr">L’icône de haut-parleur indique de quel onglet vient le son, même en arrière-plan&#8239;; un clic le coupe.</span><span data-l="zh">扬声器图标告诉你声音来自哪个标签页，即使它在后台；点击即可静音。</span></p>
+<script>
+  var SCH = [
+    { n: { it: 'Lezione 4 — video', en: 'Lesson 4 — video', fr: 'Séance 4 — vidéo', zh: '第 4 课 — 视频' }, u: 'video.example/lezione-4', c: '#fa9191', suona: true, muto: false },
+    { n: { it: 'Radio del campus', en: 'Campus radio', fr: 'Radio du campus', zh: '校园电台' }, u: 'radio.example/live', c: '#698fff', suona: true, muto: true },
+    { n: { it: 'Bozza della tesi', en: 'Thesis draft', fr: 'Brouillon de mémoire', zh: '论文草稿' }, u: 'docs.example/tesi', c: '#4caf7a', suona: false, muto: false },
+    { n: { it: 'Posta', en: 'Mail', fr: 'Courrier', zh: '邮件' }, u: 'mail.example', c: '#f4bd4f', suona: false, muto: false }
+  ];
+  var attiva = 0;
+  var TX = { muta: { it: 'Disattiva l’audio della scheda', en: 'Mute tab', fr: 'Couper le son de l’onglet', zh: '将标签页静音' }, attiva: { it: 'Riattiva l’audio della scheda', en: 'Unmute tab', fr: 'Réactiver le son de l’onglet', zh: '取消标签页静音' },
+    play: { it: 'Riproduci', en: 'Play', fr: 'Lire', zh: '播放' }, pausa: { it: 'Pausa', en: 'Pause', fr: 'Pause', zh: '暂停' },
+    titolo: { it: 'Tre stati dell’icona', en: 'Three icon states', fr: 'Trois états de l’icône', zh: '图标的三种状态' },
+    s1: { it: 'onde animate: la scheda suona', en: 'animated waves: the tab is playing', fr: 'ondes animées : l’onglet joue', zh: '动态声波：标签页正在播放' },
+    s2: { it: 'altoparlante barrato: suona, ma muto', en: 'crossed-out speaker: playing but muted', fr: 'haut-parleur barré : joue mais muet', zh: '划线扬声器：在播放但已静音' },
+    s3: { it: 'nessuna icona: silenzio', en: 'no icon: silence', fr: 'aucune icône : silence', zh: '无图标：没有声音' },
+    nessun: { it: 'Questa scheda non riproduce audio. Guarda le schede in alto.', en: 'This tab plays no sound. Look at the tabs above.', fr: 'Cet onglet ne joue aucun son. Regardez les onglets en haut.', zh: '此标签页没有播放声音。看看上方的标签页。' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var ICO_ON = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 6h3l4-3v10l-4-3H1z" fill="currentColor"/><g class="onde" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10.5 5.5a3.5 3.5 0 010 5"/><path d="M12.5 3.5a6.5 6.5 0 010 9"/></g></svg>';
+  var ICO_OFF = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 6h3l4-3v10l-4-3H1z" fill="currentColor"/><path d="M10.5 5.5l4 5M14.5 5.5l-4 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  function disegna() {
+    var bar = document.getElementById('schede'); bar.querySelectorAll('.scheda').forEach(function (s) { s.remove(); });
+    SCH.forEach(function (s, i) {
+      var t = document.createElement('div'); t.className = 'scheda'; t.setAttribute('role', 'tab'); t.tabIndex = i === attiva ? 0 : -1; t.setAttribute('aria-selected', String(i === attiva));
+      t.innerHTML = '<span class="favicon"></span><span class="nome"></span><button class="audio" type="button"></button>';
+      t.firstChild.style.background = s.c; t.querySelector('.nome').textContent = T(s.n); t.title = T(s.n);
+      var a = t.querySelector('.audio'); a.hidden = !s.suona; a.innerHTML = s.muto ? ICO_OFF : ICO_ON; a.setAttribute('aria-label', T(s.muto ? TX.attiva : TX.muta));
+      a.onclick = function (e) { e.stopPropagation(); s.muto = !s.muto; disegna(); };
+      t.onclick = function () { attiva = i; disegna(); };
+      t.onkeydown = function (e) { var d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (d) { attiva = (attiva + d + SCH.length) % SCH.length; disegna(); bar.querySelectorAll('.scheda')[attiva].focus(); } };
+      bar.appendChild(t);
+    });
+    var s = SCH[attiva]; document.getElementById('url').textContent = s.u;
+    var p = document.getElementById('pagina');
+    var sinistra = (attiva < 2)
+      ? '<div class="player" style="background:linear-gradient(135deg,' + s.c + ',#111)"><button class="play" type="button">' + (s.suona ? '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="4" height="14" fill="#111"/><rect x="12" y="3" width="4" height="14" fill="#111"/></svg>' : '<svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3l12 7-12 7z" fill="#111"/></svg>') + '</button><div class="avanz"><i></i></div></div>'
+      : '<div class="spiega" style="display:flex;align-items:center;font-size:17px"></div>';
+    p.innerHTML = sinistra + '<div class="spiega"><h3></h3><ul><li>' + ICO_ON + ' <span></span></li><li>' + ICO_OFF + ' <span></span></li><li><span></span></li></ul></div>';
+    var sp = p.lastChild; sp.querySelector('h3').textContent = T(TX.titolo);
+    var li = sp.querySelectorAll('li span:last-child'); li[0].textContent = T(TX.s1); li[1].textContent = T(TX.s2); li[2].textContent = '— ' + T(TX.s3);
+    var pl = p.querySelector('.play');
+    if (pl) { pl.setAttribute('aria-label', T(s.suona ? TX.pausa : TX.play)); pl.onclick = function () { s.suona = !s.suona; disegna(); }; }
+    else p.firstChild.textContent = T(TX.nessun);
+  }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

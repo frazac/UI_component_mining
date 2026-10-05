@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- Esempio ricostruito: Like and dislike button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Like and dislike — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .video { height: 150px; border-radius: 10px; background: linear-gradient(135deg, #2b2f45, #698fff); display: grid; place-items: center; margin-bottom: 12px; }
+  .video span { width: 52px; height: 52px; border-radius: 50%; background: rgba(255,255,255,.9); display: grid; place-items: center; }
+  h2 { font-size: 18px; font-weight: 500; margin: 0 0 4px; }
+  .meta { font-size: 15px; color: var(--c-tenue); margin: 0 0 14px; }
+  .pillola { display: inline-flex; border-radius: 9999px; background: #f3efee; overflow: hidden; }
+  .pillola button { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px; border: 0; background: none; cursor: pointer; font-size: 16px; font-variant-numeric: tabular-nums; }
+  .pillola button + button { border-left: 1px solid rgba(0,0,0,.12); }
+  .pillola button:hover { background: #ebe4e2; }
+  .pollice { width: 22px; height: 22px; transition: transform .2s; }
+  button[aria-pressed="true"] .pollice { transform: scale(1.15) rotate(-8deg); }
+  button[aria-pressed="true"] .pollice path { fill: currentColor; }
+  .pillola button[aria-pressed="true"] { color: var(--c-blu); }
+  .pillola button.giu[aria-pressed="true"] { color: #c0392b; }
+  .rapporto { height: 4px; border-radius: 2px; background: rgba(0,0,0,.1); margin-top: 10px; width: 180px; overflow: hidden; }
+  .rapporto i { display: block; height: 100%; background: var(--c-blu); transition: width .3s; }
+  .numero { display: inline-block; min-width: 3ch; text-align: left; }
+  .risposta { background: #faf7f6; border-radius: 12px; padding: 14px 16px; font-size: 16px; margin-bottom: 10px; }
+  .feedback { display: flex; align-items: center; gap: 4px; }
+  .icona { width: 38px; height: 38px; border-radius: 8px; border: 0; background: none; cursor: pointer; display: grid; place-items: center; color: rgba(0,0,0,.55); }
+  .icona:hover { background: #f3efee; color: var(--c-testo); }
+  .icona[aria-pressed="true"] { color: var(--c-testo); background: #f3efee; }
+  .icona .pollice { width: 20px; height: 20px; }
+  .grazie { font-size: 15px; color: var(--c-tenue); margin-left: 6px; }
+  .motivi { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .motivi[hidden] { display: none; }
+  .motivi p { width: 100%; margin: 0 0 2px; font-size: 15px; }
+  .motivi button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 5px 12px; cursor: pointer; font-size: 15px; }
+  .motivi button[aria-pressed="true"] { background: var(--c-testo); color: #fff; border-color: var(--c-testo); }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Su un contenuto, con i conteggi</span><span data-l="en">On a piece of content, with counts</span><span data-l="fr">Sur un contenu, avec les compteurs</span><span data-l="zh">用于内容，并显示计数</span></span>
+    <div class="video" aria-hidden="true"><span><svg width="20" height="20" viewBox="0 0 20 20"><path d="M6 3l11 7-11 7z" fill="#111"/></svg></span></div>
+    <h2><span data-l="it">Come si progetta un pulsante</span><span data-l="en">How to design a button</span><span data-l="fr">Comment concevoir un bouton</span><span data-l="zh">如何设计一个按钮</span></h2>
+    <p class="meta"><span data-l="it">12 min · 3.400 visualizzazioni</span><span data-l="en">12 min · 3,400 views</span><span data-l="fr">12 min · 3 400 vues</span><span data-l="zh">12 分钟 · 3,400 次观看</span></p>
+    <div class="pillola" role="group" aria-label="Rating">
+      <button type="button" class="su" id="su" aria-pressed="false"></button><button type="button" class="giu" id="giu" aria-pressed="false"></button>
+    </div>
+    <div class="rapporto" aria-hidden="true"><i id="rapporto"></i></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Sotto una risposta dell’IA</span><span data-l="en">Under an AI answer</span><span data-l="fr">Sous une réponse de l’IA</span><span data-l="zh">在 AI 回答下方</span></span>
+    <div class="risposta"><span data-l="it">Il contrasto minimo consigliato per il testo normale è 4,5:1 (WCAG, livello AA).</span><span data-l="en">The recommended minimum contrast for normal text is 4.5:1 (WCAG, level AA).</span><span data-l="fr">Le contraste minimum recommandé pour le texte courant est de 4,5:1 (WCAG, niveau AA).</span><span data-l="zh">正文文字的推荐最低对比度为 4.5:1（WCAG AA 级）。</span></div>
+    <div class="feedback" role="group" aria-label="Feedback">
+      <button type="button" class="icona" id="ai-su" aria-pressed="false"></button><button type="button" class="icona" id="ai-giu" aria-pressed="false"></button><span class="grazie" id="grazie" aria-live="polite"></span>
+    </div>
+    <div class="motivi" id="motivi" hidden></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Due pulsanti a interruttore che si escludono a vicenda: un secondo clic toglie il voto. I conteggi spesso servono a ordinare e consigliare i contenuti.</span><span data-l="en">Two mutually exclusive toggle buttons: a second click removes the vote. Counts are often used to rank and recommend content.</span><span data-l="fr">Deux boutons bascules mutuellement exclusifs : un second clic retire le vote. Les compteurs servent souvent à classer et recommander les contenus.</span><span data-l="zh">两个互斥的切换按钮：再次点击即可取消投票。计数常用于对内容排序和推荐。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var POLLICE = '<svg class="pollice" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v10H4V10zM7 10l4-7c1.5 0 2.5 1 2.2 2.6L12.6 9H19a2 2 0 012 2.3l-1.2 6.8A2 2 0 0117.8 20H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+  var GIU = POLLICE.replace('class="pollice"', 'class="pollice" style="transform:rotate(180deg)"');
+  var TX = { mi: { it: 'Mi piace', en: 'Like', fr: 'J’aime', zh: '赞' }, non: { it: 'Non mi piace', en: 'Dislike', fr: 'Je n’aime pas', zh: '踩' },
+    utile: { it: 'Risposta utile', en: 'Good response', fr: 'Réponse utile', zh: '回答有用' }, inutile: { it: 'Risposta non utile', en: 'Bad response', fr: 'Réponse pas utile', zh: '回答没用' },
+    grazie: { it: 'Grazie per il riscontro', en: 'Thanks for the feedback', fr: 'Merci pour votre retour', zh: '感谢你的反馈' }, perche: { it: 'Cosa non andava?', en: 'What was wrong?', fr: 'Qu’est-ce qui n’allait pas ?', zh: '哪里有问题？' },
+    m: [{ it: 'Inesatta', en: 'Inaccurate', fr: 'Inexacte', zh: '不准确' }, { it: 'Troppo lunga', en: 'Too long', fr: 'Trop longue', zh: '太长' }, { it: 'Non pertinente', en: 'Off topic', fr: 'Hors sujet', zh: '答非所问' }] };
+  var voto = 0, BASE = { su: 214, giu: 9 }, ai = 0, motivo = -1;
+  function formato(n) { return n.toLocaleString({ it: 'it-IT', en: 'en-GB', fr: 'fr-FR', zh: 'zh-CN' }[Lingua.get()]); }
+  function disegna() {
+    var su = BASE.su + (voto === 1 ? 1 : 0), giu = BASE.giu + (voto === -1 ? 1 : 0);
+    var bSu = document.getElementById('su'), bGiu = document.getElementById('giu');
+    bSu.innerHTML = POLLICE + '<span class="numero">' + formato(su) + '</span>'; bSu.setAttribute('aria-pressed', String(voto === 1)); bSu.setAttribute('aria-label', t(TX.mi) + ', ' + su);
+    bGiu.innerHTML = GIU + '<span class="numero">' + formato(giu) + '</span>'; bGiu.setAttribute('aria-pressed', String(voto === -1)); bGiu.setAttribute('aria-label', t(TX.non) + ', ' + giu);
+    document.getElementById('rapporto').style.width = (100 * su / (su + giu)) + '%';
+    var a = document.getElementById('ai-su'), b = document.getElementById('ai-giu');
+    a.innerHTML = POLLICE; a.setAttribute('aria-label', t(TX.utile)); a.title = t(TX.utile); a.setAttribute('aria-pressed', String(ai === 1));
+    b.innerHTML = GIU; b.setAttribute('aria-label', t(TX.inutile)); b.title = t(TX.inutile); b.setAttribute('aria-pressed', String(ai === -1));
+    document.getElementById('grazie').textContent = ai === 1 || (ai === -1 && motivo >= 0) ? t(TX.grazie) : '';
+    var mv = document.getElementById('motivi'); mv.hidden = ai !== -1;
+    mv.innerHTML = '<p>' + t(TX.perche) + '</p>';
+    TX.m.forEach(function (x, i) { var c = document.createElement('button'); c.type = 'button'; c.textContent = t(x); c.setAttribute('aria-pressed', String(motivo === i)); c.onclick = function () { motivo = motivo === i ? -1 : i; disegna(); mv.querySelectorAll('button')[i].focus(); }; mv.appendChild(c); });
+  }
+  document.getElementById('su').onclick = function () { voto = voto === 1 ? 0 : 1; disegna(); };
+  document.getElementById('giu').onclick = function () { voto = voto === -1 ? 0 : -1; disegna(); };
+  document.getElementById('ai-su').onclick = function () { ai = ai === 1 ? 0 : 1; motivo = -1; disegna(); };
+  document.getElementById('ai-giu').onclick = function () { ai = ai === -1 ? 0 : -1; motivo = -1; disegna(); };
+  voto = 1; ai = -1;
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

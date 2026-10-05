@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- Esempio ricostruito: Undo and history. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undo and history — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.45fr 1fr; }
+  .riquadro { padding: 22px; }
+  .barra { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .barra button { border: 1px solid var(--c-linea); background: #fff; border-radius: 8px; padding: 6px 10px; font-size: 15px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .barra button:hover:not(:disabled) { border-color: var(--c-blu); }
+  .barra button:disabled { opacity: .35; cursor: default; }
+  .barra .sep { width: 1px; background: var(--c-linea); margin: 0 4px; }
+  kbd { font: inherit; font-size: 13px; color: var(--c-tenue); }
+  .tela { position: relative; height: 290px; border-radius: 10px; background: var(--c-palco); overflow: hidden; background-image: radial-gradient(rgba(0,0,0,.12) 1px, transparent 1px); background-size: 18px 18px; }
+  .forma { position: absolute; width: 64px; height: 64px; transition: left .25s, top .25s, background .25s, border-radius .25s; }
+  .storia { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  .storia button { width: 100%; text-align: left; border: 0; background: none; border-radius: 6px; padding: 6px 8px; font-size: 15px; cursor: pointer; display: flex; gap: 8px; align-items: center; }
+  .storia button:hover { background: var(--c-palco); }
+  .storia .ora button { background: rgba(105,143,255,.14); color: var(--c-blu); font-weight: 500; }
+  .storia .futuro button { color: rgba(0,0,0,.35); text-decoration: line-through; text-decoration-color: rgba(0,0,0,.2); }
+  .storia .n { font-size: 13px; color: var(--c-tenue); width: 18px; text-align: right; font-variant-numeric: tabular-nums; }
+  .vuota { font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Fai qualcosa, poi annulla</span><span data-l="en">Do something, then undo</span><span data-l="fr">Faites quelque chose, puis annulez</span><span data-l="zh">先做点什么，再撤销</span></span>
+    <div class="barra" id="barra"></div>
+    <div class="tela" id="tela" aria-label="Canvas" role="img"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Cronologia: clicca per tornare a quel punto</span><span data-l="en">History: click to go back to that point</span><span data-l="fr">Historique : cliquez pour revenir à ce point</span><span data-l="zh">历史记录：点击回到那一步</span></span>
+    <ol class="storia" id="storia"></ol>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Annulla torna indietro di un passo, Ripeti lo rifà; un’azione nuova dopo un annullamento cancella i passi barrati. Tastiera: ⌘/Ctrl + Z, ⇧ + ⌘/Ctrl + Z.</span><span data-l="en">Undo goes back one step, Redo does it again; a new action after an undo discards the struck-out steps. Keyboard: ⌘/Ctrl + Z, ⇧ + ⌘/Ctrl + Z.</span><span data-l="fr">Annuler revient d’un pas, Rétablir le refait ; une nouvelle action après une annulation supprime les pas barrés. Clavier : ⌘/Ctrl + Z, ⇧ + ⌘/Ctrl + Z.</span><span data-l="zh">撤销回退一步，重做再执行一次；撤销后执行新操作会丢弃被划掉的步骤。键盘：⌘/Ctrl + Z，⇧ + ⌘/Ctrl + Z。</span></p>
+<script>
+  var COLORI = ['rgb(250,145,145)', 'rgb(105,143,255)', '#2c2c34', '#f0b47a'];
+  var T = {
+    undo: { it: 'Annulla', en: 'Undo', fr: 'Annuler', zh: '撤销' }, redo: { it: 'Ripeti', en: 'Redo', fr: 'Rétablir', zh: '重做' },
+    cerchio: { it: '+ Cerchio', en: '+ Circle', fr: '+ Cercle', zh: '+ 圆形' }, quadrato: { it: '+ Quadrato', en: '+ Square', fr: '+ Carré', zh: '+ 方形' },
+    colore: { it: 'Colore', en: 'Colour', fr: 'Couleur', zh: '颜色' }, sposta: { it: 'Sposta', en: 'Move', fr: 'Déplacer', zh: '移动' },
+    a: { inizio: { it: 'Documento aperto', en: 'Document opened', fr: 'Document ouvert', zh: '打开文档' }, cerchio: { it: 'Aggiunto cerchio', en: 'Circle added', fr: 'Cercle ajouté', zh: '添加圆形' }, quadrato: { it: 'Aggiunto quadrato', en: 'Square added', fr: 'Carré ajouté', zh: '添加方形' }, colore: { it: 'Cambiato colore', en: 'Colour changed', fr: 'Couleur modifiée', zh: '更改颜色' }, sposta: { it: 'Spostata forma', en: 'Shape moved', fr: 'Forme déplacée', zh: '移动形状' } }
+  };
+  // ogni voce della cronologia è un'istantanea dello stato
+  var storia = [{ a: 'inizio', s: [] }], pos = 0;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function copia(s) { return s.map(function (f) { return Object.assign({}, f); }); }
+  function fai(a, cambia) {
+    var s = copia(storia[pos].s); if (cambia(s) === false) return;
+    storia = storia.slice(0, pos + 1); storia.push({ a: a, s: s }); pos++; disegna();
+  }
+  var semi = 0;
+  function rnd() { semi = (semi * 9301 + 49297) % 233280; return semi / 233280; }
+  function larg() { return Math.max(100, (document.getElementById('tela').clientWidth || 300) - 84); }
+  var AZ = {
+    cerchio: function () { fai('cerchio', function (s) { s.push({ t: 'c', x: 10 + rnd() * larg(), y: 20 + rnd() * 190, c: COLORI[s.length % 4] }); }); },
+    quadrato: function () { fai('quadrato', function (s) { s.push({ t: 'q', x: 10 + rnd() * larg(), y: 20 + rnd() * 190, c: COLORI[(s.length + 1) % 4] }); }); },
+    colore: function () { fai('colore', function (s) { if (!s.length) return false; var f = s[s.length - 1]; f.c = COLORI[(COLORI.indexOf(f.c) + 1) % 4]; }); },
+    sposta: function () { fai('sposta', function (s) { if (!s.length) return false; var f = s[s.length - 1]; f.x = 10 + rnd() * larg(); f.y = 20 + rnd() * 190; }); }
+  };
+  function vai(p) { pos = Math.max(0, Math.min(storia.length - 1, p)); disegna(); }
+  function disegna() {
+    var b = document.getElementById('barra'); b.innerHTML = '';
+    function bott(testo, fn, dis, k) { var x = document.createElement('button'); x.type = 'button'; x.innerHTML = testo + (k ? ' <kbd>' + k + '</kbd>' : ''); x.disabled = !!dis; x.onclick = fn; b.appendChild(x); return x; }
+    bott('<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + L(T.undo), function () { vai(pos - 1); }, pos === 0, '⌘Z');
+    bott('<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' + L(T.redo), function () { vai(pos + 1); }, pos === storia.length - 1);
+    var sp = document.createElement('span'); sp.className = 'sep'; b.appendChild(sp);
+    var vuoto = !storia[pos].s.length;
+    bott(L(T.cerchio), AZ.cerchio); bott(L(T.quadrato), AZ.quadrato); bott(L(T.colore), AZ.colore, vuoto); bott(L(T.sposta), AZ.sposta, vuoto);
+    var t = document.getElementById('tela'); t.innerHTML = '';
+    storia[pos].s.forEach(function (f) { var d = document.createElement('div'); d.className = 'forma'; d.style.left = f.x + 'px'; d.style.top = f.y + 'px'; d.style.background = f.c; d.style.borderRadius = f.t === 'c' ? '50%' : '8px'; t.appendChild(d); });
+    var o = document.getElementById('storia'); o.innerHTML = '';
+    storia.forEach(function (h, k) {
+      var li = document.createElement('li'); li.className = k === pos ? 'ora' : k > pos ? 'futuro' : '';
+      var x = document.createElement('button'); x.type = 'button'; x.innerHTML = '<span class="n">' + (k + 1) + '</span>' + L(T.a[h.a]);
+      if (k === pos) x.setAttribute('aria-current', 'step');
+      x.onclick = function () { vai(k); }; li.appendChild(x); o.appendChild(li);
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); vai(pos + (e.shiftKey ? 1 : -1)); }
+  });
+  // qualche passo già fatto, e uno annullato
+  AZ.cerchio(); AZ.quadrato(); AZ.colore(); AZ.sposta(); AZ.cerchio(); vai(4);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<!-- Esempio ricostruito: Activity rings. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Activity rings — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .oggi { display: grid; grid-template-columns: 230px 1fr; gap: 28px; align-items: center; }
+  .anelli circle { fill: none; stroke-linecap: round; }
+  .anelli .arco { transition: stroke-dashoffset .8s cubic-bezier(.2,.7,.2,1); }
+  .misure { display: grid; gap: 14px; }
+  .misura { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; }
+  .misura .nome { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .misura .nome i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .misura .val { font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; grid-column: 1; }
+  .misura .val small { font-size: 15px; color: var(--c-tenue); font-weight: 400; }
+  .misura button { grid-row: 1 / span 2; grid-column: 2; border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+  .misura button:hover { border-color: var(--c-blu); color: var(--c-blu); }
+  .fatto { color: #2e8a5a; font-size: 15px; }
+  .settimana { display: flex; justify-content: space-between; gap: 6px; }
+  .giorno { display: grid; justify-items: center; gap: 4px; font-size: 15px; color: var(--c-tenue); }
+  .giorno.oggi-g { color: var(--c-testo); font-weight: 500; }
+  .azzera { border: 0; background: none; color: var(--c-blu); cursor: pointer; font-size: 15px; padding: 0; margin-top: 4px; justify-self: start; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Oggi: ogni anello si chiude quando raggiungi l’obiettivo</span><span data-l="en">Today: each ring closes when you reach the goal</span><span data-l="fr">Aujourd’hui : chaque anneau se ferme quand l’objectif est atteint</span><span data-l="zh">今天：达成目标时圆环闭合</span></span>
+    <div class="oggi">
+      <svg class="anelli" id="anelli" viewBox="0 0 230 230" width="230" height="230" role="img"></svg>
+      <div class="misure" id="misure"></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">La settimana</span><span data-l="en">This week</span><span data-l="fr">La semaine</span><span data-l="zh">本周</span></span>
+    <div class="settimana" id="settimana"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ricostruzione generica degli anelli concentrici resi celebri da Apple Fitness: l’obiettivo diventa una forma da completare.</span><span data-l="en">Generic rebuild of the concentric rings made famous by Apple Fitness: the goal becomes a shape to complete.</span><span data-l="fr">Reconstruction générique des anneaux concentriques rendus célèbres par Apple Fitness : l’objectif devient une forme à compléter.</span><span data-l="zh">对 Apple 健身同心圆环的通用重建：目标变成了一个需要补全的形状。</span></p>
+<script>
+  var M = [
+    { c: 'rgb(250,145,145)', n: { it: 'Movimento', en: 'Move', fr: 'Mouvement', zh: '活动' }, u: 'kcal', v: 320, g: 500, p: 60 },
+    { c: 'rgb(105,143,255)', n: { it: 'Esercizio', en: 'Exercise', fr: 'Exercice', zh: '锻炼' }, u: 'min', v: 18, g: 30, p: 6 },
+    { c: '#2c2c34', n: { it: 'In piedi', en: 'Stand', fr: 'Debout', zh: '站立' }, u: { it: 'ore', en: 'hrs', fr: 'h', zh: '小时' }, v: 9, g: 12, p: 1 }
+  ];
+  var T = { add: { it: '+ Registra', en: '+ Log', fr: '+ Ajouter', zh: '+ 记录' }, ok: { it: '✓ Obiettivo raggiunto', en: '✓ Goal reached', fr: '✓ Objectif atteint', zh: '✓ 已达成目标' },
+    reset: { it: 'Ricomincia la giornata', en: 'Restart the day', fr: 'Recommencer la journée', zh: '重新开始今天' },
+    giorni: { it: ['L', 'M', 'M', 'G', 'V', 'S', 'D'], en: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], fr: ['L', 'M', 'M', 'J', 'V', 'S', 'D'], zh: ['一', '二', '三', '四', '五', '六', '日'] } };
+  var SETT = [[1, .9, 1], [.6, .4, .8], [1.2, 1, 1], [.8, 1, .7], [.3, .2, .5], [1, 1.3, 1]];
+  var R = [98, 74, 50], W = 20;
+  function lg() { return window.Lingua ? Lingua.get() : 'en'; }
+  function L(o) { return typeof o === 'string' ? o : (o[lg()] || o.en); }
+  function anelli(svg, fr, scala) {
+    var h = '';
+    fr.forEach(function (f, k) {
+      var r = R[k] * scala, w = W * scala, c = 2 * Math.PI * r, cx = 115 * scala;
+      var off = c * (1 - Math.min(f, 1));
+      h += '<circle cx="' + cx + '" cy="' + cx + '" r="' + r + '" stroke="' + M[k].c + '" stroke-opacity=".16" stroke-width="' + w + '"/>';
+      h += '<circle class="arco" cx="' + cx + '" cy="' + cx + '" r="' + r + '" stroke="' + M[k].c + '" stroke-width="' + w + '" stroke-dasharray="' + c + '" stroke-dashoffset="' + off + '" transform="rotate(-90 ' + cx + ' ' + cx + ')"/>';
+      if (f > 1) { // oltre il 100%: un secondo giro
+        var c2 = c * (f - 1);
+        h += '<circle cx="' + cx + '" cy="' + cx + '" r="' + r + '" stroke="' + M[k].c + '" stroke-width="' + w + '" stroke-dasharray="' + c2 + ' ' + c + '" transform="rotate(-90 ' + cx + ' ' + cx + ')" style="filter:drop-shadow(0 0 2px rgba(0,0,0,.35))"/>';
+      }
+    });
+    svg.innerHTML = h;
+  }
+  function disegna() {
+    var svg = document.getElementById('anelli');
+    anelli(svg, M.map(function (m) { return m.v / m.g; }), 1);
+    svg.setAttribute('aria-label', M.map(function (m) { return L(m.n) + ' ' + m.v + '/' + m.g + ' ' + L(m.u); }).join(', '));
+    var box = document.getElementById('misure'); box.innerHTML = '';
+    M.forEach(function (m) {
+      var d = document.createElement('div'); d.className = 'misura';
+      d.innerHTML = '<span class="nome"><i style="background:' + m.c + '"></i>' + L(m.n) + (m.v >= m.g ? ' <span class="fatto">' + L(T.ok) + '</span>' : '') + '</span>' +
+        '<span class="val">' + m.v + '<small>/' + m.g + ' ' + L(m.u) + '</small></span>';
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = L(T.add);
+      b.setAttribute('aria-label', L(T.add) + ' ' + L(m.n));
+      b.onclick = function () { m.v += m.p; disegna(); };
+      d.appendChild(b); box.appendChild(d);
+    });
+    var az = document.createElement('button'); az.className = 'azzera'; az.type = 'button'; az.textContent = L(T.reset);
+    az.onclick = function () { M.forEach(function (m) { m.v = 0; }); disegna(); };
+    box.appendChild(az);
+    var s = document.getElementById('settimana'); s.innerHTML = '';
+    L(T.giorni).forEach(function (g, k) {
+      var div = document.createElement('div'); div.className = 'giorno' + (k === 6 ? ' oggi-g' : '');
+      div.innerHTML = '<svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"></svg><span>' + g + '</span>';
+      s.appendChild(div);
+      anelli(div.querySelector('svg'), k < 6 ? SETT[k] : M.map(function (m) { return m.v / m.g; }), 0.2);
+    });
+  }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- Esempio ricostruito: Pin. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pin — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .sezione { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-tenue); margin: 10px 4px 6px; display: flex; align-items: center; gap: 6px; }
+  .sezione:first-child { margin-top: 0; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 12px; align-items: center; padding: 8px 8px; border-radius: 10px; }
+  li:hover { background: #faf7f6; }
+  li.fissato { background: #fff6f5; }
+  .av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-weight: 500; font-size: 16px; }
+  .tit { font-size: 16px; font-weight: 500; }
+  .sott { font-size: 15px; color: var(--c-tenue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ora { font-size: 13px; color: var(--c-tenue); }
+  .spillo { width: 38px; height: 38px; border: 0; border-radius: 50%; background: none; cursor: pointer; display: grid; place-items: center; color: rgba(0,0,0,.35); opacity: .45; transition: opacity .15s, background .15s; }
+  li:hover .spillo, .spillo:focus-visible, li.fissato .spillo { opacity: 1; }
+  .spillo:hover { background: #f1ecea; color: var(--c-testo); }
+  li.fissato .spillo { color: var(--c-rosa); }
+  .spillo:disabled { cursor: not-allowed; opacity: .3 !important; }
+  .spillo svg { width: 20px; height: 20px; }
+  .avviso { min-height: 21px; font-size: 15px; color: var(--c-tenue); margin: 10px 4px 0; }
+  @media (hover: none) { .spillo { opacity: 1; } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Conversazioni: fissa in alto con lo spillo</span><span data-l="en">Conversations: pin to the top</span><span data-l="fr">Conversations : épingler en haut</span><span data-l="zh">会话：用图钉置顶</span></span>
+    <div id="lista"></div>
+    <p class="avviso" id="avviso" aria-live="polite"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Gli elementi fissati restano in cima anche quando arrivano novità; spesso si possono fissare solo pochi elementi (qui tre).</span><span data-l="en">Pinned items stay at the top even when new ones arrive; often only a few can be pinned (here three).</span><span data-l="fr">Les éléments épinglés restent en haut même quand d’autres arrivent ; souvent, on ne peut en épingler que quelques-uns (ici trois).</span><span data-l="zh">置顶项即使有新消息也会保持在顶部；通常只能置顶少数几项（这里是三项）。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var MAX = 3;
+  var VOCI = [
+    { id: 1, n: { it: 'Gruppo di tesi', en: 'Thesis group', fr: 'Groupe de mémoire', zh: '论文小组' }, s: { it: 'Ci vediamo alle 15?', en: 'Meet at 3 pm?', fr: 'On se voit à 15 h ?', zh: '下午三点见？' }, o: '10:42', c: '#698fff', p: true },
+    { id: 2, n: { it: 'Marta', en: 'Marta', fr: 'Marta', zh: 'Marta' }, s: { it: 'Ti ho mandato il file', en: 'I sent you the file', fr: 'Je t’ai envoyé le fichier', zh: '文件已经发给你了' }, o: '10:30', c: '#fa9191' },
+    { id: 3, n: { it: 'Segreteria', en: 'Student office', fr: 'Secrétariat', zh: '教务处' }, s: { it: 'Orari aggiornati', en: 'Timetable updated', fr: 'Horaires mis à jour', zh: '课程表已更新' }, o: '09:15', c: '#5bb98c', p: true },
+    { id: 4, n: { it: 'Laboratorio UI', en: 'UI workshop', fr: 'Atelier UI', zh: 'UI 工作坊' }, s: { it: 'Portate i prototipi', en: 'Bring your prototypes', fr: 'Apportez vos prototypes', zh: '请带上原型' }, o: '08:50', c: '#c49bff' },
+    { id: 5, n: { it: 'Luca', en: 'Luca', fr: 'Luca', zh: 'Luca' }, s: { it: 'Grazie!', en: 'Thanks!', fr: 'Merci !', zh: '谢谢！' }, o: '–1', c: '#df8888' },
+    { id: 6, n: { it: 'Biblioteca', en: 'Library', fr: 'Bibliothèque', zh: '图书馆' }, s: { it: 'Prestito in scadenza', en: 'Loan due soon', fr: 'Prêt bientôt à échéance', zh: '借阅即将到期' }, o: '–2', c: '#e2b100' }
+  ];
+  var TX = { fissati: { it: 'Fissati', en: 'Pinned', fr: 'Épinglés', zh: '已置顶' }, altri: { it: 'Tutti', en: 'All', fr: 'Toutes', zh: '全部' },
+    fissa: { it: 'Fissa in alto', en: 'Pin to top', fr: 'Épingler en haut', zh: '置顶' }, togli: { it: 'Togli dall’alto', en: 'Unpin', fr: 'Désépingler', zh: '取消置顶' },
+    max: { it: 'Puoi fissare al massimo {n} conversazioni.', en: 'You can pin up to {n} conversations.', fr: 'Vous pouvez épingler {n} conversations au maximum.', zh: '最多可置顶 {n} 个会话。' },
+    ieri: { it: 'ieri', en: 'yesterday', fr: 'hier', zh: '昨天' }, l2: { it: 'lun', en: 'Mon', fr: 'lun.', zh: '周一' } };
+  var SPILLO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6l-1 6 4 4v2h-5v6l-1 1-1-1v-6H6v-2l4-4z" fill="FILL" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>';
+  function disegna(fuoco) {
+    var vecchie = {}; document.querySelectorAll('#lista li').forEach(function (li) { vecchie[li.dataset.id] = li.getBoundingClientRect().top; });
+    var n = VOCI.filter(function (v) { return v.p; }).length, lista = document.getElementById('lista'); lista.innerHTML = '';
+    [[true, TX.fissati], [false, TX.altri]].forEach(function (g) {
+      var vv = VOCI.filter(function (v) { return !!v.p === g[0]; }); if (!vv.length) return;
+      lista.insertAdjacentHTML('beforeend', '<div class="sezione">' + (g[0] ? SPILLO.replace('FILL', 'currentColor').replace('<svg', '<svg width="13" height="13"') : '') + t(g[1]) + '</div>');
+      var ul = document.createElement('ul'); lista.appendChild(ul);
+      vv.forEach(function (v) {
+        var li = document.createElement('li'); li.dataset.id = v.id; if (v.p) li.className = 'fissato';
+        var ora = v.o === '–1' ? t(TX.ieri) : v.o === '–2' ? t(TX.l2) : v.o;
+        li.innerHTML = '<span class="av" style="background:' + v.c + '" aria-hidden="true">' + t(v.n).charAt(0) + '</span><div style="min-width:0"><div class="tit">' + t(v.n) + '</div><div class="sott">' + t(v.s) + '</div></div><span class="ora">' + ora + '</span>';
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'spillo'; b.id = 'b' + v.id;
+        b.setAttribute('aria-pressed', String(!!v.p)); b.setAttribute('aria-label', t(v.p ? TX.togli : TX.fissa) + ': ' + t(v.n)); b.title = t(v.p ? TX.togli : TX.fissa);
+        b.innerHTML = SPILLO.replace('FILL', v.p ? 'currentColor' : 'none');
+        if (!v.p && n >= MAX) b.disabled = true;
+        b.onclick = function () { v.p = !v.p; disegna(v.id); };
+        li.appendChild(b); ul.appendChild(li);
+      });
+    });
+    document.getElementById('avviso').textContent = n >= MAX ? t(TX.max).replace('{n}', MAX) : '';
+    // animazione FLIP del riordino
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('#lista li').forEach(function (li) {
+      var prima = vecchie[li.dataset.id]; if (prima === undefined) return;
+      var d = prima - li.getBoundingClientRect().top; if (!d) return;
+      li.animate([{ transform: 'translateY(' + d + 'px)' }, { transform: 'none' }], { duration: 280, easing: 'ease-out' });
+    });
+    if (fuoco) { var f = document.getElementById('b' + fuoco); if (f) f.focus(); }
+  }
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

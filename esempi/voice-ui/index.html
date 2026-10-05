@@ -1,0 +1,127 @@
+<!doctype html>
+<!-- Esempio ricostruito: Voice note and Voice User Interface (VUI) components. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Voice UI — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .chat { height: 380px; display: flex; flex-direction: column; border-radius: 12px; background: #f6f1ef; overflow: hidden; }
+  .messaggi { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; justify-content: flex-end; }
+  .bolla { align-self: flex-start; max-width: 92%; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 14px 14px 14px 4px; background: #fff; box-shadow: 0 1px 1px rgba(0,0,0,.06); }
+  .bolla.mia { align-self: flex-end; background: #e6ecff; border-radius: 14px 14px 4px 14px; }
+  .play { width: 34px; height: 34px; flex: none; border-radius: 50%; border: 0; background: var(--c-testo); color: #fff; cursor: pointer; display: grid; place-items: center; }
+  .play svg { width: 14px; height: 14px; }
+  .onda { display: flex; align-items: center; gap: 2px; height: 28px; }
+  .onda i { width: 3px; border-radius: 2px; background: rgba(0,0,0,.22); }
+  .onda i.suonata { background: var(--c-blu); }
+  .durata { font-size: 13px; color: var(--c-tenue); font-variant-numeric: tabular-nums; min-width: 32px; }
+  .barra { display: flex; align-items: center; gap: 8px; padding: 8px; background: #fff; border-top: 1px solid var(--c-linea); }
+  .barra .campo { flex: 1; height: 40px; border-radius: 20px; background: #f3efee; display: flex; align-items: center; padding: 0 14px; font-size: 15px; color: var(--c-tenue); gap: 8px; overflow: hidden; white-space: nowrap; }
+  .registra .campo { color: #c0392b; }
+  .registra .campo::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #e0412f; animation: lampo 1s infinite; flex: none; }
+  @keyframes lampo { 50% { opacity: .2; } }
+  .mic { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--c-salmone); cursor: pointer; display: grid; place-items: center; flex: none; transition: transform .15s; touch-action: none; }
+  .registra .mic { transform: scale(1.25); background: #e0412f; }
+  .mic svg { width: 22px; height: 22px; }
+  .assistente { height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; padding: 10px 6px; border-radius: 12px; background: linear-gradient(180deg, #fff, #fbeceb); }
+  .trascritto { min-height: 84px; font-size: 20px; line-height: 1.3; max-width: 280px; }
+  .trascritto .prov { color: var(--c-tenue); }
+  .risposta { font-size: 16px; color: var(--c-tenue); min-height: 44px; max-width: 280px; }
+  .grande { position: relative; width: 84px; height: 84px; border-radius: 50%; border: 0; background: var(--c-testo); cursor: pointer; display: grid; place-items: center; }
+  .grande svg { width: 34px; height: 34px; position: relative; z-index: 1; }
+  .grande::before, .grande::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--c-blu); opacity: 0; }
+  .ascolta .grande { background: var(--c-blu); }
+  .ascolta .grande::before { animation: anello 1.4s ease-out infinite; }
+  .ascolta .grande::after { animation: anello 1.4s .7s ease-out infinite; }
+  @keyframes anello { from { transform: scale(1); opacity: .5; } to { transform: scale(1.8); opacity: 0; } }
+  .pensa .grande { background: var(--c-salmone); }
+  .pensa .grande svg { animation: gira 1s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .stato { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Nota vocale: tieni premuto il microfono</span><span data-l="en">Voice note: hold the microphone</span><span data-l="fr">Note vocale : maintenez le micro</span><span data-l="zh">语音消息：按住麦克风</span></span>
+    <div class="chat" id="chat">
+      <div class="messaggi" id="messaggi" aria-live="polite"></div>
+      <div class="barra"><span class="campo" id="campo"></span><button class="mic" id="mic" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="#111"/><path d="M6 11a6 6 0 0012 0M12 17v4" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    </div>
+  </div>
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Assistente vocale: premi per parlare</span><span data-l="en">Voice assistant: tap to talk</span><span data-l="fr">Assistant vocal : appuyez pour parler</span><span data-l="zh">语音助手：点按说话</span></span>
+    <div class="assistente" id="ass">
+      <span class="stato" id="stato" aria-live="polite"></span>
+      <div class="trascritto" id="trascritto"></div>
+      <div class="risposta" id="risposta" aria-live="polite"></div>
+      <button class="grande" id="grande" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="#fff"/><path d="M6 11a6 6 0 0012 0M12 17v4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></button>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Simulazione: nessun audio viene registrato. Da tastiera, sul microfono: tieni premuto Spazio. Stati dell’assistente: in attesa, in ascolto, elabora, risponde.</span><span data-l="en">Simulation: no audio is recorded. On the keyboard, on the microphone: hold Space. Assistant states: idle, listening, processing, answering.</span><span data-l="fr">Simulation : aucun son n’est enregistré. Au clavier, sur le micro : maintenez Espace. États de l’assistant : en attente, écoute, traitement, réponse.</span><span data-l="zh">仅为模拟，不会录制任何声音。键盘操作：在麦克风按钮上按住空格键。助手状态：待机、聆听、处理、回答。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = { tieni: { it: 'Tieni premuto per registrare', en: 'Hold to record', fr: 'Maintenez pour enregistrer', zh: '按住录音' }, reg: { it: 'Registrazione {d} · rilascia per inviare', en: 'Recording {d} · release to send', fr: 'Enregistrement {d} · relâchez pour envoyer', zh: '录音中 {d} · 松开发送' },
+    mic: { it: 'Registra una nota vocale', en: 'Record a voice note', fr: 'Enregistrer une note vocale', zh: '录制语音消息' }, play: { it: 'Riproduci', en: 'Play', fr: 'Lire', zh: '播放' },
+    attesa: { it: 'In attesa', en: 'Idle', fr: 'En attente', zh: '待机' }, ascolto: { it: 'In ascolto…', en: 'Listening…', fr: 'À l’écoute…', zh: '正在聆听…' }, elabora: { it: 'Elaboro…', en: 'Thinking…', fr: 'Traitement…', zh: '正在处理…' }, risponde: { it: 'Risposta', en: 'Answer', fr: 'Réponse', zh: '回答' },
+    invito: { it: 'Prova a chiedere: «Che tempo fa domani?»', en: 'Try asking: “What’s the weather tomorrow?”', fr: 'Essayez : « Quel temps fera-t-il demain ? »', zh: '试着问：“明天天气怎么样？”' },
+    frase: { it: 'Che tempo fa domani a Milano?', en: 'What’s the weather tomorrow in Milan?', fr: 'Quel temps fera-t-il demain à Milan ?', zh: '明天米兰天气怎么样？' },
+    risp: { it: 'Domani sole, massima 19 °C (risposta di esempio).', en: 'Sunny tomorrow, high of 19 °C (sample answer).', fr: 'Demain du soleil, 19 °C maximum (réponse d’exemple).', zh: '明天晴，最高 19 °C（示例回答）。' } };
+  function due(n) { return (n < 10 ? '0' : '') + n; }
+  function mmss(s) { return Math.floor(s / 60) + ':' + due(Math.floor(s % 60)); }
+  var NOTE = [{ s: 7, mia: false, w: [] }, { s: 4, mia: true, w: [] }], suona = null;
+  NOTE.forEach(function (n, k) { for (var i = 0; i < 26; i++) n.w.push(6 + Math.round(20 * Math.abs(Math.sin(i * (0.7 + k * 0.3)) * Math.cos(i * 0.23)))); });
+  var PLAY = '<svg viewBox="0 0 14 14"><path d="M3 1.5l9 5.5-9 5.5z" fill="#fff"/></svg>', PAUSA = '<svg viewBox="0 0 14 14"><path d="M3 1.5h3v11H3zM8 1.5h3v11H8z" fill="#fff"/></svg>';
+  function disegnaNote() {
+    var m = document.getElementById('messaggi'), fb = Array.prototype.indexOf.call(m.querySelectorAll('.play'), document.activeElement); m.innerHTML = '';
+    NOTE.forEach(function (n) {
+      var d = document.createElement('div'); d.className = 'bolla' + (n.mia ? ' mia' : '');
+      var p = n.p || 0, quante = Math.round(n.w.length * p / n.s);
+      d.innerHTML = '<button class="play" type="button" aria-label="' + t(TX.play) + ' ' + mmss(n.s) + '">' + (suona === n ? PAUSA : PLAY) + '</button><span class="onda" aria-hidden="true">' + n.w.map(function (h, i) { return '<i style="height:' + h + 'px" class="' + (i < quante ? 'suonata' : '') + '"></i>'; }).join('') + '</span><span class="durata">' + mmss(suona === n ? n.s - p : n.s) + '</span>';
+      d.querySelector('.play').onclick = function () { if (suona === n) { suona = null; } else { suona = n; n.p = n.p >= n.s ? 0 : n.p || 0; } disegnaNote(); };
+      m.appendChild(d);
+    });
+    if (fb >= 0 && m.querySelectorAll('.play')[fb]) m.querySelectorAll('.play')[fb].focus();
+  }
+  setInterval(function () { if (!suona) return; suona.p = (suona.p || 0) + 0.1; if (suona.p >= suona.s) { suona.p = 0; suona = null; } disegnaNote(); }, 100);
+  // registrazione: tieni premuto
+  var chat = document.getElementById('chat'), mic = document.getElementById('mic'), inizio = 0, tReg = null, onda = [];
+  function campo() { document.getElementById('campo').textContent = tReg ? t(TX.reg).replace('{d}', mmss((Date.now() - inizio) / 1000)) : t(TX.tieni); mic.setAttribute('aria-label', t(TX.mic)); }
+  function avvia() { if (tReg) return; inizio = Date.now(); onda = []; chat.classList.add('registra'); tReg = setInterval(function () { onda.push(6 + Math.round(Math.random() * 20)); campo(); }, 200); campo(); }
+  function ferma() { if (!tReg) return; clearInterval(tReg); tReg = null; chat.classList.remove('registra'); var s = Math.max(1, Math.round((Date.now() - inizio) / 1000)); while (onda.length < 26) onda.push(6 + Math.round(Math.random() * 18)); NOTE.push({ s: s, mia: true, w: onda.slice(-26) }); if (NOTE.length > 4) NOTE.shift(); disegnaNote(); campo(); }
+  mic.addEventListener('pointerdown', function (e) { e.preventDefault(); mic.setPointerCapture(e.pointerId); avvia(); });
+  mic.addEventListener('pointerup', ferma); mic.addEventListener('pointercancel', ferma);
+  mic.addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); if (!e.repeat) avvia(); } });
+  mic.addEventListener('keyup', function (e) { if (e.key === ' ' || e.key === 'Enter') ferma(); });
+  // assistente
+  var ass = document.getElementById('ass'), stato = 'attesa', parole = 0, timer = null;
+  function disegnaAss() {
+    ass.className = 'assistente' + (stato === 'ascolto' ? ' ascolta' : stato === 'elabora' ? ' pensa' : '');
+    document.getElementById('stato').textContent = t(TX[stato]);
+    var f = t(TX.frase), seg = Lingua.get() === 'zh' ? Array.from(f) : f.split(' '), sep = Lingua.get() === 'zh' ? '' : ' ';
+    document.getElementById('trascritto').innerHTML = stato === 'attesa' ? '<span class="prov">' + t(TX.invito) + '</span>' : seg.slice(0, parole).join(sep) + (stato === 'ascolto' ? ' <span class="prov">…</span>' : '');
+    document.getElementById('risposta').textContent = stato === 'risponde' ? t(TX.risp) : '';
+    document.getElementById('grande').setAttribute('aria-label', t(stato === 'ascolto' ? TX.ascolto : TX.mic).replace(/…$/, ''));
+    document.getElementById('grande').setAttribute('aria-pressed', String(stato === 'ascolto'));
+  }
+  document.getElementById('grande').onclick = function () {
+    clearInterval(timer);
+    if (stato === 'ascolto') { stato = 'attesa'; disegnaAss(); return; }
+    stato = 'ascolto'; parole = 0; disegnaAss();
+    var tot = Lingua.get() === 'zh' ? Array.from(t(TX.frase)).length : t(TX.frase).split(' ').length;
+    timer = setInterval(function () {
+      parole++; disegnaAss();
+      if (parole >= tot) { clearInterval(timer); setTimeout(function () { stato = 'elabora'; disegnaAss(); setTimeout(function () { stato = 'risponde'; disegnaAss(); }, 1200); }, 500); }
+    }, Lingua.get() === 'zh' ? 160 : 320);
+  };
+  disegnaNote(); campo(); disegnaAss();
+  document.addEventListener('lingua', function () { disegnaNote(); campo(); disegnaAss(); });
+</script>
+</body>
+</html>

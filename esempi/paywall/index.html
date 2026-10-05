@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- Esempio ricostruito: Paywall / content locker. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paywall — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .schede { display: flex; gap: 6px; margin-bottom: 14px; }
+  .schede button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 7px 14px; font-size: 15px; cursor: pointer; }
+  .schede button:hover { border-color: #111; }
+  .schede button[aria-pressed="true"] { background: #111; color: #fff; border-color: #111; }
+  .giornale { position: relative; height: 430px; overflow: hidden; padding: 0; }
+  .art { padding: 22px 26px; }
+  .testata { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #111; padding-bottom: 8px; margin-bottom: 14px; }
+  .testata b { font-size: 20px; font-weight: 500; letter-spacing: .02em; }
+  .contatore { font-size: 15px; color: var(--c-tenue); }
+  .art h2 { font-size: 26px; font-weight: 500; line-height: 1.15; margin: 0 0 10px; }
+  .art p { font-size: 16px; line-height: 1.55; margin: 0 0 10px; }
+  .chiuso .resto { filter: blur(5px); user-select: none; }
+  .velo { position: absolute; left: 0; right: 0; bottom: 0; height: 62%; background: linear-gradient(180deg, rgba(255,255,255,0), #fff 38%); display: flex; align-items: flex-end; justify-content: center; padding: 0 26px 22px; }
+  .velo[hidden] { display: none; }
+  .blocco { text-align: center; max-width: 440px; }
+  .blocco h3 { margin: 0 0 6px; font-size: 21px; font-weight: 500; }
+  .blocco p { margin: 0 0 14px; font-size: 15px; color: rgba(0,0,0,.65); }
+  .piani { display: flex; gap: 10px; justify-content: center; margin-bottom: 10px; }
+  .piano { border: 2px solid var(--c-linea); background: #fff; border-radius: 10px; padding: 8px 14px; cursor: pointer; font-size: 15px; text-align: left; }
+  .piano b { display: block; font-size: 17px; font-weight: 500; }
+  .piano[aria-pressed="true"] { border-color: var(--c-blu); background: rgba(105,143,255,.07); }
+  .btn { border: 0; background: #111; color: #fff; border-radius: 9999px; padding: 10px 22px; font-size: 16px; cursor: pointer; }
+  .btn:hover { background: var(--c-blu); }
+  .link { border: 0; background: none; color: var(--c-blu); text-decoration: underline; font-size: 15px; cursor: pointer; margin-left: 10px; }
+  .lucch { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--c-salmone); margin-bottom: 6px; }
+  .banner { position: absolute; left: 16px; right: 16px; bottom: 16px; background: #111; color: #fff; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+  .banner[hidden] { display: none; }
+  .banner .btn { background: var(--c-salmone); color: #111; padding: 7px 14px; font-size: 15px; margin-left: auto; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div>
+    <div class="schede" role="group" id="tipi">
+      <button type="button" data-t="contato"><span data-l="it">A consumo (3 gratis)</span><span data-l="en">Metered (3 free)</span><span data-l="fr">Au compteur (3 gratuits)</span><span data-l="zh">计量（3 篇免费）</span></button>
+      <button type="button" data-t="duro"><span data-l="it">Chiuso + sfocato</span><span data-l="en">Hard + blurred</span><span data-l="fr">Fermé + flouté</span><span data-l="zh">硬付费 + 模糊</span></button>
+    </div>
+    <div class="riquadro giornale" id="giornale">
+      <div class="art">
+        <div class="testata"><b>GRIGLIA</b><span class="contatore" id="contatore"></span></div>
+        <h2><span data-l="it">Perché le interfacce si somigliano tutte</span><span data-l="en">Why all interfaces look alike</span><span data-l="fr">Pourquoi toutes les interfaces se ressemblent</span><span data-l="zh">为什么所有界面看起来都很像</span></h2>
+        <p><span data-l="it">Pulsanti arrotondati, schede, menu a tre puntini: aprendo un’app nuova ci si sente subito a casa. Non è pigrizia, è una scelta.</span><span data-l="en">Rounded buttons, cards, three-dot menus: opening a new app you feel at home right away. It isn’t laziness, it’s a choice.</span><span data-l="fr">Boutons arrondis, cartes, menus à trois points&#8239;: en ouvrant une nouvelle app, on se sent tout de suite chez soi. Ce n’est pas de la paresse, c’est un choix.</span><span data-l="zh">圆角按钮、卡片、三点菜单：打开一个新应用，你马上就会感到熟悉。这不是偷懒，而是一种选择。</span></p>
+        <div class="resto"><p><span data-l="it">Le convenzioni riducono il tempo per imparare. Ma quando tutto è uguale, il carattere di un prodotto si sposta altrove: nel tono dei testi, nel movimento, nei dettagli che pochi notano e tutti percepiscono.</span><span data-l="en">Conventions reduce learning time. But when everything is the same, a product’s character moves elsewhere: into the tone of the copy, into motion, into details few notice and everyone feels.</span><span data-l="fr">Les conventions réduisent le temps d’apprentissage. Mais quand tout se ressemble, le caractère d’un produit se déplace ailleurs&#8239;: dans le ton des textes, le mouvement, les détails que peu remarquent et que tous ressentent.</span><span data-l="zh">惯例能缩短学习时间。但当一切都一样时，产品的个性就转移到了别处：文案的语气、动效，以及少有人注意却人人都能感受到的细节。</span></p>
+        <p><span data-l="it">I designer intervistati raccontano tre strategie diverse per uscire dallo stampo senza perdere chi usa il prodotto.</span><span data-l="en">The designers we interviewed describe three different strategies to break the mould without losing users.</span><span data-l="fr">Les designers interrogés décrivent trois stratégies pour sortir du moule sans perdre les utilisateurs.</span><span data-l="zh">受访的设计师讲述了三种不同的策略，既打破常规又不流失用户。</span></p></div>
+      </div>
+      <div class="velo" id="velo" hidden><div class="blocco" role="dialog" aria-labelledby="pw-t">
+        <span class="lucch"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="3" y="8" width="12" height="9" rx="2" fill="#111"/><path d="M6 8V5.5a3 3 0 016 0V8" fill="none" stroke="#111" stroke-width="2"/></svg></span>
+        <h3 id="pw-t"><span data-l="it">Continua a leggere con un abbonamento</span><span data-l="en">Keep reading with a subscription</span><span data-l="fr">Continuez la lecture avec un abonnement</span><span data-l="zh">订阅后继续阅读</span></h3>
+        <p id="m-contato"><span data-l="it">Hai letto i tuoi articoli gratuiti di questo mese.</span><span data-l="en">You have read your free articles for this month.</span><span data-l="fr">Vous avez lu vos articles gratuits du mois.</span><span data-l="zh">你本月的免费文章已读完。</span></p><p id="m-duro"><span data-l="it">Questo articolo è riservato agli abbonati.</span><span data-l="en">This article is for subscribers only.</span><span data-l="fr">Cet article est réservé aux abonnés.</span><span data-l="zh">本文仅限订阅用户阅读。</span></p>
+        <div class="piani" id="piani">
+          <button class="piano" type="button" aria-pressed="false"><b><span data-l="it">4 € / mese</span><span data-l="en">€4 / month</span><span data-l="fr">4 € / mois</span><span data-l="zh">每月 4 欧元</span></b><span data-l="it">Mensile</span><span data-l="en">Monthly</span><span data-l="fr">Mensuel</span><span data-l="zh">按月</span></button>
+          <button class="piano" type="button" aria-pressed="true"><b><span data-l="it">36 € / anno</span><span data-l="en">€36 / year</span><span data-l="fr">36 € / an</span><span data-l="zh">每年 36 欧元</span></b><span data-l="it">Annuale −25%</span><span data-l="en">Yearly −25%</span><span data-l="fr">Annuel −25 %</span><span data-l="zh">按年 −25%</span></button>
+        </div>
+        <button class="btn" type="button"><span data-l="it">Abbonati</span><span data-l="en">Subscribe</span><span data-l="fr">S’abonner</span><span data-l="zh">订阅</span></button><button class="link" type="button" id="accedi"><span data-l="it">Ho già un account</span><span data-l="en">I have an account</span><span data-l="fr">J’ai déjà un compte</span><span data-l="zh">我已有账户</span></button>
+      </div></div>
+      <div class="banner" id="banner" hidden><span id="banner-t"></span><button class="btn" type="button" id="leggi"></button></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il paywall mostra l’inizio per invogliare e nasconde il resto (sfumatura, sfocatura). A consumo: alcuni articoli gratis, poi il blocco.</span><span data-l="en">The paywall shows the beginning to entice and hides the rest (fade, blur). Metered: some free articles, then the lock.</span><span data-l="fr">Le paywall montre le début pour donner envie et cache la suite (fondu, flou). Au compteur&#8239;: quelques articles gratuits, puis le blocage.</span><span data-l="zh">付费墙展示开头来吸引读者，并隐藏其余部分（渐隐、模糊）。计量模式：先免费读几篇，然后锁定。</span></p>
+<script>
+  var tipo = 'duro', letti = 1, MAX = 3;
+  var TX = { cont: { it: 'Articoli gratuiti: %1 di %2', en: 'Free articles: %1 of %2', fr: 'Articles gratuits : %1 sur %2', zh: '免费文章：%1 / %2' },
+    resta: { it: 'Ti restano % articoli gratuiti questo mese.', en: 'You have % free articles left this month.', fr: 'Il vous reste % articles gratuits ce mois-ci.', zh: '本月你还剩 % 篇免费文章。' },
+    leggi: { it: 'Leggi un altro', en: 'Read another', fr: 'Lire un autre', zh: '再读一篇' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    document.querySelectorAll('#tipi button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.t === tipo)); });
+    var bloccato = tipo === 'duro' || letti > MAX;
+    document.getElementById('giornale').classList.toggle('chiuso', bloccato && tipo === 'duro');
+    document.getElementById('velo').hidden = !bloccato;
+    document.getElementById('m-contato').hidden = tipo !== 'contato'; document.getElementById('m-duro').hidden = tipo !== 'duro';
+    document.getElementById('contatore').textContent = tipo === 'contato' ? T(TX.cont).replace('%1', Math.min(letti, MAX)).replace('%2', MAX) : '';
+    var ban = document.getElementById('banner'); ban.hidden = !(tipo === 'contato' && !bloccato);
+    document.getElementById('banner-t').textContent = T(TX.resta).replace('%', MAX - letti); document.getElementById('leggi').textContent = T(TX.leggi);
+  }
+  document.querySelectorAll('#tipi button').forEach(function (b) { b.onclick = function () { tipo = b.dataset.t; letti = 1; disegna(); }; });
+  document.getElementById('leggi').onclick = function () { letti++; disegna(); };
+  var piani = document.querySelectorAll('.piano');
+  piani.forEach(function (p) { p.onclick = function () { piani.forEach(function (x) { x.setAttribute('aria-pressed', String(x === p)); }); }; });
+  document.getElementById('accedi').onclick = function () { if (tipo === 'contato') { letti = 1; disegna(); } };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

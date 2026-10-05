@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- Esempio ricostruito: Battery indicator. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Battery indicator — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .schermo { width: 340px; max-width: 100%; margin: 0 auto 22px; border: 10px solid #222; border-bottom: 0; border-radius: 40px 40px 0 0; background: linear-gradient(160deg, #ffd6d6, #d9e2ff); height: 120px; position: relative; }
+  .stato { display: flex; justify-content: space-between; align-items: center; padding: 14px 24px 0; font-size: 16px; font-weight: 500; }
+  .stato .dx { display: flex; align-items: center; gap: 8px; }
+  .tacca { position: absolute; left: 50%; top: 8px; width: 90px; height: 24px; margin-left: -45px; border-radius: 12px; background: #222; }
+  .ora { text-align: center; font-size: 40px; font-weight: 500; margin-top: 8px; letter-spacing: -.02em; }
+  .comandi { display: grid; gap: 14px; }
+  .comandi label { display: flex; align-items: center; gap: 12px; font-size: 16px; }
+  .comandi input[type="range"] { flex: 1; accent-color: var(--c-blu); }
+  .interruttore { appearance: none; -webkit-appearance: none; width: 44px; height: 26px; border-radius: 13px; background: rgba(0,0,0,.2); position: relative; cursor: pointer; transition: background .2s; flex: none; margin: 0; }
+  .interruttore::after { content: ""; position: absolute; left: 3px; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .interruttore:checked { background: var(--c-blu); }
+  .interruttore:checked::after { transform: translateX(18px); }
+  .galleria { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; text-align: center; }
+  .galleria div { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 15px; color: var(--c-tenue); }
+  .galleria svg { width: 64px; height: 32px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Barra di stato di un telefono generico</span><span data-l="en">Status bar of a generic phone</span><span data-l="fr">Barre d’état d’un téléphone générique</span><span data-l="zh">通用手机的状态栏</span></span>
+    <div class="schermo" aria-hidden="true">
+      <div class="tacca"></div>
+      <div class="stato"><span>9:41</span><span class="dx"><span id="perc"></span><span id="icona"></span></span></div>
+      <div class="ora">9:41</div>
+    </div>
+    <div class="comandi">
+      <label><span style="min-width:110px"><span data-l="it">Carica</span><span data-l="en">Charge</span><span data-l="fr">Charge</span><span data-l="zh">电量</span></span><input type="range" id="livello" min="0" max="100" value="64"><output id="out" style="min-width:48px;text-align:right;font-variant-numeric:tabular-nums"></output></label>
+      <div style="display:flex;gap:28px;flex-wrap:wrap">
+        <label><input class="interruttore" type="checkbox" id="carica" role="switch"> <span data-l="it">In carica</span><span data-l="en">Charging</span><span data-l="fr">En charge</span><span data-l="zh">充电中</span></label>
+        <label><input class="interruttore" type="checkbox" id="risparmio" role="switch"> <span data-l="it">Risparmio energetico</span><span data-l="en">Low power mode</span><span data-l="fr">Mode économie d’énergie</span><span data-l="zh">低电量模式</span></label>
+        <label><input class="interruttore" type="checkbox" id="mostra" role="switch" checked> <span data-l="it">Percentuale</span><span data-l="en">Percentage</span><span data-l="fr">Pourcentage</span><span data-l="zh">百分比</span></label>
+      </div>
+      <p id="annuncio" aria-live="polite" style="margin:0;font-size:15px;color:var(--c-tenue);min-height:21px"></p>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati</span><span data-l="en">States</span><span data-l="fr">États</span><span data-l="zh">状态</span></span>
+    <div class="galleria" id="galleria"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Colore e simbolo, non solo il colore: il rosso segnala la carica bassa, il fulmine la ricarica, il giallo il risparmio energetico.</span><span data-l="en">Colour and symbol, not colour alone: red signals low charge, the bolt charging, yellow low power mode.</span><span data-l="fr">Couleur et symbole, pas seulement la couleur : le rouge signale une charge faible, l’éclair la recharge, le jaune l’économie d’énergie.</span><span data-l="zh">颜色加符号，而不只是颜色：红色表示电量低，闪电表示充电，黄色表示低电量模式。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function batteria(p, carica, risparmio, grande) {
+    var col = risparmio ? '#e2b100' : p <= 20 && !carica ? '#e0412f' : carica ? '#2fa55a' : '#111';
+    var w = Math.max(2, 42 * p / 100);
+    var lampo = carica ? '<path d="M28 4l-7 10h5l-2 8 7-10h-5z" fill="#111" stroke="#fff" stroke-width="1.2" stroke-linejoin="round"/>' : '';
+    return '<svg viewBox="0 0 56 26" width="' + (grande ? 64 : 34) + '" height="' + (grande ? 30 : 16) + '" aria-hidden="true"><rect x="1.5" y="1.5" width="48" height="23" rx="6" fill="none" stroke="#111" stroke-opacity=".45" stroke-width="2"/>' +
+      '<rect x="51.5" y="9" width="3" height="8" rx="1.5" fill="#111" fill-opacity=".45"/><rect x="4.5" y="4.5" width="' + w + '" height="17" rx="3.5" fill="' + col + '"/>' + lampo + '</svg>';
+  }
+  var ST = [
+    { p: 100, l: { it: 'piena', en: 'full', fr: 'pleine', zh: '充满' } },
+    { p: 55, l: { it: 'a metà', en: 'half', fr: 'à moitié', zh: '一半' } },
+    { p: 12, l: { it: 'bassa', en: 'low', fr: 'faible', zh: '电量低' } },
+    { p: 40, c: true, l: { it: 'in carica', en: 'charging', fr: 'en charge', zh: '充电中' } },
+    { p: 40, r: true, l: { it: 'risparmio', en: 'low power', fr: 'économie', zh: '低电量模式' } }
+  ];
+  var ANN = { basso: { it: 'Batteria scarica: {p}% rimanente', en: 'Low battery: {p}% remaining', fr: 'Batterie faible : {p} % restant', zh: '电量不足：剩余 {p}%' },
+    carica: { it: 'In carica, {p}%', en: 'Charging, {p}%', fr: 'En charge, {p} %', zh: '充电中，{p}%' } };
+  var liv = document.getElementById('livello'), car = document.getElementById('carica'), ris = document.getElementById('risparmio'), mos = document.getElementById('mostra');
+  function disegna() {
+    var p = +liv.value;
+    document.getElementById('icona').innerHTML = batteria(p, car.checked, ris.checked);
+    document.getElementById('perc').textContent = mos.checked ? p + '%' : '';
+    document.getElementById('out').textContent = p + '%';
+    var a = car.checked ? t(ANN.carica) : p <= 20 ? t(ANN.basso) : '';
+    document.getElementById('annuncio').textContent = a.replace('{p}', p);
+    document.getElementById('galleria').innerHTML = ST.map(function (s) { return '<div>' + batteria(s.p, s.c, s.r, true) + '<span>' + t(s.l) + '</span></div>'; }).join('');
+  }
+  [liv, car, ris, mos].forEach(function (el) { el.addEventListener('input', disegna); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

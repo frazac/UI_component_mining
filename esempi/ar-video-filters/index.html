@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Augmented reality video filters. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Augmented reality video filters — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: auto 1fr; max-width: 680px; align-items: center; }
+  .tel { width: 260px; height: 470px; border-radius: 36px; background: #111; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .schermo { position: relative; width: 100%; height: 100%; border-radius: 28px; overflow: hidden; background: linear-gradient(#cfd8e6, #e9e1dc 60%, #d8cfc9); }
+  .schermo svg.scena { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .testa { animation: dondola 4s ease-in-out infinite; transform-origin: 120px 200px; }
+  @keyframes dondola { 0%, 100% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(8px, -4px) rotate(4deg); } 75% { transform: translate(-8px, 2px) rotate(-4deg); } }
+  .over { opacity: 0; transition: opacity .3s; } .over.on { opacity: 1; }
+  .tinta { position: absolute; inset: 0; mix-blend-mode: multiply; opacity: 0; transition: opacity .3s; background: linear-gradient(160deg, rgb(250,145,145), rgb(105,143,255)); }
+  .tinta.on { opacity: .45; }
+  .rec { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,.45); color: #fff; font-size: 13px; padding: 4px 10px; border-radius: 9999px; display: flex; gap: 6px; align-items: center; }
+  .rec::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #e33; }
+  .tracc { position: absolute; inset: 0; pointer-events: none; }
+  .filtri { position: absolute; bottom: 14px; left: 0; right: 0; display: flex; gap: 6px; justify-content: center; }
+  .filtri button { width: 38px; height: 38px; border-radius: 50%; border: 2px solid rgba(255,255,255,.7); background: rgba(255,255,255,.3); backdrop-filter: blur(4px); cursor: pointer; display: grid; place-content: center; padding: 0; }
+  .filtri button[aria-pressed="true"] { border-color: #fff; background: #fff; transform: scale(1.12); }
+  .filtri svg { width: 22px; height: 22px; }
+  .elenco { list-style: none; margin: 0; padding: 0; font-size: 16px; }
+  .elenco li { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--c-linea); }
+  .elenco li b { font-weight: 500; min-width: 110px; }
+  .opz { display: flex; align-items: center; gap: 10px; margin-top: 14px; font-size: 15px; cursor: pointer; }
+  .opz input { width: 18px; height: 18px; accent-color: var(--c-blu); margin: 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="tel">
+    <div class="schermo" id="schermo">
+      <svg class="scena" viewBox="0 0 240 450" aria-hidden="true">
+        <g class="testa" id="testa">
+          <path d="M40 450 C40 360 80 330 120 330 C160 330 200 360 200 450 Z" fill="#6d7b94"/>
+          <rect x="104" y="280" width="32" height="56" rx="10" fill="#d9a988"/>
+          <ellipse cx="120" cy="215" rx="62" ry="76" fill="#e8b996"/>
+          <path d="M58 205 C56 140 90 128 120 128 C160 128 186 150 182 205 C176 170 150 158 120 160 C92 160 66 172 58 205 Z" fill="#3b2c26"/>
+          <ellipse cx="98" cy="215" rx="6" ry="7" fill="#222"/><ellipse cx="142" cy="215" rx="6" ry="7" fill="#222"/>
+          <path d="M120 222 Q116 240 122 244" stroke="#b9876a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M102 260 Q120 272 138 260" stroke="#a05a50" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- sovrapposizioni -->
+          <g class="over" data-f="occhiali"><rect x="76" y="200" width="40" height="28" rx="10" fill="rgba(105,143,255,.55)" stroke="#111" stroke-width="4"/><rect x="124" y="200" width="40" height="28" rx="10" fill="rgba(105,143,255,.55)" stroke="#111" stroke-width="4"/><path d="M116 210 h8 M76 210 L58 204 M164 210 L182 204" stroke="#111" stroke-width="4"/></g>
+          <g class="over" data-f="orecchie"><path d="M66 150 L58 92 L104 132 Z" fill="rgb(250,145,145)" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><path d="M174 150 L182 92 L136 132 Z" fill="rgb(250,145,145)" stroke="#fff" stroke-width="4" stroke-linejoin="round"/><ellipse cx="120" cy="238" rx="8" ry="6" fill="rgb(223,136,136)"/><path d="M84 244 H50 M84 252 L52 262 M156 244 H190 M156 252 L188 262" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>
+          <g class="over" data-f="casco"><path d="M48 214 C44 120 90 104 120 104 C150 104 196 120 192 214 L178 214 C178 160 156 146 120 146 C84 146 62 160 62 214 Z" fill="#f1f1f1" stroke="#999" stroke-width="2"/><path d="M62 186 H178 V214 Q120 236 62 214 Z" fill="rgba(30,40,70,.75)"/><path d="M70 196 Q120 186 170 196" stroke="rgba(255,255,255,.6)" stroke-width="3" fill="none"/><circle cx="120" cy="122" r="7" fill="rgb(105,143,255)"/></g>
+        </g>
+      </svg>
+      <svg class="tracc over" id="tracc" viewBox="0 0 240 450" aria-hidden="true"><g class="testa"><g fill="rgb(105,143,255)"><circle cx="98" cy="215" r="3"/><circle cx="142" cy="215" r="3"/><circle cx="120" cy="240" r="3"/><circle cx="102" cy="260" r="3"/><circle cx="138" cy="260" r="3"/><circle cx="120" cy="290" r="3"/><circle cx="62" cy="215" r="3"/><circle cx="178" cy="215" r="3"/><circle cx="120" cy="140" r="3"/></g><ellipse cx="120" cy="215" rx="66" ry="80" fill="none" stroke="rgb(105,143,255)" stroke-dasharray="4 4"/></g></svg>
+      <div class="tinta" id="tinta"></div>
+      <span class="rec">LIVE</span>
+      <div class="filtri" id="filtri" role="group">
+        <button type="button" data-f="" aria-pressed="true" title="—"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="9" fill="none" stroke="#111" stroke-width="2"/><path d="M6 20 L20 6" stroke="#111" stroke-width="2"/></svg></button>
+        <button type="button" data-f="occhiali" aria-pressed="false"><svg viewBox="0 0 26 26"><rect x="2" y="9" width="9" height="7" rx="3" fill="none" stroke="#111" stroke-width="2"/><rect x="15" y="9" width="9" height="7" rx="3" fill="none" stroke="#111" stroke-width="2"/><path d="M11 12 h4" stroke="#111" stroke-width="2"/></svg></button>
+        <button type="button" data-f="orecchie" aria-pressed="false"><svg viewBox="0 0 26 26"><path d="M4 18 L5 4 L12 11 M22 18 L21 4 L14 11" fill="none" stroke="rgb(223,136,136)" stroke-width="2.4" stroke-linejoin="round"/></svg></button>
+        <button type="button" data-f="casco" aria-pressed="false"><svg viewBox="0 0 26 26"><path d="M4 17 C4 8 9 5 13 5 C17 5 22 8 22 17 Z" fill="none" stroke="#111" stroke-width="2"/><path d="M6 13 H20" stroke="rgb(105,143,255)" stroke-width="3"/></svg></button>
+        <button type="button" data-f="tinta" aria-pressed="false"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="9" fill="url(#g)"/><defs><linearGradient id="g"><stop offset="0" stop-color="rgb(250,145,145)"/><stop offset="1" stop-color="rgb(105,143,255)"/></linearGradient></defs></svg></button>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Scegli un filtro: segue il volto</span><span data-l="en">Pick a filter: it follows the face</span><span data-l="fr">Choisissez un filtre : il suit le visage</span><span data-l="zh">选择滤镜：它会跟随面部</span></span>
+    <ul class="elenco">
+      <li><b><span data-l="it">Accessori</span><span data-l="en">Accessories</span><span data-l="fr">Accessoires</span><span data-l="zh">配饰</span></b><span><span data-l="it">occhiali, cappelli</span><span data-l="en">glasses, hats</span><span data-l="fr">lunettes, chapeaux</span><span data-l="zh">眼镜、帽子</span></span></li>
+      <li><b><span data-l="it">Maschere</span><span data-l="en">Masks</span><span data-l="fr">Masques</span><span data-l="zh">面具</span></b><span><span data-l="it">orecchie, baffi, trucco</span><span data-l="en">ears, whiskers, make-up</span><span data-l="fr">oreilles, moustaches, maquillage</span><span data-l="zh">耳朵、胡须、妆容</span></span></li>
+      <li><b><span data-l="it">Caschi</span><span data-l="en">Helmets</span><span data-l="fr">Casques</span><span data-l="zh">头盔</span></b><span><span data-l="it">coprono la testa</span><span data-l="en">cover the head</span><span data-l="fr">couvrent la tête</span><span data-l="zh">覆盖整个头部</span></span></li>
+      <li><b><span data-l="it">Colore</span><span data-l="en">Colour</span><span data-l="fr">Couleur</span><span data-l="zh">色彩</span></b><span><span data-l="it">tinta su tutta l’immagine</span><span data-l="en">tint over the whole image</span><span data-l="fr">teinte sur toute l’image</span><span data-l="zh">整幅画面的色调</span></span></li>
+    </ul>
+    <label class="opz"><input type="checkbox" id="mostra-tr"><span><span data-l="it">Mostra i punti di riferimento del volto</span><span data-l="en">Show the face landmarks</span><span data-l="fr">Afficher les points de repère du visage</span><span data-l="zh">显示面部特征点</span></span></label>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Simulazione disegnata: un vero filtro riconosce i punti del volto nella fotocamera e vi aggancia gli oggetti a ogni fotogramma.</span><span data-l="en">A drawn simulation: a real filter detects face landmarks in the camera feed and anchors objects to them on every frame.</span><span data-l="fr">Simulation dessinée : un vrai filtre détecte les points du visage dans le flux de la caméra et y accroche les objets à chaque image.</span><span data-l="zh">绘制的模拟：真实的滤镜会在摄像头画面中识别面部特征点，并在每一帧把物体固定在这些点上。</span></p>
+<script>
+  var NOMI = { '': { it: 'Nessun filtro', en: 'No filter', fr: 'Aucun filtre', zh: '无滤镜' }, occhiali: { it: 'Occhiali', en: 'Glasses', fr: 'Lunettes', zh: '眼镜' }, orecchie: { it: 'Maschera', en: 'Mask', fr: 'Masque', zh: '面具' }, casco: { it: 'Casco', en: 'Helmet', fr: 'Casque', zh: '头盔' }, tinta: { it: 'Colore', en: 'Colour', fr: 'Couleur', zh: '色彩' } };
+  var bott = document.querySelectorAll('#filtri button');
+  function etichette() { var l = window.Lingua ? Lingua.get() : 'en'; bott.forEach(function (b) { b.setAttribute('aria-label', NOMI[b.dataset.f][l]); b.title = NOMI[b.dataset.f][l]; }); }
+  bott.forEach(function (b) {
+    b.addEventListener('click', function () {
+      bott.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.querySelectorAll('.scena .over').forEach(function (o) { o.classList.toggle('on', o.dataset.f === b.dataset.f); });
+      document.getElementById('tinta').classList.toggle('on', b.dataset.f === 'tinta');
+    });
+  });
+  document.getElementById('mostra-tr').addEventListener('change', function () { document.getElementById('tracc').classList.toggle('on', this.checked); });
+  etichette(); document.addEventListener('lingua', etichette);
+  bott[1].click();
+</script>
+</body>
+</html>

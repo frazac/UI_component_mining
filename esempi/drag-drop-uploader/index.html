@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Drag and drop uploader. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drag and drop uploader — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .zona { border: 2px dashed rgba(0,0,0,.25); border-radius: 12px; padding: 26px 20px; text-align: center; transition: background .15s, border-color .15s; background: #fcfbfb; }
+  .zona.sopra { border-color: var(--c-blu); background: #eef2ff; border-style: solid; }
+  .zona svg { width: 46px; height: 46px; transition: transform .2s; }
+  .zona.sopra svg { transform: translateY(-4px); }
+  .zona p { margin: 8px 0 4px; font-size: 17px; }
+  .zona small { font-size: 15px; color: var(--c-tenue); }
+  .sfoglia { border: 0; background: none; color: var(--c-blu); text-decoration: underline; cursor: pointer; padding: 0; font-size: 17px; }
+  .file { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .file li { display: grid; grid-template-columns: 36px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--c-linea); border-radius: 10px; }
+  .file li.err { border-color: #f1b5ae; background: #fff7f6; }
+  .tipo { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 13px; font-weight: 500; color: #fff; background: var(--c-blu); text-transform: uppercase; }
+  .nome { font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .info { font-size: 15px; color: var(--c-tenue); }
+  .err .info { color: #c0392b; }
+  .barra { height: 5px; border-radius: 3px; background: rgba(0,0,0,.08); margin-top: 5px; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: var(--c-blu); border-radius: 3px; transition: width .2s; }
+  .togli { width: 32px; height: 32px; border-radius: 50%; border: 0; background: none; cursor: pointer; font-size: 18px; color: var(--c-tenue); }
+  .togli:hover { background: #f3efee; color: var(--c-testo); }
+  .ok { color: #2fa55a; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Area di rilascio</span><span data-l="en">Drop target</span><span data-l="fr">Zone de dépôt</span><span data-l="zh">拖放区域</span></span>
+    <div class="zona" id="zona">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M14 34h-3a8 8 0 01-1-15.9A11 11 0 0131.5 15 9 9 0 1137 34h-3" fill="none" stroke="#698fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 40V24M18 29.5l6-6 6 6" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p><span data-l="it">Trascina qui i file o </span><span data-l="en">Drag files here or </span><span data-l="fr">Glissez vos fichiers ici ou </span><span data-l="zh">将文件拖到这里，或</span><button type="button" class="sfoglia" id="sfoglia"><span data-l="it">sfoglia</span><span data-l="en">browse</span><span data-l="fr">parcourez</span><span data-l="zh">浏览</span></button></p>
+      <small><span data-l="it">PNG, JPG o PDF, massimo 5 MB</span><span data-l="en">PNG, JPG or PDF, up to 5 MB</span><span data-l="fr">PNG, JPG ou PDF, 5 Mo maximum</span><span data-l="zh">PNG、JPG 或 PDF，最大 5 MB</span></small>
+      <input type="file" id="input" multiple hidden accept=".png,.jpg,.jpeg,.pdf">
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">File: caricato, in caricamento, errore</span><span data-l="en">Files: uploaded, uploading, error</span><span data-l="fr">Fichiers : envoyé, en cours, erreur</span><span data-l="zh">文件：已上传、上传中、出错</span></span>
+    <ul class="file" id="file" aria-live="polite"></ul>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Trascina un file vero dal computer (i file non lasciano il browser). L’area tratteggiata è sempre accompagnata da un pulsante: non tutti possono trascinare.</span><span data-l="en">Drag a real file from your computer (files never leave the browser). The dashed area always comes with a button: not everyone can drag.</span><span data-l="fr">Glissez un vrai fichier depuis votre ordinateur (rien ne quitte le navigateur). La zone en pointillé va toujours avec un bouton : tout le monde ne peut pas glisser.</span><span data-l="zh">可以从电脑拖入真实文件（文件不会离开浏览器）。虚线区域总要配一个按钮：不是每个人都能拖放。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = { fatto: { it: 'Caricato', en: 'Uploaded', fr: 'Envoyé', zh: '已上传' }, grande: { it: 'Troppo grande (max 5 MB)', en: 'Too large (max 5 MB)', fr: 'Trop volumineux (5 Mo max)', zh: '文件过大（最大 5 MB）' },
+    tipo: { it: 'Formato non accettato', en: 'File type not accepted', fr: 'Format non accepté', zh: '不支持的文件格式' }, togli: { it: 'Rimuovi', en: 'Remove', fr: 'Retirer', zh: '移除' } };
+  var FILE = [
+    { n: 'moodboard.png', s: 1.2e6, p: 100 },
+    { n: 'brief-cliente.pdf', s: 3.4e6, p: 46 },
+    { n: 'video-intervista.mov', s: 48e6, e: 'tipo' }
+  ];
+  var COL = { png: '#698fff', jpg: '#698fff', jpeg: '#698fff', pdf: '#df8888' };
+  function mb(s) { return (s / 1e6).toFixed(1) + ' MB'; }
+  function disegna() {
+    var ul = document.getElementById('file'); ul.innerHTML = '';
+    FILE.forEach(function (f, i) {
+      var est = f.n.split('.').pop().toLowerCase(), li = document.createElement('li');
+      if (f.e) li.className = 'err';
+      var stato = f.e ? t(TX[f.e]) : f.p < 100 ? mb(f.s * f.p / 100) + ' / ' + mb(f.s) + ' · ' + Math.round(f.p) + '%' : '<span class="ok">✓ ' + t(TX.fatto) + '</span> · ' + mb(f.s);
+      li.innerHTML = '<span class="tipo" style="background:' + (f.e ? '#c0392b' : COL[est] || '#999') + '">' + est.slice(0, 3) + '</span><div style="min-width:0"><div class="nome">' + f.n.replace(/</g, '&lt;') + '</div><div class="info">' + stato + '</div>' + (!f.e && f.p < 100 ? '<div class="barra" role="progressbar" aria-valuenow="' + Math.round(f.p) + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + f.p + '%"></i></div>' : '') + '</div>';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'togli'; b.textContent = '×'; b.setAttribute('aria-label', t(TX.togli) + ' ' + f.n);
+      b.onclick = function () { FILE.splice(i, 1); disegna(); };
+      li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  function aggiungi(lista) {
+    Array.prototype.forEach.call(lista, function (x) {
+      var est = x.name.split('.').pop().toLowerCase(), f = { n: x.name, s: x.size || 1, p: 0 };
+      if (!/^(png|jpe?g|pdf)$/.test(est)) f.e = 'tipo'; else if (x.size > 5e6) f.e = 'grande';
+      FILE.unshift(f); if (FILE.length > 4) FILE.pop();
+    });
+    disegna();
+  }
+  // simula l'avanzamento del caricamento
+  setInterval(function () { var c = false; FILE.forEach(function (f) { if (!f.e && f.p < 100) { f.p = Math.min(100, f.p + .3 + Math.random() * .8); c = true; } }); if (c) disegna(); }, 250);
+  var zona = document.getElementById('zona'), input = document.getElementById('input');
+  ['dragenter', 'dragover'].forEach(function (e) { zona.addEventListener(e, function (ev) { ev.preventDefault(); zona.classList.add('sopra'); }); });
+  ['dragleave', 'drop'].forEach(function (e) { zona.addEventListener(e, function (ev) { ev.preventDefault(); if (e === 'dragleave' && zona.contains(ev.relatedTarget)) return; zona.classList.remove('sopra'); }); });
+  zona.addEventListener('drop', function (ev) { aggiungi(ev.dataTransfer.files); });
+  document.getElementById('sfoglia').onclick = function () { input.click(); };
+  input.onchange = function () { aggiungi(input.files); input.value = ''; };
+  window.addEventListener('dragover', function (e) { e.preventDefault(); }); window.addEventListener('drop', function (e) { e.preventDefault(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

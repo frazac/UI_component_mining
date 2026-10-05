@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Esempio ricostruito: Triple dot menu. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kebab menu — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.5fr 1fr; align-items: start; }
+  .riquadro { min-height: 400px; }
+  .file { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid var(--c-linea); position: relative; font-size: 16px; }
+  .file .ico { width: 34px; height: 40px; border-radius: 4px; flex: none; position: relative; }
+  .file .ico::after { content: ""; position: absolute; top: 0; right: 0; border: 6px solid #fff; border-bottom-color: rgba(0,0,0,.15); border-left-color: rgba(0,0,0,.15); }
+  .file .nome { flex: 1; min-width: 0; }
+  .file .nome small { display: block; font-size: 15px; color: var(--c-tenue); }
+  .puntini { width: 38px; height: 38px; border: 0; background: none; border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: #555; }
+  .puntini:hover, .puntini[aria-expanded="true"] { background: var(--c-palco); color: #111; }
+  .menu { position: absolute; right: 4px; top: calc(100% - 6px); z-index: 5; min-width: 200px; background: #fff; border-radius: 10px; box-shadow: 0 12px 30px rgba(0,0,0,.18), 0 0 0 1px rgba(0,0,0,.06); padding: 6px; list-style: none; margin: 0; }
+  .menu[hidden] { display: none; }
+  .menu li { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 6px; font-size: 15px; cursor: pointer; outline: 0; }
+  .menu li:hover, .menu li:focus { background: rgba(105,143,255,.14); }
+  .menu li.pericolo { color: #b03a2a; }
+  .menu li.sep { border-top: 1px solid var(--c-linea); margin-top: 4px; padding-top: 11px; border-radius: 0 0 6px 6px; }
+  .menu svg { flex: none; }
+  .carta { border-radius: 12px; overflow: hidden; border: 1px solid var(--c-linea); position: relative; }
+  .carta .img { height: 120px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); }
+  .carta .corpo { display: flex; align-items: center; justify-content: space-between; padding: 10px 6px 10px 14px; position: relative; }
+  .carta .corpo b { font-weight: 500; font-size: 16px; }
+  .esito { font-size: 15px; color: var(--c-tenue); margin-top: 14px; min-height: 22px; }
+  .confronto { display: flex; justify-content: space-around; gap: 8px; margin-top: 20px; font-size: 15px; color: var(--c-tenue); }
+  .confronto div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Kebab ⋮ — in ogni riga</span><span data-l="en">Kebab ⋮ — on each row</span><span data-l="fr">Kebab ⋮ — sur chaque ligne</span><span data-l="zh">烤串 ⋮ — 每行一个</span></span>
+    <div id="righe"></div>
+    <div class="esito" id="esito" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Meatballs ⋯ — su una scheda</span><span data-l="en">Meatballs ⋯ — on a card</span><span data-l="fr">Meatballs ⋯ — sur une carte</span><span data-l="zh">肉丸 ⋯ — 在卡片上</span></span>
+    <div class="carta" id="carta"></div>
+    <div class="confronto"><div><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="#111"/><circle cx="12" cy="12" r="2" fill="#111"/><circle cx="12" cy="19" r="2" fill="#111"/></svg>kebab</div><div><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="#111"/><circle cx="12" cy="12" r="2" fill="#111"/><circle cx="19" cy="12" r="2" fill="#111"/></svg>meatballs</div><div><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="#111" stroke-width="2"/></svg>hamburger</div></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">I tre puntini nascondono le azioni secondarie e tengono pulita l’interfaccia, ma ciò che è nascosto si scopre meno: le azioni principali restano fuori.</span><span data-l="en">The three dots hide secondary actions and keep the interface clean, but what is hidden is discovered less: main actions stay outside.</span><span data-l="fr">Les trois points cachent les actions secondaires et allègent l’interface, mais ce qui est caché se découvre moins&#8239;: les actions principales restent visibles.</span><span data-l="zh">三点菜单隐藏次要操作，让界面保持简洁；但被隐藏的内容更难被发现，主要操作应放在外面。</span></p>
+<script>
+  var FILE = [
+    { n: 'brief-A1.pdf', c: '#fa9191', d: { it: 'Modificato oggi', en: 'Edited today', fr: 'Modifié aujourd’hui', zh: '今天编辑' } },
+    { n: 'moodboard.png', c: '#698fff', d: { it: 'Modificato ieri', en: 'Edited yesterday', fr: 'Modifié hier', zh: '昨天编辑' } },
+    { n: 'colophon.txt', c: '#4caf7a', d: { it: '3 giorni fa', en: '3 days ago', fr: 'Il y a 3 jours', zh: '3 天前' } },
+    { n: 'video-A1.mp4', c: '#f4bd4f', d: { it: 'La settimana scorsa', en: 'Last week', fr: 'La semaine dernière', zh: '上周' } }
+  ];
+  var VOCI = [
+    { k: 'rin', t: { it: 'Rinomina', en: 'Rename', fr: 'Renommer', zh: '重命名' }, s: '<path d="M3 13l1-4 7-7 3 3-7 7z" fill="none" stroke="currentColor" stroke-width="1.5"/>' },
+    { k: 'dup', t: { it: 'Duplica', en: 'Duplicate', fr: 'Dupliquer', zh: '复制副本' }, s: '<rect x="5" y="5" width="9" height="9" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 11V3a1 1 0 011-1h8" fill="none" stroke="currentColor" stroke-width="1.5"/>' },
+    { k: 'con', t: { it: 'Condividi', en: 'Share', fr: 'Partager', zh: '共享' }, s: '<circle cx="4" cy="8" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="3.5" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12.5" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 7l4-2.5M6 9l4 2.5" stroke="currentColor" stroke-width="1.5"/>' },
+    { k: 'eli', t: { it: 'Elimina', en: 'Delete', fr: 'Supprimer', zh: '删除' }, s: '<path d="M3 4h10M6 4V2h4v2M4 4l1 10h6l1-10" fill="none" stroke="currentColor" stroke-width="1.5"/>', p: true }
+  ];
+  var TX = { altre: { it: 'Altre azioni per %', en: 'More actions for %', fr: 'Autres actions pour %', zh: '% 的更多操作' }, fatto: { it: '«%1» → %2', en: '“%1” → %2', fr: '« %1 » → %2', zh: '“%1” → %2' }, carta: { it: 'Poster della mostra', en: 'Exhibition poster', fr: 'Affiche de l’expo', zh: '展览海报' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var aperto = null;
+  function icona(v) { return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">' + v + '</svg>'; }
+  function kebab(orizz) { return orizz ? '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="19" cy="12" r="2" fill="currentColor"/></svg>' : '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2" fill="currentColor"/><circle cx="12" cy="12" r="2" fill="currentColor"/><circle cx="12" cy="19" r="2" fill="currentColor"/></svg>'; }
+  function chiudi(focus) { if (!aperto) return; aperto.menu.hidden = true; aperto.btn.setAttribute('aria-expanded', 'false'); if (focus) aperto.btn.focus(); aperto = null; }
+  function crea(contenitore, nome, orizz) {
+    var btn = document.createElement('button'); btn.className = 'puntini'; btn.type = 'button'; btn.innerHTML = kebab(orizz);
+    btn.setAttribute('aria-haspopup', 'menu'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-label', T(TX.altre).replace('%', nome));
+    var ul = document.createElement('ul'); ul.className = 'menu'; ul.setAttribute('role', 'menu'); ul.hidden = true;
+    VOCI.forEach(function (v) {
+      var li = document.createElement('li'); li.setAttribute('role', 'menuitem'); li.tabIndex = -1; if (v.p) li.className = 'pericolo sep';
+      li.innerHTML = icona(v.s) + '<span></span>'; li.lastChild.textContent = T(v.t);
+      li.onclick = function () { document.getElementById('esito').textContent = T(TX.fatto).replace('%1', nome).replace('%2', T(v.t)); chiudi(true); };
+      ul.appendChild(li);
+    });
+    function apri(primo) { chiudi(); aperto = { menu: ul, btn: btn }; ul.hidden = false; btn.setAttribute('aria-expanded', 'true'); var v = ul.querySelectorAll('li'); (primo === -1 ? v[v.length - 1] : v[0]).focus(); }
+    btn.onclick = function (e) { e.stopPropagation(); if (aperto && aperto.btn === btn) chiudi(); else apri(0); };
+    btn.onkeydown = function (e) { if (e.key === 'ArrowDown') { e.preventDefault(); apri(0); } if (e.key === 'ArrowUp') { e.preventDefault(); apri(-1); } };
+    ul.onkeydown = function (e) {
+      var v = Array.prototype.slice.call(ul.querySelectorAll('li')), i = v.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); v[(i + 1) % v.length].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); v[(i - 1 + v.length) % v.length].focus(); }
+      else if (e.key === 'Escape' || e.key === 'Tab') { chiudi(e.key === 'Escape'); }
+      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.activeElement.click(); }
+    };
+    contenitore.appendChild(btn); contenitore.appendChild(ul);
+    return { btn: btn, ul: ul };
+  }
+  var primo = null;
+  function disegna() {
+    aperto = null;
+    var r = document.getElementById('righe'); r.innerHTML = '';
+    FILE.forEach(function (f, i) {
+      var d = document.createElement('div'); d.className = 'file'; d.innerHTML = '<span class="ico"></span><span class="nome"></span>';
+      d.firstChild.style.background = f.c; d.children[1].textContent = f.n; var sm = document.createElement('small'); sm.textContent = T(f.d); d.children[1].appendChild(sm);
+      var k = crea(d, f.n, false); if (i === 1) primo = k;
+      r.appendChild(d);
+    });
+    var c = document.getElementById('carta'); c.innerHTML = '<div class="img"></div><div class="corpo"><b></b></div>';
+    c.querySelector('b').textContent = T(TX.carta); crea(c.querySelector('.corpo'), T(TX.carta), true);
+    // all'apertura un menu è già aperto (senza spostare il focus)
+    primo.ul.hidden = false; primo.btn.setAttribute('aria-expanded', 'true'); aperto = { menu: primo.ul, btn: primo.btn };
+  }
+  document.addEventListener('click', function (e) { if (aperto && !aperto.menu.contains(e.target)) chiudi(); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

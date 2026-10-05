@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- Esempio ricostruito: Emoticons and emoji. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emoticons and emoji — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .riquadro { padding: 22px; }
+  .post { border: 1px solid var(--c-linea); border-radius: 12px; padding: 14px; }
+  .post .chi { display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--c-tenue); margin-bottom: 6px; }
+  .post .chi i { width: 26px; height: 26px; border-radius: 50%; background: var(--c-blu); display: block; }
+  .post p { margin: 0 0 12px; font-size: 17px; }
+  .reazioni { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; position: relative; }
+  .reazione { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 3px 10px; font-size: 15px; cursor: pointer; display: inline-flex; gap: 5px; align-items: center; }
+  .reazione[aria-pressed="true"] { border-color: var(--c-blu); background: rgba(105,143,255,.1); color: var(--c-blu); }
+  .reazione .e { font-size: 17px; }
+  .aggiungi { width: 34px; height: 30px; border-radius: 999px; border: 1px dashed rgba(0,0,0,.3); background: #fff; cursor: pointer; display: grid; place-items: center; }
+  .tavolozza { position: absolute; left: 0; top: calc(100% + 8px); display: flex; gap: 2px; background: #fff; border-radius: 999px; padding: 5px; box-shadow: 0 8px 24px rgba(0,0,0,.18); z-index: 2; }
+  .tavolozza[hidden] { display: none; }
+  .tavolozza button { border: 0; background: none; font-size: 24px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: transform .12s; }
+  .tavolozza button:hover, .tavolozza button:focus-visible { transform: scale(1.25); background: var(--c-palco); }
+  .campo { width: 100%; border: 1.5px solid var(--c-linea); border-radius: 10px; padding: 10px 12px; font-size: 18px; }
+  .campo:focus { border-color: var(--c-blu); outline: none; box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 16px; }
+  th { text-align: left; font-weight: 400; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--c-tenue); padding: 0 0 6px; }
+  td { padding: 5px 0; border-top: 1px solid var(--c-linea); }
+  td.mono { font-family: ui-monospace, Menlo, monospace; font-size: 15px; }
+  td.em { font-size: 22px; line-height: 1; }
+  td.cp { font-family: ui-monospace, Menlo, monospace; font-size: 14px; color: var(--c-tenue); }
+  .suggerimento { font-size: 15px; color: var(--c-tenue); margin: 8px 0 0; }
+  .spazio { height: 64px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Reazioni con le emoji</span><span data-l="en">Emoji reactions</span><span data-l="fr">Réactions en emoji</span><span data-l="zh">表情回应</span></span>
+    <div class="post">
+      <span class="chi"><i></i>Sara · 2 min</span>
+      <p><span data-l="it">Ho consegnato il progetto finale!</span><span data-l="en">I handed in the final project!</span><span data-l="fr">J’ai rendu le projet final !</span><span data-l="zh">我交了期末项目！</span></p>
+      <div class="reazioni" id="reazioni"></div>
+    </div>
+    <div class="spazio"></div>
+    <p class="suggerimento"><span data-l="it">Clicca una reazione per aggiungerla o toglierla; «+» apre la tavolozza.</span><span data-l="en">Click a reaction to add or remove it; “+” opens the palette.</span><span data-l="fr">Cliquez sur une réaction pour l’ajouter ou la retirer ; « + » ouvre la palette.</span><span data-l="zh">点击表情可添加或取消；“+”打开表情面板。</span></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Dall’emoticon all’emoji</span><span data-l="en">From emoticon to emoji</span><span data-l="fr">De l’émoticône à l’emoji</span><span data-l="zh">从字符表情到 emoji</span></span>
+    <input class="campo" id="campo" aria-label="Emoticon" autocomplete="off" data-it="Scrivi :) o <3" data-en="Type :) or <3" data-fr="Tapez :) ou <3" data-zh="输入 :) 或 <3">
+    <table>
+      <thead><tr><th><span data-l="it">Emoticon</span><span data-l="en">Emoticon</span><span data-l="fr">Émoticône</span><span data-l="zh">字符表情</span></th><th>Emoji</th><th>Unicode</th></tr></thead>
+      <tbody id="tabella"></tbody>
+    </table>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Le emoji sono caratteri Unicode: il codice è lo stesso ovunque, il disegno cambia da un sistema all’altro.</span><span data-l="en">Emoji are Unicode characters: the code is the same everywhere, the drawing changes from one system to another.</span><span data-l="fr">Les emoji sont des caractères Unicode : le code est partout le même, le dessin change d’un système à l’autre.</span><span data-l="zh">emoji 是 Unicode 字符：编码处处相同，图形则因系统而异。</span></p>
+<script>
+  var CONV = [[':)', '🙂'], [':D', '😄'], [';)', '😉'], [':(', '🙁'], [':O', '😮'], ['<3', '❤️'], ['(y)', '👍']];
+  var R = [{ e: '👏', n: 4, io: false }, { e: '🎉', n: 2, io: true }, { e: '❤️', n: 1, io: false }];
+  var TAV = ['👍', '😂', '😮', '🙏', '🔥', '👀'];
+  function cp(s) { return Array.from(s).filter(function (c) { return c !== '️'; }).map(function (c) { return 'U+' + c.codePointAt(0).toString(16).toUpperCase(); }).join(' '); }
+  var tb = document.getElementById('tabella');
+  CONV.forEach(function (c) { var tr = document.createElement('tr'); tr.innerHTML = '<td class="mono"></td><td class="em">' + c[1] + '</td><td class="cp">' + cp(c[1]) + '</td>'; tr.firstChild.textContent = c[0]; tb.appendChild(tr); });
+  var campo = document.getElementById('campo');
+  campo.addEventListener('input', function () {
+    var v = campo.value, pos = campo.selectionStart, nuovo = v;
+    CONV.forEach(function (c) { nuovo = nuovo.split(c[0] + ' ').join(c[1] + ' '); if (nuovo.slice(-c[0].length) === c[0]) nuovo = nuovo.slice(0, -c[0].length) + c[1]; });
+    if (nuovo !== v) { campo.value = nuovo; var d = nuovo.length - v.length; campo.setSelectionRange(pos + d, pos + d); }
+  });
+  function disegna() {
+    var box = document.getElementById('reazioni'); box.innerHTML = '';
+    R.forEach(function (r) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'reazione'; b.setAttribute('aria-pressed', String(r.io));
+      b.innerHTML = '<span class="e" aria-hidden="true">' + r.e + '</span>' + r.n;
+      b.setAttribute('aria-label', r.e + ' ' + r.n);
+      b.onclick = function () { r.io = !r.io; r.n += r.io ? 1 : -1; if (r.n === 0) R.splice(R.indexOf(r), 1); disegna(); };
+      box.appendChild(b);
+    });
+    var piu = document.createElement('button'); piu.type = 'button'; piu.className = 'aggiungi'; piu.setAttribute('aria-expanded', 'false'); piu.setAttribute('aria-label', '+');
+    piu.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="12" r="8" fill="none" stroke="#111" stroke-width="1.8"/><circle cx="8.5" cy="10.5" r="1.1" fill="#111"/><circle cx="13.5" cy="10.5" r="1.1" fill="#111"/><path d="M7.8 14a3.6 3.6 0 0 0 6.4 0" fill="none" stroke="#111" stroke-width="1.8" stroke-linecap="round"/><path d="M20 3v5M17.5 5.5h5" stroke="#111" stroke-width="1.8" stroke-linecap="round"/></svg>';
+    var tav = document.createElement('div'); tav.className = 'tavolozza'; tav.hidden = true; tav.setAttribute('role', 'menu');
+    TAV.forEach(function (e) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = e; b.setAttribute('role', 'menuitem');
+      b.onclick = function () { var r = R.filter(function (x) { return x.e === e; })[0]; if (r) { if (!r.io) { r.io = true; r.n++; } } else R.push({ e: e, n: 1, io: true }); disegna(); };
+      tav.appendChild(b);
+    });
+    piu.onclick = function () { tav.hidden = !tav.hidden; piu.setAttribute('aria-expanded', String(!tav.hidden)); if (!tav.hidden) tav.querySelector('button').focus(); };
+    tav.addEventListener('keydown', function (e) { if (e.key === 'Escape') { tav.hidden = true; piu.focus(); } });
+    box.appendChild(piu); box.appendChild(tav);
+  }
+  disegna();
+</script>
+</body>
+</html>

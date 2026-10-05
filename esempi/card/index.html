@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- Esempio ricostruito: Card. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Card — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card { position: relative; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.06); display: flex; flex-direction: column; transition: transform .2s, box-shadow .2s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(0,0,0,.12); }
+  .card:focus-within { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .media { height: 110px; position: relative; overflow: hidden; }
+  .media i { position: absolute; border-radius: 50%; }
+  .corpo { padding: 14px 16px 16px; display: flex; flex-direction: column; flex: 1; }
+  .tag { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); margin-bottom: 4px; }
+  .card h2 { font-size: 18px; font-weight: 500; margin: 0 0 6px; line-height: 1.2; }
+  .card h2 a { color: inherit; text-decoration: none; }
+  .card h2 a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+  .card h2 a:focus-visible { outline: none; }
+  .card p { margin: 0 0 12px; font-size: 15px; color: var(--c-tenue); flex: 1; }
+  .piede { display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: var(--c-tenue); }
+  .salva { position: relative; z-index: 2; width: 36px; height: 36px; border-radius: 50%; border: 0; background: #f3efee; cursor: pointer; display: grid; place-items: center; }
+  .salva:hover { background: #ebe4e2; }
+  .salva svg { width: 18px; height: 18px; }
+  .salva[aria-pressed="true"] { background: var(--c-salmone); }
+  .orizzontale { flex-direction: row; grid-column: 1 / -1; }
+  .orizzontale .media { width: 160px; height: auto; flex: none; }
+  .scheletro .media { background: #efebea; }
+  .scheletro .b { height: 12px; border-radius: 6px; background: linear-gradient(90deg, #eee 0, #f7f7f7 40%, #eee 80%); background-size: 200% 100%; animation: luccica 1.2s linear infinite; margin-bottom: 8px; }
+  @keyframes luccica { to { background-position: -200% 0; } }
+  .esito { min-height: 21px; text-align: center; font-size: 15px; color: var(--c-tenue); margin: 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="griglia" id="griglia">
+    <article class="card">
+      <div class="media" style="background:#fde3e3"><i style="width:110px;height:110px;left:20px;top:20px;background:var(--c-salmone)"></i><i style="width:60px;height:60px;right:24px;top:14px;background:var(--c-blu);mix-blend-mode:multiply"></i></div>
+      <div class="corpo"><span class="tag"><span data-l="it">Mostra</span><span data-l="en">Exhibition</span><span data-l="fr">Exposition</span><span data-l="zh">展览</span></span>
+        <h2><a href="#" data-titolo="1"><span data-l="it">Forme del colore</span><span data-l="en">Shapes of colour</span><span data-l="fr">Formes de la couleur</span><span data-l="zh">色彩的形状</span></a></h2>
+        <p><span data-l="it">Venti artisti tra pittura e grafica.</span><span data-l="en">Twenty artists between painting and graphics.</span><span data-l="fr">Vingt artistes entre peinture et graphisme.</span><span data-l="zh">二十位艺术家，横跨绘画与平面设计。</span></p>
+        <div class="piede"><span><span data-l="it">fino al 12/1</span><span data-l="en">until 12 Jan</span><span data-l="fr">jusqu’au 12/1</span><span data-l="zh">至 1 月 12 日</span></span><button class="salva" type="button" aria-pressed="false" aria-label="Save"></button></div></div>
+    </article>
+    <article class="card">
+      <div class="media" style="background:#e3e9ff"><i style="width:180px;height:180px;left:-40px;top:30px;background:var(--c-blu)"></i><i style="width:40px;height:40px;right:30px;top:30px;background:#111"></i></div>
+      <div class="corpo"><span class="tag"><span data-l="it">Corso</span><span data-l="en">Course</span><span data-l="fr">Cours</span><span data-l="zh">课程</span></span>
+        <h2><a href="#" data-titolo="2"><span data-l="it">Interfacce che parlano</span><span data-l="en">Interfaces that speak</span><span data-l="fr">Interfaces qui parlent</span><span data-l="zh">会说话的界面</span></a></h2>
+        <p><span data-l="it">Otto lezioni sul design conversazionale.</span><span data-l="en">Eight classes on conversational design.</span><span data-l="fr">Huit cours sur le design conversationnel.</span><span data-l="zh">八节对话式设计课程。</span></p>
+        <div class="piede"><span>8 × 90′</span><button class="salva" type="button" aria-pressed="true" aria-label="Save"></button></div></div>
+    </article>
+    <article class="card scheletro" aria-busy="true" aria-label="Loading">
+      <div class="media"></div>
+      <div class="corpo"><span class="tag"><span data-l="it">Caricamento</span><span data-l="en">Loading</span><span data-l="fr">Chargement</span><span data-l="zh">加载中</span></span><div class="b" style="width:80%;height:16px"></div><div class="b"></div><div class="b" style="width:60%"></div></div>
+    </article>
+    <article class="card orizzontale">
+      <div class="media" style="background:#f6e3e1"><i style="width:90px;height:90px;left:35px;top:14px;background:var(--c-salmone)"></i></div>
+      <div class="corpo"><span class="tag"><span data-l="it">Card orizzontale</span><span data-l="en">Horizontal card</span><span data-l="fr">Carte horizontale</span><span data-l="zh">横向卡片</span></span>
+        <h2><a href="#" data-titolo="3"><span data-l="it">Laboratorio aperto di tipografia</span><span data-l="en">Open typography workshop</span><span data-l="fr">Atelier ouvert de typographie</span><span data-l="zh">开放式字体排印工作坊</span></a></h2>
+        <div class="piede"><span><span data-l="it">sabato, 10:00</span><span data-l="en">Saturday, 10 am</span><span data-l="fr">samedi, 10 h</span><span data-l="zh">周六上午 10 点</span></span><button class="salva" type="button" aria-pressed="false" aria-label="Save"></button></div></div>
+    </article>
+  </div>
+  <p class="esito" id="esito" aria-live="polite"></p>
+</div>
+<p class="nota"><span data-l="it">Tutta la card è cliccabile (il link del titolo la copre), ma il pulsante «salva» resta un’azione a sé. La terza card è in caricamento.</span><span data-l="en">The whole card is clickable (the title link covers it), but the “save” button stays a separate action. The third card is loading.</span><span data-l="fr">Toute la carte est cliquable (le lien du titre la couvre), mais le bouton « enregistrer » reste une action à part. La troisième carte est en chargement.</span><span data-l="zh">整张卡片都可点击（标题链接覆盖整张卡片），但“收藏”按钮是独立的操作。第三张卡片正在加载。</span></p>
+<script>
+  var SEGNA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg>';
+  var APERTO = { it: 'Apertura di «{t}» (simulata)', en: 'Opening “{t}” (simulated)', fr: 'Ouverture de « {t} » (simulée)', zh: '正在打开“{t}”（模拟）' };
+  function icone() { document.querySelectorAll('.salva').forEach(function (b) { b.innerHTML = SEGNA.replace('FILL', b.getAttribute('aria-pressed') === 'true' ? '#111' : 'none'); }); }
+  document.querySelectorAll('.salva').forEach(function (b) { b.onclick = function () { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); icone(); }; });
+  document.querySelectorAll('[data-titolo]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); var l = Lingua.get(), tt = a.querySelector('[data-l="' + l + '"]').textContent; document.getElementById('esito').textContent = APERTO[l].replace('{t}', tt); }; });
+  icone();
+</script>
+</body>
+</html>

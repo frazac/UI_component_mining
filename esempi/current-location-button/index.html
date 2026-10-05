@@ -1,0 +1,124 @@
+<!doctype html>
+<!-- Esempio ricostruito: Current location button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Current location button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.5fr 1fr; max-width: 700px; }
+  .mappa { position: relative; height: 420px; border-radius: 10px; overflow: hidden; background: #ece6dc; }
+  .mondo { position: absolute; width: 900px; height: 900px; left: -250px; top: -250px; transition: transform .9s cubic-bezier(.3,.7,.2,1); }
+  .mondo svg { width: 100%; height: 100%; }
+  .io { position: absolute; left: 640px; top: 600px; width: 0; height: 0; opacity: 0; transition: opacity .4s; }
+  .io.on { opacity: 1; }
+  .io .alone { position: absolute; width: 90px; height: 90px; left: -45px; top: -45px; border-radius: 50%; background: rgba(105,143,255,.18); border: 1px solid rgba(105,143,255,.4); animation: respira 2s ease-in-out infinite; }
+  .io .punto { position: absolute; width: 18px; height: 18px; left: -9px; top: -9px; border-radius: 50%; background: var(--c-blu); box-shadow: 0 0 0 3px #fff, 0 1px 4px rgba(0,0,0,.4); }
+  .io .cono { position: absolute; left: -22px; top: -50px; width: 44px; height: 44px; background: linear-gradient(to top, rgba(105,143,255,.55), transparent); clip-path: polygon(50% 100%, 0 0, 100% 0); opacity: 0; transition: opacity .3s; }
+  .segui .io .cono { opacity: 1; }
+  @keyframes respira { 50% { transform: scale(1.15); } }
+  .pos { position: absolute; right: 12px; bottom: 12px; width: 48px; height: 48px; border-radius: 12px; border: 0; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.2); cursor: pointer; display: grid; place-content: center; color: #444; }
+  .pos:hover { background: #f6f6f6; }
+  .pos svg { width: 26px; height: 26px; }
+  .pos[data-s="cerca"] svg { animation: lampeggia 1s ease-in-out infinite; color: var(--c-blu); }
+  .pos[data-s="centrato"], .pos[data-s="segui"] { color: var(--c-blu); }
+  @keyframes lampeggia { 50% { opacity: .3; } }
+  .dialogo { position: absolute; inset: 0; background: rgba(0,0,0,.3); display: none; align-items: center; justify-content: center; }
+  .dialogo.on { display: flex; }
+  .dialogo > div { background: #fff; border-radius: 14px; width: 82%; padding: 18px; text-align: center; font-size: 15px; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+  .dialogo p { margin: 0 0 14px; }
+  .dialogo button { display: block; width: 100%; border: 0; background: none; padding: 10px; font-size: 15px; color: var(--c-blu); cursor: pointer; border-top: 1px solid var(--c-linea); }
+  .dialogo button:hover { background: #f6f6f6; }
+  .avviso { position: absolute; left: 12px; right: 72px; bottom: 14px; background: #222; color: #fff; padding: 10px 12px; border-radius: 10px; font-size: 15px; opacity: 0; transform: translateY(10px); transition: .3s; pointer-events: none; }
+  .avviso.on { opacity: 1; transform: none; }
+  .stati { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; font-size: 15px; }
+  .stati li { display: flex; align-items: center; gap: 12px; }
+  .stati .pos { position: static; width: 40px; height: 40px; flex: none; box-shadow: 0 1px 4px rgba(0,0,0,.2); cursor: default; }
+  .stati .pos svg { width: 22px; height: 22px; }
+  .rifiuta { margin-top: 18px; display: flex; gap: 10px; align-items: center; font-size: 15px; }
+  .rifiuta button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 7px 14px; cursor: pointer; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:16px">
+    <div class="mappa" id="mappa">
+      <div class="mondo" id="mondo">
+        <svg viewBox="0 0 900 900" aria-hidden="true">
+          <rect x="520" y="80" width="260" height="170" rx="20" fill="#cfe5c4"/><rect x="60" y="560" width="200" height="240" rx="20" fill="#cfe5c4"/>
+          <path d="M0 470 C200 430 300 520 480 480 S760 380 900 420 V520 C760 480 640 600 480 590 S200 540 0 570 Z" fill="#b9d4f0"/>
+          <g stroke="#fff" stroke-width="16" fill="none"><path d="M0 200 H900 M0 700 H900 M150 0 V900 M420 0 V900 M700 0 V900"/></g>
+          <g stroke="#fff" stroke-width="7" fill="none"><path d="M0 120 H900 M0 330 H900 M0 640 H900 M0 800 H900 M80 0 V900 M290 0 V900 M560 0 V900 M820 0 V900"/></g>
+          <path d="M0 200 H900" stroke="#f6d38a" stroke-width="10"/>
+          <circle cx="300" cy="260" r="8" fill="rgb(223,136,136)"/><circle cx="470" cy="760" r="8" fill="rgb(223,136,136)"/>
+        </svg>
+        <div class="io" id="io"><span class="alone"></span><span class="cono"></span><span class="punto"></span></div>
+      </div>
+      <div class="avviso" id="avviso" role="status"></div>
+      <button class="pos" id="pos" type="button" data-s="spento"></button>
+      <div class="dialogo" id="dialogo" role="dialog" aria-modal="true" aria-labelledby="d-t"><div>
+        <p id="d-t"><span data-l="it">«Mappe» vuole usare la tua posizione.</span><span data-l="en">“Maps” would like to use your location.</span><span data-l="fr">« Cartes » souhaite utiliser votre position.</span><span data-l="zh">“地图”想要使用你的位置。</span></p>
+        <button type="button" id="si"><span data-l="it">Consenti mentre uso l’app</span><span data-l="en">Allow while using the app</span><span data-l="fr">Autoriser pendant l’utilisation</span><span data-l="zh">使用 App 期间允许</span></button>
+        <button type="button" id="no"><span data-l="it">Non consentire</span><span data-l="en">Don’t allow</span><span data-l="fr">Ne pas autoriser</span><span data-l="zh">不允许</span></button>
+      </div></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Premi più volte il pulsante</span><span data-l="en">Press the button several times</span><span data-l="fr">Appuyez plusieurs fois sur le bouton</span><span data-l="zh">多按几次按钮</span></span>
+    <ul class="stati" id="stati"></ul>
+    <div class="rifiuta"><button type="button" id="azzera"><span data-l="it">Ricomincia</span><span data-l="en">Start over</span><span data-l="fr">Recommencer</span><span data-l="zh">重新开始</span></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Mappa disegnata, posizione simulata: la prima volta il sistema chiede il permesso; poi il pulsante centra la vista e, premuto ancora, segue la direzione.</span><span data-l="en">Drawn map, simulated position: the first time the system asks for permission; then the button centres the view and, pressed again, follows your heading.</span><span data-l="fr">Carte dessinée, position simulée : la première fois, le système demande l’autorisation ; ensuite le bouton centre la vue et, pressé à nouveau, suit votre direction.</span><span data-l="zh">绘制的地图，模拟的位置：第一次系统会请求权限；之后按钮会把视图居中，再按一次则跟随朝向。</span></p>
+<script>
+  var ICONE = {
+    spento: '<svg viewBox="0 0 26 26"><path d="M22 4 L4 11.5 L12 14 L14.5 22 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    cerca: '<svg viewBox="0 0 26 26"><path d="M22 4 L4 11.5 L12 14 L14.5 22 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    centrato: '<svg viewBox="0 0 26 26"><path d="M22 4 L4 11.5 L12 14 L14.5 22 Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+    segui: '<svg viewBox="0 0 26 26"><path d="M13 2 L21 23 L13 18 L5 23 Z" fill="currentColor"/></svg>',
+    negato: '<svg viewBox="0 0 26 26"><path d="M22 4 L4 11.5 L12 14 L14.5 22 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M3 3 L23 23" stroke="#c0392b" stroke-width="2.4"/></svg>'
+  };
+  var NOMI = {
+    spento: { it: 'Posizione non mostrata', en: 'Location not shown', fr: 'Position non affichée', zh: '未显示位置' },
+    cerca: { it: 'Ricerca della posizione…', en: 'Finding location…', fr: 'Recherche de la position…', zh: '正在定位…' },
+    centrato: { it: 'Vista centrata su di te', en: 'View centred on you', fr: 'Vue centrée sur vous', zh: '视图以你为中心' },
+    segui: { it: 'Segue la direzione', en: 'Following heading', fr: 'Suit la direction', zh: '跟随朝向' },
+    negato: { it: 'Permesso negato', en: 'Permission denied', fr: 'Autorisation refusée', zh: '权限被拒绝' }
+  };
+  var NEGATO = { it: 'Attiva la posizione nelle impostazioni.', en: 'Turn on location in Settings.', fr: 'Activez la localisation dans les réglages.', zh: '请在设置中开启定位。' };
+  var stato = 'spento', permesso = null;
+  var pos = document.getElementById('pos'), mondo = document.getElementById('mondo'), mappa = document.getElementById('mappa');
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna() {
+    pos.dataset.s = stato; pos.innerHTML = ICONE[stato]; pos.setAttribute('aria-label', NOMI[stato][l()]); pos.title = NOMI[stato][l()];
+    var ul = document.getElementById('stati'); ul.innerHTML = '';
+    ['spento', 'cerca', 'centrato', 'segui', 'negato'].forEach(function (s) {
+      var li = document.createElement('li'); li.innerHTML = '<span class="pos" data-s="' + s + '">' + ICONE[s] + '</span><span></span>';
+      li.lastChild.textContent = NOMI[s][l()]; if (s === stato) li.style.fontWeight = '500'; ul.appendChild(li);
+    });
+    document.getElementById('avviso').textContent = NEGATO[l()];
+  }
+  function trova() {
+    stato = 'cerca'; disegna();
+    setTimeout(function () { document.getElementById('io').classList.add('on'); mondo.style.transform = 'translate(' + (-(640 - 250) + mappa.clientWidth / 2) + 'px,' + (-(600 - 250) + mappa.clientHeight / 2) + 'px)'; stato = 'centrato'; disegna(); }, 1100);
+  }
+  pos.onclick = function () {
+    if (stato === 'cerca') return;
+    if (permesso === null) { document.getElementById('dialogo').classList.add('on'); document.getElementById('si').focus(); return; }
+    if (permesso === false) { document.getElementById('avviso').classList.add('on'); setTimeout(function () { document.getElementById('avviso').classList.remove('on'); }, 2500); return; }
+    if (stato === 'spento') trova();
+    else if (stato === 'centrato') { stato = 'segui'; mappa.classList.add('segui'); disegna(); }
+    else if (stato === 'segui') { stato = 'centrato'; mappa.classList.remove('segui'); disegna(); }
+  };
+  document.getElementById('si').onclick = function () { permesso = true; document.getElementById('dialogo').classList.remove('on'); pos.focus(); trova(); };
+  document.getElementById('no').onclick = function () { permesso = false; stato = 'negato'; document.getElementById('dialogo').classList.remove('on'); disegna(); pos.focus(); pos.click(); };
+  mappa.addEventListener('pointerdown', function (ev) { if (ev.target === mappa || mondo.contains(ev.target)) { if (stato === 'centrato' || stato === 'segui') { stato = 'spento'; mappa.classList.remove('segui'); mondo.style.transform = 'translate(-60px, 30px)'; disegna(); } } });
+  document.getElementById('azzera').onclick = function () { permesso = null; stato = 'spento'; mondo.style.transform = ''; mappa.classList.remove('segui'); document.getElementById('io').classList.remove('on'); disegna(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

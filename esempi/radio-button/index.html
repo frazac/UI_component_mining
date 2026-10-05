@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- Esempio ricostruito: Radio button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radio button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  fieldset { border: 0; margin: 0; padding: 0; }
+  legend { font-size: 18px; font-weight: 500; margin-bottom: 10px; padding: 0; }
+  .opz { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 8px; cursor: pointer; font-size: 17px; }
+  .opz:hover { background: #fdf3f2; }
+  .opz input { appearance: none; -webkit-appearance: none; margin: 0; width: 22px; height: 22px; border-radius: 50%; border: 2px solid #8a8584;
+    display: grid; place-content: center; background: #fff; cursor: pointer; flex: none; transition: border-color .15s; }
+  .opz input::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c-blu); transform: scale(0); transition: transform .15s; }
+  .opz input:checked { border-color: var(--c-blu); }
+  .opz input:checked::before { transform: scale(1); }
+  .opz input:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .opz input:disabled { border-color: #ccc; background: #f4f4f4; cursor: not-allowed; }
+  .opz.dis { color: rgba(0,0,0,.38); cursor: not-allowed; } .opz.dis:hover { background: none; }
+  .opz small { margin-left: auto; color: var(--c-tenue); font-size: 15px; }
+  .esito { margin: 14px 0 0; font-size: 16px; color: var(--c-tenue); }
+  .esito b { color: var(--c-testo); font-weight: 500; }
+  .stati { display: grid; grid-template-columns: 1fr; gap: 4px; }
+  .stato { display: flex; align-items: center; gap: 12px; font-size: 16px; padding: 7px 10px; border-radius: 8px; }
+  .finto { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #8a8584; display: grid; place-content: center; flex: none; background: #fff; }
+  .finto.on { border-color: var(--c-blu); } .finto.on::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--c-blu); }
+  .finto.hov { box-shadow: 0 0 0 7px #fdf3f2; }
+  .finto.foc { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .finto.dis { border-color: #ccc; background: #f4f4f4; }
+  .finto.dison { border-color: #ccc; } .finto.dison::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #ccc; }
+  .finto.err { border-color: #c0392b; }
+  .stato.err { color: #b03a2e; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Una sola scelta fra poche opzioni</span><span data-l="en">One choice among a few options</span><span data-l="fr">Un seul choix parmi quelques options</span><span data-l="zh">在少数选项中只选一个</span></span>
+    <fieldset id="gruppo">
+      <legend><span data-l="it">Spedizione</span><span data-l="en">Shipping</span><span data-l="fr">Livraison</span><span data-l="zh">配送方式</span></legend>
+      <label class="opz"><input type="radio" name="sped" value="0" checked><span><span data-l="it">Standard</span><span data-l="en">Standard</span><span data-l="fr">Standard</span><span data-l="zh">标准</span></span><small>0 €</small></label>
+      <label class="opz"><input type="radio" name="sped" value="1"><span><span data-l="it">Rapida</span><span data-l="en">Express</span><span data-l="fr">Express</span><span data-l="zh">快速</span></span><small>6 €</small></label>
+      <label class="opz"><input type="radio" name="sped" value="2"><span><span data-l="it">Ritiro in negozio</span><span data-l="en">Store pickup</span><span data-l="fr">Retrait en magasin</span><span data-l="zh">到店自取</span></span><small>0 €</small></label>
+      <label class="opz dis"><input type="radio" name="sped" value="3" disabled><span><span data-l="it">Drone (non disponibile)</span><span data-l="en">Drone (unavailable)</span><span data-l="fr">Drone (indisponible)</span><span data-l="zh">无人机（不可用）</span></span><small>—</small></label>
+    </fieldset>
+    <p class="esito" id="esito" aria-live="polite"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati</span><span data-l="en">States</span><span data-l="fr">États</span><span data-l="zh">状态</span></span>
+    <div class="stati">
+      <div class="stato"><span class="finto"></span><span data-l="it">Non selezionato</span><span data-l="en">Unselected</span><span data-l="fr">Non sélectionné</span><span data-l="zh">未选中</span></div>
+      <div class="stato"><span class="finto on"></span><span data-l="it">Selezionato</span><span data-l="en">Selected</span><span data-l="fr">Sélectionné</span><span data-l="zh">已选中</span></div>
+      <div class="stato"><span class="finto hov"></span><span data-l="it">Al passaggio</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span></div>
+      <div class="stato"><span class="finto on foc"></span><span data-l="it">Con il focus (tastiera)</span><span data-l="en">Focused (keyboard)</span><span data-l="fr">Focus (clavier)</span><span data-l="zh">获得焦点（键盘）</span></div>
+      <div class="stato"><span class="finto dis"></span><span data-l="it">Disattivato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></div>
+      <div class="stato"><span class="finto dison"></span><span data-l="it">Disattivato e selezionato</span><span data-l="en">Disabled, selected</span><span data-l="fr">Désactivé, sélectionné</span><span data-l="zh">禁用且已选中</span></div>
+      <div class="stato err"><span class="finto err"></span><span data-l="it">Errore: scelta obbligatoria</span><span data-l="en">Error: choice required</span><span data-l="fr">Erreur : choix obligatoire</span><span data-l="zh">错误：必须选择</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Con la tastiera: Tab entra nel gruppo, le frecce cambiano la scelta. Per scelte indipendenti si usano le caselle di controllo.</span><span data-l="en">With the keyboard: Tab enters the group, the arrow keys change the choice. For independent choices, use checkboxes.</span><span data-l="fr">Au clavier : Tab entre dans le groupe, les flèches changent le choix. Pour des choix indépendants, on utilise des cases à cocher.</span><span data-l="zh">键盘操作：Tab 进入选项组，方向键切换选择。若选项彼此独立，应使用复选框。</span></p>
+<script>
+  var NOMI = { it: ['Standard', 'Rapida', 'Ritiro in negozio'], en: ['Standard', 'Express', 'Store pickup'], fr: ['Standard', 'Express', 'Retrait en magasin'], zh: ['标准', '快速', '到店自取'] };
+  var PRE = { it: 'Hai scelto: ', en: 'You chose: ', fr: 'Votre choix : ', zh: '你的选择：' };
+  function disegna() {
+    var l = window.Lingua ? Lingua.get() : 'en', v = document.querySelector('input[name=sped]:checked').value;
+    var e = document.getElementById('esito'); e.textContent = PRE[l];
+    var b = document.createElement('b'); b.textContent = NOMI[l][v]; e.appendChild(b);
+  }
+  document.getElementById('gruppo').addEventListener('change', disegna);
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

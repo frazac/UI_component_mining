@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- Esempio ricostruito: Pull-to-refresh. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pull-to-refresh — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: auto 1fr; max-width: 660px; align-items: center; }
+  .tel { width: 260px; height: 500px; border-radius: 38px; background: #111; padding: 9px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .schermo { position: relative; width: 100%; height: 100%; border-radius: 30px; overflow: hidden; background: #fff; user-select: none; touch-action: none; cursor: grab; }
+  .schermo.tiro { cursor: grabbing; }
+  .barra { position: absolute; top: 0; left: 0; right: 0; height: 64px; padding: 26px 16px 0; font-weight: 500; font-size: 17px; background: #fff; z-index: 2; border-bottom: 1px solid var(--c-linea); }
+  .ricarica { position: absolute; top: 64px; left: 0; right: 0; height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 14px; color: var(--c-tenue); }
+  .ruota { width: 26px; height: 26px; }
+  .ruota circle { fill: none; stroke: var(--c-blu); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 63; transform: rotate(-90deg); transform-origin: center; }
+  .gira .ruota { animation: gira .8s linear infinite; } .gira .ruota circle { stroke-dashoffset: 16 !important; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .feed { position: absolute; top: 64px; left: 0; right: 0; bottom: 0; background: #fff; transition: transform .3s cubic-bezier(.3,.7,.2,1); }
+  .tiro .feed { transition: none; }
+  .post { display: flex; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--c-linea); font-size: 15px; }
+  .post i { width: 34px; height: 34px; border-radius: 50%; flex: none; }
+  .post b { font-weight: 500; display: block; }
+  .post.nuovo { animation: nuovo 1.2s; } @keyframes nuovo { from { background: #fdf3f2; } }
+  .fasi { list-style: none; margin: 0; padding: 0; font-size: 15px; display: grid; gap: 8px; }
+  .fasi li { display: flex; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 8px; color: var(--c-tenue); transition: background .2s; }
+  .fasi li b { width: 24px; height: 24px; border-radius: 50%; display: grid; place-content: center; background: #f1edeb; font-weight: 500; font-size: 13px; flex: none; }
+  .fasi li.on { background: #eef2ff; color: var(--c-testo); } .fasi li.on b { background: var(--c-blu); color: #fff; }
+  .prova { margin-top: 14px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 7px 14px; cursor: pointer; font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="tel">
+    <div class="schermo" id="schermo">
+      <div class="barra"><span data-l="it">Novità</span><span data-l="en">Feed</span><span data-l="fr">Fil</span><span data-l="zh">动态</span></div>
+      <div class="ricarica" id="ric" aria-live="polite"><svg class="ruota" viewBox="0 0 26 26" aria-hidden="true"><circle id="arco" cx="13" cy="13" r="10" style="stroke-dashoffset:63"/></svg><span id="ric-t"></span></div>
+      <div class="feed" id="feed"></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Trascina il feed verso il basso e rilascia</span><span data-l="en">Drag the feed down and let go</span><span data-l="fr">Tirez le fil vers le bas et relâchez</span><span data-l="zh">向下拖动动态然后松手</span></span>
+    <ol class="fasi" id="fasi"></ol>
+    <button class="prova" type="button" id="prova"><span data-l="it">Aggiorna (tastiera)</span><span data-l="en">Refresh (keyboard)</span><span data-l="fr">Actualiser (clavier)</span><span data-l="zh">刷新（键盘）</span></button>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il gesto, nato in un’app per microblog nel 2009, è diventato una convenzione: serve anche un’alternativa senza gesto, come un pulsante.</span><span data-l="en">The gesture, born in a microblogging app in 2009, has become a convention; a non-gesture alternative, such as a button, is still needed.</span><span data-l="fr">Le geste, né dans une app de microblog en 2009, est devenu une convention ; il faut aussi une alternative sans geste, comme un bouton.</span><span data-l="zh">这个手势诞生于 2009 年的一款微博客应用，如今已成惯例；但仍需要不依赖手势的替代方式，例如按钮。</span></p>
+<script>
+  var T = {
+    it: { fasi: ['Tira', 'Rilascia per aggiornare', 'Aggiornamento…', 'Aggiornato'], post: [['Anna', 'Nuove foto dal workshop'], ['Luca', 'Qualcuno ha le slide di ieri?'], ['Mei', 'Bozza del poster pronta'], ['Omar', 'Domani lezione in aula 3'], ['Sofia', 'Che bella la mostra!'], ['Studio', 'Aperte le iscrizioni']], nuovo: ['Tu', 'Post appena arrivato n. '] },
+    en: { fasi: ['Pull', 'Release to refresh', 'Refreshing…', 'Updated'], post: [['Anna', 'New photos from the workshop'], ['Luca', 'Anyone got yesterday’s slides?'], ['Mei', 'Poster draft ready'], ['Omar', 'Tomorrow’s class in room 3'], ['Sofia', 'What a great exhibition!'], ['Studio', 'Sign-ups are open']], nuovo: ['You', 'Fresh post no. '] },
+    fr: { fasi: ['Tirer', 'Relâcher pour actualiser', 'Actualisation…', 'À jour'], post: [['Anna', 'Nouvelles photos de l’atelier'], ['Luca', 'Quelqu’un a les diapos d’hier ?'], ['Mei', 'Brouillon de l’affiche prêt'], ['Omar', 'Cours de demain en salle 3'], ['Sofia', 'Quelle belle expo !'], ['Studio', 'Inscriptions ouvertes']], nuovo: ['Vous', 'Nouveau post n° '] },
+    zh: { fasi: ['下拉', '松开即可刷新', '正在刷新…', '已更新'], post: [['Anna', '工作坊的新照片'], ['Luca', '谁有昨天的幻灯片？'], ['Mei', '海报草稿完成了'], ['Omar', '明天在 3 号教室上课'], ['Sofia', '展览太棒了！'], ['Studio', '报名已开放']], nuovo: ['你', '刚刚到达的第 {n} 条'] }
+  };
+  var COL = ['rgb(250,145,145)', 'rgb(105,143,255)', '#f2c96b', '#9ccf8f', 'rgb(223,136,136)', '#111'];
+  var fase = -1, nuovi = 0, y0 = null, dy = 0, SOGLIA = 70;
+  var sch = document.getElementById('schermo'), feed = document.getElementById('feed');
+  function t() { return T[window.Lingua ? Lingua.get() : 'en']; }
+  function post() {
+    feed.innerHTML = '';
+    for (var k = nuovi; k > 0; k--) aggiungi([t().nuovo[0], t().nuovo[1].indexOf('{n}') >= 0 ? t().nuovo[1].replace('{n}', k) : t().nuovo[1] + k], '#698fff', k === nuovi && fase === 3);
+    t().post.forEach(function (p, i) { aggiungi(p, COL[i]); });
+  }
+  function aggiungi(p, c, nuovo) { var d = document.createElement('div'); d.className = 'post' + (nuovo ? ' nuovo' : ''); d.innerHTML = '<i></i><span><b></b><span></span></span>'; d.querySelector('i').style.background = c; d.querySelector('b').textContent = p[0]; d.querySelector('span span').textContent = p[1]; feed.appendChild(d); }
+  function fasi() {
+    var ol = document.getElementById('fasi'); ol.innerHTML = '';
+    t().fasi.forEach(function (f, i) { var li = document.createElement('li'); li.innerHTML = '<b>' + (i + 1) + '</b><span></span>'; li.lastChild.textContent = f; if (i === fase) li.className = 'on'; ol.appendChild(li); });
+    document.getElementById('ric-t').textContent = fase >= 0 ? t().fasi[fase] : '';
+  }
+  function sposta(y) { feed.style.transform = 'translateY(' + y + 'px)'; document.getElementById('arco').style.strokeDashoffset = 63 * (1 - Math.min(1, y / SOGLIA)); }
+  function aggiorna() {
+    fase = 2; fasi(); sch.classList.add('gira'); sposta(SOGLIA);
+    setTimeout(function () { nuovi++; fase = 3; sch.classList.remove('gira'); post(); fasi(); sposta(0); setTimeout(function () { fase = -1; fasi(); }, 1400); }, 1300);
+  }
+  sch.addEventListener('pointerdown', function (ev) { if (fase === 2) return; sch.setPointerCapture(ev.pointerId); y0 = ev.clientY; sch.classList.add('tiro'); });
+  sch.addEventListener('pointermove', function (ev) {
+    if (y0 === null) return; var d = Math.max(0, ev.clientY - y0); dy = d < SOGLIA ? d : SOGLIA + (d - SOGLIA) * .35; // resistenza elastica
+    sposta(dy); var f = dy >= SOGLIA ? 1 : dy > 4 ? 0 : -1; if (f !== fase) { fase = f; fasi(); }
+  });
+  sch.addEventListener('pointerup', function () { if (y0 === null) return; y0 = null; sch.classList.remove('tiro'); if (dy >= SOGLIA) aggiorna(); else { fase = -1; fasi(); sposta(0); } dy = 0; });
+  document.getElementById('prova').onclick = function () { if (fase !== 2) aggiorna(); };
+  function tutto() { post(); fasi(); }
+  tutto();
+  document.addEventListener('lingua', tutto);
+</script>
+</body>
+</html>

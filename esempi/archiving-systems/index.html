@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Esempio ricostruito: Archiving systems. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archiving systems — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .posta { padding: 0; overflow: hidden; display: grid; grid-template-columns: 170px 1fr; height: 480px; position: relative; }
+  .lato { background: #faf8f7; border-right: 1px solid var(--c-linea); padding: 18px 10px; }
+  .lato .didascalia { padding: 0 10px; }
+  .cartella { width: 100%; display: flex; align-items: center; gap: 10px; border: 0; background: none; padding: 10px; border-radius: 8px; font-size: 16px; cursor: pointer; text-align: left; }
+  .cartella:hover { background: rgba(0,0,0,.05); }
+  .cartella[aria-current="true"] { background: rgba(105,143,255,.16); font-weight: 500; }
+  .cartella .n { margin-left: auto; font-size: 15px; color: var(--c-tenue); }
+  .elenco { list-style: none; margin: 0; padding: 8px 0; overflow: hidden; }
+  .elenco li { display: grid; grid-template-columns: 38px 1fr auto; align-items: center; gap: 12px; padding: 10px 18px; border-bottom: 1px solid var(--c-linea); transition: transform .3s ease, opacity .3s ease; }
+  .elenco li:hover { background: #faf8f7; }
+  .elenco li.via { transform: translateX(60%); opacity: 0; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; font-weight: 500; color: #fff; }
+  .mitt { font-size: 16px; font-weight: 500; }
+  .ogg { font-size: 15px; color: var(--c-tenue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .testo { min-width: 0; }
+  .azione { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 12px; font-size: 15px; cursor: pointer; white-space: nowrap; }
+  .azione:hover { border-color: #111; }
+  .vuoto { padding: 70px 20px; text-align: center; color: var(--c-tenue); font-size: 17px; }
+  .vuoto svg { display: block; margin: 0 auto 12px; }
+  .snack { position: absolute; left: 50%; bottom: 18px; transform: translate(-50%, 20px); opacity: 0; background: #1b1b1b; color: #fff; border-radius: 10px; padding: 10px 10px 10px 16px; display: flex; gap: 14px; align-items: center; font-size: 16px; transition: .25s; pointer-events: none; white-space: nowrap; }
+  .snack.su { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+  .snack button { border: 0; background: none; color: var(--c-salmone); font-size: 16px; font-weight: 500; cursor: pointer; padding: 6px 8px; border-radius: 6px; }
+  .snack button:hover { background: rgba(255,255,255,.12); }
+  .colonna { min-width: 0; display: flex; flex-direction: column; }
+  .barra { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px 8px; }
+  .barra h2 { margin: 0; font-size: 20px; font-weight: 500; }
+  .barra span { font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro posta">
+    <nav class="lato">
+      <span class="didascalia"><span data-l="it">Posta</span><span data-l="en">Mail</span><span data-l="fr">Courrier</span><span data-l="zh">邮件</span></span>
+      <button class="cartella" type="button" data-c="in" aria-current="true"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 10l2.5-7h9L16 10v5H2z M2 10h4l1 2h4l1-2h4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span><span data-l="it">In arrivo</span><span data-l="en">Inbox</span><span data-l="fr">Réception</span><span data-l="zh">收件箱</span></span><span class="n" id="n-in"></span></button>
+      <button class="cartella" type="button" data-c="arch"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3" width="14" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v8h12V7M7 10h4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg><span><span data-l="it">Archivio</span><span data-l="en">Archive</span><span data-l="fr">Archives</span><span data-l="zh">归档</span></span><span class="n" id="n-arch"></span></button>
+    </nav>
+    <div class="colonna">
+      <div class="barra"><h2 id="titolo"></h2><span id="sotto"></span></div>
+      <ul class="elenco" id="elenco"></ul>
+    </div>
+    <div class="snack" id="snack" role="status" aria-live="polite"><span id="snack-t"></span><button type="button" id="snack-a"></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Archiviare non è eliminare: l’elemento esce dalla vista principale ma resta ritrovabile e ripristinabile.</span><span data-l="en">Archiving is not deleting: the item leaves the main view but can still be found and restored.</span><span data-l="fr">Archiver n’est pas supprimer&#8239;: l’élément quitte la vue principale mais reste retrouvable et restaurable.</span><span data-l="zh">归档不等于删除：项目离开主视图，但仍可找到并恢复。</span></p>
+<script>
+  var MAIL = [
+    { m: 'Laura B.', c: '#698fff', o: { it: 'Revisione del progetto 1', en: 'Project 1 review', fr: 'Revue du projet 1', zh: '项目 1 评审' }, d: 'in' },
+    { m: 'Studio Nord', c: '#df8888', o: { it: 'Preventivo per il sito', en: 'Quote for the website', fr: 'Devis pour le site', zh: '网站报价' }, d: 'in' },
+    { m: 'Marco T.', c: '#4caf7a', o: { it: 'Foto della mostra', en: 'Exhibition photos', fr: 'Photos de l’exposition', zh: '展览照片' }, d: 'in' },
+    { m: 'Biblioteca', c: '#b07a3f', o: { it: 'Prestito in scadenza', en: 'Loan due soon', fr: 'Prêt bientôt échu', zh: '借阅即将到期' }, d: 'in' },
+    { m: 'Wei L.', c: '#8a6fd1', o: { it: 'Traduzione delle slide', en: 'Slide translation', fr: 'Traduction des slides', zh: '幻灯片翻译' }, d: 'in' },
+    { m: 'Newsletter', c: '#777', o: { it: 'Le novità di ottobre', en: 'October news', fr: 'Les nouveautés d’octobre', zh: '十月新闻' }, d: 'arch' }
+  ];
+  var TX = {
+    in: { it: 'In arrivo', en: 'Inbox', fr: 'Réception', zh: '收件箱' }, arch: { it: 'Archivio', en: 'Archive', fr: 'Archives', zh: '归档' },
+    archivia: { it: 'Archivia', en: 'Archive', fr: 'Archiver', zh: '归档' }, ripristina: { it: 'Ripristina', en: 'Restore', fr: 'Restaurer', zh: '恢复' },
+    archiviato: { it: 'Messaggio archiviato', en: 'Message archived', fr: 'Message archivé', zh: '邮件已归档' }, ripristinato: { it: 'Riportato in arrivo', en: 'Moved to Inbox', fr: 'Remis en réception', zh: '已移回收件箱' },
+    annulla: { it: 'Annulla', en: 'Undo', fr: 'Annuler', zh: '撤销' },
+    vuotoIn: { it: 'Tutto archiviato. Niente da leggere.', en: 'All archived. Nothing to read.', fr: 'Tout est archivé. Rien à lire.', zh: '全部已归档，没有待读邮件。' },
+    vuotoArch: { it: 'L’archivio è vuoto.', en: 'The archive is empty.', fr: 'Les archives sont vides.', zh: '归档为空。' },
+    msg: { it: '% messaggi', en: '% messages', fr: '% messages', zh: '% 封邮件' }
+  };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var vista = 'in', ultimo = null, tSnack = null;
+  var ICO = { in: '<svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3" width="14" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M3 7v8h12V7M7 10h4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+    arch: '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3L2 7l4 4M2 7h8a4 4 0 010 8H8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>' };
+  function disegna() {
+    document.querySelectorAll('.cartella').forEach(function (b) { b.setAttribute('aria-current', String(b.dataset.c === vista)); });
+    ['in', 'arch'].forEach(function (c) { document.getElementById('n-' + c).textContent = MAIL.filter(function (x) { return x.d === c; }).length; });
+    document.getElementById('titolo').textContent = T(TX[vista]);
+    var qui = MAIL.filter(function (x) { return x.d === vista; });
+    document.getElementById('sotto').textContent = T(TX.msg).replace('%', qui.length);
+    var ul = document.getElementById('elenco'); ul.innerHTML = '';
+    if (!qui.length) { ul.innerHTML = '<li class="vuoto" style="display:block"><svg width="48" height="48" viewBox="0 0 18 18" aria-hidden="true"><rect x="2" y="3" width="14" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="1"/><path d="M3 7v8h12V7M7 10h4" fill="none" stroke="currentColor" stroke-width="1"/></svg></li>'; ul.firstChild.appendChild(document.createTextNode(T(vista === 'in' ? TX.vuotoIn : TX.vuotoArch))); }
+    qui.forEach(function (x) {
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="avatar"></span><span class="testo"><div class="mitt"></div><div class="ogg"></div></span><button class="azione" type="button"></button>';
+      li.querySelector('.avatar').textContent = x.m[0]; li.querySelector('.avatar').style.background = x.c;
+      li.querySelector('.mitt').textContent = x.m; li.querySelector('.ogg').textContent = T(x.o);
+      var b = li.querySelector('.azione'); b.innerHTML = ICO[vista] + '<span></span>'; b.lastChild.textContent = T(vista === 'in' ? TX.archivia : TX.ripristina);
+      b.onclick = function () { sposta(x, li); };
+      ul.appendChild(li);
+    });
+  }
+  function sposta(x, li) {
+    var dove = x.d === 'in' ? 'arch' : 'in';
+    li.classList.add('via');
+    setTimeout(function () { x.d = dove; ultimo = { x: x, da: dove === 'arch' ? 'in' : 'arch' }; disegna(); snack(dove === 'arch' ? TX.archiviato : TX.ripristinato); }, 280);
+  }
+  function snack(t) {
+    var s = document.getElementById('snack'); document.getElementById('snack-t').textContent = T(t);
+    document.getElementById('snack-a').textContent = T(TX.annulla); s.classList.add('su');
+    clearTimeout(tSnack); tSnack = setTimeout(function () { s.classList.remove('su'); }, 5000);
+  }
+  document.getElementById('snack-a').onclick = function () { if (ultimo) { ultimo.x.d = ultimo.da; ultimo = null; disegna(); } document.getElementById('snack').classList.remove('su'); };
+  document.querySelectorAll('.cartella').forEach(function (b) { b.onclick = function () { vista = b.dataset.c; disegna(); }; });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

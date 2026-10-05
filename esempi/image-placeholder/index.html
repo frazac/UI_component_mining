@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- Esempio ricostruito: Placeholder for pictures. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Placeholder for pictures — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px; }
+  .stati { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .stato { display: grid; gap: 8px; font-size: 15px; }
+  .stato small { color: var(--c-tenue); font-size: 14px; line-height: 1.3; }
+  .img { aspect-ratio: 4 / 3; border-radius: 8px; position: relative; overflow: hidden; display: grid; place-items: center; }
+  .monti { background: #ebe6e4; }
+  .monti svg { width: 46%; }
+  .wire { background: #fff; border: 1.5px solid rgba(0,0,0,.35); }
+  .wire::before, .wire::after { content: ""; position: absolute; left: -10%; right: -10%; top: 50%; height: 1.5px; background: rgba(0,0,0,.35); }
+  .wire::before { transform: rotate(36.87deg); } .wire::after { transform: rotate(-36.87deg); }
+  .scheletro { background: #ebe6e4; }
+  .scheletro::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.75) 50%, transparent 70%); animation: luce 1.4s infinite; transform: translateX(-100%); }
+  @keyframes luce { to { transform: translateX(100%); } }
+  .sfocata .foto { position: absolute; inset: -10px; filter: blur(9px); }
+  .errore { background: #fbeeee; color: #b84545; text-align: center; font-size: 14px; }
+  .errore div { display: grid; justify-items: center; gap: 4px; }
+  .foto { position: absolute; inset: 0; background: linear-gradient(#a8c3ff 0 55%, #f6d6c8 55%); }
+  .foto::before { content: ""; position: absolute; left: 62%; top: 16%; width: 18%; aspect-ratio: 1; border-radius: 50%; background: #fff3c4; }
+  .foto::after { content: ""; position: absolute; inset: 30% -5% 0 -5%; background: linear-gradient(135deg, transparent 49.5%, rgb(223,136,136) 50%) 0 0 / 50% 100% no-repeat, linear-gradient(-135deg, transparent 49.5%, rgb(223,136,136) 50%) 100% 0 / 50% 100% no-repeat, linear-gradient(135deg, transparent 49.5%, rgb(250,145,145) 50%) 30% 100% / 50% 70% no-repeat, linear-gradient(-135deg, transparent 49.5%, rgb(250,145,145) 50%) 70% 100% / 50% 70% no-repeat; }
+  .carica { display: grid; grid-template-columns: 1fr 1.1fr; gap: 22px; align-items: center; }
+  .carica .img { aspect-ratio: 16 / 10; }
+  .carica .foto { transition: opacity .6s; }
+  .comandi { display: grid; gap: 10px; }
+  .comandi button { border: 1.5px solid var(--c-testo); background: #fff; border-radius: 8px; padding: 9px 14px; font-size: 16px; cursor: pointer; justify-self: start; }
+  .comandi button:hover { background: var(--c-testo); color: #fff; }
+  .fase { font-size: 16px; }
+  .fase b { font-weight: 500; color: var(--c-blu); }
+  .passi { display: flex; gap: 6px; }
+  .passi i { height: 5px; flex: 1; border-radius: 3px; background: var(--c-linea); transition: background .3s; }
+  .passi i.on { background: var(--c-blu); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Quattro modi di tenere il posto a un’immagine</span><span data-l="en">Four ways to hold a picture’s place</span><span data-l="fr">Quatre façons de réserver la place d’une image</span><span data-l="zh">为图片占位的四种方式</span></span>
+    <div class="stati">
+      <div class="stato"><div class="img monti" aria-hidden="true"><svg viewBox="0 0 48 36"><rect x="1" y="1" width="46" height="34" rx="4" fill="none" stroke="rgba(0,0,0,.4)" stroke-width="2"/><circle cx="33" cy="11" r="4" fill="rgba(0,0,0,.4)"/><path d="M4 31l12-14 9 10 5-5 14 9z" fill="rgba(0,0,0,.4)"/></svg></div><span><span data-l="it">Le montagne</span><span data-l="en">The mountains</span><span data-l="fr">Les montagnes</span><span data-l="zh">山形图标</span></span><small><span data-l="it">L’icona universale di «qui va una foto».</span><span data-l="en">The universal “a photo goes here” icon.</span><span data-l="fr">L’icône universelle « ici une photo ».</span><span data-l="zh">通用的“此处放图片”图标。</span></small></div>
+      <div class="stato"><div class="img wire" aria-hidden="true"></div><span><span data-l="it">Wireframe</span><span data-l="en">Wireframe</span><span data-l="fr">Wireframe</span><span data-l="zh">线框</span></span><small><span data-l="it">Il riquadro con la croce degli schizzi.</span><span data-l="en">The crossed box of sketches.</span><span data-l="fr">Le cadre barré des croquis.</span><span data-l="zh">草图中画叉的方框。</span></small></div>
+      <div class="stato"><div class="img scheletro" aria-hidden="true"></div><span><span data-l="it">Scheletro</span><span data-l="en">Skeleton</span><span data-l="fr">Squelette</span><span data-l="zh">骨架屏</span></span><small><span data-l="it">Una luce che passa: sto caricando.</span><span data-l="en">A passing shimmer: loading.</span><span data-l="fr">Une lueur qui passe : chargement.</span><span data-l="zh">流光闪过：正在加载。</span></small></div>
+      <div class="stato"><div class="img errore" role="img" aria-label="error"><div><svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 16l5-5 4 4M14 13l2-2 5 5M4 4l16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span data-l="it">Non disponibile</span><span data-l="en">Unavailable</span><span data-l="fr">Indisponible</span><span data-l="zh">无法显示</span></div></div><span><span data-l="it">Errore</span><span data-l="en">Error</span><span data-l="fr">Erreur</span><span data-l="zh">错误</span></span><small><span data-l="it">L’immagine non arriva: lo si dice.</span><span data-l="en">The image fails: say so.</span><span data-l="fr">L’image ne vient pas : on le dit.</span><span data-l="zh">图片加载失败：要明确告知。</span></small></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Caricamento progressivo</span><span data-l="en">Progressive loading</span><span data-l="fr">Chargement progressif</span><span data-l="zh">渐进式加载</span></span>
+    <div class="carica">
+      <div class="img monti" id="cornice"></div>
+      <div class="comandi">
+        <div class="passi" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="fase" id="fase" aria-live="polite"></div>
+        <button type="button" id="vai"></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il segnaposto ha già le proporzioni dell’immagine: quando arriva, la pagina non salta.</span><span data-l="en">The placeholder already has the image’s proportions: when it arrives, the page does not jump.</span><span data-l="fr">L’espace réservé a déjà les proportions de l’image : quand elle arrive, la page ne saute pas.</span><span data-l="zh">占位符预先具有图片的比例：图片加载后页面不会跳动。</span></p>
+<script>
+  var FASI = [
+    { n: { it: 'Segnaposto', en: 'Placeholder', fr: 'Espace réservé', zh: '占位符' }, c: 'monti' },
+    { n: { it: 'Scheletro: richiesta in corso', en: 'Skeleton: request in progress', fr: 'Squelette : requête en cours', zh: '骨架屏：请求中' }, c: 'scheletro' },
+    { n: { it: 'Anteprima sfocata (bassa risoluzione)', en: 'Blurred preview (low resolution)', fr: 'Aperçu flou (basse résolution)', zh: '模糊预览（低分辨率）' }, c: 'sfocata' },
+    { n: { it: 'Immagine completa', en: 'Full image', fr: 'Image complète', zh: '完整图片' }, c: 'piena' }
+  ];
+  var T = { avanti: { it: 'Fase successiva →', en: 'Next stage →', fr: 'Étape suivante →', zh: '下一阶段 →' }, da: { it: 'Ricomincia', en: 'Start over', fr: 'Recommencer', zh: '重新开始' }, fase: { it: 'Fase ', en: 'Stage ', fr: 'Étape ', zh: '阶段 ' } };
+  var MONTI = '<svg viewBox="0 0 48 36" style="width:30%"><rect x="1" y="1" width="46" height="34" rx="4" fill="none" stroke="rgba(0,0,0,.4)" stroke-width="2"/><circle cx="33" cy="11" r="4" fill="rgba(0,0,0,.4)"/><path d="M4 31l12-14 9 10 5-5 14 9z" fill="rgba(0,0,0,.4)"/></svg>';
+  var f = 0;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    var c = document.getElementById('cornice'), k = FASI[f].c;
+    c.className = 'img ' + (k === 'piena' ? '' : k);
+    c.innerHTML = k === 'monti' ? MONTI : (k === 'sfocata' || k === 'piena') ? '<div class="foto"></div>' : '';
+    c.setAttribute('role', 'img'); c.setAttribute('aria-label', L(FASI[f].n));
+    document.getElementById('fase').innerHTML = L(T.fase) + (f + 1) + '/4 · <b>' + L(FASI[f].n) + '</b>';
+    document.querySelectorAll('.passi i').forEach(function (x, j) { x.className = j <= f ? 'on' : ''; });
+    document.getElementById('vai').textContent = f === 3 ? L(T.da) : L(T.avanti);
+  }
+  document.getElementById('vai').onclick = function () { f = (f + 1) % 4; disegna(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

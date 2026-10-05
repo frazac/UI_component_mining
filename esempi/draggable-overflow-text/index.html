@@ -1,0 +1,82 @@
+<!doctype html>
+<!-- Esempio ricostruito: Panning / draggable text. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panning / draggable text — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 620px; }
+  .riga { display: grid; grid-template-columns: 150px 1fr; gap: 16px; align-items: center; }
+  .riga + .riga { margin-top: 22px; }
+  .riga > small { font-size: 15px; color: var(--c-tenue); }
+  .finestra { position: relative; width: 300px; height: 46px; border-radius: 10px; background: #f6f3f2; overflow: hidden; display: flex; align-items: center; }
+  .finestra .t { white-space: nowrap; font-size: 20px; padding: 0 14px; will-change: transform; }
+  .tronca .t { overflow: hidden; text-overflow: ellipsis; width: 100%; }
+  .pan { cursor: grab; touch-action: pan-y; user-select: none; }
+  .pan.tiro { cursor: grabbing; }
+  .pan:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .pan::before, .pan::after { content: ""; position: absolute; top: 0; bottom: 0; width: 28px; z-index: 1; pointer-events: none; transition: opacity .2s; }
+  .pan::before { left: 0; background: linear-gradient(90deg, #f6f3f2, transparent); opacity: var(--sx, 0); }
+  .pan::after { right: 0; background: linear-gradient(270deg, #f6f3f2, transparent); opacity: var(--dx, 1); }
+  .pan .t { transition: transform .25s ease-out; } .pan.tiro .t { transition: none; }
+  .scorrevole .t { animation: scorri 9s linear infinite; padding-left: 100%; }
+  .scorrevole:hover .t { animation-play-state: paused; }
+  @keyframes scorri { to { transform: translateX(-100%); } }
+  .barretta { position: absolute; left: 14px; right: 14px; bottom: 4px; height: 3px; border-radius: 2px; background: rgba(0,0,0,.08); }
+  .barretta i { position: absolute; top: 0; bottom: 0; border-radius: 2px; background: var(--c-blu); }
+  .lettore { margin-top: 26px; display: flex; gap: 14px; align-items: center; padding: 12px; border-radius: 12px; background: #111; color: #fff; }
+  .lettore .cop { width: 56px; height: 56px; border-radius: 8px; background: linear-gradient(140deg, rgb(250,145,145), rgb(105,143,255)); flex: none; }
+  .lettore .finestra { background: transparent; height: 30px; width: 100%; max-width: 380px; }
+  .lettore .finestra .t { font-size: 17px; padding: 0; }
+  .lettore .pan::before { background: linear-gradient(90deg, #111, transparent); } .lettore .pan::after { background: linear-gradient(270deg, #111, transparent); }
+  .lettore small { display: block; color: rgba(255,255,255,.6); font-size: 15px; }
+  .lettore .info { min-width: 0; flex: 1; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Testo più lungo dello spazio: tre soluzioni</span><span data-l="en">Text longer than its space: three solutions</span><span data-l="fr">Texte plus long que son espace : trois solutions</span><span data-l="zh">文字超出空间：三种处理方式</span></span>
+    <div class="riga"><small><span data-l="it">Troncato (…)</span><span data-l="en">Truncated (…)</span><span data-l="fr">Tronqué (…)</span><span data-l="zh">截断（…）</span></small><div class="finestra tronca"><span class="t" data-t="0"></span></div></div>
+    <div class="riga"><small><span data-l="it">Trascinabile: prendilo e spostalo (o frecce)</span><span data-l="en">Draggable: grab and move it (or arrow keys)</span><span data-l="fr">Déplaçable : saisissez-le (ou flèches)</span><span data-l="zh">可拖动：抓住移动（或用方向键）</span></small><div class="finestra pan" tabindex="0" role="region"><span class="t" data-t="0"></span><span class="barretta"><i></i></span></div></div>
+    <div class="riga"><small><span data-l="it">Scorrevole (marquee): si ferma al passaggio</span><span data-l="en">Marquee: pauses on hover</span><span data-l="fr">Défilant (marquee) : s’arrête au survol</span><span data-l="zh">跑马灯：悬停时暂停</span></small><div class="finestra scorrevole"><span class="t" data-t="0"></span></div></div>
+    <div class="lettore">
+      <span class="cop"></span>
+      <div class="info"><div class="finestra pan" tabindex="0" role="region"><span class="t" data-t="1"></span><span class="barretta" style="visibility:hidden"><i></i></span></div><small data-t="2"></small></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il trascinamento rivela il testo nascosto senza animazioni continue; le sfumature ai bordi dicono che c’è ancora qualcosa da vedere.</span><span data-l="en">Dragging reveals the hidden text without continuous motion; the fades at the edges say there is more to see.</span><span data-l="fr">Le glissement révèle le texte caché sans animation continue ; les fondus sur les bords indiquent qu’il reste quelque chose à voir.</span><span data-l="zh">拖动可以显示被隐藏的文字，而无需持续的动画；边缘的渐隐提示还有内容可看。</span></p>
+<script>
+  var T = {
+    it: ['Corso di Interface Design — Lezione 7: componenti, stati e microinterazioni', 'Notturno per pianoforte e rumore di città, versione registrata dal vivo', 'Ensemble immaginario · 2026'],
+    en: ['Interface Design course — Lesson 7: components, states and micro-interactions', 'Nocturne for piano and city noise, version recorded live', 'Imaginary Ensemble · 2026'],
+    fr: ['Cours d’Interface Design — Leçon 7 : composants, états et micro-interactions', 'Nocturne pour piano et bruit de ville, version enregistrée en public', 'Ensemble imaginaire · 2026'],
+    zh: ['界面设计课程——第 7 课：组件、状态与微交互，以及如何处理超出空间的长文本', '为钢琴与城市噪音而作的夜曲（现场录音版本）', '虚构乐团 · 2026']
+  };
+  function testi() { var l = window.Lingua ? Lingua.get() : 'en'; document.querySelectorAll('[data-t]').forEach(function (e) { e.textContent = T[l][e.dataset.t]; }); document.querySelectorAll('.pan').forEach(function (p) { p._x = 0; p._agg(); }); }
+  document.querySelectorAll('.pan').forEach(function (p) {
+    var t = p.querySelector('.t'), bar = p.querySelector('.barretta i'), x0 = null, s0 = 0;
+    p._x = 0;
+    function max() { return Math.max(0, t.scrollWidth - p.clientWidth); }
+    p._agg = function () {
+      var m = max(); p._x = Math.max(-m, Math.min(0, p._x)); t.style.transform = 'translateX(' + p._x + 'px)';
+      p.style.setProperty('--sx', p._x < -1 ? 1 : 0); p.style.setProperty('--dx', p._x > -m + 1 ? 1 : 0);
+      var vis = p.clientWidth / t.scrollWidth; bar.style.width = (vis * 100) + '%'; bar.style.left = (m ? (-p._x / m) * (100 - vis * 100) : 0) + '%';
+      bar.parentNode.style.display = m ? '' : 'none';
+    };
+    p.addEventListener('pointerdown', function (ev) { p.setPointerCapture(ev.pointerId); x0 = ev.clientX; s0 = p._x; p.classList.add('tiro'); });
+    p.addEventListener('pointermove', function (ev) { if (x0 === null) return; var m = max(), x = s0 + ev.clientX - x0; if (x > 0) x = x * .3; if (x < -m) x = -m + (x + m) * .3; t.style.transform = 'translateX(' + x + 'px)'; p._x = x; });
+    p.addEventListener('pointerup', function () { x0 = null; p.classList.remove('tiro'); p._agg(); });
+    p.addEventListener('keydown', function (ev) { var d = { ArrowLeft: 40, ArrowRight: -40, Home: 9999, End: -9999 }[ev.key]; if (d === undefined) return; ev.preventDefault(); p._x += d; p._agg(); });
+  });
+  testi();
+  document.addEventListener('lingua', testi);
+  window.addEventListener('resize', testi);
+</script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- Esempio ricostruito: Login icon and process (and permission system). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .riquadro { padding: 22px; }
+  .testa { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border: 1px solid var(--c-linea); border-radius: 10px; margin-bottom: 16px; }
+  .testa .marchio { display: flex; gap: 8px; align-items: center; font-weight: 500; }
+  .testa .marchio i { width: 22px; height: 22px; border-radius: 6px; background: var(--c-salmone); display: block; }
+  .entra { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 5px 12px 5px 8px; font-size: 15px; cursor: pointer; }
+  .entra .av { width: 26px; height: 26px; border-radius: 50%; background: var(--c-blu); color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 500; }
+  form { display: grid; gap: 10px; }
+  label { font-size: 15px; display: grid; gap: 4px; }
+  input { border: 1.5px solid var(--c-linea); border-radius: 8px; padding: 8px 10px; font-size: 16px; }
+  input:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  input[aria-invalid="true"] { border-color: #d24a4a; }
+  .errore { color: #c03c3c; font-size: 15px; min-height: 20px; margin: 0; }
+  .pw { position: relative; }
+  .pw input { width: 100%; padding-right: 44px; }
+  .occhio { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); width: 36px; height: 32px; border: 0; background: none; cursor: pointer; border-radius: 6px; display: grid; place-items: center; }
+  .invia { border: 0; background: var(--c-testo); color: #fff; border-radius: 8px; padding: 10px; font-size: 16px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+  .invia:disabled { opacity: .6; cursor: progress; }
+  .ruota { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .suggerimento { font-size: 14px; color: var(--c-tenue); margin: 0; }
+  .ruoli { display: flex; gap: 4px; background: var(--c-palco); border-radius: 999px; padding: 3px; margin-bottom: 12px; }
+  .ruoli button { flex: 1; border: 0; background: none; border-radius: 999px; padding: 5px 4px; font-size: 15px; cursor: pointer; }
+  .ruoli button[aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  td { padding: 8px 2px; border-top: 1px solid var(--c-linea); }
+  td:last-child { text-align: right; width: 40px; }
+  .si { color: #2e8a5a; } .no { color: rgba(0,0,0,.3); }
+  .spento { color: rgba(0,0,0,.35); }
+  .blocco[hidden] { display: none; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Accesso</span><span data-l="en">Sign in</span><span data-l="fr">Connexion</span><span data-l="zh">登录</span></span>
+    <div class="testa">
+      <span class="marchio"><i></i>Studio</span>
+      <button class="entra" type="button" id="icona"></button>
+    </div>
+    <form id="modulo" novalidate class="blocco">
+      <label><span><span data-l="it">E-mail</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮箱</span></span><input id="mail" type="email" autocomplete="off" value="studente@esempio.it"></label>
+      <label><span><span data-l="it">Password</span><span data-l="en">Password</span><span data-l="fr">Mot de passe</span><span data-l="zh">密码</span></span>
+        <span class="pw"><input id="pw" type="password" autocomplete="off"><button class="occhio" type="button" id="occhio" aria-pressed="false" aria-label="Show password"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" fill="none" stroke="#111" stroke-width="1.8"/><circle cx="12" cy="12" r="3" fill="none" stroke="#111" stroke-width="1.8"/></svg></button></span></label>
+      <p class="errore" id="errore" role="alert"></p>
+      <button class="invia" type="submit" id="invia"></button>
+      <p class="suggerimento"><span data-l="it">Prova: password vuota (errore), poi «demo».</span><span data-l="en">Try: empty password (error), then “demo”.</span><span data-l="fr">Essayez : mot de passe vide (erreur), puis « demo ».</span><span data-l="zh">试试：先留空密码（报错），再输入“demo”。</span></p>
+    </form>
+    <div id="dentro" class="blocco" hidden>
+      <p style="margin:0 0 12px;font-size:17px"><span data-l="it">Bentornata, Sara.</span><span data-l="en">Welcome back, Sara.</span><span data-l="fr">Bon retour, Sara.</span><span data-l="zh">欢迎回来，Sara。</span></p>
+      <button class="invia" type="button" id="esci" style="width:100%"><span data-l="it">Esci</span><span data-l="en">Sign out</span><span data-l="fr">Se déconnecter</span><span data-l="zh">退出登录</span></button>
+    </div>
+  </div>
+  <div class="riquadro" id="permessi">
+    <span class="didascalia"><span data-l="it">Dopo l’accesso: il ruolo decide i permessi</span><span data-l="en">After sign-in: the role sets the permissions</span><span data-l="fr">Après connexion : le rôle fixe les droits</span><span data-l="zh">登录后：角色决定权限</span></span>
+    <div class="ruoli" role="group" id="ruoli"></div>
+    <table><tbody id="tabella"></tbody></table>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Simulazione: nulla viene inviato. L’icona in alto cambia da «Accedi» all’avatar dell’utente.</span><span data-l="en">Simulation: nothing is sent. The icon at the top changes from “Sign in” to the user’s avatar.</span><span data-l="fr">Simulation : rien n’est envoyé. L’icône en haut passe de « Se connecter » à l’avatar de l’utilisateur.</span><span data-l="zh">模拟演示：不会发送任何数据。顶部图标会从“登录”变为用户头像。</span></p>
+<script>
+  var T = {
+    accedi: { it: 'Accedi', en: 'Sign in', fr: 'Se connecter', zh: '登录' },
+    attesa: { it: 'Verifica…', en: 'Checking…', fr: 'Vérification…', zh: '验证中…' },
+    vuota: { it: 'Inserisci la password.', en: 'Enter your password.', fr: 'Saisissez votre mot de passe.', zh: '请输入密码。' },
+    sbagliata: { it: 'E-mail o password non corrette.', en: 'Wrong email or password.', fr: 'E-mail ou mot de passe incorrect.', zh: '邮箱或密码不正确。' },
+    ruoli: [{ it: 'Lettore', en: 'Viewer', fr: 'Lecteur', zh: '查看者' }, { it: 'Editor', en: 'Editor', fr: 'Éditeur', zh: '编辑者' }, { it: 'Admin', en: 'Admin', fr: 'Admin', zh: '管理员' }],
+    azioni: [
+      [{ it: 'Vedere i progetti', en: 'View projects', fr: 'Voir les projets', zh: '查看项目' }, 0],
+      [{ it: 'Commentare', en: 'Comment', fr: 'Commenter', zh: '评论' }, 0],
+      [{ it: 'Modificare i progetti', en: 'Edit projects', fr: 'Modifier les projets', zh: '编辑项目' }, 1],
+      [{ it: 'Invitare persone', en: 'Invite people', fr: 'Inviter des personnes', zh: '邀请成员' }, 2],
+      [{ it: 'Eliminare il team', en: 'Delete the team', fr: 'Supprimer l’équipe', zh: '删除团队' }, 2]],
+    fuori: { it: 'Accedi per vedere i tuoi permessi.', en: 'Sign in to see your permissions.', fr: 'Connectez-vous pour voir vos droits.', zh: '登录后查看你的权限。' }
+  };
+  var stato = 'fuori', ruolo = 1;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var UTENTE = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4" fill="none" stroke="#111" stroke-width="1.8"/><path d="M4 20a8 8 0 0 1 16 0" fill="none" stroke="#111" stroke-width="1.8"/></svg>';
+  function disegna() {
+    var ic = document.getElementById('icona');
+    ic.innerHTML = stato === 'dentro' ? '<span class="av">SR</span>Sara' : UTENTE + L(T.accedi);
+    var inv = document.getElementById('invia');
+    inv.disabled = stato === 'attesa';
+    inv.innerHTML = stato === 'attesa' ? '<span class="ruota"></span>' + L(T.attesa) : L(T.accedi);
+    document.getElementById('modulo').hidden = stato === 'dentro';
+    document.getElementById('dentro').hidden = stato !== 'dentro';
+    var r = document.getElementById('ruoli'); r.innerHTML = '';
+    T.ruoli.forEach(function (x, k) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = L(x);
+      b.setAttribute('aria-pressed', String(k === ruolo)); b.disabled = stato !== 'dentro';
+      b.onclick = function () { ruolo = k; disegna(); }; r.appendChild(b);
+    });
+    var tb = document.getElementById('tabella'); tb.innerHTML = '';
+    if (stato !== 'dentro') { tb.innerHTML = '<tr><td colspan="2" style="color:var(--c-rosa);text-align:left"></td></tr>'; tb.querySelector('td').textContent = L(T.fuori); }
+    T.azioni.forEach(function (a) {
+      var ok = stato === 'dentro' && ruolo >= a[1], tr = document.createElement('tr');
+      tr.innerHTML = '<td' + (ok ? '' : ' class="spento"') + '></td><td class="' + (ok ? 'si' : 'no') + '">' + (ok ? '✓' : '—') + '</td>';
+      tr.firstChild.textContent = L(a[0]); tb.appendChild(tr);
+    });
+  }
+  document.getElementById('modulo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var pw = document.getElementById('pw'), err = document.getElementById('errore');
+    if (!pw.value) { err.textContent = L(T.vuota); pw.setAttribute('aria-invalid', 'true'); pw.focus(); return; }
+    err.textContent = ''; pw.removeAttribute('aria-invalid'); stato = 'attesa'; disegna();
+    setTimeout(function () {
+      if (pw.value.toLowerCase() === 'demo') { stato = 'dentro'; pw.value = ''; }
+      else { stato = 'fuori'; err.textContent = L(T.sbagliata); pw.setAttribute('aria-invalid', 'true'); }
+      disegna();
+    }, 1100);
+  });
+  document.getElementById('occhio').onclick = function () {
+    var pw = document.getElementById('pw'), b = this, v = pw.type === 'password';
+    pw.type = v ? 'text' : 'password'; b.setAttribute('aria-pressed', String(v));
+  };
+  document.getElementById('esci').onclick = function () { stato = 'fuori'; disegna(); };
+  document.getElementById('icona').onclick = function () { if (stato !== 'dentro') document.getElementById('pw').focus(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

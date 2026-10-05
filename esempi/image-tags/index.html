@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tags on pictures. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tags on pictures — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.5fr 1fr; }
+  .foto { position: relative; border-radius: 8px; overflow: hidden; cursor: default; user-select: none; }
+  .foto svg { display: block; width: 100%; height: auto; }
+  .foto.modo { cursor: crosshair; }
+  .tag { position: absolute; transform: translate(-50%, 8px); background: rgba(17,17,17,.85); color: #fff; font-size: 15px; padding: 4px 10px; border-radius: 6px; white-space: nowrap; transition: opacity .2s; display: flex; gap: 6px; align-items: center; }
+  .tag::before { content: ""; position: absolute; left: 50%; top: -6px; margin-left: -6px; border: 6px solid transparent; border-top: 0; border-bottom-color: rgba(17,17,17,.85); }
+  .tag button { border: 0; background: none; color: #fff; cursor: pointer; padding: 0 0 0 4px; font-size: 15px; opacity: .7; }
+  .nascosti .tag { opacity: 0; } .nascosti:hover .tag, .nascosti:focus-within .tag { opacity: 1; }
+  .punto { position: absolute; width: 60px; height: 60px; margin: -30px 0 0 -30px; border: 2px solid #fff; border-radius: 6px; box-shadow: 0 0 0 1px rgba(0,0,0,.3); pointer-events: none; }
+  .scegli { position: absolute; background: #fff; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.25); padding: 6px; width: 170px; transform: translate(-50%, 36px); z-index: 3; }
+  .scegli button { display: block; width: 100%; text-align: left; border: 0; background: none; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 15px; }
+  .scegli button:hover, .scegli button:focus-visible { background: #fdf3f2; }
+  .comandi { display: flex; gap: 10px; margin-top: 12px; align-items: center; flex-wrap: wrap; }
+  .comandi button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 7px 14px; cursor: pointer; font-size: 15px; }
+  .comandi button[aria-pressed="true"] { background: var(--c-testo); color: #fff; border-color: var(--c-testo); }
+  .file { list-style: none; margin: 0; padding: 0; font-size: 15px; }
+  .file li { display: flex; align-items: center; gap: 10px; padding: 7px 4px; border-bottom: 1px solid var(--c-linea); }
+  .file svg { width: 22px; height: 22px; flex: none; }
+  .file .nomef { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pall { display: flex; } .pall i { width: 11px; height: 11px; border-radius: 50%; box-shadow: 0 0 0 2px #fff; margin-left: -3px; }
+  .filtri { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .filtri button { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 4px 10px; cursor: pointer; font-size: 15px; }
+  .filtri button i { width: 10px; height: 10px; border-radius: 50%; }
+  .filtri button[aria-pressed="true"] { border-color: #111; background: #f6f3f2; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tag sulle persone di una foto</span><span data-l="en">Tagging people in a photo</span><span data-l="fr">Identifier des personnes sur une photo</span><span data-l="zh">在照片中标记人物</span></span>
+    <div class="foto" id="foto">
+      <svg viewBox="0 0 400 260" aria-hidden="true">
+        <rect width="400" height="260" fill="#cfe0f7"/><rect y="170" width="400" height="90" fill="#e8d8c4"/>
+        <circle cx="330" cy="50" r="22" fill="#ffe3b0"/>
+        <path d="M0 170 L70 110 L130 150 L200 90 L280 160 L340 120 L400 160 V170 Z" fill="#a9c3a0"/>
+        <g><circle cx="120" cy="105" r="22" fill="#d9a988"/><path d="M98 100 C98 78 142 78 142 100 C134 90 106 90 98 100 Z" fill="#3b2c26"/><path d="M84 200 C84 150 100 130 120 130 C140 130 156 150 156 200 Z" fill="rgb(105,143,255)"/></g>
+        <g><circle cx="215" cy="112" r="20" fill="#e8b996"/><path d="M193 116 C190 82 240 80 237 116 C232 98 198 98 193 116 Z" fill="#8a5a3a"/><path d="M182 205 C182 160 196 138 215 138 C234 138 248 160 248 205 Z" fill="rgb(250,145,145)"/></g>
+        <g><circle cx="300" cy="125" r="17" fill="#c58c6a"/><path d="M283 120 C285 104 315 104 317 120 Z" fill="#222"/><path d="M272 210 C272 168 284 148 300 148 C316 148 328 168 328 210 Z" fill="#f2c96b"/></g>
+      </svg>
+      <div id="strato"></div>
+    </div>
+    <div class="comandi">
+      <button type="button" id="modo" aria-pressed="false"><span data-l="it">+ Aggiungi tag</span><span data-l="en">+ Tag someone</span><span data-l="fr">+ Identifier quelqu’un</span><span data-l="zh">+ 标记某人</span></button>
+      <button type="button" id="mostra" aria-pressed="true"><span data-l="it">Mostra i tag</span><span data-l="en">Show tags</span><span data-l="fr">Afficher les identifications</span><span data-l="zh">显示标签</span></button>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tag nei file: filtra per colore</span><span data-l="en">Tags on files: filter by colour</span><span data-l="fr">Étiquettes de fichiers : filtrer par couleur</span><span data-l="zh">文件标签：按颜色筛选</span></span>
+    <div class="filtri" id="filtri"></div>
+    <ul class="file" id="file"></ul>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Nei social il tag collega una persona a un punto dell’immagine (e va chiesto il consenso); nel file system un’etichetta raccoglie file sparsi in cartelle diverse.</span><span data-l="en">On social networks a tag links a person to a spot in the picture (and consent should be asked); in a file system a tag gathers files scattered across folders.</span><span data-l="fr">Sur les réseaux sociaux, l’identification relie une personne à un point de l’image (avec son consentement) ; dans un système de fichiers, une étiquette rassemble des fichiers dispersés dans plusieurs dossiers.</span><span data-l="zh">在社交网络中，标签把某人与图片中的位置关联（应征得同意）；在文件系统中，标签把分散在不同文件夹的文件归到一起。</span></p>
+<script>
+  var PERSONE = ['Anna', 'Luca', 'Mei', 'Omar', 'Sofia'];
+  var tags = [{ x: 30, y: 49, n: 'Anna' }, { x: 53.75, y: 52, n: 'Luca' }];
+  var ETI = [{ c: '#d9443a', it: 'Urgente', en: 'Urgent', fr: 'Urgent', zh: '紧急' }, { c: '#e08a2c', it: 'Lavoro', en: 'Work', fr: 'Travail', zh: '工作' }, { c: '#2f9a52', it: 'Fatto', en: 'Done', fr: 'Fait', zh: '已完成' }, { c: 'rgb(105,143,255)', it: 'Corso', en: 'Course', fr: 'Cours', zh: '课程' }];
+  var FILE = [['brief-A1.pdf', [0, 3]], ['moodboard.png', [3]], ['fattura-09.pdf', [1, 2]], ['note-lezione.txt', [3, 2]], ['logo-v3.svg', [1]], ['foto-gruppo.jpg', []]];
+  var filtro = -1, modo = false, nuovo = null;
+  var foto = document.getElementById('foto'), strato = document.getElementById('strato');
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegnaTag() {
+    strato.innerHTML = '';
+    tags.forEach(function (t, i) {
+      var d = document.createElement('div'); d.className = 'tag'; d.style.left = t.x + '%'; d.style.top = t.y + '%';
+      d.innerHTML = '<span></span><button type="button" aria-label="×">×</button>'; d.firstChild.textContent = t.n;
+      d.lastChild.onclick = function (ev) { ev.stopPropagation(); tags.splice(i, 1); disegnaTag(); };
+      strato.appendChild(d);
+    });
+    if (nuovo) {
+      var p = document.createElement('div'); p.className = 'punto'; p.style.left = nuovo.x + '%'; p.style.top = nuovo.y + '%'; strato.appendChild(p);
+      var s = document.createElement('div'); s.className = 'scegli'; s.style.left = Math.min(78, Math.max(22, nuovo.x)) + '%'; s.style.top = Math.min(nuovo.y, 40) + '%';
+      PERSONE.filter(function (n) { return !tags.some(function (t) { return t.n === n; }); }).forEach(function (n) {
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = n;
+        b.onclick = function (ev) { ev.stopPropagation(); tags.push({ x: nuovo.x, y: nuovo.y - 6, n: n }); nuovo = null; modo = false; aggiornaModo(); disegnaTag(); };
+        s.appendChild(b);
+      });
+      strato.appendChild(s); var f = s.querySelector('button'); if (f) f.focus();
+    }
+  }
+  function aggiornaModo() { foto.classList.toggle('modo', modo); document.getElementById('modo').setAttribute('aria-pressed', String(modo)); }
+  foto.addEventListener('click', function (ev) {
+    if (!modo || ev.target.closest('.scegli')) return;
+    var r = foto.getBoundingClientRect(); nuovo = { x: (ev.clientX - r.left) / r.width * 100, y: (ev.clientY - r.top) / r.height * 100 }; disegnaTag();
+  });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && nuovo) { nuovo = null; disegnaTag(); } });
+  document.getElementById('modo').onclick = function () { modo = !modo; if (!modo) nuovo = null; aggiornaModo(); disegnaTag(); };
+  document.getElementById('mostra').onclick = function () { var on = this.getAttribute('aria-pressed') !== 'true'; this.setAttribute('aria-pressed', String(on)); foto.classList.toggle('nascosti', !on); };
+  function disegnaFile() {
+    var f = document.getElementById('filtri'); f.innerHTML = '';
+    ETI.forEach(function (e, i) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(filtro === i)); b.innerHTML = '<i></i><span></span>'; b.firstChild.style.background = e.c; b.lastChild.textContent = e[l()];
+      b.onclick = function () { filtro = filtro === i ? -1 : i; disegnaFile(); }; f.appendChild(b); });
+    var ul = document.getElementById('file'); ul.innerHTML = '';
+    FILE.filter(function (x) { return filtro < 0 || x[1].indexOf(filtro) >= 0; }).forEach(function (x) {
+      var li = document.createElement('li'); li.innerHTML = '<svg viewBox="0 0 22 22" aria-hidden="true"><path d="M5 2 H13 L18 7 V20 H5 Z" fill="#fff" stroke="#888" stroke-width="1.4"/><path d="M13 2 V7 H18" fill="none" stroke="#888" stroke-width="1.4"/></svg><span class="nomef"></span><span class="pall"></span>';
+      li.querySelector('.nomef').textContent = x[0];
+      x[1].forEach(function (k) { var i = document.createElement('i'); i.style.background = ETI[k].c; i.title = ETI[k][l()]; li.querySelector('.pall').appendChild(i); });
+      ul.appendChild(li);
+    });
+  }
+  disegnaTag(); disegnaFile();
+  document.addEventListener('lingua', disegnaFile);
+</script>
+</body>
+</html>

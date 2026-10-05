@@ -1,0 +1,4504 @@
+{
+ "versione": "2.0.0",
+ "categorie": {
+  "livelli": {
+   "introduzione": {
+    "it": "Introduzione",
+    "en": "Introduction",
+    "fr": "Introduction",
+    "zh": "导论"
+   },
+   "fondamentale": {
+    "it": "Fondamentali",
+    "en": "Fundamental",
+    "fr": "Fondamentaux",
+    "zh": "基础"
+   },
+   "avanzato": {
+    "it": "Avanzati",
+    "en": "Advanced",
+    "fr": "Avancés",
+    "zh": "进阶"
+   }
+  },
+  "categorie": {
+   "introduzione": {
+    "it": "Principi e schemi",
+    "en": "Principles and frameworks",
+    "fr": "Principes et schémas",
+    "zh": "原则与框架"
+   },
+   "navigazione": {
+    "it": "Navigazione",
+    "en": "Navigation",
+    "fr": "Navigation",
+    "zh": "导航"
+   },
+   "azioni": {
+    "it": "Pulsanti e azioni",
+    "en": "Buttons and actions",
+    "fr": "Boutons et actions",
+    "zh": "按钮与操作"
+   },
+   "input": {
+    "it": "Selezione e inserimento",
+    "en": "Selection and input",
+    "fr": "Sélection et saisie",
+    "zh": "选择与输入"
+   },
+   "testo": {
+    "it": "Testo e scrittura",
+    "en": "Text and writing",
+    "fr": "Texte et écriture",
+    "zh": "文本与书写"
+   },
+   "feedback": {
+    "it": "Feedback e stato",
+    "en": "Feedback and status",
+    "fr": "Retour et état",
+    "zh": "反馈与状态"
+   },
+   "errori": {
+    "it": "Errori e prevenzione",
+    "en": "Errors and prevention",
+    "fr": "Erreurs et prévention",
+    "zh": "错误与预防"
+   },
+   "contenitori": {
+    "it": "Contenitori e layout",
+    "en": "Containers and layout",
+    "fr": "Conteneurs et mise en page",
+    "zh": "容器与布局"
+   },
+   "contenuti": {
+    "it": "Contenuti e media",
+    "en": "Content and media",
+    "fr": "Contenus et médias",
+    "zh": "内容与媒体"
+   },
+   "social": {
+    "it": "Social e commercio",
+    "en": "Social and commerce",
+    "fr": "Social et commerce",
+    "zh": "社交与商业"
+   },
+   "sistema": {
+    "it": "Sistema e dispositivo",
+    "en": "System and device",
+    "fr": "Système et appareil",
+    "zh": "系统与设备"
+   },
+   "conversazione": {
+    "it": "IA e conversazione",
+    "en": "AI and conversation",
+    "fr": "IA et conversation",
+    "zh": "人工智能与对话"
+   }
+  }
+ },
+ "componenti": [
+  {
+   "id": "atomic-design",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2024,
+   "ordine": 10,
+   "parole": [
+    "atoms",
+    "molecules",
+    "organisms",
+    "design system",
+    "Brad Frost"
+   ],
+   "esempio": "esempi/atomic-design/",
+   "vedi": [],
+   "origine": "slide 3-5",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://atomicdesign.bradfrost.com/chapter-2/",
+     "titolo": "Atomic Design Methodology | Atomic Design by Brad Frost"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Atomic design",
+     "note": "Nella metafora dell’«atomic design», atomi e molecole corrispondono a componenti singoli o raggruppati: gli atomi sono i mattoni più piccoli (un’etichetta, un campo di input, un pulsante), le molecole sono semplici gruppi di atomi che funzionano insieme (un form di ricerca)."
+    },
+    "en": {
+     "nome": "Atomic design",
+     "note": "In the metaphor of \"atomic design\", atoms and molecules correspond to single or grouped components: atoms are the smallest building blocks (a label, an input, a button), molecules are simple groups of atoms working together (a search form)."
+    },
+    "fr": {
+     "nome": "Atomic design",
+     "note": "Dans la métaphore de l’« atomic design », les atomes et les molécules correspondent à des composants isolés ou regroupés : les atomes sont les plus petites briques (un libellé, un champ de saisie, un bouton), les molécules sont de simples groupes d’atomes qui fonctionnent ensemble (un formulaire de recherche)."
+    },
+    "zh": {
+     "nome": "原子设计（Atomic design）",
+     "note": "在“原子设计”的隐喻中，原子和分子分别对应单个组件和组合组件：原子是最小的构建单元（一个标签、一个输入框、一个按钮），分子是协同工作的简单原子组合（一个搜索表单）。"
+    }
+   }
+  },
+  {
+   "id": "component-anatomy",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2026,
+   "ordine": 15,
+   "parole": [
+    "anatomy",
+    "container",
+    "label",
+    "icon",
+    "state layer",
+    "variants",
+    "sizes"
+   ],
+   "esempio": "esempi/component-anatomy/",
+   "vedi": [
+    "interaction-states",
+    "button",
+    "design-systems"
+   ],
+   "origine": "nuova 2026",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/buttons/specs",
+     "titolo": "Buttons: specs (anatomy) – Material Design 3"
+    },
+    {
+     "url": "https://carbondesignsystem.com/components/button/style/",
+     "titolo": "Button: style – Carbon Design System"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Anatomia di un componente",
+     "note": "Ogni componente si può smontare in parti: il contenitore, l'etichetta, l'icona, il livello dello stato (lo strato che cambia con hover, focus e pressione) e gli elementi accessori, come un badge o un testo di supporto.\n\nI design system descrivono ogni componente così: anatomia, varianti, dimensioni e stati. Saper nominare le parti serve a progettarle, a discuterne e a passarle a chi sviluppa."
+    },
+    "en": {
+     "nome": "Anatomy of a component",
+     "note": "Every component can be taken apart: the container, the label, the icon, the state layer (the layer that changes with hover, focus and press) and accessory elements such as a badge or supporting text.\n\nDesign systems describe each component this way: anatomy, variants, sizes and states. Being able to name the parts helps to design them, discuss them and hand them over to developers."
+    },
+    "fr": {
+     "nome": "Anatomie d’un composant",
+     "note": "Chaque composant peut se décomposer en parties : le conteneur, le libellé, l’icône, la couche d’état (celle qui change au survol, au focus et à l’appui) et les éléments accessoires, comme un badge ou un texte d’aide.\n\nLes design systems décrivent chaque composant ainsi : anatomie, variantes, tailles et états. Savoir nommer les parties aide à les concevoir, à en discuter et à les transmettre aux développeurs."
+    },
+    "zh": {
+     "nome": "组件的结构",
+     "note": "每个组件都可以拆分为若干部分：容器、标签、图标、状态层（随悬停、焦点和按下而变化的那一层），以及徽标或辅助文字等附属元素。\n\n设计系统正是这样描述每个组件的：结构、变体、尺寸和状态。能够说出各部分的名称，有助于设计、讨论组件，并把它们交给开发人员。"
+    }
+   }
+  },
+  {
+   "id": "design-systems",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2024,
+   "ordine": 20,
+   "parole": [
+    "design system",
+    "Carbon",
+    "Atlassian",
+    "Material"
+   ],
+   "esempio": "esempi/design-systems/",
+   "vedi": [],
+   "origine": "slide 41",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://carbondesignsystem.com/migrating/guide/overview/",
+     "titolo": "Guide – Carbon Design System"
+    },
+    {
+     "url": "https://atlassian.design/",
+     "titolo": "Atlassian Design"
+    },
+    {
+     "url": "https://m3.material.io/",
+     "titolo": "Material Design 3 - Google's latest open source design system"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Fonti principali: i design system",
+     "note": "L’elenco ragionato si basa su tre design system di riferimento: IBM Carbon, Atlassian Design System e Google Material Design."
+    },
+    "en": {
+     "nome": "Main sources: design systems",
+     "note": "The reasoned list is built on three reference design systems: IBM Carbon, Atlassian Design System and Google Material Design."
+    },
+    "fr": {
+     "nome": "Sources principales : les design systems",
+     "note": "La liste raisonnée s’appuie sur trois design systems de référence : IBM Carbon, Atlassian Design System et Google Material Design."
+    },
+    "zh": {
+     "nome": "主要来源：设计系统",
+     "note": "这份精选清单以三个参考设计系统为基础：IBM Carbon、Atlassian Design System 和 Google Material Design。"
+    }
+   }
+  },
+  {
+   "id": "heuristics-components",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2026,
+   "ordine": 30,
+   "parole": [
+    "Nielsen",
+    "heuristics",
+    "usability",
+    "evaluation"
+   ],
+   "esempio": "esempi/heuristics-components/",
+   "vedi": [
+    "progress-bar",
+    "undo-history",
+    "irreversible-action-warning",
+    "breadcrumb",
+    "command-palette",
+    "tooltip",
+    "empty-state"
+   ],
+   "origine": "nuova 2026",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+     "titolo": "10 Usability Heuristics for User Interface Design – Nielsen Norman Group"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Le 10 euristiche di Nielsen e i componenti",
+     "note": "Le dieci euristiche di Jakob Nielsen (1994) sono regole generali per valutare l'usabilità di un'interfaccia. Molti componenti di questo catalogo esistono proprio per rispettarne una:\n\n- visibilità dello stato del sistema: barra di avanzamento, skeleton screen, toast, indicatore di scrittura;\n- corrispondenza con il mondo reale: pittogrammi, cestino, carrello;\n- controllo e libertà: annulla e cronologia, annulla invio, pulsante «salta»;\n- coerenza e standard: design system, stati interattivi;\n- prevenzione degli errori: avviso prima delle azioni irreversibili, validazione in tempo reale;\n- riconoscere invece di ricordare: briciole di pane, suggerimenti di prompt, input predittivo;\n- flessibilità ed efficienza: command palette, comandi slash, menu contestuale;\n- design estetico e minimalista: ghost button, modalità senza distrazioni;\n- riconoscere, diagnosticare e correggere gli errori: pagina 404, stato vuoto;\n- aiuto e documentazione: tooltip, onboarding, FAQ."
+    },
+    "en": {
+     "nome": "Nielsen's 10 heuristics and the components",
+     "note": "Jakob Nielsen's ten heuristics (1994) are broad rules of thumb to evaluate the usability of an interface. Many components in this catalogue exist precisely to meet one of them:\n\n- visibility of system status: progress bar, skeleton screen, toast, typing indicator;\n- match between system and the real world: pictograms, trash, cart;\n- user control and freedom: undo and history, undo send, skip button;\n- consistency and standards: design systems, interaction states;\n- error prevention: warning before irreversible actions, real-time validation;\n- recognition rather than recall: breadcrumb, prompt suggestions, predictive input;\n- flexibility and efficiency of use: command palette, slash commands, contextual menu;\n- aesthetic and minimalist design: ghost button, distraction-free modes;\n- help users recognise, diagnose and recover from errors: 404 page, empty state;\n- help and documentation: tooltip, onboarding, FAQ."
+    },
+    "fr": {
+     "nome": "Les 10 heuristiques de Nielsen et les composants",
+     "note": "Les dix heuristiques de Jakob Nielsen (1994) sont des règles générales pour évaluer l’utilisabilité d’une interface. Beaucoup de composants de ce catalogue existent justement pour en respecter une :\n\n- visibilité de l’état du système : barre de progression, skeleton screen, toast, indicateur de saisie ;\n- correspondance avec le monde réel : pictogrammes, corbeille, panier ;\n- contrôle et liberté : annuler et historique, annuler l’envoi, bouton « passer » ;\n- cohérence et standards : design systems, états d’interaction ;\n- prévention des erreurs : avertissement avant les actions irréversibles, validation en temps réel ;\n- reconnaître plutôt que se souvenir : fil d’Ariane, suggestions de prompt, saisie prédictive ;\n- flexibilité et efficacité : palette de commandes, commandes slash, menu contextuel ;\n- design esthétique et minimaliste : ghost button, modes sans distraction ;\n- reconnaître, diagnostiquer et corriger les erreurs : page 404, état vide ;\n- aide et documentation : infobulle, onboarding, FAQ."
+    },
+    "zh": {
+     "nome": "尼尔森十大可用性原则与组件",
+     "note": "雅各布·尼尔森（Jakob Nielsen）于 1994 年提出的十条启发式原则，是评估界面可用性的通用经验法则。本目录中的许多组件正是为了满足其中某一条而存在：\n\n- 系统状态可见：进度条、骨架屏、轻提示（toast）、输入中提示；\n- 系统与现实世界相符：象形图标、回收站、购物车；\n- 用户控制与自由：撤销与历史记录、撤回发送、“跳过”按钮；\n- 一致性与标准：设计系统、交互状态；\n- 预防错误：不可逆操作前的警告、实时校验；\n- 识别而非回忆：面包屑导航、提示词建议、预测输入；\n- 灵活高效：命令面板、斜杠命令、上下文菜单；\n- 美观简约的设计：幽灵按钮、无干扰模式；\n- 帮助用户识别、诊断并从错误中恢复：404 页面、空状态；\n- 帮助与文档：工具提示（tooltip）、新手引导、常见问题。"
+    }
+   }
+  },
+  {
+   "id": "hyperlink",
+   "livello": "fondamentale",
+   "categoria": "navigazione",
+   "anno": 2024,
+   "ordine": 10,
+   "parole": [
+    "link",
+    "anchor",
+    "href",
+    "visited"
+   ],
+   "esempio": "resources/component-handout-states1.html",
+   "vedi": [
+    "interaction-states",
+    "button"
+   ],
+   "origine": "slide 6",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Collegamento ipertestuale",
+     "note": "I link sono l'elemento fondamentale che permette di collegare tra loro gli ipertesti.\n\nI link hanno diversi stati interattivi: ecco gli stati standard dell'HTML."
+    },
+    "en": {
+     "nome": "Hyperlink",
+     "note": "Links are the fundamental element that allows hypertexts to be linked together.\n\nLinks have different interaction states: here are the standard HTML states."
+    },
+    "fr": {
+     "nome": "Lien hypertexte",
+     "note": "Les liens sont l'élément fondamental qui permet de relier les hypertextes entre eux.\n\nLes liens ont différents états d'interaction : voici les états standard du HTML."
+    },
+    "zh": {
+     "nome": "超链接",
+     "note": "链接是让超文本彼此相连的基本元素。\n\n链接有多种交互状态：以下是 HTML 的标准状态。"
+    }
+   }
+  },
+  {
+   "id": "interaction-states",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 20,
+   "parole": [
+    "hover",
+    "focus",
+    "active",
+    "visited",
+    "disabled",
+    "pressed",
+    "tab key"
+   ],
+   "esempio": "resources/component-handout-states2.html",
+   "vedi": [
+    "hyperlink",
+    "button",
+    "feedback"
+   ],
+   "origine": "slide 7-9, mining 8",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://uxdesign.cc/an-interaction-state-of-mind-705572b3ad51",
+     "titolo": "An interaction state of mind | UX Collective"
+    },
+    {
+     "url": "https://m3.material.io/foundations/interaction-states",
+     "titolo": "Interaction states – Material Design 3"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://uxplanet.org/focusing-on-buttons-e31d575953bd",
+     "titolo": "Focusing on Buttons | by Carlota Antón | UX Planet"
+    },
+    {
+     "url": "https://www.w3schools.com/css/tryit.asp?filename=trycss_link",
+     "titolo": "W3Schools Tryit Editor"
+    },
+    {
+     "url": "https://m2.material.io/design/interaction/states.html#usage",
+     "titolo": "States - Material Design"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Stati interattivi",
+     "note": "Gli stati interattivi si estendono a tutti i componenti interattivi: link, pulsanti, elementi trascinabili, form ecc.\n\nLo stato di focus si può gestire da tastiera e si applica a un solo componente alla volta: nei browser web si gestisce con il tasto Tab.\n\nNell'esempio si studia una scala di trasparenze per rendere i componenti interoperabili su sfondi di colori diversi: cambiando lo sfondo, gli stati interattivi mantengono la stessa struttura e vengono solo calibrati in base al contrasto."
+    },
+    "en": {
+     "nome": "Interaction states",
+     "note": "Interaction states extend to all interactive components: links, buttons, draggable elements, forms, etc.\n\nThe focus state can be operated from the keyboard and applies to only one component at a time: in web browsers it is managed with the tab key.\n\nIn the example, a transparency scale is studied to make the components interoperable on different colour backgrounds: changing the background, the interaction states keep the same structure and are just calibrated depending on the contrast."
+    },
+    "fr": {
+     "nome": "États d'interaction",
+     "note": "Les états d'interaction s'appliquent à tous les composants interactifs : liens, boutons, éléments déplaçables, formulaires, etc.\n\nL'état de focus peut être piloté au clavier et ne s'applique qu'à un seul composant à la fois : dans les navigateurs web, il est géré avec la touche Tab.\n\nDans l'exemple, une échelle de transparence est étudiée pour rendre les composants interopérables sur des fonds de différentes couleurs : quand le fond change, les états d'interaction gardent la même structure et sont simplement calibrés selon le contraste."
+    },
+    "zh": {
+     "nome": "交互状态",
+     "note": "交互状态适用于所有可交互组件：链接、按钮、可拖动元素、表单等。\n\n焦点（focus）状态可以通过键盘操作，并且一次只作用于一个组件：在网页浏览器中用 Tab 键来管理。\n\n示例中研究了一套透明度梯度，使组件能在不同颜色的背景上通用：更换背景时，交互状态保持相同的结构，只根据对比度进行调整。"
+    }
+   }
+  },
+  {
+   "id": "feedback",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 30,
+   "parole": [
+    "haptics",
+    "vibration",
+    "throbber",
+    "confirmation",
+    "principle"
+   ],
+   "esempio": "resources/component-handout-feedback.html",
+   "vedi": [
+    "interaction-states"
+   ],
+   "origine": "slide 10-11",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Retroazione",
+     "note": "Il feedback trasmette informazioni all'utente in un contesto di interazione.\n\nNon è un componente specifico ma il principio che determina l'esistenza dei diversi stati interattivi. Dovrebbe essere uno dei principi guida della progettazione UX e UI: nell'interazione uomo-macchina bisogna sempre dare all'utente un messaggio di feedback nel tempo più breve ragionevole. Gli stati interattivi:\n\n- default\n- mouse sopra (hover)\n- clic: pressione e rilascio (un impulso)\n- throbber per lo stato di caricamento\n- conferma\n\nIl feedback non è solo visivo. La parola «aptica» (haptics) deriva dal greco «tocco»: il feedback aptico (vibrazioni e pattern di forme d'onda) è dato da un componente vibrante o da un attuatore come un motore risonante. Il Motorola StarTAC è stato il primo telefono con la vibrazione (1996); il DualShock, il primo controller PlayStation con la vibrazione, è uscito in Giappone nel 1997 e in Nord America nel 1998."
+    },
+    "en": {
+     "nome": "Feedback",
+     "note": "Feedback conveys pieces of information to the user in an interaction context.\n\nIt is not a specific component but the principle that determines the existence of the different interaction states. It should be one of the guiding principles of UX and UI design: in human-machine interaction, a feedback message must always be given to the user in the shortest reasonable time. The interaction states:\n\n- default\n- mouse over (hover)\n- a click: press and release (a pulse)\n- throbber for the loading status\n- confirmation\n\nFeedback is not only visual. The word \"haptics\" derives from the Greek for \"I touch\": haptic feedback (vibrations and waveform patterns) is given by a vibrating component or actuator such as a resonant motor. The Motorola StarTAC was the first phone with vibration (1996); the DualShock, the first PlayStation controller with vibration, was released in Japan in 1997 and in North America in 1998."
+    },
+    "fr": {
+     "nome": "Rétroaction (feedback)",
+     "note": "Le feedback transmet des informations à l'utilisateur dans un contexte d'interaction.\n\nCe n'est pas un composant spécifique, mais le principe qui détermine l'existence des différents états d'interaction. Il devrait être l'un des principes directeurs du design UX et UI : dans l'interaction homme-machine, un message de feedback doit toujours être donné à l'utilisateur dans le délai raisonnable le plus court. Les états d'interaction :\n\n- par défaut\n- survol de la souris (hover)\n- clic : appui et relâchement (une impulsion)\n- throbber pour l'état de chargement\n- confirmation\n\nLe feedback n'est pas seulement visuel. Le mot « haptique » vient du grec « je touche » : le retour haptique (vibrations et motifs de formes d'onde) est produit par un composant vibrant ou un actionneur, comme un moteur résonant. Le Motorola StarTAC a été le premier téléphone avec vibreur (1996) ; la DualShock, première manette PlayStation à vibrations, est sortie au Japon en 1997 et en Amérique du Nord en 1998."
+    },
+    "zh": {
+     "nome": "反馈",
+     "note": "反馈（feedback）在交互情境中向用户传达信息。\n\n它不是某个具体组件，而是决定各种交互状态存在的原则。它应当是 UX 和 UI 设计的指导原则之一：在人机交互中，必须始终在合理的最短时间内向用户给出反馈信息。交互状态包括：\n\n- 默认（default）\n- 鼠标悬停（hover）\n- 点击：按下并松开（一次脉冲）\n- 表示加载状态的加载指示器（throbber）\n- 确认\n\n反馈不只是视觉上的。“触觉”（haptics）一词源自希腊语“我触摸”：触觉反馈（振动和波形模式）由振动元件或执行器（如谐振马达）产生。摩托罗拉 StarTAC 是第一款带振动功能的手机（1996 年）；DualShock 是第一款带振动功能的 PlayStation 手柄，1997 年在日本发布，1998 年在北美发布。"
+    }
+   }
+  },
+  {
+   "id": "pointer",
+   "livello": "fondamentale",
+   "categoria": "navigazione",
+   "anno": 2024,
+   "ordine": 40,
+   "parole": [
+    "cursor",
+    "mouse",
+    "throbber",
+    "hourglass",
+    "wait cursor"
+   ],
+   "esempio": "esempi/pointer/",
+   "vedi": [
+    "text-caret"
+   ],
+   "origine": "slide 12",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/pointing-devices",
+     "titolo": "Apple Human Interface Guidelines (HIG)"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://www.youtube.com/watch?v=B6rKUf9DWRI",
+     "titolo": "1968 \"Mother of All Demos\" by SRI's Doug Engelbart and Team - YouTube"
+    },
+    {
+     "url": "https://ux.stackexchange.com/questions/52336/why-is-the-mouse-cursor-slightly-tilted-and-not-straight",
+     "titolo": "Why is the mouse cursor slightly tilted and not straight? - User Experience Stack Exchange"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Puntatore",
+     "note": "Il cursore, o puntatore, è un elemento grafico che riproduce la posizione e il movimento di un dispositivo di puntamento. Il cursore può cambiare aspetto o stato di interazione a seconda del contesto e della posizione. Il più notevole è il cursore di attesa ([throbber](https://en.wikipedia.org/wiki/Throbber)), raffigurato in Apple macOS come una rotella colorata che gira e nelle vecchie versioni di Microsoft Windows come una clessidra (oggi un cerchio che gira)."
+    },
+    "en": {
+     "nome": "Pointer",
+     "note": "The cursor or pointer is a graphical element that mirrors the position and movement of a pointing device. The cursor can change appearance or interaction state depending on context and position. The most remarkable is the wait cursor ([throbber](https://en.wikipedia.org/wiki/Throbber)), depicted in Apple macOS as a spinning colour wheel and in older versions of Microsoft Windows as an hourglass (today a spinning circle)."
+    },
+    "fr": {
+     "nome": "Pointeur",
+     "note": "Le curseur, ou pointeur, est un élément graphique qui reproduit la position et le mouvement d'un dispositif de pointage. Le curseur peut changer d'apparence ou d'état d'interaction selon le contexte et la position. Le plus remarquable est le curseur d'attente ([throbber](https://en.wikipedia.org/wiki/Throbber)), représenté dans Apple macOS par une roue colorée qui tourne et, dans les anciennes versions de Microsoft Windows, par un sablier (aujourd’hui un cercle qui tourne)."
+    },
+    "zh": {
+     "nome": "指针",
+     "note": "光标或指针是一种图形元素，反映定点设备的位置和移动。光标可以根据情境和位置改变外观或交互状态。最引人注目的是等待光标（[throbber](https://en.wikipedia.org/wiki/Throbber)），在 Apple macOS 中表现为旋转的彩色圆盘，在旧版 Microsoft Windows 中表现为沙漏（如今为旋转的圆圈）。"
+    }
+   }
+  },
+  {
+   "id": "breadcrumb",
+   "livello": "fondamentale",
+   "categoria": "navigazione",
+   "anno": 2024,
+   "ordine": 50,
+   "parole": [
+    "hierarchy",
+    "path",
+    "location"
+   ],
+   "esempio": "esempi/breadcrumb/",
+   "vedi": [],
+   "origine": "slide 13",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Briciole di pane",
+     "note": "Le briciole di pane (breadcrumb) rappresentano la struttura dei contenuti attraverso l’annidamento e la gerarchia; non rappresentano l’ordine cronologico della navigazione. Sono essenziali per dare agli utenti il senso della loro posizione attuale all’interno della gerarchia."
+    },
+    "en": {
+     "nome": "Breadcrumb",
+     "note": "Breadcrumbs represent the content structure by nesting and hierarchy; they do not represent the chronological navigation order. They are essential to give users a sense of their current location within the hierarchy."
+    },
+    "fr": {
+     "nome": "Fil d’Ariane",
+     "note": "Le fil d’Ariane (breadcrumb) représente la structure du contenu par l’imbrication et la hiérarchie ; il ne représente pas l’ordre chronologique de la navigation. Il est essentiel pour donner aux utilisateurs une idée de leur position actuelle dans la hiérarchie."
+    },
+    "zh": {
+     "nome": "面包屑导航（Breadcrumb）",
+     "note": "面包屑通过嵌套和层级来呈现内容结构，而不是按时间顺序记录浏览路径。它对于让用户了解自己在层级结构中的当前位置至关重要。"
+    }
+   }
+  },
+  {
+   "id": "context-menu",
+   "livello": "fondamentale",
+   "categoria": "azioni",
+   "anno": 2024,
+   "ordine": 60,
+   "parole": [
+    "right-click",
+    "long press",
+    "copy",
+    "paste"
+   ],
+   "esempio": "esempi/context-menu/",
+   "vedi": [
+    "kebab-menu"
+   ],
+   "origine": "slide 14",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Menu contestuale",
+     "note": "Il menu contestuale compare in seguito a un’interazione dell’utente, di solito un clic destro o una pressione prolungata, e offre un elenco di azioni pertinenti all’elemento o all’area selezionati. I menu contestuali danno accesso rapido a funzioni come copia, incolla, elimina, o a funzioni adatte al contesto, e migliorano l’usabilità perché riducono la navigazione."
+    },
+    "en": {
+     "nome": "Contextual menu",
+     "note": "A contextual menu appears upon a user interaction, typically a right-click or a long press, offering a list of actions relevant to the selected item or area. Context menus give quick access to functions like copy, paste, delete, or features tailored to the context, enhancing usability by minimising navigation."
+    },
+    "fr": {
+     "nome": "Menu contextuel",
+     "note": "Un menu contextuel apparaît à la suite d’une interaction de l’utilisateur, généralement un clic droit ou un appui long, et propose une liste d’actions pertinentes pour l’élément ou la zone sélectionnés. Les menus contextuels donnent un accès rapide à des fonctions comme copier, coller, supprimer, ou à des fonctions adaptées au contexte, et améliorent l’utilisabilité en réduisant la navigation."
+    },
+    "zh": {
+     "nome": "上下文菜单",
+     "note": "上下文菜单在用户交互后出现，通常是右键点击或长按，提供与所选项目或区域相关的操作列表。上下文菜单可快速访问复制、粘贴、删除等功能或与情境相关的功能，减少导航步骤，从而提升可用性。"
+    }
+   }
+  },
+  {
+   "id": "selectors",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 70,
+   "parole": [
+    "radio",
+    "checkbox",
+    "switch",
+    "toggle"
+   ],
+   "esempio": "esempi/selectors/",
+   "vedi": [
+    "radio-button",
+    "checkbox",
+    "switch",
+    "dropdown-filter"
+   ],
+   "origine": "slide 19",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://uxdesign.cc/ui-cheat-sheet-radio-buttons-checkboxes-and-other-selectors-bf56777ad59e",
+     "titolo": "UI cheat sheet: radio buttons, checkboxes, and other selectors | Tess Gadd"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Selettori",
+     "note": "Selettori come radio button, checkbox e switch sono strumenti essenziali per permettere agli utenti di interagire con le interfacce in modo chiaro ed efficiente. La scelta dipende dal numero di opzioni e dal contesto della selezione:\n\n- radio button: una scelta tra poche opzioni;\n- checkbox: selezioni multiple su poche o più opzioni;\n- switch: una decisione acceso/spento per una sola opzione.\n\nUn design efficace considera non solo l'estetica e l'accessibilità, ma anche il numero di opzioni, per garantire un'esperienza fluida e intuitiva."
+    },
+    "en": {
+     "nome": "Selectors",
+     "note": "Selectors such as radio buttons, checkboxes and switches are essential tools to let users interact with interfaces clearly and efficiently. The choice depends on the number of options and on the selection context:\n\n- radio buttons: one choice among a few options;\n- checkboxes: multiple selections on few or more options;\n- switches: an on/off decision for just one option.\n\nEffective design considers not only aesthetics and accessibility but also the number of options, to ensure a smooth and intuitive experience."
+    },
+    "fr": {
+     "nome": "Sélecteurs",
+     "note": "Les sélecteurs comme les boutons radio, les cases à cocher et les interrupteurs sont des outils essentiels pour permettre aux utilisateurs d'interagir avec les interfaces de manière claire et efficace. Le choix dépend du nombre d'options et du contexte de sélection :\n\n- boutons radio : un choix parmi quelques options ;\n- cases à cocher : sélections multiples parmi quelques options ou davantage ;\n- interrupteurs : une décision activé/désactivé pour une seule option.\n\nUn design efficace prend en compte non seulement l'esthétique et l'accessibilité, mais aussi le nombre d'options, pour garantir une expérience fluide et intuitive."
+    },
+    "zh": {
+     "nome": "选择控件",
+     "note": "单选按钮（radio button）、复选框（checkbox）和开关（switch）等选择控件，是让用户清晰、高效地与界面交互的重要工具。选择哪一种取决于选项的数量和选择的情境：\n\n- 单选按钮：在少数几个选项中选择一个；\n- 复选框：在少量或更多选项中进行多选；\n- 开关：对单个选项做出开/关决定。\n\n有效的设计不仅要考虑美观和无障碍，还要考虑选项的数量，以确保流畅、直观的体验。"
+    }
+   }
+  },
+  {
+   "id": "dropdown-filter",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 71,
+   "parole": [
+    "dropdown",
+    "combobox",
+    "select",
+    "autocomplete",
+    "filter"
+   ],
+   "esempio": "esempi/dropdown-filter/",
+   "vedi": [
+    "selectors",
+    "predictive-input"
+   ],
+   "origine": "slide 15",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Selettore a tendina con filtro",
+     "note": "Più componenti combinati: filtro di testo, pulsante ed elenco a tendina. Il dropdown permette di scegliere le opzioni da un menu; il filtro permette di restringere rapidamente le opzioni digitando parole chiave, cosa particolarmente utile con elenchi lunghi. Riduce il carico cognitivo e rende la selezione più efficiente."
+    },
+    "en": {
+     "nome": "Dropdown selector with filtering",
+     "note": "Several components combined: text filter, button and drop-down list. The dropdown lets users select options from a menu; the filter lets them quickly narrow down the options by typing keywords, which is particularly useful with long lists. It reduces cognitive load and improves selection efficiency."
+    },
+    "fr": {
+     "nome": "Liste déroulante avec filtre",
+     "note": "Plusieurs composants combinés : filtre de texte, bouton et liste déroulante. La liste déroulante permet de choisir des options dans un menu ; le filtre permet de réduire rapidement les options en tapant des mots-clés, ce qui est particulièrement utile avec de longues listes. Il réduit la charge cognitive et rend la sélection plus efficace."
+    },
+    "zh": {
+     "nome": "带筛选的下拉选择器",
+     "note": "多个组件的组合：文本筛选框、按钮和下拉列表。下拉菜单（dropdown）让用户从菜单中选择选项；筛选框让用户通过输入关键词快速缩小选项范围，这在长列表中尤其有用。它能降低认知负荷，提高选择效率。"
+    }
+   }
+  },
+  {
+   "id": "radio-button",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 72,
+   "parole": [
+    "option",
+    "single choice"
+   ],
+   "esempio": "esempi/radio-button/",
+   "vedi": [
+    "selectors"
+   ],
+   "origine": "slide 16",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/radio-button/overview",
+     "titolo": "Radio button – Material Design 3"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante di opzione («radio»)",
+     "note": "Una scelta tra poche opzioni che si escludono a vicenda."
+    },
+    "en": {
+     "nome": "Radio button",
+     "note": "One choice among a few mutually exclusive options."
+    },
+    "fr": {
+     "nome": "Bouton radio",
+     "note": "Un choix parmi quelques options mutuellement exclusives."
+    },
+    "zh": {
+     "nome": "单选按钮",
+     "note": "在少数几个互斥选项中做出一个选择。"
+    }
+   }
+  },
+  {
+   "id": "checkbox",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 73,
+   "parole": [
+    "tick",
+    "multiple choice",
+    "indeterminate"
+   ],
+   "esempio": "esempi/checkbox/",
+   "vedi": [
+    "selectors"
+   ],
+   "origine": "slide 17",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/checkbox/overview",
+     "titolo": "Checkbox – Material Design 3"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Casella di spunta (checkbox)",
+     "note": "Selezione multipla tra poche o più opzioni."
+    },
+    "en": {
+     "nome": "Checkbox",
+     "note": "Multiple selections among few or more options."
+    },
+    "fr": {
+     "nome": "Case à cocher",
+     "note": "Sélection multiple parmi quelques options ou davantage."
+    },
+    "zh": {
+     "nome": "复选框（Checkbox）",
+     "note": "在少量或较多选项中进行多项选择。"
+    }
+   }
+  },
+  {
+   "id": "switch",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 74,
+   "parole": [
+    "toggle",
+    "on/off"
+   ],
+   "esempio": "esempi/switch/",
+   "vedi": [
+    "selectors",
+    "dark-mode-switch"
+   ],
+   "origine": "slide 18",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/switch/overview",
+     "titolo": "Switch – Material Design 3"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Interruttore (commutatore)",
+     "note": "Una decisione acceso/spento per una sola opzione, applicata subito."
+    },
+    "en": {
+     "nome": "Switch",
+     "note": "An on/off decision for just one option, applied immediately."
+    },
+    "fr": {
+     "nome": "Interrupteur (switch)",
+     "note": "Une décision activé/désactivé pour une seule option, appliquée immédiatement."
+    },
+    "zh": {
+     "nome": "开关（switch）",
+     "note": "针对单个选项的开/关决定，立即生效。"
+    }
+   }
+  },
+  {
+   "id": "button",
+   "livello": "fondamentale",
+   "categoria": "azioni",
+   "anno": 2024,
+   "ordine": 80,
+   "parole": [
+    "CTA",
+    "call to action",
+    "affordance",
+    "primary",
+    "secondary"
+   ],
+   "esempio": "esempi/button/",
+   "vedi": [
+    "hyperlink",
+    "ghost-button",
+    "badge",
+    "floating-action-button",
+    "tooltip"
+   ],
+   "origine": "slide 20, 22, 24",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://uxdesign.cc/button-design-user-interface-components-series-85243b6736c7",
+     "titolo": "Button design — UI components series | Taras Bakusevych | UX Collective"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://uxdesign.cc/ui-cheat-sheets-buttons-7329ed9d6112",
+     "titolo": "UI cheat sheet: buttons | UX Collective"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Pulsante",
+     "note": "Il pulsante è un componente fondamentale pensato per avviare un’azione, come inviare un form o passare a un’altra pagina. Deve essere facilmente riconoscibile come pulsante, grazie a indizi visivi (affordance) come forme distinte, bordi, colori, ombre. Aspetto e posizione influiscono sul riconoscimento di un pulsante.\n\nPur essendo simili ai link ipertestuali nel permettere la navigazione, i pulsanti si usano di solito per compiti, azioni o comandi all’interno di un’applicazione, mentre i link servono soprattutto a raggiungere altre pagine o risorse. Mantenere questa distinzione garantisce chiarezza e usabilità."
+    },
+    "en": {
+     "nome": "Button",
+     "note": "A button is a fundamental component designed to trigger an action, such as submitting a form or navigating to another page. It must be easily recognisable as a button, through visual cues (affordances) like distinct shapes, borders, colours, shadows. Appearance and positioning affect the recognition of a button.\n\nWhile similar to hyperlinks in enabling navigation, buttons are typically used for tasks, actions or commands within an application, whereas hyperlinks are primarily meant to navigate to other pages or resources. Keeping this distinction maintains clarity and usability."
+    },
+    "fr": {
+     "nome": "Bouton",
+     "note": "Le bouton est un composant fondamental conçu pour déclencher une action, comme envoyer un formulaire ou naviguer vers une autre page. Il doit être facilement reconnaissable comme bouton, grâce à des indices visuels (affordances) tels que des formes distinctes, des bordures, des couleurs, des ombres. L’apparence et la position influent sur la reconnaissance d’un bouton.\n\nBien qu’ils permettent, comme les hyperliens, de naviguer, les boutons servent généralement à des tâches, des actions ou des commandes au sein d’une application, tandis que les hyperliens servent principalement à accéder à d’autres pages ou ressources. Maintenir cette distinction préserve la clarté et l’utilisabilité."
+    },
+    "zh": {
+     "nome": "按钮",
+     "note": "按钮是一种基础组件，用于触发操作，例如提交表单或跳转到其他页面。它必须易于被识别为按钮，依靠示能（affordance）等视觉线索，如独特的形状、边框、颜色、阴影。外观和位置都会影响按钮的可识别性。\n\n按钮与超链接一样可以实现导航，但按钮通常用于应用内的任务、操作或命令，而超链接主要用于前往其他页面或资源。保持这一区分有助于界面的清晰性和可用性。"
+    }
+   }
+  },
+  {
+   "id": "ghost-button",
+   "livello": "fondamentale",
+   "categoria": "azioni",
+   "anno": 2024,
+   "ordine": 81,
+   "parole": [
+    "outline",
+    "secondary action",
+    "transparent"
+   ],
+   "esempio": "resources/component-ghost-button.html",
+   "vedi": [
+    "button"
+   ],
+   "origine": "slide 21",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante fantasma (ghost button)",
+     "note": "Un pulsante minimalista con sfondo trasparente o semitrasparente e un semplice bordo. Lo stile discreto lo rende meno evidente: si usa spesso per azioni secondarie o terziarie, per non distrarre dai pulsanti principali.\n\nCome tutti i pulsanti, deve restare riconoscibile come interattivo, grazie a contorni chiari, effetti di hover o indicazioni nel testo. I ghost button possono somigliare ai link, ma sono riservati alle azioni all'interno di un'applicazione."
+    },
+    "en": {
+     "nome": "Ghost button",
+     "note": "A minimalist button with a transparent or semi-transparent background and a simple border. The subtle styling makes it less prominent: it is often used for secondary or tertiary actions, so as not to distract from primary buttons.\n\nLike all buttons, it must remain recognisable as interactive, through clear outlines, hover effects or text cues. Ghost buttons may resemble hyperlinks, but they are reserved for actions within an application."
+    },
+    "fr": {
+     "nome": "Bouton fantôme (ghost button)",
+     "note": "Un bouton minimaliste avec un fond transparent ou semi-transparent et une simple bordure. Son style discret le rend moins visible : on l'utilise souvent pour des actions secondaires ou tertiaires, afin de ne pas détourner l'attention des boutons principaux.\n\nComme tous les boutons, il doit rester reconnaissable comme interactif, grâce à des contours nets, des effets de survol ou des indices textuels. Les boutons fantômes peuvent ressembler à des liens hypertextes, mais ils sont réservés aux actions au sein d'une application."
+    },
+    "zh": {
+     "nome": "幽灵按钮（ghost button）",
+     "note": "一种极简按钮，背景透明或半透明，只有简单的边框。低调的样式使它不那么显眼：常用于次要或三级操作，以免分散对主要按钮的注意力。\n\n和所有按钮一样，它必须通过清晰的轮廓、悬停（hover）效果或文字提示，保持可交互的辨识度。幽灵按钮可能看起来像超链接，但它们专用于应用内的操作。"
+    }
+   }
+  },
+  {
+   "id": "badge",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 82,
+   "parole": [
+    "count",
+    "status",
+    "dot",
+    "notification"
+   ],
+   "esempio": "esempi/badge/",
+   "vedi": [
+    "button",
+    "notification-system"
+   ],
+   "origine": "slide 23",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Badge",
+     "note": "Un’estensione di un pulsante o di un’icona che fornisce informazioni aggiuntive, come conteggi o stati."
+    },
+    "en": {
+     "nome": "Badge",
+     "note": "An extension of a button or icon that provides additional information like counts or statuses."
+    },
+    "fr": {
+     "nome": "Badge",
+     "note": "Une extension d’un bouton ou d’une icône qui fournit des informations supplémentaires, comme des compteurs ou des statuts."
+    },
+    "zh": {
+     "nome": "徽标（Badge）",
+     "note": "按钮或图标的附加元素，用于提供计数或状态等额外信息。"
+    }
+   }
+  },
+  {
+   "id": "floating-action-button",
+   "livello": "fondamentale",
+   "categoria": "azioni",
+   "anno": 2024,
+   "ordine": 83,
+   "parole": [
+    "FAB",
+    "primary action",
+    "mobile"
+   ],
+   "esempio": "esempi/floating-action-button/",
+   "vedi": [
+    "button"
+   ],
+   "origine": "slide 23",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/floating-action-button/overview",
+     "titolo": "FAB – Material Design 3"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante d'azione fluttuante (FAB)",
+     "note": "Un pulsante circolare, spesso usato per rappresentare l'azione principale nelle interfacce mobile e web."
+    },
+    "en": {
+     "nome": "Floating Action Button (FAB)",
+     "note": "A circular button, often used to represent the primary action in mobile and web interfaces."
+    },
+    "fr": {
+     "nome": "Bouton d'action flottant (FAB)",
+     "note": "Un bouton circulaire, souvent utilisé pour représenter l'action principale dans les interfaces mobiles et web."
+    },
+    "zh": {
+     "nome": "悬浮操作按钮（FAB）",
+     "note": "一种圆形按钮，常用于在移动端和网页界面中表示主要操作。"
+    }
+   }
+  },
+  {
+   "id": "tooltip",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 84,
+   "parole": [
+    "hint",
+    "hover",
+    "help"
+   ],
+   "esempio": "esempi/tooltip/",
+   "vedi": [
+    "button"
+   ],
+   "origine": "slide 23",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.thedesignerstoolbox.com/design-system/when-to-use-tooltips/",
+     "titolo": "When to use tooltips in UX design - The Designer's Toolbox"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Tooltip (suggerimento)",
+     "note": "Una piccola etichetta che offre indicazioni contestuali su un elemento, di solito mostrata all'hover o al focus."
+    },
+    "en": {
+     "nome": "Tooltip",
+     "note": "A small label that offers contextual guidance about an element, usually shown on hover or focus."
+    },
+    "fr": {
+     "nome": "Infobulle (tooltip)",
+     "note": "Une petite étiquette qui donne des indications contextuelles sur un élément, généralement affichée au survol ou au focus."
+    },
+    "zh": {
+     "nome": "工具提示（tooltip）",
+     "note": "为某个元素提供上下文说明的小标签，通常在悬停（hover）或获得焦点（focus）时显示。"
+    }
+   }
+  },
+  {
+   "id": "tag-chip",
+   "livello": "fondamentale",
+   "categoria": "contenuti",
+   "anno": 2024,
+   "ordine": 90,
+   "parole": [
+    "label",
+    "category",
+    "filter",
+    "metadata"
+   ],
+   "esempio": "resources/component-tag.html",
+   "vedi": [
+    "label",
+    "image-tags"
+   ],
+   "origine": "slide 25",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://m3.material.io/components/chips/specs",
+     "titolo": "Chips – Material Design 3"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Tag e chip",
+     "note": "Un tag serve a categorizzare, etichettare o mettere in evidenza un contenuto, spesso dando un contesto rapido o dei metadati sull'elemento a cui è associato. I tag sono di solito piccoli elementi di testo stilizzati, a volte con icone, e possono essere interattivi (cliccabili per filtrare o gestire i contenuti). Quando includono icone o altri elementi si chiamano spesso «chip», dal nome usato dalla libreria Material Design di Google."
+    },
+    "en": {
+     "nome": "Tag and chip",
+     "note": "A tag is used to categorise, label or highlight content, often providing quick context or metadata about the associated item. Tags are typically small, stylised text elements, sometimes with icons, and may be interactive (clickable to filter or manage content). When they include icons or other elements they are often called \"chips\", after the name given by Google's Material Design library."
+    },
+    "fr": {
+     "nome": "Tag et chip",
+     "note": "Un tag sert à catégoriser, étiqueter ou mettre en avant un contenu, en donnant souvent un contexte rapide ou des métadonnées sur l'élément associé. Les tags sont généralement de petits éléments de texte stylisés, parfois avec des icônes, et peuvent être interactifs (cliquables pour filtrer ou gérer le contenu). Lorsqu'ils comportent des icônes ou d'autres éléments, on les appelle souvent « chips », d'après le nom donné par la bibliothèque Material Design de Google."
+    },
+    "zh": {
+     "nome": "标签（tag）与纸片（chip）",
+     "note": "标签用于对内容进行分类、标注或突出显示，通常为相关项目提供快速的上下文或元数据。标签一般是小型的样式化文字元素，有时带图标，也可以是可交互的（点击即可筛选或管理内容）。当它们包含图标或其他元素时，常被称为“chip”，这个名称来自 Google 的 Material Design 组件库。"
+    }
+   }
+  },
+  {
+   "id": "modal",
+   "livello": "fondamentale",
+   "categoria": "contenitori",
+   "anno": 2024,
+   "ordine": 100,
+   "parole": [
+    "dialog",
+    "lightbox",
+    "backdrop",
+    "popup"
+   ],
+   "esempio": "esempi/modal/",
+   "vedi": [
+    "irreversible-action-warning",
+    "sheet"
+   ],
+   "origine": "slide 26, 37",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://itnext.io/managing-modals-with-react-hooks-c9c55c458368",
+     "titolo": "Evan Burbidge | itnext.io"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://getbootstrap.com/docs/5.3/components/modal/",
+     "titolo": "Modal · Bootstrap"
+    },
+    {
+     "url": "https://www.w3schools.com/cssref/css3_pr_backdrop-filter.php",
+     "titolo": "CSS backdrop-filter"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Modale, overlay e finestra di dialogo",
+     "note": "Le modali permettono di agire sulla pagina senza lasciarla, restando nel contesto. Si usano spesso per le finestre di dialogo (il software deve chiedere qualcosa per andare avanti) o per mostrare immagini più grandi."
+    },
+    "en": {
+     "nome": "Modal, overlay and dialog box",
+     "note": "Modals let users act on-page without leaving the current page, staying in context. They are often used for dialog boxes (the software has to ask something to go on) or to show bigger images."
+    },
+    "fr": {
+     "nome": "Fenêtre modale, overlay et boîte de dialogue",
+     "note": "Les fenêtres modales permettent d'agir sur la page sans la quitter, en restant dans le contexte. On les utilise souvent pour les boîtes de dialogue (le logiciel doit poser une question pour continuer) ou pour afficher des images en plus grand."
+    },
+    "zh": {
+     "nome": "模态框、遮罩层与对话框",
+     "note": "模态框（modal）让用户无需离开当前页面即可在页面上操作，保持在原有情境中。它常用于对话框（软件需要询问某事才能继续），或用于显示更大的图片。"
+    }
+   }
+  },
+  {
+   "id": "input-form",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 110,
+   "parole": [
+    "field",
+    "text box",
+    "registration",
+    "login",
+    "submit"
+   ],
+   "esempio": "esempi/input-form/",
+   "vedi": [
+    "live-validation",
+    "selectors"
+   ],
+   "origine": "slide 27-29",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://uxdesign.cc/text-fields-forms-design-ui-components-series-2b32b2beebd0",
+     "titolo": "Text fields & Forms design — UI components series | Taras Bakusevych | UX Collective"
+    },
+    {
+     "url": "https://makeitclear.com/ux-ui-tips-a-guide-to-creating-world-class-forms/",
+     "titolo": "UX/UI tips: A guide to creating world class forms | makeitclear.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Form (modulo di inserimento dati)",
+     "note": "Un form permette agli utenti di inserire e inviare dati a un sistema. È composto da campi come caselle di testo, checkbox, radio button, menu a tendina e pulsanti, in cui gli utenti inseriscono nomi, indirizzi email, password o altri dati. Il form raccoglie i dati inseriti e li invia a un server o a un database, come nella registrazione, nel login o nell'invio di dati."
+    },
+    "en": {
+     "nome": "Input form",
+     "note": "An input form lets users enter and submit data to a system. It consists of fields such as text boxes, checkboxes, radio buttons, drop-down menus and buttons, where users input names, email addresses, passwords or other data. The form captures the input and sends it to a server or database, as in registration, login or data submission."
+    },
+    "fr": {
+     "nome": "Formulaire de saisie",
+     "note": "Un formulaire de saisie permet aux utilisateurs d'entrer des données et de les envoyer à un système. Il se compose de champs tels que des zones de texte, des cases à cocher, des boutons radio, des menus déroulants et des boutons, où les utilisateurs saisissent des noms, des adresses e-mail, des mots de passe ou d'autres données. Le formulaire recueille la saisie et l'envoie à un serveur ou à une base de données, comme lors d'une inscription, d'une connexion ou d'un envoi de données."
+    },
+    "zh": {
+     "nome": "输入表单",
+     "note": "输入表单（form）让用户向系统输入并提交数据。它由文本框、复选框、单选按钮、下拉菜单和按钮等字段组成，用户在其中输入姓名、电子邮件地址、密码或其他数据。表单收集输入内容并将其发送到服务器或数据库，例如注册、登录或提交数据。"
+    }
+   }
+  },
+  {
+   "id": "pagination",
+   "livello": "fondamentale",
+   "categoria": "navigazione",
+   "anno": 2024,
+   "ordine": 120,
+   "parole": [
+    "next",
+    "previous",
+    "page numbers",
+    "infinite scroll"
+   ],
+   "esempio": "esempi/pagination/",
+   "vedi": [
+    "page-dots"
+   ],
+   "origine": "slide 30",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://stevesohcot.medium.com/whats-the-ideal-pagination-from-a-ui-ux-perspective-d2d954a8126",
+     "titolo": "What's The Ideal Pagination From A UI/UX Perspective? | Medium"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Sistema di paginazione",
+     "note": "La paginazione divide i contenuti in pagine distinte, così che gli utenti possano muoversi in modo efficiente tra grandi insiemi di dati o contenuti lunghi, con controlli come «Successiva», «Precedente» e i numeri di pagina.\n\nSi può combinare con lo scroll infinito: le prime pagine si caricano in sequenza, poi altri contenuti si caricano mentre l'utente scorre, bilanciando usabilità e prestazioni."
+    },
+    "en": {
+     "nome": "Pagination system",
+     "note": "Pagination divides content into discrete pages, so that users can navigate large datasets or long content efficiently, with controls such as \"Next\", \"Previous\" and page numbers.\n\nIt can be combined with infinite scrolling: the first pages load in sequence, then more content loads as the user scrolls, balancing usability and performance."
+    },
+    "fr": {
+     "nome": "Système de pagination",
+     "note": "La pagination divise le contenu en pages distinctes, afin que les utilisateurs puissent parcourir efficacement de grands ensembles de données ou des contenus longs, avec des commandes comme « Suivant », « Précédent » et les numéros de page.\n\nElle peut être combinée avec le défilement infini : les premières pages se chargent en séquence, puis d'autres contenus se chargent à mesure que l'utilisateur fait défiler la page, ce qui équilibre utilisabilité et performances."
+    },
+    "zh": {
+     "nome": "分页系统",
+     "note": "分页（pagination）把内容划分为独立的页面，让用户能够通过“下一页”“上一页”和页码等控件，高效地浏览大型数据集或长篇内容。\n\n分页可以与无限滚动结合：前几页按顺序加载，随后在用户滚动时加载更多内容，在可用性与性能之间取得平衡。"
+    }
+   }
+  },
+  {
+   "id": "bar-header",
+   "livello": "fondamentale",
+   "categoria": "navigazione",
+   "anno": 2024,
+   "ordine": 130,
+   "parole": [
+    "navbar",
+    "header",
+    "tabs",
+    "pills",
+    "menu"
+   ],
+   "esempio": "esempi/bar-header/",
+   "vedi": [
+    "tab-audio-indicator",
+    "sticky"
+   ],
+   "origine": "slide 31-32",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.versionmuseum.com/history-of/facebook-website",
+     "titolo": "20 Years of Facebook Website Design History - Version Museum"
+    },
+    {
+     "url": "https://www.w3schools.com/bootstrap/bootstrap_tabs_pills.asp",
+     "titolo": "Bootstrap Tabs and Pills (W3Schools)"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Barra (e intestazione)",
+     "note": "La barra di navigazione si evolve nel tempo (vedi Facebook 2010, 2019, 2022, 2025) e può essere progettata come «tab» o «pill»."
+    },
+    "en": {
+     "nome": "Bar (and header)",
+     "note": "The navigation bar evolves over time (see Facebook 2010, 2019, 2022, 2025) and can be designed like \"tabs\" or \"pills\"."
+    },
+    "fr": {
+     "nome": "Barre (et en-tête)",
+     "note": "La barre de navigation évolue au fil du temps (voir Facebook 2010, 2019, 2022, 2025) et peut être conçue sous forme d’« onglets » (tabs) ou de « pilules » (pills)."
+    },
+    "zh": {
+     "nome": "导航栏（与页眉）",
+     "note": "导航栏会随时间演变（参见 Facebook 2010、2019、2022、2025 年的版本），可以设计成“标签页”（tabs）或“胶囊”（pills）样式。"
+    }
+   }
+  },
+  {
+   "id": "search-field",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 140,
+   "parole": [
+    "search",
+    "query",
+    "results"
+   ],
+   "esempio": "esempi/search-field/",
+   "vedi": [
+    "predictive-input",
+    "prompt-suggestions"
+   ],
+   "origine": "slide 33",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://www.behance.net/gallery/28198219/CSS3-JQUERY-Search-Animation",
+     "titolo": "Antonio Di Nardo | CSS3 + JQUERY - Search Animation | Behance"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Campo di ricerca",
+     "note": "Un componente combinato, sempre determinato dal funzionamento del back end: la ricerca è una richiesta (query) al database e produce una «vista» di risultati."
+    },
+    "en": {
+     "nome": "Search field",
+     "note": "A combined component, always determined by the operation of the back end: the search is a request (query) to the database and produces a \"view\" of results."
+    },
+    "fr": {
+     "nome": "Champ de recherche",
+     "note": "Un composant combiné, toujours déterminé par le fonctionnement du back end : la recherche est une requête (query) adressée à la base de données et produit une « vue » de résultats."
+    },
+    "zh": {
+     "nome": "搜索框",
+     "note": "一种组合组件，始终取决于后端（back end）的运作方式：搜索是向数据库发出的请求（query），并生成一个结果“视图”。"
+    }
+   }
+  },
+  {
+   "id": "picker",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 150,
+   "parole": [
+    "date",
+    "time",
+    "colour",
+    "wheel"
+   ],
+   "esempio": "esempi/picker/",
+   "vedi": [
+    "calendar-picker",
+    "color-picker"
+   ],
+   "origine": "slide 34",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Selettore (picker)",
+     "note": "Esistono vari tipi di picker: colore, ora, data, ecc."
+    },
+    "en": {
+     "nome": "Picker",
+     "note": "There are various types of pickers: colour, time, date, etc."
+    },
+    "fr": {
+     "nome": "Sélecteur (picker)",
+     "note": "Il existe différents types de sélecteurs : couleur, heure, date, etc."
+    },
+    "zh": {
+     "nome": "选择器（picker）",
+     "note": "选择器有多种类型：颜色、时间、日期等。"
+    }
+   }
+  },
+  {
+   "id": "splash-page",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 160,
+   "parole": [
+    "launch screen",
+    "boot",
+    "branding"
+   ],
+   "esempio": "resources/splash-screen-exergo.jpg",
+   "vedi": [
+    "loading-screen"
+   ],
+   "origine": "slide 35",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.youtube.com/watch?v=PV9ThwQegks",
+     "titolo": "Web Apps vs. PWA vs. Hybrid vs. Native: What's the Difference? - YouTube"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Splash (schermata d'avvio)",
+     "note": "Una schermata introduttiva di forte impatto visivo, mostrata durante l'avvio iniziale di una piattaforma o il caricamento dei dati. È un punto di contatto con il brand e dà un feedback visivo immediato. Due buone pratiche diverse:\n\n- app native: consigliata. La splash maschera la latenza tecnica e l'inizializzazione, rafforzando l'identità del brand;\n- web: sconsigliata. Chi usa il web si aspetta un accesso immediato; i ritardi artificiali aumentano la frequenza di rimbalzo e penalizzano la SEO e il «Time to Interactive»."
+    },
+    "en": {
+     "nome": "Splash page",
+     "note": "A visually prominent introductory screen shown during a platform's initial boot or data loading. It is a branding touchpoint and gives immediate visual feedback. Two different best practices:\n\n- native apps: recommended. Splash screens mask technical latency and initialisation, reinforcing brand identity;\n- web: discouraged. Web users expect instant access; artificial delays increase bounce rates and hurt SEO and \"Time to Interactive\"."
+    },
+    "fr": {
+     "nome": "Écran de démarrage (splash)",
+     "note": "Un écran d'introduction très visible, affiché pendant le démarrage initial d'une plateforme ou le chargement des données. C'est un point de contact avec la marque, qui donne un retour visuel immédiat. Deux bonnes pratiques différentes :\n\n- applications natives : recommandé. L'écran de démarrage masque la latence technique et l'initialisation, tout en renforçant l'identité de marque ;\n- web : déconseillé. Les internautes attendent un accès instantané ; les délais artificiels augmentent le taux de rebond et nuisent au SEO et au « Time to Interactive »."
+    },
+    "zh": {
+     "nome": "启动页（splash）",
+     "note": "在平台首次启动或加载数据时显示的、视觉上醒目的介绍画面。它是品牌触点，并提供即时的视觉反馈。两种不同的最佳实践：\n\n- 原生应用：推荐。启动页可以掩盖技术延迟和初始化过程，同时强化品牌形象；\n- 网页：不推荐。网页用户期望即时访问；人为的延迟会提高跳出率，并损害 SEO 和“可交互时间”（Time to Interactive）。"
+    }
+   }
+  },
+  {
+   "id": "slider",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 170,
+   "parole": [
+    "range",
+    "volume"
+   ],
+   "esempio": "esempi/slider/",
+   "vedi": [],
+   "origine": "slide 36",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Cursore (slider)",
+     "note": "Seleziona un valore entro un intervallo trascinando una maniglia lungo una guida."
+    },
+    "en": {
+     "nome": "Slider",
+     "note": "Selects a value within a range by dragging a handle along a track."
+    },
+    "fr": {
+     "nome": "Curseur (slider)",
+     "note": "Sélectionne une valeur dans une plage en faisant glisser une poignée le long d'une piste."
+    },
+    "zh": {
+     "nome": "滑块（slider）",
+     "note": "沿轨道拖动手柄，在一个范围内选择数值。"
+    }
+   }
+  },
+  {
+   "id": "stepper",
+   "livello": "fondamentale",
+   "categoria": "input",
+   "anno": 2024,
+   "ordine": 171,
+   "parole": [
+    "spinner",
+    "number input",
+    "plus minus"
+   ],
+   "esempio": "esempi/stepper/",
+   "vedi": [],
+   "origine": "slide 36",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Stepper (incrementatore)",
+     "note": "Aumenta o diminuisce un valore numerico un passo alla volta (in jQuery si chiama «spinner»)."
+    },
+    "en": {
+     "nome": "Stepper",
+     "note": "Increases or decreases a numeric value step by step (called \"spinner\" in jQuery)."
+    },
+    "fr": {
+     "nome": "Stepper (incrémenteur)",
+     "note": "Augmente ou diminue une valeur numérique pas à pas (appelé « spinner » dans jQuery)."
+    },
+    "zh": {
+     "nome": "步进器（stepper）",
+     "note": "逐步增加或减少数值（在 jQuery 中称为“spinner”）。"
+    }
+   }
+  },
+  {
+   "id": "toast",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 180,
+   "parole": [
+    "snackbar",
+    "notification",
+    "message"
+   ],
+   "esempio": "esempi/toast/",
+   "vedi": [
+    "notification-system"
+   ],
+   "origine": "slide 37",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Notifica o «toast»",
+     "note": "Un messaggio breve e non bloccante che compare e scompare da solo."
+    },
+    "en": {
+     "nome": "Notification or \"toast\"",
+     "note": "A brief, non-blocking message that appears and disappears on its own."
+    },
+    "fr": {
+     "nome": "Notification ou « toast »",
+     "note": "Un message bref et non bloquant qui apparaît et disparaît tout seul."
+    },
+    "zh": {
+     "nome": "通知或“轻提示”（toast）",
+     "note": "一条简短、不打断操作的消息，会自行出现并消失。"
+    }
+   }
+  },
+  {
+   "id": "progress-bar",
+   "livello": "fondamentale",
+   "categoria": "feedback",
+   "anno": 2024,
+   "ordine": 190,
+   "parole": [
+    "loading",
+    "steps",
+    "stepper"
+   ],
+   "esempio": "esempi/progress-bar/",
+   "vedi": [
+    "loading-screen",
+    "skeleton-screen"
+   ],
+   "origine": "slide 38",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Barra di avanzamento",
+     "note": "Mostra l'avanzamento di un processo o dei passaggi di una procedura (a volte chiamata «stepper»)."
+    },
+    "en": {
+     "nome": "Progress bar",
+     "note": "Shows the progress of a process or of the steps of a procedure (sometimes called \"stepper\")."
+    },
+    "fr": {
+     "nome": "Barre de progression",
+     "note": "Montre l'avancement d'un processus ou des étapes d'une procédure (parfois appelée « stepper »)."
+    },
+    "zh": {
+     "nome": "进度条",
+     "note": "显示某个过程的进度，或某个流程各个步骤的进度（有时称为“步骤条”，即 stepper）。"
+    }
+   }
+  },
+  {
+   "id": "data-table",
+   "livello": "fondamentale",
+   "categoria": "contenitori",
+   "anno": 2024,
+   "ordine": 200,
+   "parole": [
+    "table",
+    "grid",
+    "filter",
+    "sort"
+   ],
+   "esempio": "esempi/data-table/",
+   "vedi": [
+    "sort-options"
+   ],
+   "origine": "slide 38",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Tabella di dati con filtri",
+     "note": "Una tabella di dati che gli utenti possono filtrare (e spesso ordinare)."
+    },
+    "en": {
+     "nome": "Data table with filtering",
+     "note": "A table of data that users can filter (and often sort)."
+    },
+    "fr": {
+     "nome": "Tableau de données avec filtres",
+     "note": "Un tableau de données que les utilisateurs peuvent filtrer (et souvent trier)."
+    },
+    "zh": {
+     "nome": "带筛选的数据表格",
+     "note": "用户可以筛选（通常也可以排序）的数据表格。"
+    }
+   }
+  },
+  {
+   "id": "carousel",
+   "livello": "fondamentale",
+   "categoria": "contenitori",
+   "anno": 2024,
+   "ordine": 210,
+   "parole": [
+    "slideshow",
+    "slider",
+    "gallery"
+   ],
+   "esempio": "esempi/carousel/",
+   "vedi": [
+    "page-dots"
+   ],
+   "origine": "slide 39",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Carosello (slideshow)",
+     "note": "Mostra una serie di elementi uno alla volta, a rotazione."
+    },
+    "en": {
+     "nome": "Carousel",
+     "note": "Shows a series of items one at a time, in rotation."
+    },
+    "fr": {
+     "nome": "Carrousel",
+     "note": "Affiche une série d’éléments un par un, en rotation."
+    },
+    "zh": {
+     "nome": "轮播（Carousel）",
+     "note": "以轮换方式逐一展示一系列项目。"
+    }
+   }
+  },
+  {
+   "id": "accordion",
+   "livello": "fondamentale",
+   "categoria": "contenitori",
+   "anno": 2024,
+   "ordine": 220,
+   "parole": [
+    "collapse",
+    "expand",
+    "disclosure"
+   ],
+   "esempio": "esempi/accordion/",
+   "vedi": [
+    "expand-collapse",
+    "faq"
+   ],
+   "origine": "slide 39",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Accordion («fisarmonica»)",
+     "note": "Sezioni impilate che si espandono e si chiudono per mostrare o nascondere il loro contenuto."
+    },
+    "en": {
+     "nome": "Accordion",
+     "note": "Stacked sections that expand and collapse to show or hide their content."
+    },
+    "fr": {
+     "nome": "Accordéon",
+     "note": "Sections empilées qui se déplient et se replient pour afficher ou masquer leur contenu."
+    },
+    "zh": {
+     "nome": "手风琴（Accordion）",
+     "note": "堆叠的分区，可展开或折叠以显示或隐藏其内容。"
+    }
+   }
+  },
+  {
+   "id": "pictograms",
+   "livello": "fondamentale",
+   "categoria": "contenuti",
+   "anno": 2024,
+   "ordine": 230,
+   "parole": [
+    "icon",
+    "symbol",
+    "Otl Aicher",
+    "Lance Wyman",
+    "Fluent"
+   ],
+   "esempio": "esempi/pictograms/",
+   "vedi": [
+    "emoji"
+   ],
+   "origine": "slide 40",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pittogrammi e icone",
+     "note": "Dai pittogrammi delle Olimpiadi di Città del Messico del 1968 alle icone di Microsoft Fluent UI."
+    },
+    "en": {
+     "nome": "Pictograms and icons",
+     "note": "From the pictograms of the 1968 Mexico City Olympic Games to the icons of Microsoft Fluent UI."
+    },
+    "fr": {
+     "nome": "Pictogrammes et icônes",
+     "note": "Des pictogrammes des Jeux olympiques de Mexico de 1968 aux icônes de Microsoft Fluent UI."
+    },
+    "zh": {
+     "nome": "象形图与图标",
+     "note": "从 1968 年墨西哥城奥运会的象形图，到 Microsoft Fluent UI 的图标。"
+    }
+   }
+  },
+  {
+   "id": "page-404",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 10,
+   "parole": [],
+   "esempio": "esempi/page-404/",
+   "vedi": [],
+   "origine": "mining 1",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.404s.design/",
+     "titolo": "404s.design"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pagina 404",
+     "note": "La pagina di errore che compare quando l'indirizzo richiesto non esiste (codice di stato HTTP 404). Una buona pagina 404 spiega che cosa è successo e offre una via d'uscita, come un link alla home page o un campo di ricerca."
+    },
+    "en": {
+     "nome": "404 page",
+     "note": "The error page shown when a requested address does not exist (HTTP status 404). A good one explains what happened and offers a way back, such as a link to the home page or a search field."
+    },
+    "fr": {
+     "nome": "Page 404",
+     "note": "La page d'erreur affichée quand l'adresse demandée n'existe pas (code d'état HTTP 404). Une bonne page 404 explique ce qui s'est passé et propose une issue, comme un lien vers la page d'accueil ou un champ de recherche."
+    },
+    "zh": {
+     "nome": "404 页面",
+     "note": "当请求的地址不存在时显示的错误页面（HTTP 状态码 404）。好的 404 页面会说明发生了什么，并提供返回的路径，例如指向首页的链接或搜索框。"
+    }
+   }
+  },
+  {
+   "id": "activity-rings",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2025,
+   "ordine": 20,
+   "parole": [],
+   "esempio": "esempi/activity-rings/",
+   "vedi": [],
+   "origine": "mining 2",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Anelli di Apple Fitness",
+     "note": "Tre anelli concentrici di Apple Fitness (Apple Watch e iPhone) che si riempiono man mano che si raggiungono gli obiettivi giornalieri di movimento, esercizio e tempo in piedi."
+    },
+    "en": {
+     "nome": "Apple Fitness rings",
+     "note": "Three concentric rings in Apple Fitness (Apple Watch and iPhone) that fill up as the daily Move, Exercise and Stand goals are reached."
+    },
+    "fr": {
+     "nome": "Anneaux d’Apple Fitness",
+     "note": "Trois anneaux concentriques d’Apple Fitness (Apple Watch et iPhone) qui se remplissent à mesure que l’on atteint les objectifs quotidiens de mouvement, d’exercice et de station debout."
+    },
+    "zh": {
+     "nome": "Apple 健身圆环",
+     "note": "Apple 健身（Apple Fitness，Apple Watch 与 iPhone）中的三个同心圆环，随着每日活动、锻炼和站立目标的完成而逐渐填满。"
+    }
+   }
+  },
+  {
+   "id": "archiving-systems",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 30,
+   "parole": [],
+   "esempio": "esempi/archiving-systems/",
+   "vedi": [],
+   "origine": "mining 3",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Sistemi di archiviazione",
+     "note": "Interfacce per spostare elementi come email, chat o file fuori dalla vista principale senza eliminarli, così da poterli ritrovare e ripristinare in seguito."
+    },
+    "en": {
+     "nome": "Archiving systems",
+     "note": "Interfaces for moving items such as emails, chats or files out of the main view without deleting them, so they can be found and restored later."
+    },
+    "fr": {
+     "nome": "Systèmes d’archivage",
+     "note": "Interfaces permettant de retirer des éléments tels que des e-mails, des conversations ou des fichiers de la vue principale sans les supprimer, afin de pouvoir les retrouver et les restaurer plus tard."
+    },
+    "zh": {
+     "nome": "归档系统",
+     "note": "将邮件、聊天或文件等内容移出主视图而不删除的界面，以便日后查找和恢复。"
+    }
+   }
+  },
+  {
+   "id": "ar-video-filters",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 40,
+   "parole": [],
+   "esempio": "esempi/ar-video-filters/",
+   "vedi": [],
+   "origine": "mining 4",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Filtri video in realtà aumentata",
+     "note": "Come overlay, maschere, caschi e filtri per il viso."
+    },
+    "en": {
+     "nome": "Augmented reality video filters",
+     "note": "Like overlays, masks, helmets, and face filters."
+    },
+    "fr": {
+     "nome": "Filtres vidéo en réalité augmentée",
+     "note": "Comme les superpositions, les masques, les casques et les filtres pour le visage."
+    },
+    "zh": {
+     "nome": "增强现实视频滤镜",
+     "note": "如叠加层、面具、头盔和人脸滤镜。"
+    }
+   }
+  },
+  {
+   "id": "battery-indicator",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 50,
+   "parole": [],
+   "esempio": "esempi/battery-indicator/",
+   "vedi": [],
+   "origine": "mining 5",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Indicatore della batteria",
+     "note": "Un’icona, spesso accompagnata da una percentuale, che mostra la carica residua della batteria di un dispositivo e segnala stati come la ricarica o la modalità di risparmio energetico."
+    },
+    "en": {
+     "nome": "Battery indicator",
+     "note": "An icon, often with a percentage, that shows the remaining charge of a device's battery and signals states such as charging or low-power mode."
+    },
+    "fr": {
+     "nome": "Indicateur de batterie",
+     "note": "Une icône, souvent accompagnée d’un pourcentage, qui indique la charge restante de la batterie d’un appareil et signale des états comme la recharge ou le mode économie d’énergie."
+    },
+    "zh": {
+     "nome": "电池指示器",
+     "note": "一个图标，通常附带百分比，显示设备电池的剩余电量，并提示充电中或低电量模式等状态。"
+    }
+   }
+  },
+  {
+   "id": "read-receipts",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2025,
+   "ordine": 60,
+   "parole": [],
+   "esempio": "esempi/read-receipts/",
+   "vedi": [],
+   "origine": "mining 6, 75",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Conferme di lettura (doppia spunta blu)",
+     "note": "Feedback visivo dello stato di lettura di un messaggio, come la doppia spunta blu di WhatsApp."
+    },
+    "en": {
+     "nome": "Read receipts (blue double tick)",
+     "note": "Visual feedback for the read status of a message, like WhatsApp's blue double tick."
+    },
+    "fr": {
+     "nome": "Accusés de lecture (double coche bleue)",
+     "note": "Retour visuel sur l'état de lecture d'un message, comme la double coche bleue de WhatsApp."
+    },
+    "zh": {
+     "nome": "已读回执（蓝色双勾）",
+     "note": "显示消息阅读状态的视觉反馈，例如 WhatsApp 的蓝色双勾。"
+    }
+   }
+  },
+  {
+   "id": "chat-bubble",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2025,
+   "ordine": 70,
+   "parole": [],
+   "esempio": "esempi/chat-bubble/",
+   "vedi": [],
+   "origine": "mining 7",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Fumetto o bubble (non solo nel contesto dell’IA)",
+     "note": "Un riquadro arrotondato che contiene un singolo messaggio di una conversazione; posizione e colore indicano chi l’ha inviato. Si usa nelle app di messaggistica come nelle interfacce di chat con l’IA."
+    },
+    "en": {
+     "nome": "Bubble (not just in the AI context)",
+     "note": "A rounded box that holds a single message in a conversation; its position and colour show who sent it. It is used in messaging apps as well as in AI chat interfaces."
+    },
+    "fr": {
+     "nome": "Bulle (pas seulement dans le contexte de l’IA)",
+     "note": "Un encadré arrondi qui contient un seul message d’une conversation ; sa position et sa couleur indiquent qui l’a envoyé. On l’utilise aussi bien dans les applications de messagerie que dans les interfaces de chat avec l’IA."
+    },
+    "zh": {
+     "nome": "气泡（不仅限于 AI 场景）",
+     "note": "对话中承载单条消息的圆角框，其位置和颜色表明发送者。它既用于即时通讯应用，也用于 AI 聊天界面。"
+    }
+   }
+  },
+  {
+   "id": "play-pause-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 90,
+   "parole": [],
+   "esempio": "esempi/play-pause-button/",
+   "vedi": [],
+   "origine": "mining 9",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante play/pausa",
+     "note": "Un unico pulsante a due stati che avvia e ferma la riproduzione dei media; l'icona passa dal triangolo del play alle barre della pausa per mostrare l'azione che eseguirà."
+    },
+    "en": {
+     "nome": "Play/pause button",
+     "note": "A single toggle button that starts and stops media playback; its icon switches between the play triangle and the pause bars to show the action it will perform."
+    },
+    "fr": {
+     "nome": "Bouton lecture/pause",
+     "note": "Un bouton unique à bascule qui lance et arrête la lecture d'un média ; son icône alterne entre le triangle de lecture et les barres de pause pour indiquer l'action qu'il va effectuer."
+    },
+    "zh": {
+     "nome": "播放/暂停按钮",
+     "note": "一个用于开始和停止媒体播放的切换按钮；其图标在播放三角形与暂停双竖线之间切换，以表示它将执行的操作。"
+    }
+   }
+  },
+  {
+   "id": "share-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 100,
+   "parole": [],
+   "esempio": "esempi/share-button/",
+   "vedi": [],
+   "origine": "mining 10",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante o riquadro di condivisione",
+     "note": "Apre le opzioni per inviare una pagina o un elemento ad altre persone o app: un elenco di social network e app di messaggistica, un'azione per copiare il link o il pannello di condivisione del sistema operativo."
+    },
+    "en": {
+     "nome": "Share button or box",
+     "note": "Opens the options for sending a page or item to other people or apps: a list of social networks and messaging apps, a copy-link action, or the operating system's share sheet."
+    },
+    "fr": {
+     "nome": "Bouton ou encadré de partage",
+     "note": "Ouvre les options pour envoyer une page ou un élément à d'autres personnes ou applications : une liste de réseaux sociaux et d'applications de messagerie, une action pour copier le lien, ou la feuille de partage du système d'exploitation."
+    },
+    "zh": {
+     "nome": "分享按钮或分享框",
+     "note": "打开将页面或内容发送给他人或其他应用的选项：社交网络和即时通讯应用列表、复制链接操作，或操作系统的分享面板。"
+    }
+   }
+  },
+  {
+   "id": "shuffle-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 110,
+   "parole": [],
+   "esempio": "esempi/shuffle-button/",
+   "vedi": [],
+   "origine": "mining 11",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante di riproduzione casuale (e smart shuffle)",
+     "note": "Include lo smart shuffle (per esempio Spotify)."
+    },
+    "en": {
+     "nome": "Shuffle button (and smart shuffle)",
+     "note": "Includes smart shuffle (e.g., Spotify)."
+    },
+    "fr": {
+     "nome": "Bouton de lecture aléatoire (et smart shuffle)",
+     "note": "Comprend le smart shuffle (par exemple Spotify)."
+    },
+    "zh": {
+     "nome": "随机播放按钮（及智能随机播放）",
+     "note": "包括智能随机播放（smart shuffle，例如 Spotify）。"
+    }
+   }
+  },
+  {
+   "id": "window-close-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 120,
+   "parole": [],
+   "esempio": "esempi/window-close-button/",
+   "vedi": [],
+   "origine": "mining 12",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://www.reddit.com/r/apple/comments/1he688/just_found_out_what_this_little_dot_means/",
+     "titolo": "reddit.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante di chiusura di macOS (il punto nel pulsante rosso)",
+     "note": "Il punto dentro il pulsante rosso di chiusura segnala modifiche non salvate."
+    },
+    "en": {
+     "nome": "macOS close button (the dot in the red button)",
+     "note": "The dot inside the red close button signals unsaved changes."
+    },
+    "fr": {
+     "nome": "Bouton de fermeture de macOS (le point dans le bouton rouge)",
+     "note": "Le point à l'intérieur du bouton rouge de fermeture signale des modifications non enregistrées."
+    },
+    "zh": {
+     "nome": "macOS 关闭按钮（红色按钮中的圆点）",
+     "note": "红色关闭按钮内的圆点表示有未保存的更改。"
+    }
+   }
+  },
+  {
+   "id": "current-location-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 130,
+   "parole": [],
+   "esempio": "esempi/current-location-button/",
+   "vedi": [],
+   "origine": "mining 13",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://developer.apple.com/documentation/corelocationui/locationbutton",
+     "titolo": "developer.apple.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante della posizione attuale",
+     "note": "Un pulsante, tipico delle mappe, che centra la vista sulla posizione attuale dell’utente o la condivide, dopo aver chiesto il permesso di accedere alla posizione."
+    },
+    "en": {
+     "nome": "Current location button",
+     "note": "A button, typically shown on maps, that centres the view on the user's current position or shares it, after asking for location permission."
+    },
+    "fr": {
+     "nome": "Bouton de position actuelle",
+     "note": "Un bouton, typique des cartes, qui centre la vue sur la position actuelle de l’utilisateur ou la partage, après avoir demandé l’autorisation d’accéder à la localisation."
+    },
+    "zh": {
+     "nome": "当前位置按钮",
+     "note": "通常出现在地图上的按钮，在请求定位权限后，将视图定位到用户的当前位置或分享该位置。"
+    }
+   }
+  },
+  {
+   "id": "calendar-picker",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2025,
+   "ordine": 140,
+   "parole": [],
+   "esempio": "esempi/calendar-picker/",
+   "vedi": [
+    "picker"
+   ],
+   "origine": "mining 14",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Calendario e selettore di date",
+     "note": "Un controllo che permette di scegliere una data, o un intervallo di date, da una griglia di calendario invece di digitarla."
+    },
+    "en": {
+     "nome": "Calendar and date picker",
+     "note": "A control that lets users choose a date, or a range of dates, from a calendar grid instead of typing it."
+    },
+    "fr": {
+     "nome": "Calendrier et sélecteur de date",
+     "note": "Un contrôle qui permet de choisir une date, ou une plage de dates, dans une grille de calendrier au lieu de la saisir."
+    },
+    "zh": {
+     "nome": "日历与日期选择器",
+     "note": "一种控件，让用户从日历网格中选择日期或日期范围，而无需手动输入。"
+    }
+   }
+  },
+  {
+   "id": "flip-card",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 150,
+   "parole": [],
+   "esempio": "esempi/flip-card/",
+   "vedi": [],
+   "origine": "mining 15",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Card che si girano (flip card)",
+     "note": "Una card che si gira, di solito al clic o in hover, per mostrare contenuti aggiuntivi sul retro. La rotazione è spesso animata con un effetto 3D."
+    },
+    "en": {
+     "nome": "Flipping cards",
+     "note": "A card that turns over, usually on click or hover, to reveal additional content on its back. The rotation is often animated as a 3D effect."
+    },
+    "fr": {
+     "nome": "Cartes qui se retournent",
+     "note": "Une carte qui se retourne, généralement au clic ou au survol, pour révéler un contenu supplémentaire au verso. La rotation est souvent animée avec un effet 3D."
+    },
+    "zh": {
+     "nome": "翻转卡片",
+     "note": "一种会翻转的卡片（card），通常在点击或悬停（hover）时翻到背面以显示更多内容。翻转常以 3D 效果的动画呈现。"
+    }
+   }
+  },
+  {
+   "id": "cart",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 160,
+   "parole": [],
+   "esempio": "esempi/cart/",
+   "vedi": [],
+   "origine": "mining 16",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Carrello",
+     "note": "Nei negozi online, l’elenco dei prodotti che l’utente ha scelto di acquistare, a cui di solito si accede da un’icona con un badge che indica il numero di articoli."
+    },
+    "en": {
+     "nome": "Cart",
+     "note": "In online shops, the list of products a user has chosen to buy, usually reached from an icon with a badge showing the number of items."
+    },
+    "fr": {
+     "nome": "Panier",
+     "note": "Dans les boutiques en ligne, la liste des produits que l’utilisateur a choisi d’acheter, généralement accessible depuis une icône avec un badge indiquant le nombre d’articles."
+    },
+    "zh": {
+     "nome": "购物车",
+     "note": "在线商店中用户选定购买的商品列表，通常通过一个带有显示商品数量的徽标（badge）的图标进入。"
+    }
+   }
+  },
+  {
+   "id": "color-picker",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2025,
+   "ordine": 170,
+   "parole": [],
+   "esempio": "esempi/color-picker/",
+   "vedi": [
+    "picker"
+   ],
+   "origine": "mining 17",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Selettore di colore (color picker)",
+     "note": "Come quelli delle suite grafiche (per esempio Adobe Photoshop)."
+    },
+    "en": {
+     "nome": "Colour picker",
+     "note": "Like the ones in the graphic suites (e.g., Adobe Photoshop)."
+    },
+    "fr": {
+     "nome": "Sélecteur de couleur",
+     "note": "Comme ceux des suites graphiques (par exemple Adobe Photoshop)."
+    },
+    "zh": {
+     "nome": "取色器",
+     "note": "类似图形软件套件中的取色器（例如 Adobe Photoshop）。"
+    }
+   }
+  },
+  {
+   "id": "command-palette",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 180,
+   "parole": [],
+   "esempio": "esempi/command-palette/",
+   "vedi": [],
+   "origine": "mining 18",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://code.visualstudio.com/api/ux-guidelines/command-palette",
+     "titolo": "code.visualstudio.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Palette dei comandi",
+     "note": "Un elenco di comandi con ricerca, che si apre con una scorciatoia da tastiera (per esempio in Visual Studio Code) e in cui si digita per trovare ed eseguire un’azione."
+    },
+    "en": {
+     "nome": "Command palette",
+     "note": "A searchable list of commands opened with a keyboard shortcut (for example in Visual Studio Code), where users type to find and run an action."
+    },
+    "fr": {
+     "nome": "Palette de commandes",
+     "note": "Une liste de commandes avec recherche, ouverte par un raccourci clavier (par exemple dans Visual Studio Code), dans laquelle on tape pour trouver et exécuter une action."
+    },
+    "zh": {
+     "nome": "命令面板",
+     "note": "通过键盘快捷键打开、可搜索的命令列表（例如 Visual Studio Code 中的命令面板），用户输入文字即可查找并执行操作。"
+    }
+   }
+  },
+  {
+   "id": "cookie-banner",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 190,
+   "parole": [],
+   "esempio": "esempi/cookie-banner/",
+   "vedi": [],
+   "origine": "mining 19",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Banner per il consenso ai cookie",
+     "note": "Un banner o una finestra di dialogo che chiede ai visitatori di accettare, rifiutare o personalizzare i cookie usati da un sito; nell’Unione europea è legato alle norme sulla privacy come il GDPR e la direttiva ePrivacy."
+    },
+    "en": {
+     "nome": "Cookie consent banner",
+     "note": "A banner or dialog that asks visitors to accept, reject or customise the cookies a website uses; in the EU it is tied to privacy rules such as the GDPR and the ePrivacy Directive."
+    },
+    "fr": {
+     "nome": "Bandeau de consentement aux cookies",
+     "note": "Un bandeau ou une boîte de dialogue qui demande aux visiteurs d’accepter, de refuser ou de personnaliser les cookies utilisés par un site ; dans l’UE, il est lié aux règles de protection de la vie privée comme le RGPD et la directive ePrivacy."
+    },
+    "zh": {
+     "nome": "Cookie 同意横幅",
+     "note": "请访问者接受、拒绝或自定义网站所用 Cookie 的横幅或对话框；在欧盟，它与 GDPR（《通用数据保护条例》）和《电子隐私指令》（ePrivacy Directive）等隐私法规相关。"
+    }
+   }
+  },
+  {
+   "id": "dark-mode-switch",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2025,
+   "ordine": 200,
+   "parole": [],
+   "esempio": "esempi/dark-mode-switch/",
+   "vedi": [
+    "switch"
+   ],
+   "origine": "mining 20",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Switch per la modalità scura e chiara",
+     "note": "Un interruttore che fa passare l’interfaccia da un tema di colori chiaro a uno scuro, a volte con una terza opzione che segue l’impostazione di sistema."
+    },
+    "en": {
+     "nome": "Dark and light mode switch",
+     "note": "A toggle that switches the interface between a light and a dark colour theme, sometimes with a third option that follows the system setting."
+    },
+    "fr": {
+     "nome": "Commutateur mode sombre / mode clair",
+     "note": "Un interrupteur qui fait passer l’interface d’un thème de couleurs clair à un thème sombre, parfois avec une troisième option qui suit le réglage du système."
+    },
+    "zh": {
+     "nome": "深色/浅色模式切换开关",
+     "note": "在浅色和深色配色主题之间切换界面的开关，有时还提供第三个选项以跟随系统设置。"
+    }
+   }
+  },
+  {
+   "id": "distraction-free-mode",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 210,
+   "parole": [],
+   "esempio": "esempi/distraction-free-mode/",
+   "vedi": [],
+   "origine": "mining 21",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.macworld.com/article/6/safari5.html",
+     "titolo": "macworld.com"
+    },
+    {
+     "url": "https://www.fairphone.com/en//07/03/fairphone-moments-switch-to-distraction-free-digital-minimalism/",
+     "titolo": "\"Moments\" on Fairphone"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Modalità senza distrazioni",
+     "note": "Modalità che nascondono o limitano elementi dell’interfaccia e notifiche perché l’utente possa concentrarsi su un solo compito, come la vista di lettura dei browser o le modalità di concentrazione dei telefoni."
+    },
+    "en": {
+     "nome": "Distraction-free modes",
+     "note": "Modes that hide or limit interface elements and notifications so the user can focus on one task, such as the reader view in browsers or focus modes on phones."
+    },
+    "fr": {
+     "nome": "Modes sans distraction",
+     "note": "Des modes qui masquent ou limitent les éléments d’interface et les notifications pour que l’utilisateur puisse se concentrer sur une seule tâche, comme le mode lecture des navigateurs ou les modes de concentration des téléphones."
+    },
+    "zh": {
+     "nome": "无干扰模式",
+     "note": "隐藏或限制界面元素和通知，让用户专注于单一任务的模式，例如浏览器的阅读模式或手机上的专注模式。"
+    }
+   }
+  },
+  {
+   "id": "drag-drop-uploader",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2025,
+   "ordine": 220,
+   "parole": [],
+   "esempio": "esempi/drag-drop-uploader/",
+   "vedi": [],
+   "origine": "mining 22",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://medium.com/@cwrworksite/drag-and-drop-file-upload-with-preview-using-javascript-cde4a63",
+     "titolo": "Drag and Drop File Upload With Preview Using JavaScript | by Cwrcode | Medium"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Caricamento con drag and drop",
+     "note": "Comprende sottocomponenti come l’area di rilascio tratteggiata."
+    },
+    "en": {
+     "nome": "Drag and drop uploader",
+     "note": "Includes sub-components such as the dashed target area."
+    },
+    "fr": {
+     "nome": "Zone de téléversement par glisser-déposer",
+     "note": "Inclut des sous-composants comme la zone de dépôt en pointillés."
+    },
+    "zh": {
+     "nome": "拖放上传组件",
+     "note": "包括虚线目标区域等子组件。"
+    }
+   }
+  },
+  {
+   "id": "emoji",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 230,
+   "parole": [],
+   "esempio": "esempi/emoji/",
+   "vedi": [],
+   "origine": "mining 23",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://emojipedia.org/",
+     "titolo": "📙 Emojipedia — 😃 Home of Emoji Meanings 💁👌🎍😍"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Emoticon ed emoji",
+     "note": "Piccoli pittogrammi (emoji) e faccine composte da caratteri di testo (emoticon), usati per esprimere emozioni, reazioni o concetti nei messaggi e nelle interfacce. Le emoji sono codificate come caratteri nello standard Unicode, per questo il loro aspetto cambia da una piattaforma all'altra."
+    },
+    "en": {
+     "nome": "Emoticons and emoji",
+     "note": "Small pictograms (emoji) and faces made of text characters (emoticons), used to express emotions, reactions or ideas in messages and interfaces. Emoji are encoded as characters in the Unicode standard, so their appearance varies from one platform to another."
+    },
+    "fr": {
+     "nome": "Émoticônes et emoji",
+     "note": "Petits pictogrammes (emoji) et visages composés de caractères de texte (émoticônes), utilisés pour exprimer des émotions, des réactions ou des idées dans les messages et les interfaces. Les emoji sont codés comme des caractères dans le standard Unicode : leur apparence varie donc d'une plateforme à l'autre."
+    },
+    "zh": {
+     "nome": "表情符号与 emoji",
+     "note": "小型图形符号（emoji）和由文本字符组成的表情符号（emoticon），用于在消息和界面中表达情绪、反应或概念。Emoji 在 Unicode 标准中被编码为字符，因此其外观因平台而异。"
+    }
+   }
+  },
+  {
+   "id": "empty-state",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 240,
+   "parole": [],
+   "esempio": "esempi/empty-state/",
+   "vedi": [
+    "page-404"
+   ],
+   "origine": "mining 24",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/empty-state-interface-design/",
+     "titolo": "nngroup.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Stato vuoto (empty state)",
+     "note": "Una soluzione di ripiego quando non ci sono contenuti."
+    },
+    "en": {
+     "nome": "Empty state",
+     "note": "A fallback solution for no contents."
+    },
+    "fr": {
+     "nome": "État vide",
+     "note": "Une solution de repli en l'absence de contenu."
+    },
+    "zh": {
+     "nome": "空状态",
+     "note": "没有内容时的备用方案。"
+    }
+   }
+  },
+  {
+   "id": "expand-collapse",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 250,
+   "parole": [],
+   "esempio": "esempi/expand-collapse/",
+   "vedi": [],
+   "origine": "mining 25",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Modalità di visualizzazione espansa/compressa",
+     "note": "Declinata in macOS con la funzione di riduzione delle finestre."
+    },
+    "en": {
+     "nome": "Expanded/collapsed display mode",
+     "note": "Declined in macOS with the minimiser feature."
+    },
+    "fr": {
+     "nome": "Mode d'affichage déplié/replié",
+     "note": "Décliné dans macOS avec la fonction de réduction des fenêtres."
+    },
+    "zh": {
+     "nome": "展开／收起显示模式",
+     "note": "在 macOS 中体现为窗口最小化功能。"
+    }
+   }
+  },
+  {
+   "id": "faq",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 260,
+   "parole": [],
+   "esempio": "esempi/faq/",
+   "vedi": [],
+   "origine": "mining 26",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "FAQ (domande frequenti)",
+     "note": "Una pagina o sezione che raccoglie le domande frequenti con le relative risposte. Spesso è presentata come un elenco di voci espandibili (accordion), così gli utenti possono scorrere le domande e aprire solo quelle che servono."
+    },
+    "en": {
+     "nome": "FAQ",
+     "note": "A page or section that collects frequently asked questions and their answers. It is often presented as a list of expandable items (accordion), so users can scan the questions and open only the ones they need."
+    },
+    "fr": {
+     "nome": "FAQ (foire aux questions)",
+     "note": "Une page ou une section qui rassemble les questions fréquentes et leurs réponses. Elle se présente souvent sous la forme d'une liste d'éléments dépliables (accordéon) : les utilisateurs parcourent les questions et n'ouvrent que celles dont ils ont besoin."
+    },
+    "zh": {
+     "nome": "常见问题（FAQ）",
+     "note": "汇集常见问题及其答案的页面或板块。通常以可展开条目的列表（手风琴，accordion）呈现，用户可以快速浏览问题，只展开自己需要的条目。"
+    }
+   }
+  },
+  {
+   "id": "favicon",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 270,
+   "parole": [],
+   "esempio": "esempi/favicon/",
+   "vedi": [],
+   "origine": "mining 27",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Favicon (favourite icon)",
+     "note": "Abbreviazione di «favourite icon», l'icona dei preferiti."
+    },
+    "en": {
+     "nome": "Favicon (favourite icon)",
+     "note": "Short for \"favourite icon\"."
+    },
+    "fr": {
+     "nome": "Favicon (favourite icon)",
+     "note": "Abréviation de « favourite icon », l'icône des favoris."
+    },
+    "zh": {
+     "nome": "网站图标（favicon）",
+     "note": "“favourite icon”（收藏夹图标）的缩写。"
+    }
+   }
+  },
+  {
+   "id": "favourites-wishlist",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 280,
+   "parole": [],
+   "esempio": "esempi/favourites-wishlist/",
+   "vedi": [],
+   "origine": "mining 28",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Preferiti o lista dei desideri (wishlist)",
+     "note": "Con molte declinazioni: ❤️ ⭐️ 🏷️."
+    },
+    "en": {
+     "nome": "Favourites or wishlist",
+     "note": "With many declinations: ❤️ ⭐️ 🏷️."
+    },
+    "fr": {
+     "nome": "Favoris ou liste de souhaits",
+     "note": "Avec de nombreuses déclinaisons : ❤️ ⭐️ 🏷️."
+    },
+    "zh": {
+     "nome": "收藏或心愿单",
+     "note": "有多种变体：❤️ ⭐️ 🏷️。"
+    }
+   }
+  },
+  {
+   "id": "floating-sticky-sidebar",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 290,
+   "parole": [],
+   "esempio": "esempi/floating-sticky-sidebar/",
+   "vedi": [],
+   "origine": "mining 29",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://immersivetranslate.com/",
+     "titolo": "language switcher example"
+    },
+    {
+     "url": "https://sharethis.com/onboarding/#sticky-share-buttons",
+     "titolo": "sharethis.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Barra laterale fluttuante fissa (sticky)",
+     "note": "Una barra stretta o un gruppo di pulsanti che resta fisso sul bordo dello schermo mentre la pagina scorre. Si usa spesso per i pulsanti di condivisione, per strumenti rapidi o per il cambio lingua."
+    },
+    "en": {
+     "nome": "Floating sticky sidebar",
+     "note": "A narrow bar or group of buttons that stays fixed at the edge of the screen while the page scrolls. It is often used for share buttons, quick tools or a language switcher."
+    },
+    "fr": {
+     "nome": "Barre latérale flottante fixe",
+     "note": "Une barre étroite ou un groupe de boutons qui reste fixé au bord de l'écran pendant le défilement de la page. Elle sert souvent pour les boutons de partage, des outils rapides ou un sélecteur de langue."
+    },
+    "zh": {
+     "nome": "悬浮固定侧边栏",
+     "note": "固定在屏幕边缘、页面滚动时保持不动的窄栏或按钮组。常用于分享按钮、快捷工具或语言切换器。"
+    }
+   }
+  },
+  {
+   "id": "hero-unit",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 300,
+   "parole": [],
+   "esempio": "esempi/hero-unit/",
+   "vedi": [],
+   "origine": "mining 30",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Hero unit",
+     "note": "Un grande banner in cima alla pagina, di solito con un'immagine o un video in evidenza, un titolo e una call to action. È la prima cosa che gli utenti vedono e introduce il messaggio principale del sito."
+    },
+    "en": {
+     "nome": "Hero unit",
+     "note": "A large banner at the top of a page, usually with a prominent image or video, a headline and a call to action. It is the first thing users see and introduces the main message of the site."
+    },
+    "fr": {
+     "nome": "Section héro (hero unit)",
+     "note": "Une grande bannière en haut de la page, généralement avec une image ou une vidéo bien visible, un titre et un appel à l'action. C'est la première chose que voient les utilisateurs, et elle présente le message principal du site."
+    },
+    "zh": {
+     "nome": "首屏主视觉（hero unit）",
+     "note": "位于页面顶部的大型横幅，通常包含醒目的图片或视频、标题和行动号召（call to action）。它是用户最先看到的内容，用于介绍网站的核心信息。"
+    }
+   }
+  },
+  {
+   "id": "link-chain-icon",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 310,
+   "parole": [],
+   "esempio": "esempi/link-chain-icon/",
+   "vedi": [],
+   "origine": "mining 31",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Icona della catena per i link",
+     "note": "Un'icona con due anelli di catena, usata per rappresentare i link: indica i comandi per inserire o copiare un link, o le ancore per condividere una sezione specifica di una pagina."
+    },
+    "en": {
+     "nome": "Hyperlink chain icon",
+     "note": "An icon showing two chain links, used to represent hyperlinks: it marks commands to insert or copy a link, or anchors for sharing a specific section of a page."
+    },
+    "fr": {
+     "nome": "Icône de chaîne des liens hypertextes",
+     "note": "Une icône représentant deux maillons de chaîne, utilisée pour figurer les liens hypertextes : elle signale les commandes pour insérer ou copier un lien, ou les ancres permettant de partager une section précise d'une page."
+    },
+    "zh": {
+     "nome": "超链接链条图标",
+     "note": "由两个链环组成的图标，用于表示超链接：它标示插入或复制链接的命令，或用于分享页面某一部分的锚点。"
+    }
+   }
+  },
+  {
+   "id": "label",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 320,
+   "parole": [],
+   "esempio": "esempi/label/",
+   "vedi": [
+    "tag-chip"
+   ],
+   "origine": "mining 32",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Etichetta (label)",
+     "note": "Un breve testo che dà il nome a un elemento o lo descrive, come un campo di un form, un pulsante o un contenuto. Nei form la label dice agli utenti che cosa inserire e deve restare visibile."
+    },
+    "en": {
+     "nome": "Label",
+     "note": "A short text that names or describes an element, such as a form field, a button or a piece of content. In forms, the label tells users what to enter and should remain visible."
+    },
+    "fr": {
+     "nome": "Libellé",
+     "note": "Un texte court qui nomme ou décrit un élément, comme un champ de formulaire, un bouton ou un contenu. Dans les formulaires, le libellé indique aux utilisateurs ce qu'ils doivent saisir et doit rester visible."
+    },
+    "zh": {
+     "nome": "标签（label）",
+     "note": "命名或描述某个元素的简短文字，例如表单字段、按钮或一段内容。在表单中，标签告诉用户应输入什么，并应始终保持可见。"
+    }
+   }
+  },
+  {
+   "id": "language-switch",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 330,
+   "parole": [],
+   "esempio": "esempi/language-switch/",
+   "vedi": [],
+   "origine": "mining 33",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Cambio lingua",
+     "note": "Con uno sguardo ai codici ISO di [lingua](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) e [paese](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), per esempio en-US ed en-GB, [uk-UA](https://www.ukrainer.net/) e [ru-UA](https://www.ukrainer.net/ru/), [lld-IT](https://home.provinzia.bz.it/lld/home) e [it-IT](https://home.provincia.bz.it/it/home)."
+    },
+    "en": {
+     "nome": "Language switch",
+     "note": "With a look at ISO [language](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) and [country](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) codes, e.g. en-US and en-GB, [uk-UA](https://www.ukrainer.net/) and [ru-UA](https://www.ukrainer.net/ru/), [lld-IT](https://home.provinzia.bz.it/lld/home) and [it-IT](https://home.provincia.bz.it/it/home)."
+    },
+    "fr": {
+     "nome": "Sélecteur de langue",
+     "note": "Avec un regard sur les codes ISO de [langue](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) et de [pays](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2), par exemple en-US et en-GB, [uk-UA](https://www.ukrainer.net/) et [ru-UA](https://www.ukrainer.net/ru/), [lld-IT](https://home.provinzia.bz.it/lld/home) et [it-IT](https://home.provincia.bz.it/it/home)."
+    },
+    "zh": {
+     "nome": "语言切换",
+     "note": "参考 ISO [语言](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes)代码和[国家](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)代码，例如 en-US 和 en-GB、[uk-UA](https://www.ukrainer.net/) 和 [ru-UA](https://www.ukrainer.net/ru/)、[lld-IT](https://home.provinzia.bz.it/lld/home) 和 [it-IT](https://home.provincia.bz.it/it/home)。"
+    }
+   }
+  },
+  {
+   "id": "loading-screen",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2025,
+   "ordine": 340,
+   "parole": [],
+   "esempio": "esempi/loading-screen/",
+   "vedi": [
+    "skeleton-screen",
+    "splash-page",
+    "progress-bar"
+   ],
+   "origine": "mining 34",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Schermata di caricamento",
+     "note": "Vedi anche Skeleton screen"
+    },
+    "en": {
+     "nome": "Loading screen",
+     "note": "See also Skeleton screen"
+    },
+    "fr": {
+     "nome": "Écran de chargement",
+     "note": "Voir aussi Skeleton screen"
+    },
+    "zh": {
+     "nome": "加载界面",
+     "note": "另见骨架屏（Skeleton screen）"
+    }
+   }
+  },
+  {
+   "id": "login",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 350,
+   "parole": [],
+   "esempio": "esempi/login/",
+   "vedi": [],
+   "origine": "mining 35",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.ibm.com/docs/en/doc/4.0.3?topic=rights-permission-system-general-introduction",
+     "titolo": "ibm.com"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://csrc.nist.gov/projects/role-based-access-control",
+     "titolo": "Role Based Access Control | CSRC"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Icona e processo di login (e sistema di permessi)",
+     "note": "Il processo con cui gli utenti si identificano per accedere a un sistema, di solito con nome utente o indirizzo email e password, a volte con un secondo fattore di verifica. Dopo il login, un sistema di permessi stabilisce che cosa ogni utente può vedere e fare, spesso in base ai ruoli."
+    },
+    "en": {
+     "nome": "Login icon and process (and permission system)",
+     "note": "The process by which users identify themselves to access a system, usually with a username or email address and a password, sometimes with a second verification factor. After login, a permission system determines what each user can see and do, often on the basis of roles."
+    },
+    "fr": {
+     "nome": "Icône et processus de connexion (et système d'autorisations)",
+     "note": "Le processus par lequel les utilisateurs s'identifient pour accéder à un système, généralement avec un nom d'utilisateur ou une adresse e-mail et un mot de passe, parfois avec un second facteur de vérification. Après la connexion, un système d'autorisations détermine ce que chaque utilisateur peut voir et faire, souvent en fonction de rôles."
+    },
+    "zh": {
+     "nome": "登录图标与流程（及权限系统）",
+     "note": "用户为访问系统而进行身份识别的过程，通常使用用户名或电子邮件地址和密码，有时还需要第二验证因素。登录后，权限系统决定每个用户可以查看和执行哪些操作，通常基于角色。"
+    }
+   }
+  },
+  {
+   "id": "marquee",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 360,
+   "parole": [],
+   "esempio": "esempi/marquee/",
+   "vedi": [
+    "draggable-overflow-text"
+   ],
+   "origine": "mining 36",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Marquee (striscia scorrevole)",
+     "note": "Una striscia di testo o immagini che scorre di continuo sullo schermo, usata per le notizie in tempo reale, gli annunci o le pareti di loghi. Il testo in movimento è difficile da leggere e, per l'accessibilità, deve poter essere messo in pausa."
+    },
+    "en": {
+     "nome": "Marquee (rolling stripe)",
+     "note": "A strip of text or images that scrolls continuously across the screen, used for news tickers, announcements or logo walls. Moving text is hard to read and should be pausable for accessibility."
+    },
+    "fr": {
+     "nome": "Marquee (bandeau défilant)",
+     "note": "Une bande de texte ou d'images qui défile en continu à l'écran, utilisée pour les fils d'actualité, les annonces ou les murs de logos. Le texte en mouvement est difficile à lire et doit pouvoir être mis en pause pour l'accessibilité."
+    },
+    "zh": {
+     "nome": "跑马灯（marquee，滚动条带）",
+     "note": "一条在屏幕上持续滚动的文字或图片条带，常用于新闻快讯、公告或品牌标志墙。移动的文字难以阅读，出于无障碍考虑，应允许用户暂停。"
+    }
+   }
+  },
+  {
+   "id": "mobile-display-parts",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 370,
+   "parole": [],
+   "esempio": "esempi/mobile-display-parts/",
+   "vedi": [],
+   "origine": "mining 37",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.macrumors.com/guide/dynamic-island/",
+     "titolo": "Everything You Need to Know About Dynamic Island - MacRumors"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Parti del display mobile: notch, Dynamic Island, detent",
+     "note": "Le parti dello schermo del telefono che l'interfaccia deve aggirare o sfruttare: il notch e la Dynamic Island (ritagli per la fotocamera; Apple usa la Dynamic Island per mostrare le attività in tempo reale), le aree sicure (safe area) e i detent, le altezze a cui può fermarsi un pannello dal basso (bottom sheet)."
+    },
+    "en": {
+     "nome": "Mobile display parts: notch, Dynamic Island, detents",
+     "note": "Parts of a phone screen that the interface has to work around or make use of: the notch and the Dynamic Island (camera cut-outs; Apple uses the Dynamic Island to show live activities), the safe areas, and the detents, the heights at which a bottom sheet can rest."
+    },
+    "fr": {
+     "nome": "Parties de l'écran mobile : encoche, Dynamic Island, crans (detents)",
+     "note": "Les parties de l'écran du téléphone que l'interface doit contourner ou exploiter : l'encoche (notch) et la Dynamic Island (découpes pour la caméra ; Apple utilise la Dynamic Island pour afficher les activités en direct), les zones de sécurité (safe areas) et les crans (detents), les hauteurs auxquelles une feuille inférieure (bottom sheet) peut s'arrêter."
+    },
+    "zh": {
+     "nome": "移动屏幕的组成部分：刘海、灵动岛、停靠高度（detents）",
+     "note": "界面必须避让或利用的手机屏幕部分：刘海（notch）和灵动岛（Dynamic Island，摄像头开孔区域；Apple 用灵动岛显示实时活动），安全区域（safe area），以及停靠高度（detents），即底部面板（bottom sheet）可以停留的高度。"
+    }
+   }
+  },
+  {
+   "id": "notification-system",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2025,
+   "ordine": 380,
+   "parole": [],
+   "esempio": "esempi/notification-system/",
+   "vedi": [
+    "toast",
+    "badge"
+   ],
+   "origine": "mining 38",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Sistema di notifiche",
+     "note": "L'insieme dei messaggi con cui un'app o un sistema operativo informa gli utenti degli eventi: notifiche push, banner, badge e un centro notifiche che le raccoglie. Gli utenti devono poter scegliere quali notifiche ricevere."
+    },
+    "en": {
+     "nome": "Notification system",
+     "note": "The set of messages through which an app or operating system tells users about events: push notifications, banners, badges and a notification center that collects them. Users should be able to control which notifications they receive."
+    },
+    "fr": {
+     "nome": "Système de notifications",
+     "note": "L'ensemble des messages par lesquels une application ou un système d'exploitation informe les utilisateurs des événements : notifications push, bannières, badges et un centre de notifications qui les regroupe. Les utilisateurs doivent pouvoir choisir les notifications qu'ils reçoivent."
+    },
+    "zh": {
+     "nome": "通知系统",
+     "note": "应用或操作系统向用户告知事件的一整套消息：推送通知（push）、横幅、徽标（badge），以及汇集这些消息的通知中心。用户应能自行选择接收哪些通知。"
+    }
+   }
+  },
+  {
+   "id": "finder-views",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 390,
+   "parole": [],
+   "esempio": "esempi/finder-views/",
+   "vedi": [],
+   "origine": "mining 39",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Viste del Finder di macOS (con anteprima)",
+     "note": "Il Finder di macOS può mostrare il contenuto di una cartella in viste diverse: icone, elenco, colonne e galleria. L'anteprima mostra un'immagine più grande e le informazioni sul file selezionato senza aprirlo."
+    },
+    "en": {
+     "nome": "macOS Finder views (with preview)",
+     "note": "The macOS Finder can show the content of a folder in different views: icons, list, columns and gallery. The preview shows a larger image and information about the selected file without opening it."
+    },
+    "fr": {
+     "nome": "Présentations du Finder de macOS (avec aperçu)",
+     "note": "Le Finder de macOS peut afficher le contenu d'un dossier selon différentes présentations : icônes, liste, colonnes et galerie. L'aperçu montre une image plus grande et des informations sur le fichier sélectionné sans l'ouvrir."
+    },
+    "zh": {
+     "nome": "macOS 访达的显示方式（带预览）",
+     "note": "macOS 的访达（Finder）可以用不同的显示方式展示文件夹内容：图标、列表、分栏和画廊。预览会显示所选文件的大图和相关信息，无需打开文件。"
+    }
+   }
+  },
+  {
+   "id": "page-dots",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 400,
+   "parole": [],
+   "esempio": "esempi/page-dots/",
+   "vedi": [],
+   "origine": "mining 40",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://madearts.it/",
+     "titolo": "madearts.it"
+    },
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/page-controls",
+     "titolo": "developer.apple.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Indicatori di pagina a punti",
+     "note": "Con o senza animazione."
+    },
+    "en": {
+     "nome": "Page dot indicators",
+     "note": "With or without animation."
+    },
+    "fr": {
+     "nome": "Indicateurs de page à points",
+     "note": "Avec ou sans animation."
+    },
+    "zh": {
+     "nome": "分页圆点指示器",
+     "note": "带或不带动画。"
+    }
+   }
+  },
+  {
+   "id": "picture-in-picture",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 410,
+   "parole": [],
+   "esempio": "esempi/picture-in-picture/",
+   "vedi": [],
+   "origine": "mining 41",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API",
+     "titolo": "developer.mozilla.org"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Picture-in-Picture",
+     "note": "Un video continua a essere riprodotto in una piccola finestra mobile sopra altre app o contenuti, così gli utenti possono guardarlo mentre fanno altro. I browser lo mettono a disposizione delle pagine web con la Picture-in-Picture API."
+    },
+    "en": {
+     "nome": "Picture-in-Picture",
+     "note": "A video keeps playing in a small floating window above other apps or content, so users can watch it while doing something else. Browsers make it available to web pages through the Picture-in-Picture API."
+    },
+    "fr": {
+     "nome": "Picture-in-Picture (image dans l'image)",
+     "note": "Une vidéo continue d'être lue dans une petite fenêtre flottante au-dessus d'autres applications ou contenus, pour que les utilisateurs puissent la regarder tout en faisant autre chose. Les navigateurs mettent cette fonction à la disposition des pages web via l'API Picture-in-Picture."
+    },
+    "zh": {
+     "nome": "画中画（Picture-in-Picture）",
+     "note": "视频在一个悬浮于其他应用或内容之上的小窗口中继续播放，让用户可以边看边做其他事情。浏览器通过 Picture-in-Picture API 向网页提供这一功能。"
+    }
+   }
+  },
+  {
+   "id": "pin",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 420,
+   "parole": [],
+   "esempio": "esempi/pin/",
+   "vedi": [],
+   "origine": "mining 42",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pin (fissa in alto)",
+     "note": "Si usa per mettere in evidenza un elemento di una lista e/o tenerlo in cima."
+    },
+    "en": {
+     "nome": "Pin",
+     "note": "Used to highlight an item in a list and/or keep it to the top."
+    },
+    "fr": {
+     "nome": "Épingle (pin)",
+     "note": "Sert à mettre en évidence un élément d'une liste et/ou à le garder en haut."
+    },
+    "zh": {
+     "nome": "置顶（pin）",
+     "note": "用于突出显示列表中的某一项，和/或将其固定在顶部。"
+    }
+   }
+  },
+  {
+   "id": "image-placeholder",
+   "livello": "avanzato",
+   "categoria": "contenuti",
+   "anno": 2025,
+   "ordine": 430,
+   "parole": [],
+   "esempio": "esempi/image-placeholder/",
+   "vedi": [],
+   "origine": "mining 43",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Segnaposto per immagini (placeholder)",
+     "note": "Spesso rappresentato dall'icona «delle montagne»."
+    },
+    "en": {
+     "nome": "Placeholder for pictures",
+     "note": "Often represented by \"the mountains\" icon."
+    },
+    "fr": {
+     "nome": "Espace réservé pour les images",
+     "note": "Souvent représenté par l'icône « des montagnes »."
+    },
+    "zh": {
+     "nome": "图片占位符",
+     "note": "常用“山峰”图标表示。"
+    }
+   }
+  },
+  {
+   "id": "rating",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 440,
+   "parole": [],
+   "esempio": "esempi/rating/",
+   "vedi": [],
+   "origine": "mining 44",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Sistema di valutazione",
+     "note": "Permette agli utenti di dare e vedere un punteggio per un prodotto, un luogo o un contenuto, di solito da una a cinque stelle, spesso insieme al numero di valutazioni e alle recensioni scritte."
+    },
+    "en": {
+     "nome": "Rating system",
+     "note": "Lets users give and see a score for a product, place or piece of content, usually as one to five stars, often together with the number of ratings and written reviews."
+    },
+    "fr": {
+     "nome": "Système de notation",
+     "note": "Permet aux utilisateurs de donner et de consulter une note pour un produit, un lieu ou un contenu, généralement de une à cinq étoiles, souvent avec le nombre de notes et des avis écrits."
+    },
+    "zh": {
+     "nome": "评分系统",
+     "note": "让用户为产品、地点或内容打分并查看评分，通常为一到五颗星，并常常附有评分数量和文字评价。"
+    }
+   }
+  },
+  {
+   "id": "scrollbar",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 450,
+   "parole": [],
+   "esempio": "esempi/scrollbar/",
+   "vedi": [],
+   "origine": "mining 45",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Barra di scorrimento (scrollbar)",
+     "note": "Mostra la posizione e la dimensione della parte visibile di un contenuto più lungo e permette di scorrere trascinando il cursore o cliccando sulla guida. Molti sistemi la nascondono finché l'utente non scorre."
+    },
+    "en": {
+     "nome": "Scrollbar",
+     "note": "Shows the position and size of the visible part of a longer content, and lets users scroll by dragging its thumb or clicking its track. Many systems hide it until the user scrolls."
+    },
+    "fr": {
+     "nome": "Barre de défilement",
+     "note": "Indique la position et la taille de la partie visible d'un contenu plus long, et permet de le faire défiler en faisant glisser le curseur ou en cliquant sur la glissière. De nombreux systèmes la masquent tant que l'utilisateur ne fait pas défiler la page."
+    },
+    "zh": {
+     "nome": "滚动条",
+     "note": "显示较长内容中可见部分的位置和大小，用户可以拖动滑块或点击轨道来滚动。许多系统会在用户滚动之前隐藏滚动条。"
+    }
+   }
+  },
+  {
+   "id": "seat-map",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 460,
+   "parole": [],
+   "esempio": "esempi/seat-map/",
+   "vedi": [],
+   "origine": "mining 46",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.teatroallascala.org/en/season/box-office/tickets/prezzi-opera-23-24.html",
+     "titolo": "teatroallascala.org"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Mappa dei posti (scelta del posto al checkout)",
+     "note": "Una mappa interattiva di un luogo o di un mezzo (teatro, stadio, aereo, treno) in cui gli utenti scelgono i posti durante il checkout; colori o simboli indicano i posti liberi, quelli occupati o le diverse fasce di prezzo."
+    },
+    "en": {
+     "nome": "Seating map (seat selection at checkout)",
+     "note": "An interactive map of a venue or vehicle (theatre, stadium, plane, train) where users pick their seats during checkout; colours or symbols show which seats are free, taken or in different price ranges."
+    },
+    "fr": {
+     "nome": "Plan de salle (choix des places lors du paiement)",
+     "note": "Un plan interactif d'un lieu ou d'un véhicule (théâtre, stade, avion, train) où les utilisateurs choisissent leurs places pendant le paiement ; des couleurs ou des symboles indiquent les places libres, occupées ou les différentes catégories de prix."
+    },
+    "zh": {
+     "nome": "座位图（结账时选座）",
+     "note": "场馆或交通工具（剧院、体育场、飞机、火车）的交互式地图，用户在结账时在图上选择座位；颜色或符号表示哪些座位空闲、已被占用或属于不同的价格区间。"
+    }
+   }
+  },
+  {
+   "id": "text-selection",
+   "livello": "avanzato",
+   "categoria": "testo",
+   "anno": 2025,
+   "ordine": 470,
+   "parole": [],
+   "esempio": "esempi/text-selection/",
+   "vedi": [],
+   "origine": "mining 47",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Selezione ed evidenziazione del testo",
+     "note": "La porzione di testo evidenziata che l'utente marca trascinando, con un doppio clic o con la tastiera, pronta per essere copiata, formattata o sostituita. Il colore si può personalizzare con il CSS (::selection)."
+    },
+    "en": {
+     "nome": "Text selection and highlighting",
+     "note": "The highlighted range of text that the user marks by dragging, double-clicking or using the keyboard, ready to be copied, formatted or replaced. Its colour can be styled with CSS (::selection)."
+    },
+    "fr": {
+     "nome": "Sélection et surlignage du texte",
+     "note": "La portion de texte surlignée que l'utilisateur marque en faisant glisser, par un double-clic ou au clavier, prête à être copiée, mise en forme ou remplacée. Sa couleur peut être personnalisée en CSS (::selection)."
+    },
+    "zh": {
+     "nome": "文本选择与高亮",
+     "note": "用户通过拖动、双击或键盘标记的高亮文本范围，可用于复制、设置格式或替换。其颜色可以用 CSS（::selection）设置。"
+    }
+   }
+  },
+  {
+   "id": "skeleton-screen",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2025,
+   "ordine": 480,
+   "parole": [],
+   "esempio": "esempi/skeleton-screen/",
+   "vedi": [],
+   "origine": "mining 48",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/skeleton-screens/",
+     "titolo": "nngroup.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Skeleton screen",
+     "note": "Uno schema provvisorio di blocchi grigi mostrato mentre i contenuti si caricano. Riproduce la forma della pagina, così l'attesa sembra più breve e il layout non salta quando arrivano i contenuti."
+    },
+    "en": {
+     "nome": "Skeleton screen",
+     "note": "A placeholder layout of grey blocks shown while content loads. It mirrors the shape of the page, so the wait feels shorter and the layout does not jump when the content arrives."
+    },
+    "fr": {
+     "nome": "Écran squelette (skeleton screen)",
+     "note": "Une mise en page provisoire en blocs gris, affichée pendant le chargement du contenu. Elle reprend la forme de la page : l'attente paraît plus courte et la mise en page ne saute pas à l'arrivée du contenu."
+    },
+    "zh": {
+     "nome": "骨架屏（skeleton screen）",
+     "note": "内容加载时显示的灰色占位块布局。它模拟页面的结构，让等待感觉更短，内容到达时布局也不会跳动。"
+    }
+   }
+  },
+  {
+   "id": "sort-options",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2025,
+   "ordine": 490,
+   "parole": [],
+   "esempio": "esempi/sort-options/",
+   "vedi": [],
+   "origine": "mining 49",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Opzioni di ordinamento in tabelle e viste",
+     "note": "Controlli che riordinano gli elementi di una tabella o di un elenco secondo un criterio scelto (nome, data, prezzo, rilevanza), in ordine crescente o decrescente, spesso con un clic sull'intestazione di colonna."
+    },
+    "en": {
+     "nome": "Sort options in tables and views",
+     "note": "Controls that reorder the items of a table or list by a chosen criterion (name, date, price, relevance), in ascending or descending order, often by clicking a column header."
+    },
+    "fr": {
+     "nome": "Options de tri dans les tableaux et les vues",
+     "note": "Commandes qui réordonnent les éléments d'un tableau ou d'une liste selon un critère choisi (nom, date, prix, pertinence), par ordre croissant ou décroissant, souvent d'un clic sur l'en-tête de colonne."
+    },
+    "zh": {
+     "nome": "表格与视图中的排序选项",
+     "note": "按所选条件（名称、日期、价格、相关性）对表格或列表中的项目进行升序或降序重新排列的控件，通常通过点击列标题实现。"
+    }
+   }
+  },
+  {
+   "id": "sticky",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 500,
+   "parole": [],
+   "esempio": "esempi/sticky/",
+   "vedi": [],
+   "origine": "mining 50",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://designers.italia.it/design-system/componenti/affix/",
+     "titolo": "designers.italia.it"
+    },
+    {
+     "url": "https://getbootstrap.com/docs/3.4/javascript/#affix",
+     "titolo": "getbootstrap.com"
+    },
+    {
+     "url": "https://getbootstrap.com/docs/5.3/helpers/position/#sticky-top",
+     "titolo": "getbootstrap.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Box, barra o menu sticky («affix»)",
+     "note": "Un box, una barra o un menu che scorre con la pagina finché raggiunge una posizione stabilita, poi resta fermo lì (per esempio un header agganciato in cima alla finestra). Bootstrap 3 chiamava questo comportamento «affix»; oggi si ottiene con la proprietà CSS position: sticky."
+    },
+    "en": {
+     "nome": "Sticky box, bar or menu (\"affix\")",
+     "note": "A box, bar or menu that scrolls with the page until it reaches a set position, then stays fixed there (for example a header pinned to the top of the viewport). Bootstrap 3 called this behaviour \"affix\"; today it is done with the CSS property position: sticky."
+    },
+    "fr": {
+     "nome": "Boîte, barre ou menu collant (sticky, « affix »)",
+     "note": "Une boîte, une barre ou un menu qui défile avec la page jusqu'à atteindre une position donnée, puis reste fixé à cet endroit (par exemple un en-tête épinglé en haut de la fenêtre). Bootstrap 3 appelait ce comportement « affix » ; aujourd'hui on l'obtient avec la propriété CSS position: sticky."
+    },
+    "zh": {
+     "nome": "吸附（sticky）框、栏或菜单（“affix”）",
+     "note": "随页面滚动、到达设定位置后便固定不动的框、栏或菜单（例如固定在视口顶部的页眉）。Bootstrap 3 将这种行为称为“affix”；如今用 CSS 属性 position: sticky 实现。"
+    }
+   }
+  },
+  {
+   "id": "stories",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 510,
+   "parole": [],
+   "esempio": "esempi/stories/",
+   "vedi": [],
+   "origine": "mining 51",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Storie (stories)",
+     "note": "Da Snapchat e Instagram, poi ovunque."
+    },
+    "en": {
+     "nome": "Stories",
+     "note": "From Snapchat and Instagram, then everywhere."
+    },
+    "fr": {
+     "nome": "Stories",
+     "note": "Venues de Snapchat et d'Instagram, puis partout."
+    },
+    "zh": {
+     "nome": "快拍（Stories）",
+     "note": "源自 Snapchat 和 Instagram，后来随处可见。"
+    }
+   }
+  },
+  {
+   "id": "tab-audio-indicator",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 520,
+   "parole": [],
+   "esempio": "esempi/tab-audio-indicator/",
+   "vedi": [],
+   "origine": "mining 52",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Schede con indicatore audio",
+     "note": "Un'icona nell'elenco delle schede del browser mostra quale scheda sta riproducendo audio."
+    },
+    "en": {
+     "nome": "Tabs with audio indicator",
+     "note": "An icon in the browser's tab list shows which tab is playing sound."
+    },
+    "fr": {
+     "nome": "Onglets avec indicateur audio",
+     "note": "Une icône dans la liste des onglets du navigateur indique quel onglet émet du son."
+    },
+    "zh": {
+     "nome": "带音频指示的标签页",
+     "note": "浏览器标签栏中的图标显示哪个标签页正在播放声音。"
+    }
+   }
+  },
+  {
+   "id": "image-tags",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2025,
+   "ordine": 530,
+   "parole": [],
+   "esempio": "esempi/image-tags/",
+   "vedi": [],
+   "origine": "mining 53",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Tag sulle immagini",
+     "note": "Una funzione comune nei social network; si riferisce anche ai tag nei file system."
+    },
+    "en": {
+     "nome": "Tags on pictures",
+     "note": "An ordinary feature on Social Network Services; also refers to tags on file systems."
+    },
+    "fr": {
+     "nome": "Identifications sur les images",
+     "note": "Une fonction courante sur les réseaux sociaux ; désigne aussi les étiquettes (tags) dans les systèmes de fichiers."
+    },
+    "zh": {
+     "nome": "图片标签",
+     "note": "社交网络服务中的常见功能；也指文件系统中的标签。"
+    }
+   }
+  },
+  {
+   "id": "text-caret",
+   "livello": "avanzato",
+   "categoria": "testo",
+   "anno": 2025,
+   "ordine": 540,
+   "parole": [],
+   "esempio": "esempi/text-caret/",
+   "vedi": [
+    "pointer",
+    "live-validation"
+   ],
+   "origine": "mining 54, 86",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Caret_navigation",
+     "titolo": "Caret navigation - Wikipedia"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Caret (cursore di testo)",
+     "note": "La barra verticale, a volte lampeggiante, che indica il punto di scrittura corrente."
+    },
+    "en": {
+     "nome": "Text caret (input text cursor)",
+     "note": "The vertical bar, sometimes blinking, that represents the current writing point."
+    },
+    "fr": {
+     "nome": "Caret (curseur de saisie de texte)",
+     "note": "La barre verticale, parfois clignotante, qui représente le point d'écriture actuel."
+    },
+    "zh": {
+     "nome": "文本插入符（caret，输入光标）",
+     "note": "表示当前书写位置的竖线，有时会闪烁。"
+    }
+   }
+  },
+  {
+   "id": "ocr-text-recognition",
+   "livello": "avanzato",
+   "categoria": "testo",
+   "anno": 2025,
+   "ordine": 550,
+   "parole": [],
+   "esempio": "esempi/ocr-text-recognition/",
+   "vedi": [],
+   "origine": "mining 55",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Optical_character_recognition",
+     "titolo": "OCR"
+    },
+    {
+     "url": "https://support.apple.com/en-us/4",
+     "titolo": "Apple system"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Riconoscimento del testo nelle immagini (OCR)",
+     "note": "Il riconoscimento ottico dei caratteri (OCR) trasforma il testo di una foto o di un'immagine in testo selezionabile e copiabile. I sistemi operativi oggi lo offrono direttamente sulle immagini e nella fotocamera (per esempio Testo live sui dispositivi Apple)."
+    },
+    "en": {
+     "nome": "Text recognition on pictures (OCR)",
+     "note": "Optical character recognition (OCR) turns text in a photo or image into selectable, copyable text. Operating systems now offer it directly on pictures and in the camera (for example Live Text on Apple devices)."
+    },
+    "fr": {
+     "nome": "Reconnaissance de texte dans les images (OCR)",
+     "note": "La reconnaissance optique de caractères (OCR) transforme le texte d'une photo ou d'une image en texte sélectionnable et copiable. Les systèmes d'exploitation la proposent désormais directement sur les images et dans l'appareil photo (par exemple Texte en direct sur les appareils Apple)."
+    },
+    "zh": {
+     "nome": "图片文字识别（OCR）",
+     "note": "光学字符识别（OCR）把照片或图片中的文字转换为可选择、可复制的文本。如今操作系统直接在图片和相机中提供这一功能（例如 Apple 设备上的“实况文本”）。"
+    }
+   }
+  },
+  {
+   "id": "ai-thinking-steps",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2025,
+   "ordine": 560,
+   "parole": [],
+   "esempio": "esempi/ai-thinking-steps/",
+   "vedi": [],
+   "origine": "mining 56",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Feedback del «ragionamento» dell’IA e delle fasi del processo",
+     "note": "Tre puntini, poi le fasi del processo."
+    },
+    "en": {
+     "nome": "AI \"thinking\" and process-step feedback",
+     "note": "Three dots, then the steps of the process."
+    },
+    "fr": {
+     "nome": "Feedback de « réflexion » de l’IA et des étapes du processus",
+     "note": "Trois points, puis les étapes du processus."
+    },
+    "zh": {
+     "nome": "AI“思考”与过程步骤反馈",
+     "note": "先是三个点，然后是过程的各个步骤。"
+    }
+   }
+  },
+  {
+   "id": "thumbnav",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2025,
+   "ordine": 570,
+   "parole": [],
+   "esempio": "esempi/thumbnav/",
+   "vedi": [],
+   "origine": "mining 57",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://getuikit.com/docs/thumbnav",
+     "titolo": "getuikit.com"
+    },
+    {
+     "url": "https://designers.italia.it/design-system/componenti/thumbnav/",
+     "titolo": "designers.italia.it"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Thumbnav",
+     "note": "Una fila di miniature per navigare in uno slideshow o in una galleria: ogni miniatura rappresenta un elemento e quella corrente è evidenziata."
+    },
+    "en": {
+     "nome": "Thumbnav",
+     "note": "A row of thumbnail images used to navigate a slideshow or gallery: each thumbnail stands for one item and the current one is highlighted."
+    },
+    "fr": {
+     "nome": "Navigation par vignettes (thumbnav)",
+     "note": "Une rangée de vignettes servant à naviguer dans un diaporama ou une galerie : chaque vignette représente un élément et celle en cours est mise en évidence."
+    },
+    "zh": {
+     "nome": "缩略图导航（thumbnav）",
+     "note": "一排用于浏览幻灯片或图库的缩略图：每张缩略图代表一个项目，当前项会高亮显示。"
+    }
+   }
+  },
+  {
+   "id": "timer-countdown",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2025,
+   "ordine": 580,
+   "parole": [],
+   "esempio": "esempi/timer-countdown/",
+   "vedi": [],
+   "origine": "mining 58",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Timer, conto alla rovescia, cronometro",
+     "note": "Indicatori del tempo trascorso o rimanente: il cronometro conta in avanti da zero, mentre il timer o il conto alla rovescia scendono fino a zero, a una scadenza o a un evento."
+    },
+    "en": {
+     "nome": "Timer, countdown, stopwatch",
+     "note": "Displays of elapsed or remaining time: a stopwatch counts up from zero, while a timer or countdown counts down to zero, a deadline or an event."
+    },
+    "fr": {
+     "nome": "Minuteur, compte à rebours, chronomètre",
+     "note": "Affichages du temps écoulé ou restant : le chronomètre compte à partir de zéro, tandis que le minuteur ou le compte à rebours décompte jusqu'à zéro, une échéance ou un événement."
+    },
+    "zh": {
+     "nome": "计时器、倒计时、秒表",
+     "note": "显示已用时间或剩余时间：秒表从零开始正向计时，而计时器或倒计时则倒数至零、截止时间或某个事件。"
+    }
+   }
+  },
+  {
+   "id": "trash",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 590,
+   "parole": [],
+   "esempio": "esempi/trash/",
+   "vedi": [],
+   "origine": "mining 59",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Cestino",
+     "note": "Un contenitore temporaneo per gli elementi eliminati, che si possono ripristinare o cancellare definitivamente. Rende reversibile l'eliminazione e abbassa il costo degli errori."
+    },
+    "en": {
+     "nome": "Trash, bin",
+     "note": "A temporary holding place for deleted items, which can be restored or permanently removed. It makes deletion reversible and lowers the cost of mistakes."
+    },
+    "fr": {
+     "nome": "Corbeille",
+     "note": "Un espace temporaire pour les éléments supprimés, qui peuvent être restaurés ou effacés définitivement. Elle rend la suppression réversible et réduit le coût des erreurs."
+    },
+    "zh": {
+     "nome": "回收站、废纸篓",
+     "note": "暂存已删除项目的地方，项目可以恢复或永久删除。它让删除操作可以撤销，降低出错的代价。"
+    }
+   }
+  },
+  {
+   "id": "kebab-menu",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2025,
+   "ordine": 600,
+   "parole": [],
+   "esempio": "esempi/kebab-menu/",
+   "vedi": [
+    "context-menu"
+   ],
+   "origine": "mining 60",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.reddit.com/r/apple/comments/nynv1n/really_sad_that_apple_has_fully_embraced_the/",
+     "titolo": "Really sad that Apple has fully embraced the triple-dot menu button : r/apple"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Menu a tre puntini",
+     "note": "Un pulsante con tre puntini allineati in verticale (detto anche menu kebab) che apre un menu di azioni aggiuntive. La variante orizzontale è spesso chiamata menu meatballs."
+    },
+    "en": {
+     "nome": "Triple dot menu",
+     "note": "A button with three vertically aligned dots (also called kebab menu) that opens a menu of additional actions. The horizontal variant is often called meatballs menu."
+    },
+    "fr": {
+     "nome": "Menu à trois points",
+     "note": "Un bouton à trois points alignés verticalement (aussi appelé menu kebab) qui ouvre un menu d'actions supplémentaires. La variante horizontale est souvent appelée menu meatballs."
+    },
+    "zh": {
+     "nome": "三点菜单",
+     "note": "由三个竖向排列的圆点组成的按钮（也称烤串菜单，kebab menu），点击后打开包含更多操作的菜单。横向排列的变体常被称为肉丸菜单（meatballs menu）。"
+    }
+   }
+  },
+  {
+   "id": "typing-indicator",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2025,
+   "ordine": 610,
+   "parole": [],
+   "esempio": "esempi/typing-indicator/",
+   "vedi": [
+    "ai-thinking-steps",
+    "chat-bubble"
+   ],
+   "origine": "mining 61",
+   "scritto": "",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.sfgate.com/tech/article/typing-message-indicators-Jerry-Cuomo-IBM-text-983.php",
+     "titolo": "'Someone’s typing…': The history behind text messaging's most dreadful feature"
+    },
+    {
+     "url": "https://uxdesign.cc/dot-dot-dot-7cebfc7f",
+     "titolo": "The enigmatic ellipsis — and why we see it on every UI | by Jason Carlin"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Indicatore di scrittura (i tre puntini)",
+     "note": "Nelle app di messaggistica e nei chatbot."
+    },
+    "en": {
+     "nome": "Typing indicator (dot-dot-dot)",
+     "note": "In messaging apps and chatbots."
+    },
+    "fr": {
+     "nome": "Indicateur de saisie (les trois points)",
+     "note": "Dans les applications de messagerie et les chatbots."
+    },
+    "zh": {
+     "nome": "输入状态指示器（三个点）",
+     "note": "用于即时通讯应用和聊天机器人。"
+    }
+   }
+  },
+  {
+   "id": "card",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2025,
+   "ordine": 620,
+   "parole": [],
+   "esempio": "esempi/card/",
+   "vedi": [],
+   "origine": "mining 62",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [
+    {
+     "url": "https://www.smashingmagazine.com//10/designing-card-based-user-interfaces/",
+     "titolo": "Designing Card-Based User Interfaces — Smashing Magazine"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Card",
+     "note": "Un contenitore che raggruppa contenuti e azioni relativi a un singolo soggetto (spesso un’immagine, un titolo, un breve testo e dei pulsanti), di solito ripetuto in griglie o elenchi."
+    },
+    "en": {
+     "nome": "Card",
+     "note": "A container that groups the content and actions about a single subject (often an image, a title, a short text and buttons), usually repeated in grids or lists."
+    },
+    "fr": {
+     "nome": "Carte (card)",
+     "note": "Un conteneur qui regroupe le contenu et les actions relatifs à un seul sujet (souvent une image, un titre, un court texte et des boutons), généralement répété dans des grilles ou des listes."
+    },
+    "zh": {
+     "nome": "卡片（Card）",
+     "note": "将单一主题的内容和操作（通常是一张图片、一个标题、一段简短文字和按钮）组合在一起的容器，通常在网格或列表中重复出现。"
+    }
+   }
+  },
+  {
+   "id": "undo-history",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 630,
+   "parole": [],
+   "esempio": "esempi/undo-history/",
+   "vedi": [],
+   "origine": "mining 63",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Annulla e cronologia",
+     "note": "«Annulla» inverte l'ultima azione e «Ripeti» la ripristina. Un pannello della cronologia elenca le azioni o le versioni passate, così si può tornare a qualsiasi stato precedente."
+    },
+    "en": {
+     "nome": "Undo and history",
+     "note": "Undo reverses the last action and redo repeats it. A history panel lists past actions or versions, so the user can go back to any earlier state."
+    },
+    "fr": {
+     "nome": "Annuler et historique",
+     "note": "« Annuler » inverse la dernière action et « Rétablir » la refait. Un panneau d'historique liste les actions ou les versions passées, pour que l'utilisateur puisse revenir à n'importe quel état antérieur."
+    },
+    "zh": {
+     "nome": "撤销与历史记录",
+     "note": "撤销（undo）回退上一步操作，重做（redo）则再次执行该操作。历史记录面板列出过去的操作或版本，用户可以回到之前的任意状态。"
+    }
+   }
+  },
+  {
+   "id": "undo-send",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 640,
+   "parole": [],
+   "esempio": "esempi/undo-send/",
+   "vedi": [],
+   "origine": "mining 64",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Annulla invio (buffer dei messaggi)",
+     "note": "Una funzione abituale delle interfacce di posta elettronica."
+    },
+    "en": {
+     "nome": "Undo send (message buffer)",
+     "note": "A usual feature of mailbox interfaces."
+    },
+    "fr": {
+     "nome": "Annuler l'envoi (tampon de messages)",
+     "note": "Une fonction courante des interfaces de messagerie électronique."
+    },
+    "zh": {
+     "nome": "撤回发送（消息缓冲）",
+     "note": "邮箱界面的常见功能。"
+    }
+   }
+  },
+  {
+   "id": "versioning",
+   "livello": "avanzato",
+   "categoria": "sistema",
+   "anno": 2025,
+   "ordine": 650,
+   "parole": [],
+   "esempio": "esempi/versioning/",
+   "vedi": [],
+   "origine": "mining 65",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://github.blog/developer-skills/programming-languages-and-frameworks/what-is-git-our-beginners-guide-to-version-control/",
+     "titolo": "Git"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Sistema di versionamento (per esempio Git)",
+     "note": "Un sistema che registra le versioni successive dei file, così che le modifiche si possano confrontare, ripristinare e unire. Nello sviluppo software il più diffuso è Git; anche gli strumenti di design offrono cronologie delle versioni simili."
+    },
+    "en": {
+     "nome": "Versioning system (e.g., Git)",
+     "note": "A system that records successive versions of files, so that changes can be compared, restored and merged. Git is the most widely used one in software development; design tools offer similar version histories."
+    },
+    "fr": {
+     "nome": "Système de gestion de versions (par exemple Git)",
+     "note": "Un système qui enregistre les versions successives des fichiers, afin de pouvoir comparer, restaurer et fusionner les modifications. Git est le plus utilisé dans le développement logiciel ; les outils de design proposent des historiques de versions similaires."
+    },
+    "zh": {
+     "nome": "版本控制系统（例如 Git）",
+     "note": "记录文件各个版本的系统，便于比较、恢复和合并修改。Git 是软件开发中使用最广泛的版本控制系统；设计工具也提供类似的版本历史。"
+    }
+   }
+  },
+  {
+   "id": "voice-ui",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2025,
+   "ordine": 660,
+   "parole": [],
+   "esempio": "esempi/voice-ui/",
+   "vedi": [],
+   "origine": "mining 66",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Note vocali e componenti delle interfacce vocali (VUI)",
+     "note": "Componenti per parlare a un'interfaccia o registrare la propria voce: le note vocali nelle app di messaggistica (tieni premuto per registrare, forma d'onda, riproduzione) e i controlli degli assistenti vocali (pulsante del microfono, stato di ascolto, trascrizione)."
+    },
+    "en": {
+     "nome": "Voice note and Voice User Interface (VUI) components",
+     "note": "Components for speaking to an interface or recording one's voice: voice notes in messaging apps (hold to record, waveform, playback) and the controls of voice assistants (microphone button, listening state, transcript)."
+    },
+    "fr": {
+     "nome": "Notes vocales et composants d'interface vocale (VUI)",
+     "note": "Composants pour parler à une interface ou enregistrer sa voix : les notes vocales des applications de messagerie (maintenir pour enregistrer, forme d'onde, lecture) et les commandes des assistants vocaux (bouton du micro, état d'écoute, transcription)."
+    },
+    "zh": {
+     "nome": "语音消息与语音用户界面（VUI）组件",
+     "note": "用于与界面对话或录制语音的组件：即时通讯应用中的语音消息（按住录音、波形、回放），以及语音助手的控件（麦克风按钮、聆听状态、文字转录）。"
+    }
+   }
+  },
+  {
+   "id": "irreversible-action-warning",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2025,
+   "ordine": 670,
+   "parole": [],
+   "esempio": "esempi/irreversible-action-warning/",
+   "vedi": [
+    "modal",
+    "undo-history"
+   ],
+   "origine": "mining 67, 68",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://www.smashingmagazine.com/2010/09/how-manage-dangerous-actions-user-interfaces/",
+     "titolo": "Smashing Magazine"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Avviso prima delle azioni irreversibili",
+     "note": "Azioni pericolose, finestre di conferma, conferma dell'eliminazione."
+    },
+    "en": {
+     "nome": "Warning before irreversible actions",
+     "note": "Dangerous actions, confirmation dialogs, delete confirmation."
+    },
+    "fr": {
+     "nome": "Avertissement avant les actions irréversibles",
+     "note": "Actions dangereuses, boîtes de dialogue de confirmation, confirmation de suppression."
+    },
+    "zh": {
+     "nome": "不可逆操作前的警告",
+     "note": "危险操作、确认对话框、删除确认。"
+    }
+   }
+  },
+  {
+   "id": "paywall",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2026,
+   "ordine": 690,
+   "parole": [],
+   "esempio": "esempi/paywall/",
+   "vedi": [],
+   "origine": "mining 69",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Paywall / content locker",
+     "note": "Meccanismi di accesso riservato ai contenuti, modali di abbonamento e sistemi di sfocatura del testo."
+    },
+    "en": {
+     "nome": "Paywall / content locker",
+     "note": "Gated content mechanisms, subscription modals, and text-blurring systems."
+    },
+    "fr": {
+     "nome": "Paywall / verrouillage de contenu",
+     "note": "Mécanismes d'accès restreint aux contenus, fenêtres modales d'abonnement et systèmes de floutage du texte."
+    },
+    "zh": {
+     "nome": "付费墙（paywall）/ 内容锁",
+     "note": "限制内容访问的机制、订阅模态框，以及文字模糊处理系统。"
+    }
+   }
+  },
+  {
+   "id": "pull-to-refresh",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 700,
+   "parole": [],
+   "esempio": "esempi/pull-to-refresh/",
+   "vedi": [],
+   "origine": "mining 70",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pull-to-refresh (trascina per aggiornare)",
+     "note": "Il gesto di aggiornamento, introdotto da Loren Brichter in Tweetie (poi Twitter)."
+    },
+    "en": {
+     "nome": "Pull-to-refresh",
+     "note": "The update gesture, introduced by Loren Brichter in Tweetie (later Twitter)."
+    },
+    "fr": {
+     "nome": "Tirer pour actualiser (pull-to-refresh)",
+     "note": "Le geste d'actualisation, introduit par Loren Brichter dans Tweetie (devenu ensuite Twitter)."
+    },
+    "zh": {
+     "nome": "下拉刷新（pull-to-refresh）",
+     "note": "这一刷新手势由 Loren Brichter 在 Tweetie（后来的 Twitter）中引入。"
+    }
+   }
+  },
+  {
+   "id": "slash-command",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2026,
+   "ordine": 710,
+   "parole": [],
+   "esempio": "esempi/slash-command/",
+   "vedi": [],
+   "origine": "mining 71",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Comando slash ( / ) o due punti ( : )",
+     "note": "Un meccanismo di attivazione per passare dalla GUI alla CLI (per esempio Notion o gli agenti IA)."
+    },
+    "en": {
+     "nome": "Slash command ( / ) or colon ( : )",
+     "note": "A trigger mechanism to switch from GUI to CLI (e.g., Notion or AI agents)."
+    },
+    "fr": {
+     "nome": "Commande slash ( / ) ou deux-points ( : )",
+     "note": "Un mécanisme de déclenchement pour passer de la GUI à la CLI (par exemple Notion ou les agents IA)."
+    },
+    "zh": {
+     "nome": "斜杠命令（ / ）或冒号（ : ）",
+     "note": "一种从图形界面（GUI）切换到命令行（CLI）的触发机制（例如 Notion 或 AI 智能体）。"
+    }
+   }
+  },
+  {
+   "id": "prompt-suggestions",
+   "livello": "avanzato",
+   "categoria": "conversazione",
+   "anno": 2026,
+   "ordine": 720,
+   "parole": [],
+   "esempio": "esempi/prompt-suggestions/",
+   "vedi": [],
+   "origine": "mining 72",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Esempi di ricerca e suggerimenti di prompt",
+     "note": "Esempi di ricerca statici o suggerimenti di prompt posti sotto il campo di input."
+    },
+    "en": {
+     "nome": "Sample queries and prompt suggestions",
+     "note": "Static search examples or prompt suggestions placed below the input field."
+    },
+    "fr": {
+     "nome": "Exemples de requêtes et suggestions de prompts",
+     "note": "Exemples de recherche statiques ou suggestions de prompts placés sous le champ de saisie."
+    },
+    "zh": {
+     "nome": "示例查询与提示词建议",
+     "note": "放在输入框下方的静态搜索示例或提示词（prompt）建议。"
+    }
+   }
+  },
+  {
+   "id": "tree-menu",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2026,
+   "ordine": 730,
+   "parole": [],
+   "esempio": "esempi/tree-menu/",
+   "vedi": [],
+   "origine": "mining 73",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Menu ad albero / diagramma ad albero",
+     "note": "Menu gerarchici o visualizzazioni di dati ad albero."
+    },
+    "en": {
+     "nome": "Tree menu / tree diagram",
+     "note": "Hierarchical menus or tree-based data visualizations."
+    },
+    "fr": {
+     "nome": "Menu arborescent / diagramme en arbre",
+     "note": "Menus hiérarchiques ou visualisations de données arborescentes."
+    },
+    "zh": {
+     "nome": "树形菜单 / 树状图",
+     "note": "层级菜单或基于树结构的数据可视化。"
+    }
+   }
+  },
+  {
+   "id": "sheet",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2026,
+   "ordine": 740,
+   "parole": [],
+   "esempio": "esempi/sheet/",
+   "vedi": [],
+   "origine": "mining 74",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/sheets",
+     "titolo": "developer.apple.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Sheet (dal basso e dall'alto)",
+     "note": "Superfici contestuali che scorrono dentro dal bordo superiore o inferiore dello schermo."
+    },
+    "en": {
+     "nome": "Sheet (bottom and top)",
+     "note": "Contextual surfaces that slide in from the top or bottom edge of the screen."
+    },
+    "fr": {
+     "nome": "Feuille (sheet, en bas et en haut)",
+     "note": "Surfaces contextuelles qui glissent depuis le bord supérieur ou inférieur de l'écran."
+    },
+    "zh": {
+     "nome": "面板（Sheet，底部与顶部）",
+     "note": "从屏幕顶部或底部边缘滑入的上下文界面层。"
+    }
+   }
+  },
+  {
+   "id": "upgrade-button",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2026,
+   "ordine": 760,
+   "parole": [],
+   "esempio": "esempi/upgrade-button/",
+   "vedi": [],
+   "origine": "mining 76",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante di upgrade",
+     "note": "Un pulsante specifico per l'upselling o la conversione a un piano superiore."
+    },
+    "en": {
+     "nome": "Upgrade button",
+     "note": "A specific button for plan upselling/conversion."
+    },
+    "fr": {
+     "nome": "Bouton de mise à niveau (upgrade)",
+     "note": "Un bouton spécifique pour la vente incitative (upselling) ou la conversion vers une offre supérieure."
+    },
+    "zh": {
+     "nome": "升级按钮",
+     "note": "专门用于套餐追加销售（upselling）或付费转化的按钮。"
+    }
+   }
+  },
+  {
+   "id": "add-to-collection-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 770,
+   "parole": [],
+   "esempio": "esempi/add-to-collection-button/",
+   "vedi": [],
+   "origine": "mining 77",
+   "scritto": "",
+   "fonti": [
+    {
+     "url": "https://chromewebstore.google.com/detail/save-to-cosmos/mgjneceglphcpbbfbhjplkpgfapebmdg?pli=1",
+     "titolo": "chromewebstore.google.com"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante «aggiungi immagine» (plugin/estensione)",
+     "note": "Comandi per aggiungere contenuti a strumenti esterni (per esempio Cosmos o Pinterest)."
+    },
+    "en": {
+     "nome": "Add image button (plugin/extension)",
+     "note": "Triggers to add content to external tools (e.g., Cosmos or Pinterest)."
+    },
+    "fr": {
+     "nome": "Bouton « ajouter une image » (plugin/extension)",
+     "note": "Déclencheurs permettant d’ajouter du contenu à des outils externes (par exemple Cosmos ou Pinterest)."
+    },
+    "zh": {
+     "nome": "添加图片按钮（插件/扩展）",
+     "note": "用于将内容添加到外部工具（例如 Cosmos 或 Pinterest）的触发按钮。"
+    }
+   }
+  },
+  {
+   "id": "plugin-puzzle-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 780,
+   "parole": [],
+   "esempio": "esempi/plugin-puzzle-button/",
+   "vedi": [],
+   "origine": "mining 78",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante a forma di puzzle",
+     "note": "Un'icona specifica che rappresenta integrazioni, plugin ed estensioni (add-on)."
+    },
+    "en": {
+     "nome": "Puzzle button",
+     "note": "A specific icon representing integrations, plugins, and add-ons."
+    },
+    "fr": {
+     "nome": "Bouton puzzle",
+     "note": "Une icône spécifique qui représente les intégrations, les plugins et les extensions (add-ons)."
+    },
+    "zh": {
+     "nome": "拼图按钮",
+     "note": "一个专门的图标，代表集成、插件（plugin）和扩展（add-on）。"
+    }
+   }
+  },
+  {
+   "id": "draggable-overflow-text",
+   "livello": "avanzato",
+   "categoria": "testo",
+   "anno": 2026,
+   "ordine": 790,
+   "parole": [],
+   "esempio": "esempi/draggable-overflow-text/",
+   "vedi": [],
+   "origine": "mining 79",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Testo trascinabile (panning)",
+     "note": "Il trascinamento manuale del testo «in eccesso» che supera lo spazio visivo. Vedi anche il marquee."
+    },
+    "en": {
+     "nome": "Panning / draggable text",
+     "note": "The manual dragging of \"overflowing\" text that exceeds the visual space. See also the marquee."
+    },
+    "fr": {
+     "nome": "Texte déplaçable (panning)",
+     "note": "Le déplacement manuel d'un texte « qui déborde » de l'espace visible. Voir aussi le marquee."
+    },
+    "zh": {
+     "nome": "平移／可拖动文本",
+     "note": "手动拖动超出可视空间的“溢出”文本。另见跑马灯（marquee）。"
+    }
+   }
+  },
+  {
+   "id": "live-validation",
+   "livello": "avanzato",
+   "categoria": "errori",
+   "anno": 2026,
+   "ordine": 800,
+   "parole": [],
+   "esempio": "esempi/live-validation/",
+   "vedi": [],
+   "origine": "mining 80",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Validazione dei dati in tempo reale",
+     "note": "Formattazione automatica e feedback di validazione in tempo reale mentre si digita."
+    },
+    "en": {
+     "nome": "Real-time input validation",
+     "note": "Auto-formatting and live validation feedback while typing."
+    },
+    "fr": {
+     "nome": "Validation de la saisie en temps réel",
+     "note": "Mise en forme automatique et retour de validation en direct pendant la frappe."
+    },
+    "zh": {
+     "nome": "实时输入验证",
+     "note": "输入时自动格式化并实时给出验证反馈。"
+    }
+   }
+  },
+  {
+   "id": "autocorrection",
+   "livello": "avanzato",
+   "categoria": "testo",
+   "anno": 2026,
+   "ordine": 810,
+   "parole": [],
+   "esempio": "esempi/autocorrection/",
+   "vedi": [],
+   "origine": "mining 81",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Correzione automatica e correttori grammaticali",
+     "note": "Comprende il feedback visivo della sottolineatura rossa (e di altri colori)."
+    },
+    "en": {
+     "nome": "Autocorrection and grammar checkers",
+     "note": "Includes the visual feedback of the red (and other colours) underline."
+    },
+    "fr": {
+     "nome": "Correction automatique et correcteurs grammaticaux",
+     "note": "Inclut le feedback visuel du soulignement rouge (et d’autres couleurs)."
+    },
+    "zh": {
+     "nome": "自动更正与语法检查",
+     "note": "包括红色（及其他颜色）下划线的视觉反馈。"
+    }
+   }
+  },
+  {
+   "id": "predictive-input",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2026,
+   "ordine": 820,
+   "parole": [],
+   "esempio": "esempi/predictive-input/",
+   "vedi": [
+    "search-field",
+    "dropdown-filter"
+   ],
+   "origine": "mining 82",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Input predittivo (e menu a tendina predittivi)",
+     "note": "Assistenza alla ricerca in tempo reale, con completamento automatico (autocomplete) e ricerca predittiva."
+    },
+    "en": {
+     "nome": "Predictive input (and predictive drop-down lists)",
+     "note": "Real-time query assistance, including autocomplete and predictive search functionality."
+    },
+    "fr": {
+     "nome": "Saisie prédictive (et listes déroulantes prédictives)",
+     "note": "Aide à la saisie des requêtes en temps réel, avec l'autocomplétion et la recherche prédictive."
+    },
+    "zh": {
+     "nome": "预测输入（及预测下拉列表）",
+     "note": "实时的查询辅助，包括自动补全（autocomplete）和预测搜索功能。"
+    }
+   }
+  },
+  {
+   "id": "skip-button",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 830,
+   "parole": [],
+   "esempio": "esempi/skip-button/",
+   "vedi": [],
+   "origine": "mining 83",
+   "scritto": "",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante «Salta»",
+     "note": "Si usa spesso per saltare intro o sezioni ripetitive."
+    },
+    "en": {
+     "nome": "Skip button",
+     "note": "Frequently used to bypass intros or repetitive sections"
+    },
+    "fr": {
+     "nome": "Bouton « Passer »",
+     "note": "Souvent utilisé pour passer les intros ou les sections répétitives."
+    },
+    "zh": {
+     "nome": "跳过按钮",
+     "note": "常用于跳过片头或重复的部分。"
+    }
+   }
+  },
+  {
+   "id": "like-dislike",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2026,
+   "ordine": 840,
+   "parole": [],
+   "esempio": "esempi/like-dislike/",
+   "vedi": [],
+   "origine": "mining 84",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Pulsante «mi piace» e «non mi piace»",
+     "note": "Una coppia di pulsanti che permette agli utenti di approvare o disapprovare un contenuto, di solito con le icone del pollice in su e del pollice in giù. I conteggi possono comparire accanto ai pulsanti e sono spesso usati per ordinare o consigliare i contenuti."
+    },
+    "en": {
+     "nome": "Like and dislike button",
+     "note": "A pair of buttons that lets users approve or disapprove of a piece of content, usually with thumbs-up and thumbs-down icons. The counts may be shown next to the buttons and are often used to rank or recommend content."
+    },
+    "fr": {
+     "nome": "Boutons « j'aime » et « je n'aime pas »",
+     "note": "Une paire de boutons qui permet aux utilisateurs d'approuver ou de désapprouver un contenu, généralement avec des icônes de pouce levé et de pouce baissé. Les compteurs peuvent s'afficher à côté des boutons et servent souvent à classer ou à recommander des contenus."
+    },
+    "zh": {
+     "nome": "点赞与点踩按钮",
+     "note": "一对按钮，让用户对内容表示赞成或反对，通常使用竖起和朝下的大拇指图标。按钮旁可能显示计数，这些数据常被用于内容排序或推荐。"
+    }
+   }
+  },
+  {
+   "id": "onboarding",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2026,
+   "ordine": 850,
+   "parole": [],
+   "esempio": "esempi/onboarding/",
+   "vedi": [],
+   "origine": "mining 85",
+   "scritto": "claude",
+   "fonti": [],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Onboarding dell'interfaccia o del prodotto (walkthrough e coach mark)",
+     "note": "L'esperienza del primo utilizzo che presenta un prodotto: schermate di benvenuto, walkthrough passo passo e coach mark che indicano parti dell'interfaccia. Deve essere breve e facile da saltare."
+    },
+    "en": {
+     "nome": "Interface/product onboarding (walkthroughs and coach marks)",
+     "note": "The first-use experience that introduces a product: welcome screens, step-by-step walkthroughs, and coach marks that point at parts of the interface. It should be short and easy to skip."
+    },
+    "fr": {
+     "nome": "Onboarding de l'interface ou du produit (visites guidées et coach marks)",
+     "note": "L'expérience de première utilisation qui présente un produit : écrans d'accueil, visites guidées pas à pas et coach marks qui désignent des parties de l'interface. Elle doit être courte et facile à passer."
+    },
+    "zh": {
+     "nome": "界面/产品引导（分步引导与指引标记）",
+     "note": "首次使用时介绍产品的体验：欢迎页、分步引导（walkthrough），以及指向界面各部分的指引标记（coach marks）。引导应简短，并且容易跳过。"
+    }
+   }
+  }
+ ]
+}

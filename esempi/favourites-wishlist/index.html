@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- Esempio ricostruito: Favourites or wishlist. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Favourites and wishlist — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .testa { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .testa .didascalia { margin: 0; }
+  .lista { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; border: 1px solid var(--c-linea); border-radius: 9999px; padding: 6px 12px; }
+  .lista b { font-weight: 500; }
+  .carte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .carta { position: relative; }
+  .foto { height: 150px; border-radius: 10px; }
+  .carta .nome { font-size: 16px; font-weight: 500; margin-top: 8px; }
+  .carta .sotto { font-size: 15px; color: var(--c-tenue); }
+  .cuore { position: absolute; top: 8px; right: 8px; width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255,255,255,.92); cursor: pointer; display: grid; place-items: center; box-shadow: 0 2px 6px rgba(0,0,0,.12); }
+  .cuore:hover { transform: scale(1.06); }
+  .cuore path { fill: none; stroke: #111; stroke-width: 1.8; transition: fill .2s, stroke .2s; }
+  .cuore[aria-pressed="true"] path { fill: #e8475a; stroke: #e8475a; }
+  .cuore[aria-pressed="true"] svg { animation: batti .35s ease; }
+  @keyframes batti { 40% { transform: scale(1.3); } }
+  .righe { display: grid; gap: 10px; }
+  .riga { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--c-linea); }
+  .riga .t { font-size: 16px; } .riga .t small { display: block; font-size: 15px; color: var(--c-tenue); }
+  .icone { display: flex; gap: 6px; }
+  .ico { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 12px; font-size: 15px; cursor: pointer; }
+  .ico:hover { border-color: #111; }
+  .ico svg path, .ico svg polygon { fill: none; stroke: #111; stroke-width: 1.6; stroke-linejoin: round; transition: fill .2s; }
+  .ico.stella[aria-pressed="true"] polygon { fill: #f4bd4f; stroke: #c58f12; }
+  .ico.segna[aria-pressed="true"] path { fill: var(--c-blu); stroke: var(--c-blu); }
+  .ico[aria-pressed="true"] { border-color: #111; }
+  .sez + .sez { margin-top: 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro sez">
+    <div class="testa"><span class="didascalia"><span data-l="it">Cuore: lista dei desideri</span><span data-l="en">Heart: wishlist</span><span data-l="fr">Cœur&#8239;: liste de souhaits</span><span data-l="zh">爱心：心愿单</span></span>
+      <span class="lista"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.8-8 11-8 11z" fill="#e8475a"/></svg><span id="conto" aria-live="polite"></span></span></div>
+    <div class="carte" id="carte"></div>
+  </div>
+  <div class="riquadro sez">
+    <span class="didascalia"><span data-l="it">Stella e segnalibro: preferiti e «salva per dopo»</span><span data-l="en">Star and bookmark: favourites and “save for later”</span><span data-l="fr">Étoile et signet&#8239;: favoris et «&#8239;à lire plus tard&#8239;»</span><span data-l="zh">星标与书签：收藏和“稍后再看”</span></span>
+    <div class="righe" id="righe"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Stessa funzione, molte forme: il cuore esprime desiderio, la stella importanza, il segnalibro un promemoria.</span><span data-l="en">Same function, many forms: the heart expresses desire, the star importance, the bookmark a reminder.</span><span data-l="fr">Même fonction, plusieurs formes&#8239;: le cœur exprime le désir, l’étoile l’importance, le signet un rappel.</span><span data-l="zh">同一功能，多种形式：爱心表示喜爱，星标表示重要，书签表示提醒。</span></p>
+<script>
+  var PROD = [
+    { n: { it: 'Sedia in legno', en: 'Wooden chair', fr: 'Chaise en bois', zh: '木椅' }, s: '120 €', bg: 'linear-gradient(180deg,#f9e0dc 60%,#e9c9c2 60%)', on: true, svg: '<svg width="70" height="90" viewBox="0 0 70 90"><rect x="16" y="6" width="38" height="40" rx="4" fill="#b07a3f"/><rect x="10" y="46" width="50" height="8" rx="2" fill="#8d5f2d"/><path d="M14 54v32M56 54v32" stroke="#8d5f2d" stroke-width="5"/></svg>' },
+    { n: { it: 'Lampada da tavolo', en: 'Desk lamp', fr: 'Lampe de bureau', zh: '台灯' }, s: '64 €', bg: 'linear-gradient(180deg,#e1e8ff 60%,#ccd8fb 60%)', on: false, svg: '<svg width="70" height="90" viewBox="0 0 70 90"><path d="M18 8h34l8 26H10z" fill="#698fff"/><path d="M35 34v46" stroke="#111" stroke-width="4"/><rect x="18" y="80" width="34" height="6" rx="3" fill="#111"/></svg>' },
+    { n: { it: 'Vaso in ceramica', en: 'Ceramic vase', fr: 'Vase en céramique', zh: '陶瓷花瓶' }, s: '38 €', bg: 'linear-gradient(180deg,#ece8e7 60%,#dcd6d4 60%)', on: false, svg: '<svg width="70" height="90" viewBox="0 0 70 90"><path d="M26 8h18v12c12 8 16 20 14 36-2 16-10 28-23 28S14 72 12 56c-2-16 2-28 14-36z" fill="#fa9191"/></svg>' }
+  ];
+  var ART = [
+    { t: { it: 'Guida alle griglie tipografiche', en: 'A guide to typographic grids', fr: 'Guide des grilles typographiques', zh: '版式网格指南' }, s: { it: 'Articolo · 8 min', en: 'Article · 8 min', fr: 'Article · 8 min', zh: '文章 · 8 分钟' }, st: true, sg: false },
+    { t: { it: 'Colore e accessibilità', en: 'Colour and accessibility', fr: 'Couleur et accessibilité', zh: '色彩与无障碍' }, s: { it: 'Video · 14 min', en: 'Video · 14 min', fr: 'Vidéo · 14 min', zh: '视频 · 14 分钟' }, st: false, sg: true }
+  ];
+  var TX = { conto: { it: '% nella lista', en: '% in wishlist', fr: '% dans la liste', zh: '心愿单中有 %' }, agg: { it: 'Aggiungi «%» alla lista dei desideri', en: 'Add “%” to wishlist', fr: 'Ajouter « % » à la liste', zh: '将“%”加入心愿单' },
+    pref: { it: 'Preferito', en: 'Favourite', fr: 'Favori', zh: '收藏' }, salva: { it: 'Salva', en: 'Save', fr: 'Garder', zh: '稍后看' }, salvato: { it: 'Salvato', en: 'Saved', fr: 'Gardé', zh: '已保存' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var CUORE = '<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 10c0 5.8-8 11-8 11z"/></svg>';
+  var STELLA = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,2.5 14.9,8.6 21.5,9.3 16.5,13.8 18,20.4 12,17 6,20.4 7.5,13.8 2.5,9.3 9.1,8.6"/></svg>';
+  var SEGNA = '<svg width="16" height="18" viewBox="0 0 20 24" aria-hidden="true"><path d="M3 2h14v20l-7-5-7 5z"/></svg>';
+  function disegna() {
+    var c = document.getElementById('carte'); c.innerHTML = '';
+    PROD.forEach(function (p) {
+      var d = document.createElement('div'); d.className = 'carta';
+      d.innerHTML = '<div class="foto" style="display:grid;place-items:center">' + p.svg + '</div><button class="cuore" type="button">' + CUORE + '</button><div class="nome"></div><div class="sotto"></div>';
+      d.querySelector('.foto').style.background = p.bg; d.querySelector('.nome').textContent = T(p.n); d.querySelector('.sotto').textContent = p.s;
+      var b = d.querySelector('.cuore'); b.setAttribute('aria-pressed', String(p.on)); b.setAttribute('aria-label', T(TX.agg).replace('%', T(p.n)));
+      b.onclick = function () { p.on = !p.on; b.setAttribute('aria-pressed', String(p.on)); conta(); };
+      c.appendChild(d);
+    });
+    var r = document.getElementById('righe'); r.innerHTML = '';
+    ART.forEach(function (a) {
+      var d = document.createElement('div'); d.className = 'riga';
+      d.innerHTML = '<div class="t"><span></span><small></small></div><div class="icone"><button class="ico stella" type="button">' + STELLA + '<span></span></button><button class="ico segna" type="button">' + SEGNA + '<span></span></button></div>';
+      d.querySelector('.t span').textContent = T(a.t); d.querySelector('small').textContent = T(a.s);
+      var st = d.querySelector('.stella'), sg = d.querySelector('.segna');
+      function agg() { st.setAttribute('aria-pressed', String(a.st)); sg.setAttribute('aria-pressed', String(a.sg)); st.lastChild.textContent = T(TX.pref); sg.lastChild.textContent = T(a.sg ? TX.salvato : TX.salva); }
+      st.onclick = function () { a.st = !a.st; agg(); }; sg.onclick = function () { a.sg = !a.sg; agg(); }; agg();
+      r.appendChild(d);
+    });
+    conta();
+  }
+  function conta() { document.getElementById('conto').textContent = T(TX.conto).replace('%', PROD.filter(function (p) { return p.on; }).length); }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

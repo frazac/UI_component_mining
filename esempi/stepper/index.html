@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- Esempio ricostruito: Stepper. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stepper — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.2fr 1fr; }
+  .stepper { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+  .stepper button { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.3); background: #fff; cursor: pointer; display: grid; place-items: center; transition: border-color .15s, background .15s; }
+  .stepper button:hover:not(:disabled) { border-color: var(--c-blu); background: rgba(105,143,255,.08); }
+  .stepper button:active:not(:disabled) { background: rgba(105,143,255,.2); }
+  .stepper button:disabled { opacity: .3; cursor: not-allowed; }
+  .stepper input { width: 42px; text-align: center; border: 0; font-size: 19px; font-weight: 500; background: none; border-radius: 6px; padding: 4px 0; font-variant-numeric: tabular-nums; }
+  .stepper.spento { opacity: .45; }
+  .riga { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--c-linea); }
+  .riga:last-of-type { border-bottom: 0; }
+  .riga b { font-weight: 500; font-size: 17px; display: block; }
+  .riga small { color: var(--c-tenue); font-size: 15px; }
+  .totale { margin-top: 10px; padding: 10px 14px; border-radius: 8px; background: var(--c-palco); font-size: 16px; }
+  .stati { display: grid; gap: 14px; }
+  .stato { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 16px; }
+  .finto-focus { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Prenotazione: ospiti</span><span data-l="en">Booking: guests</span><span data-l="fr">Réservation : voyageurs</span><span data-l="zh">预订：住客</span></span>
+    <div id="ospiti"></div>
+    <div class="totale" id="totale" aria-live="polite"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati</span><span data-l="en">States</span><span data-l="fr">États</span><span data-l="zh">状态</span></span>
+    <div class="stati">
+      <div class="stato"><span><span data-l="it">Normale</span><span data-l="en">Default</span><span data-l="fr">Par défaut</span><span data-l="zh">默认</span></span>
+        <span class="stepper" aria-hidden="true"><button tabindex="-1">−</button><input value="3" tabindex="-1" readonly><button tabindex="-1">+</button></span></div>
+      <div class="stato"><span><span data-l="it">Focus sul valore</span><span data-l="en">Value focused</span><span data-l="fr">Valeur en focus</span><span data-l="zh">数值获得焦点</span></span>
+        <span class="stepper" aria-hidden="true"><button tabindex="-1">−</button><input class="finto-focus" value="3" tabindex="-1" readonly><button tabindex="-1">+</button></span></div>
+      <div class="stato"><span><span data-l="it">Al minimo</span><span data-l="en">At minimum</span><span data-l="fr">Au minimum</span><span data-l="zh">已达最小值</span></span>
+        <span class="stepper" aria-hidden="true"><button tabindex="-1" disabled>−</button><input value="0" tabindex="-1" readonly><button tabindex="-1">+</button></span></div>
+      <div class="stato"><span><span data-l="it">Al massimo</span><span data-l="en">At maximum</span><span data-l="fr">Au maximum</span><span data-l="zh">已达最大值</span></span>
+        <span class="stepper" aria-hidden="true"><button tabindex="-1">−</button><input value="9" tabindex="-1" readonly><button tabindex="-1" disabled>+</button></span></div>
+      <div class="stato"><span><span data-l="it">Disattivato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></span>
+        <span class="stepper spento" aria-hidden="true"><button tabindex="-1" disabled>−</button><input value="1" tabindex="-1" readonly disabled><button tabindex="-1" disabled>+</button></span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Più e meno cambiano il valore di un passo; con la tastiera: frecce su e giù sul numero. I limiti disattivano il pulsante.</span><span data-l="en">Plus and minus change the value one step at a time; with the keyboard: up and down arrows on the number. Limits disable the button.</span><span data-l="fr">Plus et moins changent la valeur d’un pas ; au clavier : flèches haut et bas sur le nombre. Les limites désactivent le bouton.</span><span data-l="zh">加号和减号每次改变一步；键盘操作：在数字上按上下方向键。到达上下限时按钮被禁用。</span></p>
+<script>
+  var RIGHE = [
+    { n: { it: 'Adulti', en: 'Adults', fr: 'Adultes', zh: '成人' }, d: { it: 'Dai 13 anni', en: 'Age 13+', fr: '13 ans et plus', zh: '13 岁及以上' }, v: 2, min: 1, max: 8 },
+    { n: { it: 'Bambini', en: 'Children', fr: 'Enfants', zh: '儿童' }, d: { it: 'Da 2 a 12 anni', en: 'Ages 2–12', fr: 'De 2 à 12 ans', zh: '2–12 岁' }, v: 0, min: 0, max: 6 },
+    { n: { it: 'Neonati', en: 'Infants', fr: 'Bébés', zh: '婴儿' }, d: { it: 'Sotto i 2 anni', en: 'Under 2', fr: 'Moins de 2 ans', zh: '2 岁以下' }, v: 0, min: 0, max: 2 }
+  ];
+  var TOT = { it: ['ospite', 'ospiti'], en: ['guest', 'guests'], fr: ['voyageur', 'voyageurs'], zh: ['位住客', '位住客'] };
+  var MENO = { it: 'Togli', en: 'Remove', fr: 'Retirer', zh: '减少' }, PIU = { it: 'Aggiungi', en: 'Add', fr: 'Ajouter', zh: '增加' };
+  function lg() { return window.Lingua ? Lingua.get() : 'en'; }
+  function costruisci() {
+    var box = document.getElementById('ospiti'); box.innerHTML = '';
+    RIGHE.forEach(function (r, i) {
+      var div = document.createElement('div'); div.className = 'riga';
+      div.innerHTML = '<span><b id="n' + i + '">' + r.n[lg()] + '</b><small>' + r.d[lg()] + '</small></span>' +
+        '<span class="stepper"><button type="button" aria-label="' + MENO[lg()] + ' ' + r.n[lg()] + '">' +
+        '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></button>' +
+        '<input type="text" inputmode="numeric" role="spinbutton" aria-labelledby="n' + i + '" aria-valuemin="' + r.min + '" aria-valuemax="' + r.max + '">' +
+        '<button type="button" aria-label="' + PIU[lg()] + ' ' + r.n[lg()] + '"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M7 2v10" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></button></span>';
+      box.appendChild(div);
+      var b = div.querySelectorAll('button'), inp = div.querySelector('input');
+      function imposta(v) { r.v = Math.max(r.min, Math.min(r.max, v)); aggiorna(); }
+      b[0].onclick = function () { imposta(r.v - 1); };
+      b[1].onclick = function () { imposta(r.v + 1); };
+      inp.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp') { e.preventDefault(); imposta(r.v + 1); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); imposta(r.v - 1); }
+      });
+      inp.addEventListener('change', function () { var v = parseInt(inp.value, 10); imposta(isNaN(v) ? r.v : v); });
+      r.el = { b: b, inp: inp };
+    });
+    aggiorna();
+  }
+  function aggiorna() {
+    var t = 0;
+    RIGHE.forEach(function (r) {
+      t += r.v; r.el.inp.value = r.v; r.el.inp.setAttribute('aria-valuenow', r.v);
+      r.el.b[0].disabled = r.v <= r.min; r.el.b[1].disabled = r.v >= r.max;
+    });
+    var p = TOT[lg()];
+    document.getElementById('totale').textContent = t + ' ' + (t === 1 ? p[0] : p[1]);
+  }
+  costruisci();
+  document.addEventListener('lingua', costruisci);
+</script>
+</body>
+</html>

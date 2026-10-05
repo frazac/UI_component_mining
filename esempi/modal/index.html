@@ -1,0 +1,118 @@
+<!doctype html>
+<!-- Esempio ricostruito: Modal, overlay and dialog box. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Modal — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .schermo { position: relative; overflow: hidden; padding: 0; height: 430px; }
+  .pagina { padding: 22px 26px; height: 100%; }
+  .barra { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .barra h2 { font-size: 22px; font-weight: 500; margin: 0; }
+  .azioni { display: flex; gap: 10px; }
+  .btn { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 8px 16px; font-size: 16px; cursor: pointer; }
+  .btn:hover { background: var(--c-palco); }
+  .btn.pieno { background: #111; color: #fff; }
+  .btn.pieno:hover { background: var(--c-blu); border-color: var(--c-blu); }
+  .btn.pericolo { background: #c0392b; border-color: #c0392b; color: #fff; }
+  .btn.pericolo:hover { background: #a23125; }
+  .opere { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .opera { border: 0; padding: 0; border-radius: 10px; height: 150px; cursor: zoom-in; position: relative; overflow: hidden; }
+  .opera span { position: absolute; left: 10px; bottom: 8px; font-size: 15px; color: #fff; }
+  .a1 { background: radial-gradient(circle at 30% 35%, var(--c-salmone) 0 22%, transparent 23%), linear-gradient(160deg, #273a7a, var(--c-blu)); }
+  .a2 { background: linear-gradient(90deg, transparent 45%, #111 45% 55%, transparent 55%), linear-gradient(0deg, var(--c-rosa) 50%, #f6d5c8 50%); }
+  .a3 { background: repeating-linear-gradient(45deg, #111 0 14px, var(--c-salmone) 14px 28px); }
+  .righe p { height: 12px; border-radius: 6px; background: var(--c-palco); margin: 14px 0 0; }
+  .fondale { position: absolute; inset: 0; background: rgba(17,17,17,.45); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .fondale.aperto { opacity: 1; pointer-events: auto; }
+  .dialogo { background: #fff; border-radius: 14px; padding: 24px; width: min(420px, 86%); box-shadow: 0 20px 50px rgba(0,0,0,.3); transform: translateY(12px) scale(.98); transition: transform .2s; position: relative; }
+  .fondale.aperto .dialogo { transform: none; }
+  .dialogo h3 { margin: 0 0 8px; font-size: 21px; font-weight: 500; }
+  .dialogo p { margin: 0 0 20px; font-size: 16px; color: rgba(0,0,0,.7); }
+  .dialogo .azioni { justify-content: flex-end; }
+  .chiudi { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border: 0; border-radius: 50%; background: none; cursor: pointer; display: grid; place-items: center; }
+  .chiudi:hover { background: var(--c-palco); }
+  .lightbox { background: none; padding: 0; width: auto; box-shadow: none; }
+  .lightbox .grande { width: 400px; height: 300px; border-radius: 10px; }
+  .lightbox .chiudi { background: #fff; top: -14px; right: -14px; }
+  .lightbox p { color: #fff; margin: 10px 0 0; text-align: center; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro schermo">
+    <div class="pagina" id="pagina">
+      <div class="barra">
+        <h2><span data-l="it">Progetto: Mostra 2026</span><span data-l="en">Project: Exhibition 2026</span><span data-l="fr">Projet&#8239;: Exposition 2026</span><span data-l="zh">项目：2026 展览</span></h2>
+        <div class="azioni"><button class="btn pericolo" type="button" id="apri-elimina"><span data-l="it">Elimina…</span><span data-l="en">Delete…</span><span data-l="fr">Supprimer…</span><span data-l="zh">删除…</span></button></div>
+      </div>
+      <span class="didascalia"><span data-l="it">Clic su un’immagine per ingrandirla (lightbox)</span><span data-l="en">Click an image to enlarge it (lightbox)</span><span data-l="fr">Cliquez sur une image pour l’agrandir (lightbox)</span><span data-l="zh">点击图片放大（灯箱）</span></span>
+      <div class="opere">
+        <button class="opera a1" type="button" data-n="1"><span>01</span></button>
+        <button class="opera a2" type="button" data-n="2"><span>02</span></button>
+        <button class="opera a3" type="button" data-n="3"><span>03</span></button>
+      </div>
+      <div class="righe" aria-hidden="true"><p style="width:92%"></p><p style="width:76%"></p><p style="width:84%"></p></div>
+    </div>
+    <div class="fondale" id="f-elimina">
+      <div class="dialogo" role="alertdialog" aria-modal="true" aria-labelledby="t-el" aria-describedby="d-el">
+        <h3 id="t-el"><span data-l="it">Eliminare il progetto?</span><span data-l="en">Delete the project?</span><span data-l="fr">Supprimer le projet&#8239;?</span><span data-l="zh">删除此项目？</span></h3>
+        <p id="d-el"><span data-l="it">Le 3 immagini e le note andranno perse. L’azione non si può annullare.</span><span data-l="en">The 3 images and the notes will be lost. This cannot be undone.</span><span data-l="fr">Les 3 images et les notes seront perdues. Action irréversible.</span><span data-l="zh">3 张图片和备注将会丢失。此操作无法撤销。</span></p>
+        <div class="azioni">
+          <button class="btn" type="button" data-chiudi><span data-l="it">Annulla</span><span data-l="en">Cancel</span><span data-l="fr">Annuler</span><span data-l="zh">取消</span></button>
+          <button class="btn pericolo" type="button" data-chiudi><span data-l="it">Elimina</span><span data-l="en">Delete</span><span data-l="fr">Supprimer</span><span data-l="zh">删除</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="fondale" id="f-foto">
+      <div class="dialogo lightbox" role="dialog" aria-modal="true" aria-labelledby="t-foto">
+        <div class="grande" id="grande"></div>
+        <p id="t-foto"></p>
+        <button class="chiudi" type="button" data-chiudi aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" stroke="#111" stroke-width="2"/></svg></button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La modale blocca la pagina sotto (fondale scuro) senza farla lasciare. Esc o clic sul fondale per chiudere; il focus resta dentro.</span><span data-l="en">The modal blocks the page beneath (dark backdrop) without leaving it. Esc or click the backdrop to close; focus stays inside.</span><span data-l="fr">La modale bloque la page dessous (fond sombre) sans la quitter. Échap ou clic sur le fond pour fermer&#8239;; le focus reste dedans.</span><span data-l="zh">模态框会遮住下方页面（深色遮罩），但不离开页面。按 Esc 或点击遮罩关闭；焦点保持在框内。</span></p>
+<script>
+  var aperto = null, prima = null;
+  var OPERA = { it: 'Opera ', en: 'Artwork ', fr: 'Œuvre ', zh: '作品 ' };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function focusabili(el) { return Array.prototype.filter.call(el.querySelectorAll('button'), function (b) { return b.offsetParent !== null; }); }
+  function apri(f, da, focus) {
+    prima = da; aperto = f; f.classList.add('aperto');
+    document.getElementById('pagina').setAttribute('inert', '');
+    if (focus !== false) focusabili(f)[0].focus();
+  }
+  function chiudi() {
+    if (!aperto) return; aperto.classList.remove('aperto'); aperto = null;
+    document.getElementById('pagina').removeAttribute('inert');
+    if (prima) prima.focus();
+  }
+  document.getElementById('apri-elimina').onclick = function () { apri(document.getElementById('f-elimina'), this); };
+  document.querySelectorAll('.opera').forEach(function (b) {
+    b.onclick = function () {
+      var g = document.getElementById('grande'); g.className = 'grande ' + b.classList[1];
+      g.dataset.n = b.dataset.n; document.getElementById('t-foto').textContent = T(OPERA) + '0' + b.dataset.n;
+      apri(document.getElementById('f-foto'), b);
+    };
+  });
+  document.querySelectorAll('.fondale').forEach(function (f) {
+    f.addEventListener('click', function (e) { if (e.target === f || e.target.closest('[data-chiudi]')) chiudi(); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!aperto) return;
+    if (e.key === 'Escape') chiudi();
+    if (e.key === 'Tab') { var q = focusabili(aperto), i = q.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); q[q.length - 1].focus(); } else if (!e.shiftKey && i === q.length - 1) { e.preventDefault(); q[0].focus(); } }
+  });
+  document.addEventListener('lingua', function () { var g = document.getElementById('grande'); if (g.dataset.n) document.getElementById('t-foto').textContent = T(OPERA) + '0' + g.dataset.n; });
+  // all'apertura si vede già la finestra di dialogo (senza rubare il focus)
+  apri(document.getElementById('f-elimina'), document.getElementById('apri-elimina'), false);
+</script>
+</body>
+</html>

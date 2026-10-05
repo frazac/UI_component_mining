@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Esempio ricostruito: Distraction-free modes. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Distraction-free modes — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 680px; }
+  .finestra { border-radius: 10px; overflow: hidden; border: 1px solid var(--c-linea); position: relative; }
+  .barra { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #ece7e5; }
+  .pallini { display: flex; gap: 6px; } .pallini i { width: 11px; height: 11px; border-radius: 50%; background: #d8d0cd; }
+  .pallini i:nth-child(1) { background: rgb(250,145,145); } .pallini i:nth-child(2) { background: #f2c96b; } .pallini i:nth-child(3) { background: #9ccf8f; }
+  .indirizzo { flex: 1; background: #fff; border-radius: 6px; padding: 4px 10px; font-size: 14px; color: var(--c-tenue); display: flex; align-items: center; }
+  .indirizzo span { flex: 1; }
+  .lettore { border: 0; background: none; cursor: pointer; padding: 2px 6px; border-radius: 4px; display: grid; place-content: center; color: #555; }
+  .lettore:hover { background: #f0ebe9; }
+  .lettore[aria-pressed="true"] { background: var(--c-blu); color: #fff; }
+  .lettore svg { width: 20px; height: 16px; }
+  .pagina { height: 330px; overflow: hidden; position: relative; background: #fff; transition: background .4s; }
+  .disordine { display: grid; grid-template-columns: 1fr 130px; gap: 12px; padding: 12px; transition: opacity .3s; }
+  .nav { grid-column: 1 / -1; display: flex; gap: 10px; align-items: center; background: #222; color: #fff; padding: 6px 10px; border-radius: 4px; font-size: 15px; }
+  .nav b { color: rgb(250,145,145); }
+  .banner { grid-column: 1 / -1; height: 46px; border-radius: 4px; background: repeating-linear-gradient(45deg, #ffe08a 0 12px, #ffd25a 12px 24px); display: grid; place-content: center; font-weight: 500; font-size: 15px; }
+  .art h3 { margin: 0 0 6px; font-size: 17px; font-weight: 500; }
+  .art p { margin: 0 0 6px; font-size: 15px; line-height: 1.45; color: #444; }
+  .lato > div { height: 70px; border-radius: 4px; margin-bottom: 8px; background: #f1e0f5; display: grid; place-content: center; font-size: 15px; color: #8a4aa0; }
+  .lato > div:nth-child(2) { background: #dff3ea; color: #2f7a52; }
+  .lato > div:nth-child(3) { background: #e0e9ff; color: #3a5ac0; }
+  .cookie { position: absolute; left: 12px; right: 12px; bottom: 10px; background: #333; color: #fff; padding: 8px 10px; border-radius: 6px; font-size: 15px; }
+  .pulita { position: absolute; inset: 0; padding: 22px 70px; opacity: 0; pointer-events: none; transition: opacity .4s; background: #fbf7f1; overflow: hidden; }
+  .pulita h3 { margin: 0 0 4px; font-size: 24px; font-weight: 500; line-height: 1.2; }
+  .pulita .meta { font-size: 15px; color: var(--c-tenue); margin: 0 0 14px; }
+  .pulita p { margin: 0 0 10px; font-size: 17px; line-height: 1.6; }
+  .lett .disordine, .lett .cookie { opacity: 0; } .lett .pulita { opacity: 1; pointer-events: auto; }
+  .notifiche { position: absolute; top: 46px; right: 10px; display: flex; flex-direction: column; gap: 6px; width: 240px; z-index: 2; }
+  .notif { background: rgba(255,255,255,.95); border-radius: 10px; padding: 8px 10px; font-size: 15px; box-shadow: 0 4px 14px rgba(0,0,0,.18); animation: entra .3s ease-out; display: flex; gap: 8px; align-items: center; }
+  .notif i { width: 22px; height: 22px; border-radius: 6px; flex: none; background: var(--c-salmone); }
+  @keyframes entra { from { transform: translateX(30px); opacity: 0; } }
+  .comandi { display: flex; gap: 22px; align-items: center; margin-top: 14px; font-size: 15px; flex-wrap: wrap; }
+  .interr { display: flex; align-items: center; gap: 10px; cursor: pointer; border: 0; background: none; padding: 0; font-size: 15px; }
+  .interr .pista { width: 44px; height: 26px; border-radius: 13px; background: #d8d2d0; position: relative; transition: background .2s; flex: none; }
+  .interr .pista::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+  .interr[aria-checked="true"] .pista { background: var(--c-blu); } .interr[aria-checked="true"] .pista::after { transform: translateX(18px); }
+  .silenzio { color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Vista di lettura e modalità concentrazione</span><span data-l="en">Reader view and focus mode</span><span data-l="fr">Mode lecture et mode concentration</span><span data-l="zh">阅读视图与专注模式</span></span>
+    <div class="finestra">
+      <div class="barra"><span class="pallini"><i></i><i></i><i></i></span><span class="indirizzo"><span>news.example/articolo</span><button class="lettore" id="lettore" type="button" aria-pressed="false"><svg viewBox="0 0 20 16" aria-hidden="true"><rect x="1" y="1" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 5 H15 M5 8 H15 M5 11 H11" stroke="currentColor" stroke-width="1.6"/></svg></button></span></div>
+      <div class="pagina" id="pagina">
+        <div class="disordine" aria-hidden="true">
+          <div class="nav"><b>NEWS</b><span>Home</span><span>Sport</span><span>Tech</span><span>Video</span></div>
+          <div class="banner"><span data-l="it">-70% SOLO OGGI!!!</span><span data-l="en">70% OFF TODAY ONLY!!!</span><span data-l="fr">-70 % AUJOURD’HUI SEULEMENT !!!</span><span data-l="zh">仅限今天，三折！！！</span></div>
+          <div class="art"><h3 data-t="tit"></h3><p data-t="p1"></p><p data-t="p2"></p></div>
+          <div class="lato"><div>AD</div><div>AD</div><div>AD</div></div>
+        </div>
+        <div class="cookie"><span data-l="it">Usiamo i cookie per… [Accetta tutto]</span><span data-l="en">We use cookies to… [Accept all]</span><span data-l="fr">Nous utilisons des cookies pour… [Tout accepter]</span><span data-l="zh">我们使用 Cookie 来…… [全部接受]</span></div>
+        <article class="pulita"><h3 data-t="tit"></h3><p class="meta" data-t="meta"></p><p data-t="p1"></p><p data-t="p2"></p></article>
+      </div>
+      <div class="notifiche" id="notifiche" aria-live="polite"></div>
+    </div>
+    <div class="comandi">
+      <button class="interr" type="button" role="switch" id="b-lett" aria-checked="false"><span class="pista"></span><span><span data-l="it">Vista di lettura</span><span data-l="en">Reader view</span><span data-l="fr">Mode lecture</span><span data-l="zh">阅读视图</span></span></button>
+      <button class="interr" type="button" role="switch" id="b-conc" aria-checked="false"><span class="pista"></span><span><span data-l="it">Concentrazione: niente notifiche</span><span data-l="en">Focus: no notifications</span><span data-l="fr">Concentration : pas de notifications</span><span data-l="zh">专注：屏蔽通知</span></span></button>
+      <span class="silenzio" id="silenzio"></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Nascondere, non eliminare: la vista di lettura tiene solo il testo; la concentrazione trattiene le notifiche e le mostra dopo.</span><span data-l="en">Hide, don’t delete: reader view keeps only the text; focus mode holds notifications back and shows them later.</span><span data-l="fr">Masquer, pas supprimer : le mode lecture ne garde que le texte ; la concentration retient les notifications et les montre plus tard.</span><span data-l="zh">隐藏而非删除：阅读视图只保留正文；专注模式暂存通知，稍后再显示。</span></p>
+<script>
+  var TXT = {
+    it: { tit: 'Perché le interfacce calme funzionano meglio', meta: 'Lettura di 4 minuti', p1: 'Ogni elemento che chiede attenzione toglie qualcosa al compito principale. Le interfacce calme lo sanno e si fanno da parte.', p2: 'Una buona modalità di lettura conserva titolo, immagini essenziali e testo, con una colonna stretta e un corpo generoso.', n: ['Nuovo messaggio da Anna', 'Offerta lampo: solo 2 ore!', '3 nuovi “mi piace”', 'Promemoria: riunione alle 15'], tenute: '{n} notifiche in attesa' },
+    en: { tit: 'Why calm interfaces work better', meta: '4 min read', p1: 'Every element that asks for attention takes something away from the main task. Calm interfaces know this and step aside.', p2: 'A good reader mode keeps the title, essential images and text, in a narrow column with a generous type size.', n: ['New message from Anna', 'Flash sale: 2 hours only!', '3 new likes', 'Reminder: meeting at 3 pm'], tenute: '{n} notifications held' },
+    fr: { tit: 'Pourquoi les interfaces calmes fonctionnent mieux', meta: 'Lecture de 4 min', p1: 'Chaque élément qui réclame l’attention enlève quelque chose à la tâche principale. Les interfaces calmes le savent et s’effacent.', p2: 'Un bon mode lecture garde le titre, les images essentielles et le texte, dans une colonne étroite avec un corps généreux.', n: ['Nouveau message d’Anna', 'Vente flash : 2 heures seulement !', '3 nouveaux « j’aime »', 'Rappel : réunion à 15 h'], tenute: '{n} notifications en attente' },
+    zh: { tit: '为什么安静的界面效果更好', meta: '阅读约 4 分钟', p1: '每一个争夺注意力的元素都会削弱主要任务。安静的界面懂得这一点，并主动退到一旁。', p2: '好的阅读模式保留标题、必要的图片和正文，采用较窄的栏宽和较大的字号。', n: ['Anna 发来新消息', '限时抢购：仅剩 2 小时！', '3 个新的赞', '提醒：15 点开会'], tenute: '已暂存 {n} 条通知' }
+  };
+  var conc = false, tenute = 0, i = 0;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function testi() {
+    document.querySelectorAll('[data-t]').forEach(function (e) { e.textContent = TXT[l()][e.dataset.t]; });
+    document.getElementById('silenzio').textContent = conc && tenute ? TXT[l()].tenute.replace('{n}', tenute) : '';
+  }
+  function lettura(on) {
+    document.getElementById('pagina').classList.toggle('lett', on);
+    document.getElementById('lettore').setAttribute('aria-pressed', String(on)); document.getElementById('b-lett').setAttribute('aria-checked', String(on));
+  }
+  document.getElementById('lettore').onclick = function () { lettura(this.getAttribute('aria-pressed') !== 'true'); };
+  document.getElementById('b-lett').onclick = function () { lettura(this.getAttribute('aria-checked') !== 'true'); };
+  document.getElementById('b-conc').onclick = function () {
+    conc = !conc; this.setAttribute('aria-checked', String(conc));
+    if (conc) document.getElementById('notifiche').innerHTML = ''; else tenute = 0;
+    testi();
+  };
+  function notifica() {
+    if (conc) { tenute++; testi(); return; }
+    var box = document.getElementById('notifiche'), n = document.createElement('div'); n.className = 'notif';
+    n.innerHTML = '<i></i><span></span>'; n.lastChild.textContent = TXT[l()].n[i % 4]; i++;
+    box.appendChild(n); if (box.children.length > 2) box.removeChild(box.firstChild);
+    setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 5200);
+  }
+  testi(); notifica(); setTimeout(notifica, 700);
+  setInterval(notifica, 2600);
+  document.addEventListener('lingua', testi);
+</script>
+</body>
+</html>

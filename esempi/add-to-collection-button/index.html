@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- Esempio ricostruito: Add image button (plugin/extension). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Add image button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 18px; }
+  .finestra { border: 1px solid var(--c-linea); border-radius: 10px; overflow: visible; }
+  .barra { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--c-palco); border-bottom: 1px solid var(--c-linea); border-radius: 10px 10px 0 0; }
+  .barra i { width: 11px; height: 11px; border-radius: 50%; background: rgba(0,0,0,.15); display: block; }
+  .ind { flex: 1; background: #fff; border-radius: 6px; padding: 3px 10px; font-size: 14px; color: var(--c-tenue); margin-left: 8px; }
+  .estensione { position: relative; width: 32px; height: 28px; border-radius: 6px; display: grid; place-items: center; background: #fff; border: 1px solid var(--c-linea); }
+  .estensione .n { position: absolute; top: -7px; right: -8px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--c-salmone); font-size: 12px; font-weight: 500; display: grid; place-items: center; padding: 0 4px; }
+  .estensione .n[hidden] { display: none; }
+  .griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 14px; }
+  .opera { position: relative; border-radius: 8px; height: 170px; }
+  .opera .arte { position: absolute; inset: 0; border-radius: 8px; overflow: hidden; }
+  .opera .salva { position: absolute; top: 8px; right: 8px; z-index: 2; border: 0; border-radius: 999px; background: var(--c-testo); color: #fff; font-size: 15px; padding: 6px 12px 6px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
+  .opera:hover .salva, .opera .salva:focus-visible, .opera .salva[aria-expanded="true"], .opera.salvata .salva, .opera.mostra .salva { opacity: 1; transform: none; }
+  .opera.salvata .salva { background: #fff; color: var(--c-testo); }
+  .menu { position: absolute; top: 46px; right: 8px; z-index: 5; width: 200px; background: #fff; border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,.22); padding: 6px; display: grid; gap: 2px; }
+  .menu[hidden] { display: none; }
+  .menu .tit { font-size: 13px; color: var(--c-tenue); padding: 4px 8px; }
+  .menu button { border: 0; background: none; border-radius: 6px; padding: 7px 8px; text-align: left; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+  .menu button:hover, .menu button:focus-visible { background: var(--c-palco); }
+  .menu .cop { width: 26px; height: 26px; border-radius: 5px; flex: none; }
+  .menu .spunta { margin-left: auto; color: #2e8a5a; }
+  .avviso { font-size: 15px; color: var(--c-tenue); text-align: center; margin: 2px 0 0; min-height: 21px; }
+  .avviso b { color: var(--c-testo); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Passa sopra un’immagine: compare «Salva»</span><span data-l="en">Hover an image: “Save” appears</span><span data-l="fr">Survolez une image : « Enregistrer » apparaît</span><span data-l="zh">悬停在图片上：出现“保存”</span></span>
+    <div class="finestra">
+      <div class="barra"><i></i><i></i><i></i><span class="ind">rivista-di-grafica.esempio</span>
+        <span class="estensione" title="Extension" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2" fill="rgb(250,145,145)"/><rect x="13" y="3" width="8" height="8" rx="2" fill="rgb(105,143,255)"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#2c2c34"/><path d="M17 13v8M13 17h8" stroke="#111" stroke-width="2.2" stroke-linecap="round"/></svg><span class="n" id="conta" hidden></span></span>
+      </div>
+      <div class="griglia" id="griglia"></div>
+    </div>
+    <p class="avviso" id="avviso" aria-live="polite"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Un’estensione del browser aggiunge un pulsante sopra le immagini di qualsiasi sito per salvarle in uno strumento esterno, come fanno Cosmos o Pinterest. Ricostruzione generica.</span><span data-l="en">A browser extension adds a button over images on any site to save them to an external tool, as Cosmos or Pinterest do. Generic rebuild.</span><span data-l="fr">Une extension de navigateur ajoute un bouton sur les images de n’importe quel site pour les enregistrer dans un outil externe, comme Cosmos ou Pinterest. Reconstruction générique.</span><span data-l="zh">浏览器扩展会在任意网站的图片上添加一个按钮，把图片保存到外部工具中，就像 Cosmos 或 Pinterest 那样。通用重建。</span></p>
+<script>
+  var ARTE = [
+    'radial-gradient(circle at 30% 35%, rgb(250,145,145) 0 22%, transparent 23%), linear-gradient(135deg, #f7f1e8, #e9dfd3)',
+    'repeating-linear-gradient(90deg, #2c2c34 0 14px, #f3efee 14px 28px)',
+    'conic-gradient(from 45deg, rgb(105,143,255), rgb(250,145,145), #f0b47a, rgb(105,143,255))',
+    'linear-gradient(#f0b47a 0 50%, #2c2c34 50%)',
+    'radial-gradient(circle, transparent 0 30%, rgb(105,143,255) 31% 42%, transparent 43%), #f7f1e8',
+    'repeating-linear-gradient(45deg, rgb(223,136,136) 0 12px, #fff 12px 24px)'
+  ];
+  var RACC = [
+    { n: { it: 'Moodboard tesi', en: 'Thesis moodboard', fr: 'Moodboard mémoire', zh: '毕业设计情绪板' }, c: 'rgb(250,145,145)' },
+    { n: { it: 'Pattern', en: 'Patterns', fr: 'Motifs', zh: '图案' }, c: 'rgb(105,143,255)' },
+    { n: { it: 'Colore', en: 'Colour', fr: 'Couleur', zh: '色彩' }, c: '#f0b47a' }
+  ];
+  var T = { salva: { it: 'Salva', en: 'Save', fr: 'Enregistrer', zh: '保存' }, salvata: { it: 'Salvata', en: 'Saved', fr: 'Enregistrée', zh: '已保存' },
+    in: { it: 'Salva in…', en: 'Save to…', fr: 'Enregistrer dans…', zh: '保存到…' }, nuova: { it: '+ Nuova raccolta', en: '+ New collection', fr: '+ Nouvelle collection', zh: '+ 新建收藏夹' },
+    fatto: { it: 'Immagine aggiunta a ', en: 'Image added to ', fr: 'Image ajoutée à ', zh: '图片已添加到 ' }, nuovanome: { it: 'Nuova raccolta', en: 'New collection', fr: 'Nouvelle collection', zh: '新收藏夹' } };
+  var salvate = {}, aperto = -1;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var PUNTINA = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/></svg>';
+  function disegna() {
+    var g = document.getElementById('griglia'); g.innerHTML = '';
+    ARTE.forEach(function (a, k) {
+      var d = document.createElement('div'); d.className = 'opera' + (salvate[k] != null ? ' salvata' : '') + (k === 1 && aperto < 0 && salvate[k] == null ? ' mostra' : '');
+      d.innerHTML = '<div class="arte" role="img" aria-label="Artwork ' + (k + 1) + '" style="background:' + a + '"></div>';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'salva'; b.setAttribute('aria-haspopup', 'menu'); b.setAttribute('aria-expanded', String(aperto === k));
+      b.innerHTML = salvate[k] != null ? '<span style="color:#2e8a5a">✓</span>' + L(T.salvata) : PUNTINA + L(T.salva);
+      b.onclick = function () { aperto = aperto === k ? -1 : k; disegna(); if (aperto === k) { var m = g.querySelector('.menu button'); if (m) m.focus(); } };
+      d.appendChild(b);
+      if (aperto === k) {
+        var m = document.createElement('div'); m.className = 'menu'; m.setAttribute('role', 'menu');
+        m.innerHTML = '<span class="tit">' + L(T.in) + '</span>';
+        RACC.forEach(function (r, j) {
+          var x = document.createElement('button'); x.type = 'button'; x.setAttribute('role', 'menuitem');
+          x.innerHTML = '<span class="cop" style="background:' + r.c + '"></span>' + L(r.n) + (salvate[k] === j ? '<span class="spunta">✓</span>' : '');
+          x.onclick = function () { salvate[k] = j; aperto = -1; avvisa(L(r.n)); disegna(); };
+          m.appendChild(x);
+        });
+        var nu = document.createElement('button'); nu.type = 'button'; nu.setAttribute('role', 'menuitem'); nu.textContent = L(T.nuova);
+        nu.onclick = function () { RACC.push({ n: T.nuovanome, c: '#2c2c34' }); salvate[k] = RACC.length - 1; aperto = -1; avvisa(L(T.nuovanome)); disegna(); };
+        m.appendChild(nu);
+        m.addEventListener('keydown', function (e) { if (e.key === 'Escape') { aperto = -1; disegna(); } });
+        d.appendChild(m);
+      }
+      g.appendChild(d);
+    });
+    var n = Object.keys(salvate).length, c = document.getElementById('conta'); c.hidden = !n; c.textContent = n;
+  }
+  function avvisa(nome) { var a = document.getElementById('avviso'); a.innerHTML = L(T.fatto) + '<b></b>'; a.querySelector('b').textContent = '«' + nome + '»'; }
+  document.addEventListener('click', function (e) { if (aperto >= 0 && !e.target.closest('.opera')) { aperto = -1; disegna(); } });
+  salvate[3] = 0;
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); document.getElementById('avviso').textContent = ''; });
+</script>
+</body>
+</html>

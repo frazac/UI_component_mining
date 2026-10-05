@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- Esempio ricostruito: Thumbnav. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thumbnav — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 640px; }
+  .scena { position: relative; height: 310px; border-radius: 10px; overflow: hidden; background: #111; }
+  .scena .opera { position: absolute; inset: 0; opacity: 0; transition: opacity .45s; }
+  .scena .opera.on { opacity: 1; }
+  .opera svg { width: 100%; height: 100%; display: block; }
+  .scena .fr { position: absolute; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(255,255,255,.85); cursor: pointer; display: grid; place-content: center; }
+  .scena .fr:hover { background: #fff; }
+  .scena .fr svg { width: 18px; height: 18px; }
+  .scena .prec { left: 12px; } .scena .succ { right: 12px; }
+  .scena .cont { position: absolute; left: 12px; bottom: 12px; background: rgba(0,0,0,.55); color: #fff; padding: 4px 10px; border-radius: 9999px; font-size: 15px; }
+  .titolo { margin: 12px 0 10px; font-size: 17px; font-weight: 500; display: flex; justify-content: space-between; }
+  .titolo span:last-child { color: var(--c-tenue); font-weight: 400; font-size: 15px; }
+  .miniature { display: flex; gap: 8px; overflow-x: auto; padding: 4px; scrollbar-width: thin; }
+  .miniature button { flex: none; width: 78px; height: 54px; border-radius: 6px; padding: 0; border: 0; cursor: pointer; overflow: hidden; opacity: .55; transition: opacity .2s, transform .2s; box-shadow: 0 0 0 2px transparent; }
+  .miniature button:hover { opacity: .9; }
+  .miniature button[aria-current="true"] { opacity: 1; box-shadow: 0 0 0 3px var(--c-salmone); }
+  .miniature svg { width: 100%; height: 100%; display: block; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Galleria: clicca una miniatura o usa le frecce ← →</span><span data-l="en">Gallery: click a thumbnail or use the ← → keys</span><span data-l="fr">Galerie : cliquez sur une vignette ou utilisez ← →</span><span data-l="zh">图库：点击缩略图或使用 ← → 键</span></span>
+    <div class="scena" id="scena" role="region" aria-roledescription="carousel">
+      <button class="fr prec" type="button" id="prec"><svg viewBox="0 0 18 18"><path d="M11 3 L5 9 L11 15" fill="none" stroke="#111" stroke-width="2"/></svg></button>
+      <button class="fr succ" type="button" id="succ"><svg viewBox="0 0 18 18"><path d="M7 3 L13 9 L7 15" fill="none" stroke="#111" stroke-width="2"/></svg></button>
+      <span class="cont" id="cont"></span>
+    </div>
+    <p class="titolo"><span id="tit"></span><span id="anno"></span></p>
+    <div class="miniature" id="mini" role="tablist"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni miniatura sta per un elemento; quella attuale è evidenziata. Le opere sono composizioni geometriche disegnate per l’esempio.</span><span data-l="en">Each thumbnail stands for one item; the current one is highlighted. The works are geometric compositions drawn for this example.</span><span data-l="fr">Chaque vignette représente un élément ; l’élément actuel est mis en évidence. Les œuvres sont des compositions géométriques dessinées pour l’exemple.</span><span data-l="zh">每个缩略图代表一项内容，当前项会高亮。作品为本例绘制的几何构图。</span></p>
+<script>
+  var OPERE = [
+    { t: { it: 'Cerchi', en: 'Circles', fr: 'Cercles', zh: '圆' }, s: '<rect width="300" height="200" fill="#f3efee"/><circle cx="110" cy="100" r="70" fill="rgb(250,145,145)"/><circle cx="190" cy="100" r="50" fill="rgb(105,143,255)" opacity=".85"/>' },
+    { t: { it: 'Orizzonte', en: 'Horizon', fr: 'Horizon', zh: '地平线' }, s: '<rect width="300" height="200" fill="#2a2f5a"/><rect y="120" width="300" height="80" fill="rgb(223,136,136)"/><circle cx="150" cy="120" r="40" fill="#ffe3b0"/>' },
+    { t: { it: 'Griglia', en: 'Grid', fr: 'Grille', zh: '网格' }, s: '<rect width="300" height="200" fill="#fff"/><g fill="#111"><rect x="30" y="30" width="70" height="60"/><rect x="200" y="110" width="70" height="60"/></g><rect x="115" y="30" width="70" height="140" fill="rgb(105,143,255)"/><rect x="200" y="30" width="70" height="60" fill="#f2c96b"/>' },
+    { t: { it: 'Onde', en: 'Waves', fr: 'Vagues', zh: '波浪' }, s: '<rect width="300" height="200" fill="#dfe8ff"/><path d="M0 80 Q75 40 150 80 T300 80 V200 H0 Z" fill="rgb(105,143,255)"/><path d="M0 130 Q75 90 150 130 T300 130 V200 H0 Z" fill="#2a2f5a"/>' },
+    { t: { it: 'Triangoli', en: 'Triangles', fr: 'Triangles', zh: '三角形' }, s: '<rect width="300" height="200" fill="#111"/><path d="M40 170 L120 30 L200 170 Z" fill="rgb(250,145,145)"/><path d="M140 170 L210 60 L280 170 Z" fill="#f3efee" opacity=".9"/>' },
+    { t: { it: 'Strisce', en: 'Stripes', fr: 'Rayures', zh: '条纹' }, s: '<rect width="300" height="200" fill="#f2c96b"/><g fill="#111"><rect x="20" width="30" height="200"/><rect x="90" width="12" height="200"/><rect x="150" width="50" height="200" fill="rgb(223,136,136)"/><rect x="240" width="20" height="200"/></g>' },
+    { t: { it: 'Lune', en: 'Moons', fr: 'Lunes', zh: '月相' }, s: '<rect width="300" height="200" fill="#1c1a24"/><g fill="#ffe3b0"><circle cx="60" cy="100" r="25"/><circle cx="150" cy="100" r="25"/><circle cx="240" cy="100" r="25"/></g><circle cx="72" cy="94" r="25" fill="#1c1a24"/><circle cx="252" cy="94" r="25" fill="#1c1a24" transform="translate(-24 0)"/>' },
+    { t: { it: 'Tessere', en: 'Tiles', fr: 'Carreaux', zh: '瓷砖' }, s: '<rect width="300" height="200" fill="#fff"/><g><rect x="0" y="0" width="100" height="100" fill="rgb(105,143,255)"/><rect x="100" y="100" width="100" height="100" fill="rgb(105,143,255)"/><rect x="200" y="0" width="100" height="100" fill="rgb(250,145,145)"/><circle cx="150" cy="50" r="40" fill="#111"/><circle cx="50" cy="150" r="40" fill="#f2c96b"/><circle cx="250" cy="150" r="40" fill="#111"/></g>' }
+  ];
+  var i = 0;
+  var scena = document.getElementById('scena'), mini = document.getElementById('mini');
+  OPERE.forEach(function (o, k) {
+    var d = document.createElement('div'); d.className = 'opera'; d.innerHTML = '<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + o.s + '</svg>'; scena.insertBefore(d, scena.firstChild);
+    var b = document.createElement('button'); b.type = 'button'; b.setAttribute('role', 'tab'); b.innerHTML = '<svg viewBox="0 0 300 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + o.s + '</svg>';
+    b.onclick = function () { vai(k); }; mini.appendChild(b); o.el = d; o.b = b;
+  });
+  var L = { it: ['Precedente', 'Successiva'], en: ['Previous', 'Next'], fr: ['Précédente', 'Suivante'], zh: ['上一张', '下一张'] };
+  function disegna() {
+    var l = window.Lingua ? Lingua.get() : 'en';
+    OPERE.forEach(function (o, k) { o.el.classList.toggle('on', k === i); o.b.setAttribute('aria-current', String(k === i)); o.b.setAttribute('aria-selected', String(k === i)); o.b.tabIndex = k === i ? 0 : -1; o.b.setAttribute('aria-label', o.t[l]); });
+    document.getElementById('cont').textContent = (i + 1) + ' / ' + OPERE.length;
+    document.getElementById('tit').textContent = OPERE[i].t[l]; document.getElementById('anno').textContent = 'FZ, 2026';
+    document.getElementById('prec').setAttribute('aria-label', L[l][0]); document.getElementById('succ').setAttribute('aria-label', L[l][1]);
+  }
+  function vai(k, fuoco) { i = (k + OPERE.length) % OPERE.length; disegna(); OPERE[i].b.scrollIntoView({ block: 'nearest', inline: 'nearest' }); if (fuoco) OPERE[i].b.focus(); }
+  document.getElementById('prec').onclick = function () { vai(i - 1); }; document.getElementById('succ').onclick = function () { vai(i + 1); };
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'ArrowLeft') vai(i - 1, mini.contains(document.activeElement)); if (ev.key === 'ArrowRight') vai(i + 1, mini.contains(document.activeElement)); });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

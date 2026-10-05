@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- Esempio ricostruito: Picker. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Picker — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1.35fr 1fr; }
+  .testa { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .testa strong { font-weight: 500; font-size: 17px; text-transform: capitalize; }
+  .testa button { border: 0; background: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 18px; }
+  .testa button:hover { background: #f3efee; }
+  table { border-collapse: collapse; width: 100%; }
+  th { font-size: 13px; font-weight: 500; color: var(--c-tenue); padding: 4px 0; }
+  td { text-align: center; padding: 1px; }
+  td button { width: 36px; height: 34px; border: 0; background: none; border-radius: 50%; cursor: pointer; font-size: 15px; }
+  td button:hover { background: #fdf3f2; }
+  td button.oggi { box-shadow: inset 0 0 0 1.5px var(--c-salmone); }
+  td button[aria-selected="true"] { background: var(--c-blu); color: #fff; }
+  td button:disabled { color: rgba(0,0,0,.25); cursor: not-allowed; background: none; text-decoration: line-through; }
+  .ore { display: flex; gap: 10px; justify-content: center; align-items: flex-start; }
+  .col { position: relative; height: 216px; overflow-y: auto; scroll-snap-type: y mandatory; border-radius: 10px; background: #f8f5f4; padding: 4px; width: 72px; scrollbar-width: none; }
+  .col::-webkit-scrollbar { display: none; }
+  .col [role=option] { scroll-snap-align: center; height: 36px; display: grid; place-content: center; border-radius: 8px; cursor: pointer; font-size: 17px; font-variant-numeric: tabular-nums; }
+  .col [role=option]:hover { background: #fff; }
+  .col [role=option][aria-selected="true"] { background: var(--c-salmone); color: #fff; }
+  .due-punti { font-size: 22px; padding-top: 88px; }
+  .scelta { margin-top: 16px; font-size: 16px; text-align: center; }
+  .scelta b { font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Selettore di data</span><span data-l="en">Date picker</span><span data-l="fr">Sélecteur de date</span><span data-l="zh">日期选择器</span></span>
+    <div class="testa"><button type="button" id="prima" aria-label="‹">‹</button><strong id="mese" aria-live="polite"></strong><button type="button" id="dopo" aria-label="›">›</button></div>
+    <table role="grid" id="cal"><thead><tr id="giorni"></tr></thead><tbody id="corpo"></tbody></table>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Selettore di ora</span><span data-l="en">Time picker</span><span data-l="fr">Sélecteur d’heure</span><span data-l="zh">时间选择器</span></span>
+    <div class="ore">
+      <div class="col" role="listbox" id="col-h" tabindex="0" aria-label="h"></div>
+      <span class="due-punti">:</span>
+      <div class="col" role="listbox" id="col-m" tabindex="0" aria-label="min"></div>
+    </div>
+  </div>
+</div>
+<p class="scelta" id="scelta" role="status"></p>
+<p class="nota"><span data-l="it">Frecce della tastiera per muoversi nel calendario e nelle colonne; i giorni passati sono disattivati. Esistono anche selettori di colore, di file, di paese…</span><span data-l="en">Arrow keys move through the calendar and the columns; past days are disabled. There are also colour, file and country pickers…</span><span data-l="fr">Les flèches du clavier parcourent le calendrier et les colonnes ; les jours passés sont désactivés. Il existe aussi des sélecteurs de couleur, de fichier, de pays…</span><span data-l="zh">用方向键在日历和列中移动；过去的日期不可选。还有颜色、文件、国家等选择器……</span></p>
+<script>
+  var LOC = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', zh: 'zh-CN' };
+  var PRE = { it: 'Appuntamento: ', en: 'Appointment: ', fr: 'Rendez-vous : ', zh: '预约：' };
+  var oggi = new Date(2026, 9, 5), vista = new Date(2026, 9, 1), sel = new Date(2026, 9, 14), ora = 10, min = 30;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function stesso(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+  function calendario(fuoco) {
+    var loc = LOC[l()];
+    document.getElementById('mese').textContent = new Intl.DateTimeFormat(loc, { month: 'long', year: 'numeric' }).format(vista);
+    var g = document.getElementById('giorni'); g.innerHTML = '';
+    for (var i = 0; i < 7; i++) { var th = document.createElement('th'); th.textContent = new Intl.DateTimeFormat(loc, { weekday: 'narrow' }).format(new Date(2026, 9, 5 + i)); g.appendChild(th); }
+    var corpo = document.getElementById('corpo'); corpo.innerHTML = '';
+    var primo = (new Date(vista.getFullYear(), vista.getMonth(), 1).getDay() + 6) % 7, n = new Date(vista.getFullYear(), vista.getMonth() + 1, 0).getDate();
+    var tr = document.createElement('tr');
+    for (var v = 0; v < primo; v++) tr.appendChild(document.createElement('td'));
+    for (var d = 1; d <= n; d++) {
+      if (tr.children.length === 7) { corpo.appendChild(tr); tr = document.createElement('tr'); }
+      var data = new Date(vista.getFullYear(), vista.getMonth(), d), td = document.createElement('td'), b = document.createElement('button');
+      b.type = 'button'; b.textContent = d; b.dataset.d = d;
+      if (data < oggi) b.disabled = true;
+      if (stesso(data, oggi)) b.classList.add('oggi');
+      b.setAttribute('aria-selected', String(stesso(data, sel)));
+      b.tabIndex = stesso(data, sel) ? 0 : -1;
+      b.setAttribute('aria-label', new Intl.DateTimeFormat(loc, { dateStyle: 'full' }).format(data));
+      b.onclick = (function (dt) { return function () { sel = dt; calendario(true); riassunto(); }; })(data);
+      td.appendChild(b); tr.appendChild(td);
+    }
+    corpo.appendChild(tr);
+    if (fuoco) { var s = corpo.querySelector('[aria-selected="true"]'); if (s) s.focus(); }
+  }
+  document.getElementById('corpo').addEventListener('keydown', function (ev) {
+    var passi = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[ev.key]; if (!passi) return;
+    ev.preventDefault(); var nd = new Date(sel); nd.setDate(nd.getDate() + passi); if (nd < oggi) return;
+    sel = nd; vista = new Date(nd.getFullYear(), nd.getMonth(), 1); calendario(true); riassunto();
+  });
+  document.getElementById('prima').onclick = function () { vista = new Date(vista.getFullYear(), vista.getMonth() - 1, 1); calendario(); };
+  document.getElementById('dopo').onclick = function () { vista = new Date(vista.getFullYear(), vista.getMonth() + 1, 1); calendario(); };
+  function colonna(id, valori, attuale, imposta) {
+    var c = document.getElementById(id); c.innerHTML = '';
+    valori.forEach(function (v) {
+      var o = document.createElement('div'); o.setAttribute('role', 'option'); o.textContent = String(v).padStart(2, '0');
+      o.setAttribute('aria-selected', String(v === attuale)); o.onclick = function () { imposta(v); }; c.appendChild(o);
+    });
+    var s = c.querySelector('[aria-selected="true"]'); c.scrollTop = s.offsetTop - c.clientHeight / 2 + 18;
+    c.onkeydown = function (ev) { var i = valori.indexOf(attuale) + ({ ArrowUp: -1, ArrowDown: 1 }[ev.key] || 0); if (ev.key === 'ArrowUp' || ev.key === 'ArrowDown') { ev.preventDefault(); if (valori[i] !== undefined) imposta(valori[i]); } };
+  }
+  var H = [], M = []; for (var i = 7; i <= 20; i++) H.push(i); for (var j = 0; j < 60; j += 5) M.push(j);
+  function orologio() {
+    colonna('col-h', H, ora, function (v) { ora = v; orologio(); riassunto(); document.getElementById('col-h').focus(); });
+    colonna('col-m', M, min, function (v) { min = v; orologio(); riassunto(); document.getElementById('col-m').focus(); });
+  }
+  function riassunto() {
+    var d = new Date(sel); d.setHours(ora, min);
+    var p = document.getElementById('scelta'); p.textContent = PRE[l()];
+    var b = document.createElement('b'); b.textContent = new Intl.DateTimeFormat(LOC[l()], { dateStyle: 'full', timeStyle: 'short' }).format(d); p.appendChild(b);
+  }
+  function tutto() { calendario(); orologio(); riassunto(); }
+  tutto();
+  document.addEventListener('lingua', tutto);
+</script>
+</body>
+</html>

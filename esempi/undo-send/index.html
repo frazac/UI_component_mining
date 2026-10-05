@@ -1,0 +1,80 @@
+<!doctype html>
+<!-- Esempio ricostruito: Undo send (message buffer). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Undo send — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .posta { position: relative; overflow: hidden; height: 480px; padding: 0; display: flex; flex-direction: column; }
+  .testa { display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-bottom: 1px solid var(--c-linea); }
+  .testa h2 { margin: 0; font-size: 19px; font-weight: 500; }
+  .ritardo { font-size: 15px; color: var(--c-tenue); display: flex; align-items: center; gap: 8px; }
+  .ritardo select { font-size: 15px; border: 1px solid var(--c-linea); border-radius: 6px; padding: 4px 6px; background: #fff; }
+  .campo { display: flex; gap: 10px; padding: 10px 22px; border-bottom: 1px solid var(--c-linea); font-size: 16px; }
+  .campo span:first-child { color: var(--c-tenue); width: 70px; flex: none; }
+  .campo input { border: 0; outline: 0; flex: 1; font-size: 16px; min-width: 0; }
+  textarea { flex: 1; border: 0; outline: 0; resize: none; padding: 14px 22px; font-size: 16px; line-height: 1.5; }
+  .piede { display: flex; align-items: center; gap: 12px; padding: 12px 22px; border-top: 1px solid var(--c-linea); }
+  .invia { border: 0; background: var(--c-blu); color: #fff; border-radius: 9999px; padding: 10px 22px; font-size: 16px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+  .invia:hover { background: #4b72e6; }
+  .invia:disabled { background: #e3e0df; color: rgba(0,0,0,.4); cursor: default; }
+  .bozza { font-size: 15px; color: var(--c-tenue); }
+  .inviati { position: absolute; inset: 0; background: #fff; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; font-size: 17px; }
+  .inviati.su { display: flex; }
+  .inviati .btn { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 8px 16px; font-size: 15px; cursor: pointer; }
+  .snack { position: absolute; left: 22px; bottom: 76px; display: flex; align-items: center; gap: 14px; background: #1b1b1b; color: #fff; border-radius: 10px; padding: 10px 10px 10px 14px; font-size: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.25); transform: translateY(20px); opacity: 0; pointer-events: none; transition: .25s; }
+  .snack.su { transform: none; opacity: 1; pointer-events: auto; }
+  .anello { position: relative; width: 28px; height: 28px; flex: none; }
+  .anello svg { transform: rotate(-90deg); }
+  .anello circle.t { transition: stroke-dashoffset 1s linear; }
+  .anello b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; font-weight: 500; }
+  .snack button { border: 0; background: none; color: var(--c-salmone); font-weight: 500; font-size: 16px; cursor: pointer; padding: 6px 10px; border-radius: 6px; }
+  .snack button:hover { background: rgba(255,255,255,.12); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro posta">
+    <div class="testa"><h2><span data-l="it">Nuovo messaggio</span><span data-l="en">New message</span><span data-l="fr">Nouveau message</span><span data-l="zh">新邮件</span></h2>
+      <label class="ritardo"><span data-l="it">Tempo per annullare</span><span data-l="en">Undo window</span><span data-l="fr">Délai d’annulation</span><span data-l="zh">撤回时限</span><select id="sec"><option>5</option><option selected>10</option><option>20</option><option>30</option></select> s</label></div>
+    <div class="campo"><span><span data-l="it">A</span><span data-l="en">To</span><span data-l="fr">À</span><span data-l="zh">收件人</span></span><input id="a" value="prof@accademia.example" aria-label="To"></div>
+    <div class="campo"><span><span data-l="it">Oggetto</span><span data-l="en">Subject</span><span data-l="fr">Objet</span><span data-l="zh">主题</span></span><input id="ogg" aria-label="Subject"></div>
+    <textarea id="corpo" aria-label="Message"></textarea>
+    <div class="piede"><button class="invia" type="button" id="invia"><svg width="16" height="16" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 9l14-7-5 14-2-6z" fill="currentColor"/></svg><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button><span class="bozza" id="bozza"></span></div>
+    <div class="snack" id="snack" role="status"><span class="anello"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="3"/><circle class="t" id="giro" cx="14" cy="14" r="12" fill="none" stroke="#fa9191" stroke-width="3" stroke-dasharray="75.4"/></svg><b id="cont"></b></span><span id="snack-t"></span><button type="button" id="annulla"><span data-l="it">Annulla</span><span data-l="en">Undo</span><span data-l="fr">Annuler</span><span data-l="zh">撤回</span></button></div>
+    <div class="inviati" id="inviati"><svg width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="26" fill="#e3f4ea"/><path d="M17 29l7 7 15-16" fill="none" stroke="#1f7a45" stroke-width="4"/></svg><span id="inviati-t"></span><button class="btn" type="button" id="nuovo"><span data-l="it">Scrivi un altro messaggio</span><span data-l="en">Write another message</span><span data-l="fr">Écrire un autre message</span><span data-l="zh">再写一封</span></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il messaggio non parte subito: resta qualche secondo in un buffer, così l’errore si può ancora correggere.</span><span data-l="en">The message doesn’t leave at once: it waits a few seconds in a buffer, so a mistake can still be fixed.</span><span data-l="fr">Le message ne part pas tout de suite&#8239;: il attend quelques secondes dans un tampon, et l’erreur peut encore être corrigée.</span><span data-l="zh">邮件不会立即发出：它会在缓冲区中停留几秒，因此还来得及纠正错误。</span></p>
+<script>
+  var TX = { ogg: { it: 'Consegna del progetto 1', en: 'Project 1 submission', fr: 'Rendu du projet 1', zh: '项目 1 提交' },
+    corpo: { it: 'Buongiorno,\nin allegato trova il progetto.\nCordiali saluti', en: 'Good morning,\nplease find the project attached.\nBest regards', fr: 'Bonjour,\nveuillez trouver le projet ci-joint.\nCordialement', zh: '您好：\n附件是我的项目。\n此致敬礼' },
+    invio: { it: 'Invio in corso…', en: 'Sending…', fr: 'Envoi en cours…', zh: '正在发送…' }, annullato: { it: 'Invio annullato: il messaggio è di nuovo una bozza.', en: 'Sending undone: the message is a draft again.', fr: 'Envoi annulé : le message est de nouveau un brouillon.', zh: '已撤回发送：邮件重新成为草稿。' },
+    inviato: { it: 'Messaggio inviato.', en: 'Message sent.', fr: 'Message envoyé.', zh: '邮件已发送。' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var tick = null, resto = 0, totale = 10, toccato = false;
+  var snack = document.getElementById('snack'), giro = document.getElementById('giro');
+  function testi() { if (!toccato) { document.getElementById('ogg').value = T(TX.ogg); document.getElementById('corpo').value = T(TX.corpo); } document.getElementById('snack-t').textContent = T(TX.invio); document.getElementById('inviati-t').textContent = T(TX.inviato); }
+  function anello() { document.getElementById('cont').textContent = resto; giro.style.strokeDashoffset = (75.4 * (1 - resto / totale)).toFixed(1); }
+  function invia() {
+    totale = resto = +document.getElementById('sec').value; giro.style.transition = 'none'; anello(); void giro.getBoundingClientRect(); giro.style.transition = '';
+    document.getElementById('invia').disabled = true; document.getElementById('bozza').textContent = ''; snack.classList.add('su'); document.getElementById('annulla').focus();
+    clearInterval(tick); tick = setInterval(function () { resto--; anello(); if (resto <= 0) { clearInterval(tick); snack.classList.remove('su'); document.getElementById('inviati').classList.add('su'); document.getElementById('nuovo').focus(); } }, 1000);
+  }
+  document.getElementById('invia').onclick = invia;
+  document.getElementById('annulla').onclick = function () { clearInterval(tick); snack.classList.remove('su'); document.getElementById('invia').disabled = false; document.getElementById('bozza').textContent = T(TX.annullato); document.getElementById('corpo').focus(); };
+  document.getElementById('nuovo').onclick = function () { document.getElementById('inviati').classList.remove('su'); document.getElementById('invia').disabled = false; toccato = false; testi(); };
+  ['ogg', 'corpo'].forEach(function (id) { document.getElementById(id).addEventListener('input', function () { toccato = true; }); });
+  testi();
+  // all'apertura si vede il buffer già partito, fermo a 7 s, finché non si interagisce
+  totale = 10; resto = 7; anello(); document.getElementById('invia').disabled = true; snack.classList.add('su');
+  var demo = true;
+  document.addEventListener('click', function avvio(e) { if (!demo) return; demo = false; if (e.target.closest('#annulla')) return; clearInterval(tick); tick = setInterval(function () { resto--; anello(); if (resto <= 0) { clearInterval(tick); snack.classList.remove('su'); document.getElementById('inviati').classList.add('su'); } }, 1000); }, true);
+  document.addEventListener('lingua', testi);
+</script>
+</body>
+</html>

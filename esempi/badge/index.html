@@ -1,0 +1,81 @@
+<!doctype html>
+<!-- Esempio ricostruito: Badge. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Badge — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .barra { display: flex; justify-content: space-around; align-items: flex-end; padding: 6px 0 2px; }
+  .ico { position: relative; border: 0; background: none; cursor: pointer; padding: 10px; border-radius: 12px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 15px; }
+  .ico:hover { background: #fdf3f2; }
+  .ico svg { width: 34px; height: 34px; }
+  .badge { position: absolute; top: 2px; left: 50%; margin-left: 6px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 11px; background: #d9443a; color: #fff;
+    font: 500 13px/22px var(--f-testo); text-align: center; box-shadow: 0 0 0 2px #fff; transform-origin: left center; }
+  .badge.punto { min-width: 12px; width: 12px; height: 12px; padding: 0; top: 8px; margin-left: 8px; }
+  .badge[hidden] { display: none; }
+  .pop { animation: pop .3s ease-out; } @keyframes pop { 0% { transform: scale(.4); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  .comandi { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; justify-content: center; }
+  .comandi button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 8px 14px; cursor: pointer; font-size: 15px; }
+  .comandi button:hover { border-color: var(--c-salmone); }
+  .tipi { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; }
+  .tipo { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; font-size: 15px; color: var(--c-tenue); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 9999px; font-size: 15px; color: var(--c-testo); }
+  .chip.nuovo { background: var(--c-blu); color: #fff; }
+  .chip.ok { background: #e3f4e6; color: #22673a; } .chip.ok::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #2f9a52; }
+  .chip.att { background: #fdeee0; color: #8a4a12; } .chip.att::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #e08a2c; }
+  .chip.no { background: #fbe3e1; color: #9b2c22; } .chip.no::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #d9443a; }
+  .avatar { position: relative; width: 46px; height: 46px; border-radius: 50%; background: var(--c-salmone); color: #fff; display: grid; place-content: center; font-weight: 500; }
+  .avatar::after { content: ""; position: absolute; right: 0; bottom: 0; width: 13px; height: 13px; border-radius: 50%; background: #2f9a52; box-shadow: 0 0 0 3px #fff; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Contatori sulle icone: aggiungi, leggi, svuota</span><span data-l="en">Counters on icons: add, read, clear</span><span data-l="fr">Compteurs sur les icônes : ajouter, lire, vider</span><span data-l="zh">图标上的计数：增加、阅读、清空</span></span>
+    <div class="barra">
+      <button class="ico" id="b-posta" type="button"><svg viewBox="0 0 34 34" aria-hidden="true"><rect x="4" y="8" width="26" height="19" rx="3" fill="none" stroke="#111" stroke-width="2"/><path d="M5 10 L17 19 L29 10" fill="none" stroke="#111" stroke-width="2"/></svg><span class="badge" id="n-posta">3</span><span><span data-l="it">Posta</span><span data-l="en">Mail</span><span data-l="fr">Courrier</span><span data-l="zh">邮件</span></span></button>
+      <button class="ico" id="b-chat" type="button"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M6 8 h22 a2 2 0 0 1 2 2 v13 a2 2 0 0 1 -2 2 h-14 l-6 5 v-5 h-2 a2 2 0 0 1 -2 -2 v-13 a2 2 0 0 1 2 -2 Z" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg><span class="badge" id="n-chat">12</span><span><span data-l="it">Messaggi</span><span data-l="en">Messages</span><span data-l="fr">Messages</span><span data-l="zh">消息</span></span></button>
+      <button class="ico" id="b-camp" type="button"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M10 24 V15 a7 7 0 0 1 14 0 V24 l3 3 H7 Z M14 29 a3 3 0 0 0 6 0" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/></svg><span class="badge punto" id="n-camp"></span><span><span data-l="it">Avvisi</span><span data-l="en">Alerts</span><span data-l="fr">Alertes</span><span data-l="zh">通知</span></span></button>
+      <button class="ico" id="b-carr" type="button"><svg viewBox="0 0 34 34" aria-hidden="true"><path d="M3 6 H8 L11 22 H27 L30 11 H9" fill="none" stroke="#111" stroke-width="2" stroke-linejoin="round"/><circle cx="13" cy="27" r="2" fill="#111"/><circle cx="25" cy="27" r="2" fill="#111"/></svg><span class="badge" id="n-carr">99+</span><span><span data-l="it">Carrello</span><span data-l="en">Cart</span><span data-l="fr">Panier</span><span data-l="zh">购物车</span></span></button>
+    </div>
+    <div class="comandi">
+      <button type="button" id="arriva"><span data-l="it">+1 messaggio</span><span data-l="en">+1 message</span><span data-l="fr">+1 message</span><span data-l="zh">+1 条消息</span></button>
+      <button type="button" id="svuota"><span data-l="it">Segna tutto come letto</span><span data-l="en">Mark all as read</span><span data-l="fr">Tout marquer comme lu</span><span data-l="zh">全部标为已读</span></button>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Badge di stato e di etichetta</span><span data-l="en">Status and label badges</span><span data-l="fr">Badges d’état et d’étiquette</span><span data-l="zh">状态徽标与标签徽标</span></span>
+    <div class="tipi">
+      <span class="chip nuovo"><span data-l="it">Nuovo</span><span data-l="en">New</span><span data-l="fr">Nouveau</span><span data-l="zh">新</span></span>
+      <span class="chip ok"><span data-l="it">Attivo</span><span data-l="en">Active</span><span data-l="fr">Actif</span><span data-l="zh">运行中</span></span>
+      <span class="chip att"><span data-l="it">In attesa</span><span data-l="en">Pending</span><span data-l="fr">En attente</span><span data-l="zh">待处理</span></span>
+      <span class="chip no"><span data-l="it">Errore</span><span data-l="en">Failed</span><span data-l="fr">Échec</span><span data-l="zh">失败</span></span>
+      <span class="tipo" style="flex-direction:row;align-items:center;gap:10px"><span class="avatar" aria-label="online">FZ</span><span><span data-l="it">← presenza: in linea</span><span data-l="en">← presence: online</span><span data-l="fr">← présence : en ligne</span><span data-l="zh">← 在线状态</span></span></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il numero oltre 99 diventa «99+»; il punto senza numero segnala solo che c’è qualcosa di nuovo.</span><span data-l="en">Numbers above 99 become “99+”; a dot without a number only signals that something is new.</span><span data-l="fr">Au-delà de 99, le nombre devient « 99+ » ; le point sans nombre signale seulement une nouveauté.</span><span data-l="zh">超过 99 显示为“99+”；不带数字的圆点只表示有新内容。</span></p>
+<script>
+  var conti = { posta: 3, chat: 12, camp: -1, carr: 120 };
+  var SEN = { it: ' non letti', en: ' unread', fr: ' non lus', zh: ' 条未读' };
+  function mostra(k, anima) {
+    var b = document.getElementById('n-' + k), n = conti[k];
+    b.hidden = n === 0;
+    if (n > 0) b.textContent = n > 99 ? '99+' : String(n);
+    var l = window.Lingua ? Lingua.get() : 'en';
+    b.setAttribute('aria-label', n > 0 ? n + SEN[l] : (n < 0 ? '•' : ''));
+    if (anima) { b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
+  }
+  function tutto() { Object.keys(conti).forEach(function (k) { mostra(k); }); }
+  Object.keys(conti).forEach(function (k) { document.getElementById('b-' + k).addEventListener('click', function () { conti[k] = 0; mostra(k); }); });
+  document.getElementById('arriva').addEventListener('click', function () { conti.chat++; mostra('chat', true); });
+  document.getElementById('svuota').addEventListener('click', function () { Object.keys(conti).forEach(function (k) { conti[k] = 0; }); tutto(); });
+  tutto();
+  document.addEventListener('lingua', tutto);
+</script>
+</body>
+</html>

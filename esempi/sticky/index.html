@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Esempio ricostruito: Sticky box, bar or menu ("affix"). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sticky — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .pagina { position: relative; height: 430px; overflow-y: auto; border-radius: 10px; box-shadow: 0 0 0 1px var(--c-linea); background: #fff; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { .pagina { scroll-behavior: auto; } }
+  .intro { padding: 22px 22px 16px; background: linear-gradient(135deg, #fde3e3, #e3e9ff); }
+  .intro h1 { margin: 0 0 6px; font-size: 26px; font-weight: 500; }
+  .intro p { margin: 0; font-size: 15px; color: var(--c-tenue); }
+  .barra { position: sticky; top: 0; z-index: 3; display: flex; gap: 4px; padding: 8px 14px; background: rgba(255,255,255,.92); backdrop-filter: blur(6px); border-bottom: 1px solid transparent; transition: box-shadow .2s, border-color .2s; }
+  .barra.bloccata { border-color: var(--c-linea); box-shadow: 0 6px 14px rgba(0,0,0,.08); }
+  .barra a { padding: 6px 12px; border-radius: 9999px; text-decoration: none; color: inherit; font-size: 15px; }
+  .barra a.attiva { background: var(--c-testo); color: #fff; }
+  .stato { margin-left: auto; align-self: center; font-size: 13px; padding: 3px 8px; border-radius: 9999px; background: #f3efee; color: var(--c-tenue); white-space: nowrap; }
+  .bloccata .stato { background: var(--c-salmone); color: var(--c-testo); }
+  .corpo { display: grid; grid-template-columns: 1fr 170px; gap: 18px; padding: 0 14px 20px 22px; }
+  section h2 { position: sticky; top: 50px; z-index: 2; margin: 0; padding: 10px 0 6px; background: #fff; font-size: 17px; font-weight: 500; color: var(--c-rosa); }
+  section p { margin: 0 0 12px; font-size: 15px; color: rgba(0,0,0,.65); }
+  .riga { height: 10px; border-radius: 5px; background: rgba(0,0,0,.07); margin: 0 0 10px; }
+  aside { padding-top: 16px; }
+  .scheda { position: sticky; top: 64px; border: 1px solid var(--c-linea); border-radius: 12px; padding: 14px; font-size: 15px; }
+  .scheda b { display: block; font-weight: 500; font-size: 22px; margin-bottom: 4px; }
+  .scheda button { width: 100%; margin-top: 10px; height: 38px; border: 0; border-radius: 8px; background: var(--c-blu); color: #fff; cursor: pointer; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <div class="pagina" id="pagina" tabindex="0" aria-label="Page">
+      <div class="intro"><h1><span data-l="it">Corso di tipografia</span><span data-l="en">Typography course</span><span data-l="fr">Cours de typographie</span><span data-l="zh">字体排印课程</span></h1><p><span data-l="it">Scorri dentro questa pagina ↓</span><span data-l="en">Scroll inside this page ↓</span><span data-l="fr">Faites défiler cette page ↓</span><span data-l="zh">在此页面内滚动 ↓</span></p></div>
+      <nav class="barra" id="barra">
+        <a href="#s1" class="attiva"><span data-l="it">Programma</span><span data-l="en">Syllabus</span><span data-l="fr">Programme</span><span data-l="zh">大纲</span></a>
+        <a href="#s2"><span data-l="it">Docenti</span><span data-l="en">Teachers</span><span data-l="fr">Enseignants</span><span data-l="zh">教师</span></a>
+        <a href="#s3"><span data-l="it">Costi</span><span data-l="en">Fees</span><span data-l="fr">Tarifs</span><span data-l="zh">费用</span></a>
+        <span class="stato" id="stato" aria-live="polite"></span>
+      </nav>
+      <div class="corpo">
+        <div>
+          <section id="s1"><h2><span data-l="it">Programma</span><span data-l="en">Syllabus</span><span data-l="fr">Programme</span><span data-l="zh">大纲</span></h2><p><span data-l="it">Ogni titolo di sezione resta in alto finché la sezione successiva non lo spinge via.</span><span data-l="en">Each section title sticks to the top until the next section pushes it away.</span><span data-l="fr">Chaque titre de section reste en haut jusqu’à ce que la section suivante le pousse.</span><span data-l="zh">每个章节标题都会吸附在顶部，直到下一个章节把它推走。</span></p><div class="riga"></div><div class="riga" style="width:80%"></div><div class="riga"></div><div class="riga" style="width:60%"></div><div class="riga"></div><div class="riga" style="width:75%"></div><div class="riga"></div><div class="riga" style="width:50%"></div></section>
+          <section id="s2"><h2><span data-l="it">Docenti</span><span data-l="en">Teachers</span><span data-l="fr">Enseignants</span><span data-l="zh">教师</span></h2><div class="riga"></div><div class="riga" style="width:70%"></div><div class="riga"></div><div class="riga" style="width:85%"></div><div class="riga"></div><div class="riga" style="width:55%"></div><div class="riga"></div><div class="riga" style="width:65%"></div><div class="riga"></div></section>
+          <section id="s3"><h2><span data-l="it">Costi</span><span data-l="en">Fees</span><span data-l="fr">Tarifs</span><span data-l="zh">费用</span></h2><div class="riga"></div><div class="riga" style="width:80%"></div><div class="riga"></div><div class="riga" style="width:45%"></div><div class="riga"></div><div class="riga" style="width:90%"></div><div class="riga"></div><div class="riga" style="width:60%"></div><div class="riga"></div><div class="riga" style="width:70%"></div><div class="riga"></div><div class="riga" style="width:40%"></div></section>
+        </div>
+        <aside><div class="scheda"><b>480 €</b><span data-l="it">12 lezioni, in aula</span><span data-l="en">12 classes, in person</span><span data-l="fr">12 cours, en présentiel</span><span data-l="zh">12 节课，线下授课</span><button type="button"><span data-l="it">Iscriviti</span><span data-l="en">Enrol</span><span data-l="fr">S’inscrire</span><span data-l="zh">报名</span></button></div></aside>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Tre usi di position: sticky — la barra di navigazione, i titoli delle sezioni, il riquadro laterale. Bootstrap 3 lo chiamava «affix».</span><span data-l="en">Three uses of position: sticky — the navigation bar, the section titles, the side box. Bootstrap 3 called it “affix”.</span><span data-l="fr">Trois usages de position : sticky — la barre de navigation, les titres de section, l’encadré latéral. Bootstrap 3 l’appelait « affix ».</span><span data-l="zh">position: sticky 的三种用法——导航栏、章节标题、侧边框。Bootstrap 3 称之为“affix”。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var ST = { si: { it: 'bloccata in alto', en: 'stuck to the top', fr: 'fixée en haut', zh: '已吸顶' }, no: { it: 'scorre con la pagina', en: 'scrolls with the page', fr: 'défile avec la page', zh: '随页面滚动' } };
+  var pagina = document.getElementById('pagina'), barra = document.getElementById('barra'), bloccata = false;
+  function aggiorna() {
+    bloccata = pagina.scrollTop >= document.querySelector('.intro').offsetHeight;
+    barra.classList.toggle('bloccata', bloccata);
+    document.getElementById('stato').textContent = t(bloccata ? ST.si : ST.no);
+    var att = 's1'; ['s1', 's2', 's3'].forEach(function (id) { if (document.getElementById(id).offsetTop - pagina.scrollTop < 120) att = id; });
+    if (pagina.scrollTop + pagina.clientHeight >= pagina.scrollHeight - 2) att = 's3';
+    barra.querySelectorAll('a').forEach(function (a) { a.classList.toggle('attiva', a.getAttribute('href') === '#' + att); });
+  }
+  barra.querySelectorAll('a').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); var s = document.querySelector(a.getAttribute('href')); pagina.scrollTop = s.offsetTop - 50; }; });
+  pagina.addEventListener('scroll', aggiorna);
+  aggiorna();
+  pagina.scrollTop = 150;
+  document.addEventListener('lingua', aggiorna);
+</script>
+</body>
+</html>

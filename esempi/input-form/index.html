@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- Esempio ricostruito: Input form. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Input form — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 640px; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; }
+  .campo { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .campo.largo { grid-column: 1 / -1; }
+  label.et { font-size: 15px; font-weight: 500; }
+  .campo input, .campo select { border: 1.5px solid #cfc9c7; border-radius: 8px; padding: 9px 11px; font-size: 16px; background: #fff; width: 100%; transition: border-color .15s; }
+  .campo input:hover, .campo select:hover { border-color: #9d9795; }
+  .campo input:focus, .campo select:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.25); }
+  .campo.err input, .campo.err select { border-color: #c0392b; }
+  .campo.ok input { border-color: #2f9a52; }
+  .msg { font-size: 15px; min-height: 20px; color: var(--c-tenue); }
+  .campo.err .msg { color: #b03a2e; }
+  .pw { position: relative; } .pw input { padding-right: 70px; }
+  .pw button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: none; color: var(--c-blu); cursor: pointer; font-size: 15px; padding: 4px 6px; border-radius: 6px; }
+  .spunta { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-size: 15px; cursor: pointer; }
+  .spunta input { width: 20px; height: 20px; accent-color: var(--c-blu); margin: 0; }
+  .spunta.err { color: #b03a2e; }
+  .azioni { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; }
+  .invia { border: 0; background: var(--c-testo); color: #fff; padding: 11px 22px; border-radius: 9999px; cursor: pointer; font-size: 16px; min-width: 150px; }
+  .invia:hover { background: #333; }
+  .invia[disabled] { background: #9d9795; cursor: progress; }
+  .esito { font-size: 15px; }
+  .esito.ok { color: #22673a; } .esito.err { color: #b03a2e; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Iscrizione: compila e invia (prova anche a inviare vuoto)</span><span data-l="en">Sign-up: fill in and submit (try submitting it empty too)</span><span data-l="fr">Inscription : remplissez et envoyez (essayez aussi à vide)</span><span data-l="zh">注册：填写并提交（也可以试试空着提交）</span></span>
+    <form id="modulo" novalidate>
+      <div class="campo" data-c="nome"><label class="et" for="f-nome"><span data-l="it">Nome</span><span data-l="en">Name</span><span data-l="fr">Nom</span><span data-l="zh">姓名</span></label>
+        <input id="f-nome" autocomplete="off" aria-describedby="m-nome"><span class="msg" id="m-nome"></span></div>
+      <div class="campo" data-c="mail"><label class="et" for="f-mail"><span data-l="it">E-mail</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮箱</span></label>
+        <input id="f-mail" type="email" autocomplete="off" aria-describedby="m-mail" data-it="nome@esempio.it" data-en="name@example.com" data-fr="nom@exemple.fr" data-zh="name@example.cn"><span class="msg" id="m-mail"></span></div>
+      <div class="campo" data-c="pw"><label class="et" for="f-pw"><span data-l="it">Password</span><span data-l="en">Password</span><span data-l="fr">Mot de passe</span><span data-l="zh">密码</span></label>
+        <div class="pw"><input id="f-pw" type="password" autocomplete="new-password" aria-describedby="m-pw"><button type="button" id="mostra" aria-pressed="false"></button></div><span class="msg" id="m-pw"></span></div>
+      <div class="campo" data-c="corso"><label class="et" for="f-corso"><span data-l="it">Corso</span><span data-l="en">Course</span><span data-l="fr">Cours</span><span data-l="zh">课程</span></label>
+        <select id="f-corso" aria-describedby="m-corso"><option value="" data-it="Scegli…" data-en="Choose…" data-fr="Choisir…" data-zh="请选择…"></option><option value="ui" data-it="Interface Design" data-en="Interface Design" data-fr="Interface Design" data-zh="界面设计"></option><option value="ty" data-it="Tipografia" data-en="Typography" data-fr="Typographie" data-zh="字体排印"></option></select>
+        <span class="msg" id="m-corso"></span></div>
+      <label class="spunta" id="l-ok"><input type="checkbox" id="f-ok"><span><span data-l="it">Accetto il regolamento del corso</span><span data-l="en">I accept the course rules</span><span data-l="fr">J’accepte le règlement du cours</span><span data-l="zh">我接受课程规定</span></span></label>
+      <div class="azioni"><button class="invia" type="submit" id="invia"></button><span class="esito" id="esito" role="status"></span></div>
+    </form>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Etichette sempre visibili, errori accanto al campo e in parole semplici, focus visibile; i dati qui non vengono inviati da nessuna parte.</span><span data-l="en">Labels always visible, errors next to the field in plain words, visible focus; the data here is not sent anywhere.</span><span data-l="fr">Libellés toujours visibles, erreurs à côté du champ et en mots simples, focus visible ; ici les données ne sont envoyées nulle part.</span><span data-l="zh">标签始终可见，错误提示紧挨字段并用简单的话说明，焦点清晰可见；这里的数据不会被发送到任何地方。</span></p>
+<script>
+  var T = {
+    it: { req: 'Campo obbligatorio', mail: 'Manca la @ o il dominio', pw: 'Almeno 8 caratteri', pwh: 'Almeno 8 caratteri', ok: '✓', corso: 'Scegli un corso', mostra: 'Mostra', nascondi: 'Nascondi', invia: 'Iscriviti', invio: 'Invio…', fatto: 'Iscrizione completata.', errori: 'Correggi i campi segnati.', spunta: 'Serve il consenso' },
+    en: { req: 'Required field', mail: 'Missing @ or domain', pw: 'At least 8 characters', pwh: 'At least 8 characters', ok: '✓', corso: 'Choose a course', mostra: 'Show', nascondi: 'Hide', invia: 'Sign up', invio: 'Sending…', fatto: 'You are signed up.', errori: 'Please fix the marked fields.', spunta: 'Consent needed' },
+    fr: { req: 'Champ obligatoire', mail: 'Il manque le @ ou le domaine', pw: 'Au moins 8 caractères', pwh: 'Au moins 8 caractères', ok: '✓', corso: 'Choisissez un cours', mostra: 'Afficher', nascondi: 'Masquer', invia: 'S’inscrire', invio: 'Envoi…', fatto: 'Inscription terminée.', errori: 'Corrigez les champs signalés.', spunta: 'Consentement requis' },
+    zh: { req: '必填字段', mail: '缺少 @ 或域名', pw: '至少 8 个字符', pwh: '至少 8 个字符', ok: '✓', corso: '请选择课程', mostra: '显示', nascondi: '隐藏', invia: '注册', invio: '提交中…', fatto: '注册成功。', errori: '请修改标出的字段。', spunta: '需要同意' }
+  };
+  var tentato = false, stato = '';
+  function t() { return T[window.Lingua ? Lingua.get() : 'en']; }
+  function controlla(c) {
+    var v = { nome: document.getElementById('f-nome').value.trim(), mail: document.getElementById('f-mail').value.trim(), pw: document.getElementById('f-pw').value, corso: document.getElementById('f-corso').value }[c];
+    if (!v) return t().req;
+    if (c === 'mail' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return t().mail;
+    if (c === 'pw' && v.length < 8) return t().pw;
+    return '';
+  }
+  function segna(c, forza) {
+    var box = document.querySelector('[data-c="' + c + '"]'), inp = box.querySelector('input, select'), m = box.querySelector('.msg');
+    var e = controlla(c), mostra = forza || tentato || inp.dataset.toccato;
+    box.classList.toggle('err', !!(mostra && e)); box.classList.toggle('ok', !!(mostra && !e));
+    inp.setAttribute('aria-invalid', String(!!(mostra && e)));
+    m.textContent = mostra ? (e || (c === 'pw' ? t().ok : '')) : (c === 'pw' ? t().pwh : '');
+    return !e;
+  }
+  function disegna() {
+    ['nome', 'mail', 'pw', 'corso'].forEach(function (c) { segna(c); });
+    var pw = document.getElementById('f-pw'); document.getElementById('mostra').textContent = pw.type === 'password' ? t().mostra : t().nascondi;
+    var b = document.getElementById('invia'); b.textContent = b.disabled ? t().invio : t().invia;
+    var e = document.getElementById('esito'); e.className = 'esito ' + stato; e.textContent = stato === 'ok' ? t().fatto : stato === 'err' ? t().errori : '';
+    var ok = document.getElementById('f-ok').checked; document.getElementById('l-ok').classList.toggle('err', tentato && !ok);
+  }
+  ['nome', 'mail', 'pw', 'corso'].forEach(function (c) {
+    var inp = document.querySelector('[data-c="' + c + '"] input, [data-c="' + c + '"] select');
+    inp.addEventListener('blur', function () { if (inp.value) inp.dataset.toccato = '1'; segna(c); });
+    inp.addEventListener('input', function () { stato = ''; segna(c); document.getElementById('esito').textContent = ''; });
+  });
+  document.getElementById('f-ok').addEventListener('change', disegna);
+  document.getElementById('mostra').addEventListener('click', function () {
+    var pw = document.getElementById('f-pw'); pw.type = pw.type === 'password' ? 'text' : 'password';
+    this.setAttribute('aria-pressed', String(pw.type === 'text')); disegna();
+  });
+  document.getElementById('modulo').addEventListener('submit', function (ev) {
+    ev.preventDefault(); tentato = true;
+    var valido = ['nome', 'mail', 'pw', 'corso'].map(function (c) { return segna(c, true); }).every(Boolean) && document.getElementById('f-ok').checked;
+    if (!valido) { stato = 'err'; disegna(); var primo = document.querySelector('.campo.err input, .campo.err select'); if (primo) primo.focus(); return; }
+    var b = document.getElementById('invia'); b.disabled = true; stato = ''; disegna();
+    setTimeout(function () { b.disabled = false; stato = 'ok'; disegna(); }, 1200);
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

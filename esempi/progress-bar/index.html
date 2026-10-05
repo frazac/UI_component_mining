@@ -1,0 +1,92 @@
+<!doctype html>
+<!-- Esempio ricostruito: Progress bar. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progress bar — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riga { display: flex; align-items: center; gap: 14px; font-size: 15px; }
+  .riga + .riga { margin-top: 16px; }
+  .eti { width: 150px; flex: none; }
+  .binario { flex: 1; height: 10px; border-radius: 5px; background: #eee8e6; overflow: hidden; position: relative; }
+  .pieno { height: 100%; width: 0; background: var(--c-blu); border-radius: 5px; transition: width .2s linear; }
+  .pieno.fatto { background: #2f9a52; }
+  .indet .pieno { width: 35%; position: absolute; animation: scorre 1.4s ease-in-out infinite; background: var(--c-salmone); }
+  @keyframes scorre { 0% { left: -35%; } 100% { left: 100%; } }
+  .val { width: 64px; text-align: right; font-variant-numeric: tabular-nums; color: var(--c-tenue); }
+  .cerchio { width: 46px; height: 46px; flex: none; }
+  .cerchio circle { fill: none; stroke-width: 5; }
+  .cerchio .arco { stroke: var(--c-blu); stroke-linecap: round; }
+  .cerchio { animation: gira 1s linear infinite; } @keyframes gira { to { transform: rotate(360deg); } }
+  .bott { border: 0; background: var(--c-testo); color: #fff; padding: 8px 16px; border-radius: 9999px; cursor: pointer; font-size: 15px; }
+  .bott.chiaro { background: #fff; color: var(--c-testo); border: 1px solid var(--c-linea); }
+  .bott:disabled { opacity: .4; cursor: not-allowed; }
+  /* stepper */
+  .passi { list-style: none; margin: 0 0 18px; padding: 0; display: flex; }
+  .passi li { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; font-size: 15px; text-align: center; color: var(--c-tenue); }
+  .passi li::before { content: ""; position: absolute; top: 15px; left: -50%; width: 100%; height: 2px; background: #eee8e6; z-index: 0; }
+  .passi li:first-child::before { display: none; }
+  .passi li.fatto::before, .passi li.ora::before { background: var(--c-blu); }
+  .passi .n { width: 32px; height: 32px; border-radius: 50%; display: grid; place-content: center; background: #fff; border: 2px solid #d8d2d0; position: relative; z-index: 1; font-weight: 500; }
+  .passi li.fatto .n { background: var(--c-blu); border-color: var(--c-blu); color: #fff; }
+  .passi li.ora .n { border-color: var(--c-blu); color: var(--c-blu); box-shadow: 0 0 0 4px rgba(105,143,255,.2); }
+  .passi li.ora { color: var(--c-testo); font-weight: 500; }
+  .navp { display: flex; justify-content: space-between; align-items: center; font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Barra di avanzamento: determinata e indeterminata</span><span data-l="en">Progress bar: determinate and indeterminate</span><span data-l="fr">Barre de progression : déterminée et indéterminée</span><span data-l="zh">进度条：确定型与不确定型</span></span>
+    <div class="riga"><span class="eti"><span data-l="it">Caricamento file</span><span data-l="en">File upload</span><span data-l="fr">Envoi du fichier</span><span data-l="zh">文件上传</span></span>
+      <div class="binario" role="progressbar" id="barra" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="pieno" id="pieno"></div></div>
+      <span class="val" id="val">0%</span>
+      <button class="bott" type="button" id="via"><span data-l="it">Avvia</span><span data-l="en">Start</span><span data-l="fr">Lancer</span><span data-l="zh">开始</span></button></div>
+    <div class="riga"><span class="eti"><span data-l="it">Durata ignota</span><span data-l="en">Unknown duration</span><span data-l="fr">Durée inconnue</span><span data-l="zh">时长未知</span></span>
+      <div class="binario indet" role="progressbar" aria-label="…"><div class="pieno"></div></div><span class="val">…</span>
+      <svg class="cerchio" viewBox="0 0 46 46" role="progressbar" aria-label="…"><circle cx="23" cy="23" r="19" stroke="#eee8e6"/><circle class="arco" id="arco" cx="23" cy="23" r="19" stroke-dasharray="119.4" stroke-dashoffset="85"/></svg></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Passi di una procedura («stepper»)</span><span data-l="en">Steps of a procedure (“stepper”)</span><span data-l="fr">Étapes d’une procédure (« stepper »)</span><span data-l="zh">流程步骤（“步骤条”）</span></span>
+    <ol class="passi" id="passi"></ol>
+    <div class="navp"><button class="bott chiaro" type="button" id="indietro"></button><span id="dove" aria-live="polite"></span><button class="bott" type="button" id="avanti"></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Se la durata è nota si mostra la percentuale; se non lo è, un’animazione continua dice solo «sto lavorando».</span><span data-l="en">When the duration is known, show the percentage; when it is not, a looping animation only says “I am working”.</span><span data-l="fr">Si la durée est connue, on affiche le pourcentage ; sinon, une animation en boucle dit seulement « je travaille ».</span><span data-l="zh">时长已知时显示百分比；未知时，循环动画只表示“正在处理”。</span></p>
+<script>
+  var PASSI = { it: ['Carrello', 'Indirizzo', 'Pagamento', 'Conferma'], en: ['Cart', 'Address', 'Payment', 'Confirm'], fr: ['Panier', 'Adresse', 'Paiement', 'Confirmation'], zh: ['购物车', '地址', '支付', '确认'] };
+  var B = { it: ['Indietro', 'Avanti', 'Fine', 'Passo {a} di {b}', 'Completato'], en: ['Back', 'Next', 'Finish', 'Step {a} of {b}', 'Completed'], fr: ['Retour', 'Suivant', 'Terminer', 'Étape {a} sur {b}', 'Terminé'], zh: ['上一步', '下一步', '完成', '第 {a} 步，共 {b} 步', '已完成'] };
+  var passo = 1, p = 0, timer = null;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function stepper() {
+    var ol = document.getElementById('passi'); ol.innerHTML = '';
+    PASSI[l()].forEach(function (nome, i) {
+      var li = document.createElement('li'); li.className = i < passo ? 'fatto' : i === passo ? 'ora' : '';
+      if (i === passo) li.setAttribute('aria-current', 'step');
+      li.innerHTML = '<span class="n"></span><span></span>';
+      li.firstChild.textContent = i < passo ? '✓' : (i + 1); li.lastChild.textContent = nome; ol.appendChild(li);
+    });
+    var b = B[l()];
+    document.getElementById('indietro').textContent = b[0]; document.getElementById('indietro').disabled = passo === 0;
+    document.getElementById('avanti').textContent = passo >= 3 ? b[2] : b[1]; document.getElementById('avanti').disabled = passo > 3;
+    document.getElementById('dove').textContent = passo > 3 ? b[4] : b[3].replace('{a}', passo + 1).replace('{b}', 4);
+  }
+  document.getElementById('indietro').onclick = function () { if (passo > 0) { passo--; stepper(); } };
+  document.getElementById('avanti').onclick = function () { if (passo <= 3) { passo++; stepper(); } };
+  function barra() {
+    document.getElementById('pieno').style.width = p + '%'; document.getElementById('pieno').classList.toggle('fatto', p >= 100);
+    document.getElementById('barra').setAttribute('aria-valuenow', Math.round(p)); document.getElementById('val').textContent = Math.round(p) + '%';
+  }
+  document.getElementById('via').onclick = function () {
+    clearInterval(timer); p = 0; barra();
+    timer = setInterval(function () { p = Math.min(100, p + Math.random() * 6 + 1); barra(); if (p >= 100) clearInterval(timer); }, 120);
+  };
+  p = 62; barra(); stepper();
+  document.addEventListener('lingua', stepper);
+</script>
+</body>
+</html>

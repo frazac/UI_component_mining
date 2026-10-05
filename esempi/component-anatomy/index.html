@@ -1,0 +1,96 @@
+<!doctype html>
+<!-- Esempio ricostruito: Component anatomy. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component anatomy — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .scena { position: relative; width: 600px; max-width: 100%; height: 150px; margin: 0 auto; }
+  .scena svg.linee { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .scena svg.linee line { stroke: var(--c-testo); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  .bottone { position: absolute; left: 170px; top: 50px; width: 260px; height: 64px; border: 0; border-radius: 32px;
+    background: var(--c-blu); color: #fff; display: flex; align-items: center; gap: 12px; padding: 0 28px 0 24px;
+    font-size: 20px; font-weight: 500; cursor: pointer; overflow: visible; }
+  .bottone .strato { position: absolute; inset: 0; border-radius: inherit; background: #fff; opacity: .16; pointer-events: none; }
+  .bottone svg { width: 26px; height: 26px; flex: none; position: relative; }
+  .bottone .etichetta { position: relative; white-space: nowrap; }
+  .bottone .badge { position: absolute; right: -6px; top: -10px; min-width: 28px; height: 28px; border-radius: 14px; background: var(--c-salmone);
+    color: var(--c-testo); font-size: 15px; display: grid; place-items: center; border: 3px solid #fff; }
+  .num { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: var(--c-testo); color: #fff;
+    font-size: 15px; font-weight: 500; display: grid; place-items: center; transition: transform .2s, background .2s; }
+  .num.acceso { background: var(--c-salmone); color: var(--c-testo); transform: scale(1.25); }
+  .parte-accesa { outline: 3px solid var(--c-salmone); outline-offset: 4px; }
+  .legenda { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 2px 14px; }
+  .legenda li { display: flex; gap: 10px; padding: 5px 8px; border-radius: 8px; cursor: default; font-size: 15px; line-height: 1.3; }
+  .legenda li:hover, .legenda li:focus-visible { background: #fdecec; }
+  .legenda b { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--c-testo); color: #fff; font-size: 13px; font-weight: 500; display: grid; place-items: center; }
+  .legenda strong { font-weight: 500; display: block; }
+  .legenda small { color: var(--c-tenue); font-size: 15px; }
+  .stati { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; }
+  .stato { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 15px; color: var(--c-tenue); }
+  .mini { position: relative; width: 104px; height: 40px; border-radius: 20px; background: var(--c-blu); overflow: hidden; }
+  .mini::after { content: ""; position: absolute; inset: 0; background: #fff; opacity: var(--o, 0); }
+  .mini.focus { outline: 3px solid var(--c-testo); outline-offset: 2px; }
+  .mini.off { background: rgba(0,0,0,.12); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Anatomia di un pulsante</span><span data-l="en">Anatomy of a button</span><span data-l="fr">Anatomie d’un bouton</span><span data-l="zh">按钮的结构</span></span>
+    <div class="scena" id="scena">
+      <svg class="linee" viewBox="0 0 600 150" aria-hidden="true">
+        <line x1="70" y1="82" x2="170" y2="82"/>
+        <line x1="208" y1="26" x2="208" y2="68"/>
+        <line x1="320" y1="26" x2="320" y2="70"/>
+        <line x1="390" y1="128" x2="390" y2="108"/>
+        <line x1="520" y1="26" x2="438" y2="48"/>
+      </svg>
+      <button class="bottone" type="button" data-parte="1">
+        <span class="strato" data-parte="4"></span>
+        <svg viewBox="0 0 24 24" data-parte="3" aria-hidden="true"><path d="M3 4h2.5l2.2 10.5h10.6L20.5 7H7" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19" r="1.6" fill="#fff"/><circle cx="17" cy="19" r="1.6" fill="#fff"/></svg>
+        <span class="etichetta" data-parte="2"><span data-l="it">Carrello</span><span data-l="en">Cart</span><span data-l="fr">Panier</span><span data-l="zh">购物车</span></span>
+        <span class="badge" data-parte="5">9</span>
+      </button>
+      <span class="num" data-n="1" style="left:55px;top:82px">1</span>
+      <span class="num" data-n="3" style="left:208px;top:14px">3</span>
+      <span class="num" data-n="2" style="left:320px;top:14px">2</span>
+      <span class="num" data-n="4" style="left:390px;top:138px">4</span>
+      <span class="num" data-n="5" style="left:534px;top:22px">5</span>
+    </div>
+    <ul class="legenda" id="legenda">
+      <li tabindex="0" data-n="1"><b>1</b><span><strong><span data-l="it">Contenitore</span><span data-l="en">Container</span><span data-l="fr">Conteneur</span><span data-l="zh">容器</span></strong><small><span data-l="it">forma, colore, misure</span><span data-l="en">shape, colour, size</span><span data-l="fr">forme, couleur, taille</span><span data-l="zh">形状、颜色、尺寸</span></small></span></li>
+      <li tabindex="0" data-n="2"><b>2</b><span><strong><span data-l="it">Etichetta</span><span data-l="en">Label</span><span data-l="fr">Libellé</span><span data-l="zh">标签</span></strong><small><span data-l="it">il testo dell’azione</span><span data-l="en">the action text</span><span data-l="fr">le texte de l’action</span><span data-l="zh">操作文字</span></small></span></li>
+      <li tabindex="0" data-n="3"><b>3</b><span><strong><span data-l="it">Icona</span><span data-l="en">Icon</span><span data-l="fr">Icône</span><span data-l="zh">图标</span></strong><small><span data-l="it">facoltativa, prima o dopo</span><span data-l="en">optional, leading or trailing</span><span data-l="fr">facultative, avant ou après</span><span data-l="zh">可选，前置或后置</span></small></span></li>
+      <li tabindex="0" data-n="4"><b>4</b><span><strong><span data-l="it">Livello dello stato</span><span data-l="en">State layer</span><span data-l="fr">Couche d’état</span><span data-l="zh">状态层</span></strong><small><span data-l="it">cambia con hover, focus, pressione</span><span data-l="en">changes on hover, focus, press</span><span data-l="fr">change au survol, focus, appui</span><span data-l="zh">随悬停、焦点、按下而变化</span></small></span></li>
+      <li tabindex="0" data-n="5"><b>5</b><span><strong><span data-l="it">Badge</span><span data-l="en">Badge</span><span data-l="fr">Badge</span><span data-l="zh">徽标</span></strong><small><span data-l="it">elemento accessorio</span><span data-l="en">accessory element</span><span data-l="fr">élément accessoire</span><span data-l="zh">附属元素</span></small></span></li>
+    </ul>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Il livello dello stato nei vari stati</span><span data-l="en">The state layer across states</span><span data-l="fr">La couche d’état selon l’état</span><span data-l="zh">不同状态下的状态层</span></span>
+    <div class="stati">
+      <div class="stato"><span class="mini"></span><span data-l="it">normale</span><span data-l="en">default</span><span data-l="fr">normal</span><span data-l="zh">默认</span></div>
+      <div class="stato"><span class="mini" style="--o:.12"></span><span data-l="it">hover</span><span data-l="en">hover</span><span data-l="fr">survol</span><span data-l="zh">悬停</span></div>
+      <div class="stato"><span class="mini focus" style="--o:.16"></span><span data-l="it">focus</span><span data-l="en">focus</span><span data-l="fr">focus</span><span data-l="zh">焦点</span></div>
+      <div class="stato"><span class="mini" style="--o:.3"></span><span data-l="it">premuto</span><span data-l="en">pressed</span><span data-l="fr">appuyé</span><span data-l="zh">按下</span></div>
+      <div class="stato"><span class="mini off"></span><span data-l="it">disattivato</span><span data-l="en">disabled</span><span data-l="fr">désactivé</span><span data-l="zh">禁用</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">I design system descrivono ogni componente per anatomia, varianti, dimensioni e stati. Passa sulla legenda per vedere le parti.</span><span data-l="en">Design systems describe each component by anatomy, variants, sizes and states. Hover the legend to highlight the parts.</span><span data-l="fr">Les design systems décrivent chaque composant par anatomie, variantes, tailles et états. Survolez la légende pour repérer les parties.</span><span data-l="zh">设计系统按结构、变体、尺寸和状态描述每个组件。将指针移到图例上可高亮各部分。</span></p>
+<script>
+  function accendi(n) {
+    document.querySelectorAll('.num').forEach(function (el) { el.classList.toggle('acceso', el.dataset.n === n); });
+    document.querySelectorAll('[data-parte]').forEach(function (el) { el.classList.toggle('parte-accesa', el.dataset.parte === n); });
+  }
+  document.querySelectorAll('#legenda li').forEach(function (li) {
+    ['mouseenter', 'focus'].forEach(function (e) { li.addEventListener(e, function () { accendi(li.dataset.n); }); });
+    ['mouseleave', 'blur'].forEach(function (e) { li.addEventListener(e, function () { accendi(null); }); });
+  });
+</script>
+</body>
+</html>

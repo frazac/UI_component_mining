@@ -1,0 +1,120 @@
+<!doctype html>
+<!-- Esempio ricostruito: Text selection and highlighting. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text selection and highlighting — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 24px; position: relative; }
+  .testo { font-size: 20px; line-height: 1.6; margin: 0; }
+  .testo[data-sel="salmone"] ::selection, .testo[data-sel="salmone"]::selection { background: rgb(250,145,145); color: #111; }
+  .testo[data-sel="blu"] ::selection, .testo[data-sel="blu"]::selection { background: rgb(105,143,255); color: #fff; }
+  .testo[data-sel="nero"] ::selection, .testo[data-sel="nero"]::selection { background: #111; color: #fff; }
+  mark { background: rgba(250,200,90,.55); padding: 0 1px; border-radius: 2px; }
+  mark.sal { background: rgba(250,145,145,.45); }
+  .menu { position: absolute; z-index: 3; display: flex; gap: 2px; background: #1d1d22; border-radius: 8px; padding: 4px; box-shadow: 0 6px 18px rgba(0,0,0,.25); transform: translateX(-50%); }
+  .menu[hidden] { display: none; }
+  .menu::after { content: ""; position: absolute; bottom: 100%; left: 50%; margin-left: -6px; border: 6px solid transparent; border-bottom-color: #1d1d22; }
+  .menu button { border: 0; background: none; color: #fff; font-size: 15px; padding: 6px 10px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .menu button:hover, .menu button:focus-visible { background: rgba(255,255,255,.15); }
+  .menu .pallino { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+  .opzioni { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 15px; }
+  .opzioni button { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 5px 12px 5px 6px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; font-size: 15px; }
+  .opzioni button[aria-pressed="true"] { border-color: var(--c-testo); box-shadow: inset 0 0 0 1px var(--c-testo); }
+  .opzioni i { width: 20px; height: 20px; border-radius: 50%; display: block; }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 14px; background: var(--c-palco); padding: 2px 6px; border-radius: 4px; }
+  .info { margin-top: 56px; font-size: 15px; color: var(--c-tenue); min-height: 22px; }
+  .info b { color: var(--c-testo); font-weight: 500; }
+  .tasti { font-size: 15px; color: var(--c-tenue); margin: 0; }
+  kbd { font: inherit; font-size: 14px; border: 1px solid var(--c-linea); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; color: var(--c-testo); background: #fff; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" id="area">
+    <span class="didascalia"><span data-l="it">Seleziona del testo: trascina, doppio clic o Maiusc + frecce</span><span data-l="en">Select some text: drag, double-click or Shift + arrows</span><span data-l="fr">Sélectionnez du texte : glisser, double-clic ou Maj + flèches</span><span data-l="zh">选择文字：拖动、双击或 Shift + 方向键</span></span>
+    <p class="testo" id="testo" data-sel="salmone" tabindex="0"></p>
+    <div class="info" id="info" aria-live="polite"></div>
+    <div class="menu" id="menu" hidden role="toolbar">
+      <button type="button" data-az="copia"></button>
+      <button type="button" data-az="giallo"><span class="pallino" style="background:rgb(250,200,90)"></span></button>
+      <button type="button" data-az="sal"><span class="pallino" style="background:rgb(250,145,145)"></span></button>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Il colore della selezione, con </span><span data-l="en">Selection colour, with </span><span data-l="fr">Couleur de la sélection, avec </span><span data-l="zh">选区颜色，使用 </span><code style="text-transform:none;letter-spacing:0">::selection</code></span>
+    <div class="opzioni" id="opzioni"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La selezione è temporanea e si perde al clic successivo; l’evidenziazione (mark) resta nel testo.</span><span data-l="en">A selection is temporary and is lost on the next click; a highlight (mark) stays in the text.</span><span data-l="fr">Une sélection est temporaire et disparaît au clic suivant ; un surlignage (mark) reste dans le texte.</span><span data-l="zh">选区是临时的，下一次点击就会消失；高亮标记（mark）则保留在文本中。</span></p>
+<script>
+  var TESTO = {
+    it: 'La tipografia è l’arte di disporre i caratteri perché un testo sia leggibile, comprensibile e piacevole da guardare. Una buona interfaccia comincia da qui.',
+    en: 'Typography is the art of arranging type so that a text is legible, readable and pleasant to look at. A good interface starts right here.',
+    fr: 'La typographie est l’art d’agencer les caractères pour qu’un texte soit lisible, compréhensible et agréable à regarder. Une bonne interface commence ici.',
+    zh: '字体排印是编排文字的艺术，让文本清晰易读、便于理解、赏心悦目。好的界面从这里开始。'
+  };
+  var PAROLA = { it: 'leggibile', en: 'legible', fr: 'lisible', zh: '清晰易读' };
+  var COLORI = [
+    { k: 'sistema', c: 'Highlight', n: { it: 'Sistema', en: 'System', fr: 'Système', zh: '系统默认' } },
+    { k: 'salmone', c: 'rgb(250,145,145)', n: { it: 'Salmone', en: 'Salmon', fr: 'Saumon', zh: '鲑鱼色' } },
+    { k: 'blu', c: 'rgb(105,143,255)', n: { it: 'Blu', en: 'Blue', fr: 'Bleu', zh: '蓝色' } },
+    { k: 'nero', c: '#111', n: { it: 'Nero', en: 'Black', fr: 'Noir', zh: '黑色' } }
+  ];
+  var T = { copia: { it: 'Copia', en: 'Copy', fr: 'Copier', zh: '复制' }, copiato: { it: 'Copiato!', en: 'Copied!', fr: 'Copié !', zh: '已复制！' },
+    sel: { it: 'Selezionati: ', en: 'Selected: ', fr: 'Sélectionnés : ', zh: '已选：' }, car: { it: ' caratteri', en: ' characters', fr: ' caractères', zh: ' 个字符' },
+    vuoto: { it: 'Nessuna selezione.', en: 'Nothing selected.', fr: 'Aucune sélection.', zh: '未选择内容。' } };
+  var testo = document.getElementById('testo'), menu = document.getElementById('menu'), area = document.getElementById('area');
+  function lg() { return window.Lingua ? Lingua.get() : 'en'; }
+  function L(o) { return o[lg()] || o.en; }
+  function seleziona(par) {
+    var nodo = testo.firstChild, i = nodo.textContent.indexOf(par);
+    if (i < 0) return;
+    var r = document.createRange(); r.setStart(nodo, i); r.setEnd(nodo, i + par.length);
+    var s = getSelection(); s.removeAllRanges(); s.addRange(r); aggiorna();
+  }
+  function aggiorna() {
+    var s = getSelection(), t = s.toString(), info = document.getElementById('info');
+    var dentro = s.rangeCount && testo.contains(s.getRangeAt(0).commonAncestorContainer) && t.trim();
+    if (!dentro) { menu.hidden = true; info.textContent = L(T.vuoto); return; }
+    info.innerHTML = L(T.sel) + '<b></b> · ' + t.length + L(T.car); info.querySelector('b').textContent = '«' + (t.length > 40 ? t.slice(0, 40) + '…' : t) + '»';
+    var rs = Array.prototype.slice.call(s.getRangeAt(0).getClientRects()).filter(function (x) { return x.width > 2; }), a = area.getBoundingClientRect();
+    var r = rs.length ? rs.reduce(function (m, x) { return x.width > m.width ? x : m; }) : s.getRangeAt(0).getBoundingClientRect();
+    menu.hidden = false; var mw = menu.offsetWidth / 2 + 8; menu.style.left = Math.max(mw, Math.min(a.width - mw, r.left + r.width / 2 - a.left)) + 'px'; menu.style.top = (r.bottom - a.top + 10) + 'px';
+  }
+  function disegna() {
+    testo.textContent = TESTO[lg()];
+    menu.querySelector('[data-az="copia"]').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2" fill="none" stroke="#fff" stroke-width="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" fill="none" stroke="#fff" stroke-width="2"/></svg>' + L(T.copia);
+    menu.querySelector('[data-az="giallo"]').setAttribute('aria-label', 'Highlight yellow');
+    menu.querySelector('[data-az="sal"]').setAttribute('aria-label', 'Highlight salmon');
+    var op = document.getElementById('opzioni'); op.innerHTML = '';
+    COLORI.forEach(function (c) {
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(testo.dataset.sel === c.k));
+      b.innerHTML = '<i style="background:' + c.c + '"></i>' + L(c.n);
+      b.onmousedown = function (e) { e.preventDefault(); };
+      b.onclick = function () { testo.dataset.sel = c.k; disegna(); };
+      op.appendChild(b);
+    });
+    seleziona(L(PAROLA));
+  }
+  document.addEventListener('selectionchange', aggiorna);
+  menu.addEventListener('mousedown', function (e) { e.preventDefault(); });
+  menu.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var s = getSelection(); if (!s.rangeCount) return;
+    if (b.dataset.az === 'copia') { try { navigator.clipboard.writeText(s.toString()); } catch (x) { /* niente */ } b.lastChild.textContent = L(T.copiato); setTimeout(function () { b.lastChild.textContent = L(T.copia); }, 1200); return; }
+    var r = s.getRangeAt(0), m = document.createElement('mark'); if (b.dataset.az === 'sal') m.className = 'sal';
+    try { r.surroundContents(m); } catch (x) { m.appendChild(r.extractContents()); r.insertNode(m); }
+    s.removeAllRanges(); aggiorna();
+  });
+  disegna();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(aggiorna);
+  window.addEventListener('resize', aggiorna);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

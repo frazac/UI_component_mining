@@ -1,0 +1,156 @@
+<!doctype html>
+<!-- Esempio ricostruito: Slash command ( / ) or colon ( : ). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slash command — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.15fr 1fr; }
+  .doc { min-height: 370px; position: relative; }
+  .blocco { margin: 0 0 8px; font-size: 16px; }
+  .blocco.titolo { font-size: 24px; font-weight: 500; line-height: 1.2; }
+  .blocco.elenco { padding-left: 18px; position: relative; } .blocco.elenco::before { content: "•"; position: absolute; left: 4px; }
+  .blocco.citazione { border-left: 3px solid var(--c-salmone); padding-left: 12px; color: rgba(0,0,0,.65); }
+  .blocco.compito { display: flex; gap: 8px; align-items: center; } .blocco.compito::before { content: ""; width: 16px; height: 16px; border: 2px solid rgba(0,0,0,.5); border-radius: 4px; flex: none; }
+  .blocco.linea { height: 1px; background: var(--c-linea); margin: 14px 0; }
+  .riga { position: relative; }
+  .riga input { width: 100%; border: 0; outline: 0; padding: 4px 0; font-size: 16px; background: none; }
+  .riga input.titolo { font-size: 24px; font-weight: 500; }
+  .riga input::placeholder { color: rgba(0,0,0,.3); }
+  .riga input:focus { box-shadow: inset 2px 0 0 var(--c-blu); padding-left: 8px; }
+  .menu { position: absolute; left: 0; top: 100%; z-index: 5; width: 250px; max-height: 214px; overflow-y: auto; margin: 4px 0 0; padding: 6px; list-style: none; background: #fff; border-radius: 10px; box-shadow: 0 0 0 1px var(--c-linea), 0 12px 30px rgba(0,0,0,.16); }
+  .menu[hidden] { display: none; }
+  .menu .gr { font-size: 13px; color: var(--c-tenue); padding: 4px 8px; letter-spacing: .06em; text-transform: uppercase; }
+  .menu li[role="option"] { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 15px; }
+  .menu li[aria-selected="true"] { background: #e6ecff; }
+  .menu .ic { width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--c-linea); display: grid; place-items: center; font-size: 15px; flex: none; background: #fff; }
+  .menu small { color: var(--c-tenue); font-size: 13px; display: block; }
+  .agente { display: flex; flex-direction: column; }
+  .log { flex: 1; min-height: 0; overflow-y: auto; font: 15px/1.5 ui-monospace, Menlo, monospace; display: flex; flex-direction: column; gap: 6px; justify-content: flex-end; }
+  .log .tu { color: var(--c-blu); } .log .ai { color: rgba(0,0,0,.7); }
+  .prompt { position: relative; display: flex; align-items: center; gap: 8px; border: 1px solid var(--c-linea); border-radius: 10px; padding: 0 10px; margin-top: 10px; }
+  .prompt:focus-within { border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .prompt input { flex: 1; min-width: 0; border: 0; outline: 0; height: 42px; font: 15px ui-monospace, Menlo, monospace; background: none; }
+  .prompt .menu { top: auto; bottom: 100%; margin: 0 0 6px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Editor: / per i blocchi, : per i simboli</span><span data-l="en">Editor: / for blocks, : for symbols</span><span data-l="fr">Éditeur : / pour les blocs, : pour les symboles</span><span data-l="zh">编辑器：/ 插入块，: 插入符号</span></span>
+    <div class="doc" id="doc"></div>
+  </div>
+  <div class="riquadro agente">
+    <span class="didascalia"><span data-l="it">Agente IA: comandi con /</span><span data-l="en">AI agent: commands with /</span><span data-l="fr">Agent IA : commandes avec /</span><span data-l="zh">AI 智能体：用 / 输入命令</span></span>
+    <div class="log" id="log" aria-live="polite"></div>
+    <div class="prompt riga" id="prompt"><span aria-hidden="true" style="color:var(--c-tenue)">›</span></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Un carattere fa passare dall’interfaccia grafica a una riga di comando: si scrive per filtrare, frecce e Invio per scegliere, Esc per annullare.</span><span data-l="en">One character switches from the graphical interface to a command line: type to filter, arrows and Enter to choose, Esc to cancel.</span><span data-l="fr">Un caractère fait passer de l’interface graphique à une ligne de commande : tapez pour filtrer, flèches et Entrée pour choisir, Échap pour annuler.</span><span data-l="zh">一个字符就能从图形界面切换到命令行：输入以筛选，方向键和回车选择，Esc 取消。</span></p>
+<script>
+  function t(o) { return typeof o === 'string' ? o : (o[window.Lingua ? Lingua.get() : 'en'] || o.en); }
+  var BLOCCHI = [
+    { k: 'titolo', ic: 'H', n: { it: 'Titolo', en: 'Heading', fr: 'Titre', zh: '标题' }, a: ['titolo', 'heading', 'titre', 'h', '标题'] },
+    { k: 'elenco', ic: '•', n: { it: 'Elenco puntato', en: 'Bulleted list', fr: 'Liste à puces', zh: '项目符号列表' }, a: ['elenco', 'list', 'liste', '列表'] },
+    { k: 'compito', ic: '☐', n: { it: 'Da fare', en: 'To-do', fr: 'À faire', zh: '待办' }, a: ['todo', 'fare', 'faire', '待办'] },
+    { k: 'citazione', ic: '“', n: { it: 'Citazione', en: 'Quote', fr: 'Citation', zh: '引用' }, a: ['citazione', 'quote', 'citation', '引用'] },
+    { k: 'linea', ic: '—', n: { it: 'Separatore', en: 'Divider', fr: 'Séparateur', zh: '分隔线' }, a: ['separatore', 'divider', 'linea', 'séparateur', '分隔'] }
+  ];
+  var SIMBOLI = [
+    { k: '→', a: ['freccia', 'arrow', 'fleche', 'flèche', 'right'], n: { it: ':freccia', en: ':arrow', fr: ':flèche', zh: ':arrow' } },
+    { k: '✓', a: ['check', 'ok', 'fatto'], n: ':check' },
+    { k: '©', a: ['copy', 'copyright'], n: ':copyright' },
+    { k: '…', a: ['puntini', 'dots', 'ellipsis', 'points'], n: { it: ':puntini', en: ':ellipsis', fr: ':points', zh: ':ellipsis' } },
+    { k: '★', a: ['stella', 'star', 'etoile', 'étoile'], n: { it: ':stella', en: ':star', fr: ':étoile', zh: ':star' } },
+    { k: '°', a: ['gradi', 'degree', 'degres', 'degrés'], n: { it: ':gradi', en: ':degree', fr: ':degrés', zh: ':degree' } }
+  ];
+  var COMANDI = [
+    { k: '/riassumi', a: ['riassumi', 'summarize', 'resume', 'résume', '总结'], n: { it: '/riassumi', en: '/summarize', fr: '/résume', zh: '/总结' }, d: { it: 'riassume il documento', en: 'summarise the document', fr: 'résume le document', zh: '总结文档' }, r: { it: 'Riassunto: tre blocchi, un titolo e un elenco. (simulato)', en: 'Summary: three blocks, a heading and a list. (simulated)', fr: 'Résumé : trois blocs, un titre et une liste. (simulé)', zh: '总结：三个块，一个标题和一个列表。（模拟）' } },
+    { k: '/traduci', a: ['traduci', 'translate', 'traduis', '翻译'], n: { it: '/traduci', en: '/translate', fr: '/traduis', zh: '/翻译' }, d: { it: 'traduce in un’altra lingua', en: 'translate into another language', fr: 'traduit dans une autre langue', zh: '翻译成其他语言' }, r: { it: 'In quale lingua? (simulato)', en: 'Into which language? (simulated)', fr: 'Dans quelle langue ? (simulé)', zh: '翻译成哪种语言？（模拟）' } },
+    { k: '/pulisci', a: ['pulisci', 'clear', 'efface', '清除'], n: { it: '/pulisci', en: '/clear', fr: '/efface', zh: '/清除' }, d: { it: 'svuota la conversazione', en: 'clear the conversation', fr: 'vide la conversation', zh: '清空对话' }, r: 'CLEAR' },
+    { k: '/aiuto', a: ['aiuto', 'help', 'aide', '帮助'], n: { it: '/aiuto', en: '/help', fr: '/aide', zh: '/帮助' }, d: { it: 'elenca i comandi', en: 'list the commands', fr: 'liste les commandes', zh: '列出所有命令' }, r: { it: 'Comandi: /riassumi /traduci /pulisci /aiuto', en: 'Commands: /summarize /translate /clear /help', fr: 'Commandes : /résume /traduis /efface /aide', zh: '命令：/总结 /翻译 /清除 /帮助' } }
+  ];
+  var TX = { segna: { it: 'Scrivi, o premi / per i blocchi…', en: 'Type, or press / for blocks…', fr: 'Écrivez, ou tapez / pour les blocs…', zh: '输入文字，或按 / 插入块…' }, blocchi: { it: 'Blocchi', en: 'Blocks', fr: 'Blocs', zh: '块' }, simboli: { it: 'Simboli', en: 'Symbols', fr: 'Symboles', zh: '符号' }, comandi: { it: 'Comandi', en: 'Commands', fr: 'Commandes', zh: '命令' },
+    agente: { it: 'Chiedi, o scrivi /', en: 'Ask, or type /', fr: 'Demandez, ou tapez /', zh: '提问，或输入 /' }, ciao: { it: 'Ciao! Scrivi / per vedere i comandi.', en: 'Hi! Type / to see the commands.', fr: 'Bonjour ! Tapez / pour voir les commandes.', zh: '你好！输入 / 查看命令。' }, eco: { it: 'Ho ricevuto: «{t}» (simulato)', en: 'Got it: “{t}” (simulated)', fr: 'Bien reçu : « {t} » (simulé)', zh: '收到：“{t}”（模拟）' },
+    vuoto: { it: 'Nessun risultato', en: 'No results', fr: 'Aucun résultat', zh: '无结果' } };
+  var DOC = [{ k: 'titolo', t: { it: 'Appunti di laboratorio', en: 'Workshop notes', fr: 'Notes d’atelier', zh: '工作坊笔记' } }, { k: 'elenco', t: { it: 'Portare i prototipi', en: 'Bring the prototypes', fr: 'Apporter les prototypes', zh: '带上原型' } }, { k: 'citazione', t: { it: 'Meno, ma meglio.', en: 'Less, but better.', fr: 'Moins, mais mieux.', zh: '少，但更好。' } }];
+  var LOG = null;
+
+  // un campo con menu a comparsa, attivato da / o :
+  function campoConMenu(contenitore, opz) {
+    var input = document.createElement('input'), ul = document.createElement('ul'), voci = [], sel = 0, modo = null, da = 0;
+    input.setAttribute('role', 'combobox'); input.setAttribute('aria-autocomplete', 'list'); input.setAttribute('aria-expanded', 'false'); input.setAttribute('autocomplete', 'off');
+    ul.className = 'menu'; ul.setAttribute('role', 'listbox'); ul.id = opz.id + '-menu'; ul.hidden = true; input.setAttribute('aria-controls', ul.id);
+    contenitore.appendChild(input); contenitore.appendChild(ul);
+    function chiudi() { modo = null; ul.hidden = true; input.setAttribute('aria-expanded', 'false'); input.removeAttribute('aria-activedescendant'); }
+    function aggiorna() {
+      var v = input.value, pos = input.selectionStart, prima = v.slice(0, pos), m = null;
+      opz.trigger.forEach(function (tr) { var i = prima.lastIndexOf(tr.c); if (i >= 0 && (i === 0 || /\s/.test(prima[i - 1])) && !/\s/.test(prima.slice(i + 1)) && (!m || i > m.i)) m = { i: i, tr: tr }; });
+      if (!m) return chiudi();
+      modo = m.tr; da = m.i; var q = prima.slice(m.i + 1).toLowerCase();
+      voci = modo.lista.filter(function (x) { return !q || x.a.some(function (a) { return a.indexOf(q) === 0; }) || t(x.n).toLowerCase().indexOf(q) >= 0; });
+      sel = Math.min(sel, Math.max(0, voci.length - 1));
+      ul.innerHTML = '<li class="gr" role="presentation">' + t(modo.titolo) + '</li>' + (voci.length ? '' : '<li class="gr" role="presentation" style="text-transform:none">' + t(TX.vuoto) + '</li>');
+      voci.forEach(function (x, i) {
+        var li = document.createElement('li'); li.setAttribute('role', 'option'); li.id = opz.id + '-o' + i; li.setAttribute('aria-selected', String(i === sel));
+        li.innerHTML = '<span class="ic">' + (x.ic || x.k.charAt(0) === '/' ? (x.ic || '/') : x.k) + '</span><span>' + t(x.n) + (x.d ? '<small>' + t(x.d) + '</small>' : '') + '</span>';
+        li.onmousedown = function (e) { e.preventDefault(); scegli(i); };
+        ul.appendChild(li);
+      });
+      ul.hidden = false; input.setAttribute('aria-expanded', 'true'); if (voci.length) input.setAttribute('aria-activedescendant', opz.id + '-o' + sel);
+    }
+    function scegli(i) { var x = voci[i]; if (!x) return; var v = input.value, fine = input.selectionStart; var m = modo; chiudi(); m.fa(x, input, v.slice(0, da), v.slice(fine)); }
+    input.addEventListener('input', function () { sel = 0; aggiorna(); });
+    input.addEventListener('keydown', function (e) {
+      if (modo && voci.length && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) { e.preventDefault(); sel = (sel + (e.key === 'ArrowDown' ? 1 : voci.length - 1)) % voci.length; aggiorna(); var o = document.getElementById(opz.id + '-o' + sel); if (o) o.scrollIntoView({ block: 'nearest' }); }
+      else if (modo && (e.key === 'Enter' || e.key === 'Tab') && voci.length) { e.preventDefault(); scegli(sel); }
+      else if (modo && e.key === 'Escape') { e.preventDefault(); chiudi(); }
+      else if (e.key === 'Enter') { e.preventDefault(); opz.invio(input); }
+    });
+    input.addEventListener('blur', function () { setTimeout(chiudi, 100); });
+    return input;
+  }
+
+  // editor
+  var tipo = '', ed;
+  function disegnaDoc() {
+    var doc = document.getElementById('doc'), v = ed ? ed.value : '', f = ed && document.activeElement === ed;
+    doc.innerHTML = '';
+    DOC.forEach(function (b) { var d = document.createElement('div'); d.className = 'blocco ' + b.k; if (b.k !== 'linea') d.textContent = t(b.t); doc.appendChild(d); });
+    var riga = document.createElement('div'); riga.className = 'riga'; doc.appendChild(riga);
+    ed = campoConMenu(riga, { id: 'ed', trigger: [
+      { c: '/', titolo: TX.blocchi, lista: BLOCCHI, fa: function (x, input, prima, dopo) { if (x.k === 'linea') { DOC.push({ k: 'linea' }); input.value = prima + dopo; tipo = ''; disegnaDoc(); ed.focus(); return; } tipo = x.k; input.value = prima + dopo; input.className = tipo; input.focus(); } },
+      { c: ':', titolo: TX.simboli, lista: SIMBOLI, fa: function (x, input, prima, dopo) { input.value = prima + x.k + dopo; var p = (prima + x.k).length; input.focus(); input.setSelectionRange(p, p); } }],
+      invio: function (input) { if (!input.value.trim()) return; DOC.push({ k: tipo || 'paragrafo', t: input.value }); if (DOC.length > 8) DOC.splice(1, 1); tipo = ''; input.value = ''; disegnaDoc(); ed.focus(); } });
+    ed.placeholder = t(TX.segna); ed.value = v; ed.className = tipo; ed.setAttribute('aria-label', t(TX.segna));
+    if (f) ed.focus();
+  }
+  // agente
+  var ag;
+  function disegnaLog() {
+    document.getElementById('log').innerHTML = [{ ai: TX.ciao }].concat(LOG).map(function (r) { return r.tu ? '<div class="tu">› ' + t(r.tu).replace(/</g, '&lt;') + '</div>' : '<div class="ai">' + t(r.ai) + '</div>'; }).join('');
+  }
+  function preparaAgente() {
+    var p = document.getElementById('prompt'), v = ag ? ag.value : '';
+    if (!ag) ag = campoConMenu(p, { id: 'ag', trigger: [{ c: '/', titolo: TX.comandi, lista: COMANDI, fa: function (x, input) { input.value = ''; esegui(t(x.n), x); input.focus(); } }],
+      invio: function (input) { var s = input.value.trim(); if (!s) return; input.value = ''; var c = COMANDI.filter(function (x) { return t(x.n) === s || x.k === s; })[0]; esegui(s, c); } });
+    ag.placeholder = t(TX.agente); ag.setAttribute('aria-label', t(TX.agente));
+    disegnaLog();
+  }
+  function esegui(s, c) {
+    if (c && c.r === 'CLEAR') { LOG = []; disegnaLog(); return; }
+    LOG.push({ tu: s }); LOG.push({ ai: c ? c.r : { it: TX.eco.it.replace('{t}', s), en: TX.eco.en.replace('{t}', s), fr: TX.eco.fr.replace('{t}', s), zh: TX.eco.zh.replace('{t}', s) } });
+    if (LOG.length > 6) LOG.splice(0, 2); disegnaLog();
+  }
+  LOG = [{ tu: COMANDI[3].n }, { ai: COMANDI[3].r }];
+  disegnaDoc(); preparaAgente();
+  // stato iniziale: menu dei blocchi aperto, per mostrarlo
+  ed.value = '/'; ed.setSelectionRange(1, 1); ed.dispatchEvent(new Event('input'));
+  document.addEventListener('lingua', function () { disegnaDoc(); preparaAgente(); });
+</script>
+</body>
+</html>

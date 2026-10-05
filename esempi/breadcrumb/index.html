@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- Esempio ricostruito: Breadcrumb. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breadcrumb — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .briciole ol { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; font-size: 20px; }
+  .briciole li { display: flex; align-items: center; gap: 6px; }
+  .briciole li + li::before { content: "/"; color: var(--c-tenue); }
+  .briciole a { color: var(--c-blu); text-decoration: none; border-bottom: 1px solid transparent; }
+  .briciole a:hover { border-bottom-color: currentColor; }
+  .briciole [aria-current] { color: var(--c-testo); font-weight: 500; }
+  .albero { margin: 0; padding-left: 0; list-style: none; font-size: 16px; }
+  .albero ul { list-style: none; padding-left: 22px; border-left: 1px solid var(--c-linea); margin: 6px 0 6px 6px; }
+  .albero li { margin: 6px 0; }
+  .albero button { border: 0; background: none; padding: 2px 8px; border-radius: 6px; cursor: pointer; }
+  .albero button[aria-pressed="true"] { background: var(--c-salmone); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Briciole di pane</span><span data-l="en">Breadcrumb</span><span data-l="fr">Fil d’Ariane</span><span data-l="zh">面包屑导航</span></span>
+    <nav class="briciole" aria-label="Breadcrumb"><ol id="briciole"></ol></nav>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">La gerarchia del sito: scegli una pagina</span><span data-l="en">The site hierarchy: pick a page</span><span data-l="fr">La hiérarchie du site : choisissez une page</span><span data-l="zh">网站层级：选择一个页面</span></span>
+    <ul class="albero" id="albero"></ul>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il percorso mostra la posizione nella gerarchia, non la cronologia della navigazione.</span><span data-l="en">The trail shows the position in the hierarchy, not the navigation history.</span><span data-l="fr">Le chemin montre la position dans la hiérarchie, pas l’historique de navigation.</span><span data-l="zh">路径显示的是在层级中的位置，而不是浏览历史。</span></p>
+<script>
+  // gerarchia di esempio, nomi nelle quattro lingue
+  var SITO = { n: { it: 'Home', en: 'Home', fr: 'Accueil', zh: '首页' }, f: [
+    { n: { it: 'Corsi', en: 'Courses', fr: 'Cours', zh: '课程' }, f: [
+      { n: { it: 'Design', en: 'Design', fr: 'Design', zh: '设计' }, f: [
+        { n: { it: 'Interface Design', en: 'Interface Design', fr: 'Interface Design', zh: '界面设计' } },
+        { n: { it: 'Tipografia', en: 'Typography', fr: 'Typographie', zh: '字体排印' } }] },
+      { n: { it: 'Arti visive', en: 'Visual arts', fr: 'Arts visuels', zh: '视觉艺术' } }] },
+    { n: { it: 'Contatti', en: 'Contacts', fr: 'Contacts', zh: '联系方式' } }] };
+  var percorso = [SITO, SITO.f[0], SITO.f[0].f[0], SITO.f[0].f[0].f[0]];
+  function nome(nodo) { return nodo.n[window.Lingua ? Lingua.get() : 'en']; }
+  function disegna() {
+    var ol = document.getElementById('briciole'); ol.innerHTML = '';
+    percorso.forEach(function (nodo, i) {
+      var li = document.createElement('li');
+      if (i === percorso.length - 1) { var s = document.createElement('span'); s.setAttribute('aria-current', 'page'); s.textContent = nome(nodo); li.appendChild(s); }
+      else { var a = document.createElement('a'); a.href = '#'; a.textContent = nome(nodo); a.onclick = function (ev) { ev.preventDefault(); percorso = percorso.slice(0, i + 1); disegna(); }; li.appendChild(a); }
+      ol.appendChild(li);
+    });
+    var albero = document.getElementById('albero'); albero.innerHTML = '';
+    (function rami(nodo, dove, strada) {
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.textContent = nome(nodo); b.setAttribute('aria-pressed', String(nodo === percorso[percorso.length - 1]));
+      b.onclick = function () { percorso = strada.concat(nodo); disegna(); };
+      li.appendChild(b); dove.appendChild(li);
+      if (nodo.f) { var ul = document.createElement('ul'); li.appendChild(ul); nodo.f.forEach(function (x) { rami(x, ul, strada.concat(nodo)); }); }
+    })(SITO, albero, []);
+  }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

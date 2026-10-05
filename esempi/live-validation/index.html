@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Real-time input validation. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live validation — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .modulo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .campo label { display: block; font-size: 15px; margin-bottom: 5px; font-weight: 500; }
+  .box { position: relative; }
+  .box input { width: 100%; height: 44px; border: 1.5px solid rgba(0,0,0,.2); border-radius: 10px; padding: 0 38px 0 12px; font-size: 16px; transition: border-color .15s, box-shadow .15s; font-variant-numeric: tabular-nums; }
+  .box input:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.2); }
+  .box .segno { position: absolute; right: 12px; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 13px; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
+  .ok .box input { border-color: #2fa55a; } .ok .segno { background: #2fa55a; opacity: 1; transform: none; }
+  .err .box input { border-color: #c0392b; } .err .box input:focus { box-shadow: 0 0 0 3px rgba(192,57,43,.18); } .err .segno { background: #c0392b; opacity: 1; transform: none; }
+  .msg { font-size: 15px; min-height: 21px; margin-top: 4px; color: var(--c-tenue); }
+  .err .msg { color: #c0392b; } .ok .msg { color: #2fa55a; }
+  .forza { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-top: 6px; }
+  .forza i { height: 5px; border-radius: 3px; background: rgba(0,0,0,.1); transition: background .2s; }
+  .regole { list-style: none; margin: 6px 0 0; padding: 0; font-size: 15px; color: var(--c-tenue); display: grid; gap: 2px; }
+  .regole li::before { content: "○ "; } .regole li.si { color: #2fa55a; } .regole li.si::before { content: "✓ "; }
+  .tutta { grid-column: 1 / -1; }
+  .invia { height: 44px; border: 0; border-radius: 10px; background: var(--c-testo); color: #fff; padding: 0 22px; cursor: pointer; font-size: 16px; }
+  .invia:disabled { background: rgba(0,0,0,.15); cursor: not-allowed; }
+  .fondo { display: flex; align-items: center; gap: 14px; font-size: 15px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Modulo di iscrizione: controllo mentre scrivi</span><span data-l="en">Sign-up form: checked as you type</span><span data-l="fr">Formulaire d’inscription : vérifié pendant la saisie</span><span data-l="zh">注册表单：边输入边验证</span></span>
+    <form class="modulo" id="modulo" novalidate onsubmit="return false">
+      <div class="campo" data-c="email"><label for="email"><span data-l="it">Email</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">邮箱</span></label><div class="box"><input id="email" type="email" value="giulia@studio" autocomplete="off" aria-describedby="m-email"><span class="segno" aria-hidden="true"></span></div><div class="msg" id="m-email" aria-live="polite"></div></div>
+      <div class="campo" data-c="tel"><label for="tel"><span data-l="it">Telefono (si formatta da solo)</span><span data-l="en">Phone (formats itself)</span><span data-l="fr">Téléphone (mise en forme auto)</span><span data-l="zh">电话（自动格式化）</span></label><div class="box"><input id="tel" type="tel" inputmode="numeric" value="+39 333 12" autocomplete="off" aria-describedby="m-tel"><span class="segno" aria-hidden="true"></span></div><div class="msg" id="m-tel" aria-live="polite"></div></div>
+      <div class="campo" data-c="data"><label for="data"><span data-l="it">Data di nascita</span><span data-l="en">Date of birth</span><span data-l="fr">Date de naissance</span><span data-l="zh">出生日期</span></label><div class="box"><input id="data" inputmode="numeric" value="12/05/2004" autocomplete="off" aria-describedby="m-data"><span class="segno" aria-hidden="true"></span></div><div class="msg" id="m-data" aria-live="polite"></div></div>
+      <div class="campo" data-c="pw"><label for="pw"><span data-l="it">Password</span><span data-l="en">Password</span><span data-l="fr">Mot de passe</span><span data-l="zh">密码</span></label><div class="box"><input id="pw" type="password" value="design" autocomplete="new-password" aria-describedby="m-pw"><span class="segno" aria-hidden="true"></span></div><div class="forza" aria-hidden="true"><i></i><i></i><i></i><i></i></div><ul class="regole" id="m-pw"></ul></div>
+      <div class="tutta fondo"><button class="invia" id="invia" type="submit"><span data-l="it">Crea l’account</span><span data-l="en">Create account</span><span data-l="fr">Créer le compte</span><span data-l="zh">创建账户</span></button><span id="conto" aria-live="polite"></span></div>
+    </form>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il messaggio arriva vicino al campo, dice come rimediare e non si affida solo al colore. Esempio dimostrativo: nulla viene inviato.</span><span data-l="en">The message sits next to the field, says how to fix it and does not rely on colour alone. Demo only: nothing is sent.</span><span data-l="fr">Le message est à côté du champ, dit comment corriger et ne repose pas que sur la couleur. Démonstration : rien n’est envoyé.</span><span data-l="zh">提示紧贴输入框，说明如何修正，且不只依赖颜色。仅为演示，不会提交任何内容。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = {
+    emailNo: { it: 'Manca il dominio: per esempio nome@scuola.it', en: 'The domain is missing: e.g. name@school.edu', fr: 'Il manque le domaine : par ex. nom@ecole.fr', zh: '缺少域名，例如 name@school.edu' },
+    emailAt: { it: 'Manca la @', en: 'The @ is missing', fr: 'Il manque le @', zh: '缺少 @' }, emailOk: { it: 'Email valida', en: 'Valid email', fr: 'E-mail valide', zh: '邮箱有效' },
+    telCorto: { it: 'Ancora {n} cifre', en: '{n} more digits', fr: 'Encore {n} chiffres', zh: '还差 {n} 位数字' }, telOk: { it: 'Numero completo', en: 'Complete number', fr: 'Numéro complet', zh: '号码完整' },
+    dataForm: { it: 'Formato GG/MM/AAAA: le barre si aggiungono da sole', en: 'Format DD/MM/YYYY: slashes are added for you', fr: 'Format JJ/MM/AAAA : les barres s’ajoutent seules', zh: '格式为 日/月/年，斜杠会自动添加' },
+    dataNo: { it: 'Questa data non esiste', en: 'This date does not exist', fr: 'Cette date n’existe pas', zh: '该日期不存在' }, dataOk: { it: 'Data valida', en: 'Valid date', fr: 'Date valide', zh: '日期有效' },
+    r1: { it: 'almeno 10 caratteri', en: 'at least 10 characters', fr: 'au moins 10 caractères', zh: '至少 10 个字符' }, r2: { it: 'una maiuscola', en: 'one capital letter', fr: 'une majuscule', zh: '一个大写字母' }, r3: { it: 'una cifra', en: 'one digit', fr: 'un chiffre', zh: '一个数字' },
+    conto: { it: '{n} di 4 campi a posto', en: '{n} of 4 fields valid', fr: '{n} champs valides sur 4', zh: '4 个字段中 {n} 个有效' }, fatto: { it: 'Pronto (simulato, nulla inviato) ✓', en: 'Ready (simulated, nothing sent) ✓', fr: 'Prêt (simulé, rien envoyé) ✓', zh: '已就绪（模拟，未提交）✓' } };
+  var esito = {}, inviato = false;
+  function imposta(c, stato, msg) { var el = document.querySelector('[data-c="' + c + '"]'); el.className = 'campo ' + (stato || ''); el.querySelector('.segno').textContent = stato === 'ok' ? '✓' : stato === 'err' ? '!' : ''; var m = document.getElementById('m-' + c); if (m.tagName !== 'UL') m.textContent = msg || ''; el.querySelector('input').setAttribute('aria-invalid', String(stato === 'err')); esito[c] = stato === 'ok'; }
+  function email() { var v = document.getElementById('email').value.trim(); if (!v) return imposta('email'); if (v.indexOf('@') < 0) return imposta('email', 'err', t(TX.emailAt)); if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) return imposta('email', 'err', t(TX.emailNo)); imposta('email', 'ok', t(TX.emailOk)); }
+  function tel(formatta) {
+    var el = document.getElementById('tel'), cifre = el.value.replace(/\D/g, '');
+    if (formatta) { if (cifre.indexOf('39') !== 0) cifre = '39' + cifre; cifre = cifre.slice(0, 12); var r = cifre.slice(2), f = '+39'; if (r) f += ' ' + r.slice(0, 3); if (r.length > 3) f += ' ' + r.slice(3, 6); if (r.length > 6) f += ' ' + r.slice(6); el.value = f; }
+    var n = el.value.replace(/\D/g, '').length - 2; if (n <= 0) return imposta('tel');
+    if (n < 10) return imposta('tel', '', t(TX.telCorto).replace('{n}', 10 - n)); imposta('tel', 'ok', t(TX.telOk));
+  }
+  function data(formatta) {
+    var el = document.getElementById('data'), c = el.value.replace(/\D/g, '').slice(0, 8);
+    if (formatta) el.value = c.length > 4 ? c.slice(0, 2) + '/' + c.slice(2, 4) + '/' + c.slice(4) : c.length > 2 ? c.slice(0, 2) + '/' + c.slice(2) : c;
+    if (!c) return imposta('data'); if (c.length < 8) return imposta('data', '', t(TX.dataForm));
+    var g = +c.slice(0, 2), m = +c.slice(2, 4), a = +c.slice(4), d = new Date(a, m - 1, g);
+    if (d.getDate() !== g || d.getMonth() !== m - 1 || a < 1900 || d > new Date()) return imposta('data', 'err', t(TX.dataNo)); imposta('data', 'ok', t(TX.dataOk));
+  }
+  function pw() {
+    var v = document.getElementById('pw').value, r = [v.length >= 10, /[A-Z]/.test(v), /\d/.test(v)], n = r.filter(Boolean).length + (v.length >= 14 ? 1 : 0);
+    var col = ['#c0392b', '#e2a400', '#8bbf3f', '#2fa55a'];
+    document.querySelectorAll('.forza i').forEach(function (i, k) { i.style.background = v && k < Math.max(1, n) ? col[Math.max(0, n - 1)] : ''; });
+    document.getElementById('m-pw').innerHTML = [TX.r1, TX.r2, TX.r3].map(function (x, i) { return '<li class="' + (r[i] ? 'si' : '') + '">' + t(x) + '</li>'; }).join('');
+    imposta('pw', !v ? '' : r.every(Boolean) ? 'ok' : '', '');
+  }
+  function riepilogo() {
+    var n = ['email', 'tel', 'data', 'pw'].filter(function (c) { return esito[c]; }).length;
+    document.getElementById('invia').disabled = n < 4;
+    document.getElementById('conto').textContent = inviato && n === 4 ? t(TX.fatto) : t(TX.conto).replace('{n}', n);
+  }
+  function tutto(f) { email(); tel(f); data(f); pw(); riepilogo(); }
+  document.getElementById('email').addEventListener('input', function () { inviato = false; email(); riepilogo(); });
+  document.getElementById('tel').addEventListener('input', function (e) { inviato = false; tel(e.inputType !== 'deleteContentBackward'); riepilogo(); });
+  document.getElementById('data').addEventListener('input', function (e) { inviato = false; data(e.inputType !== 'deleteContentBackward'); riepilogo(); });
+  document.getElementById('pw').addEventListener('input', function () { inviato = false; pw(); riepilogo(); });
+  document.getElementById('invia').onclick = function () { inviato = true; riepilogo(); };
+  tutto(false);
+  document.addEventListener('lingua', function () { tutto(false); });
+</script>
+</body>
+</html>

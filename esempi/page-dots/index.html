@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- Esempio ricostruito: Page dot indicators. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page dots — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .carosello { position: relative; overflow: hidden; border-radius: 12px; height: 250px; touch-action: pan-y; }
+  .binario { display: flex; height: 100%; transition: transform .45s cubic-bezier(.3,.7,.3,1); }
+  .pagina { flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 26px; color: #111; }
+  .pagina b { font-size: 28px; font-weight: 500; line-height: 1.1; }
+  .pagina span { font-size: 16px; opacity: .75; margin-top: 4px; }
+  .punti { display: flex; justify-content: center; gap: 10px; margin-top: 16px; }
+  .punti button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 9999px; background: rgba(0,0,0,.2); cursor: pointer; transition: width .3s, background .3s; position: relative; }
+  .punti button::before { content: ""; position: absolute; inset: -8px; } /* area cliccabile più ampia */
+  .punti button:hover { background: rgba(0,0,0,.4); }
+  .punti button[aria-current="true"] { background: #111; }
+  .animati button[aria-current="true"] { width: 30px; background: var(--c-blu); }
+  .varianti { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .variante { display: flex; flex-direction: column; align-items: center; gap: 12px; font-size: 15px; color: var(--c-tenue); text-align: center; }
+  .scheletro { width: 100%; height: 70px; border-radius: 8px; background: var(--c-palco); display: grid; place-items: center; font-size: 26px; color: rgba(0,0,0,.35); font-weight: 500; }
+  .molti { display: flex; align-items: center; gap: 6px; height: 12px; }
+  .molti i { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,.2); transition: transform .3s, background .3s; }
+  .molti i.on { background: #111; }
+  .molti i.p { transform: scale(.65); } .molti i.pp { transform: scale(.4); }
+  .barra { width: 90px; height: 4px; background: rgba(0,0,0,.12); border-radius: 2px; overflow: hidden; }
+  .barra i { display: block; height: 100%; background: #111; border-radius: 2px; transition: transform .3s, width .3s; }
+  .controlli { display: flex; gap: 8px; }
+  .controlli button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; width: 34px; height: 34px; cursor: pointer; }
+  .controlli button:hover { border-color: #111; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Clicca i punti, trascina o usa le frecce</span><span data-l="en">Click the dots, drag or use the arrows</span><span data-l="fr">Cliquez les points, faites glisser ou utilisez les flèches</span><span data-l="zh">点击圆点、拖动或使用方向键</span></span>
+    <div class="carosello" id="car" tabindex="0" aria-roledescription="carousel"><div class="binario" id="bin"></div></div>
+    <div class="punti animati" id="punti" role="group"></div>
+  </div>
+  <div class="riquadro">
+    <div class="varianti">
+      <div class="variante"><div class="punti" id="statici" style="margin:0"></div><span data-l="it">Senza animazione</span><span data-l="en">Without animation</span><span data-l="fr">Sans animation</span><span data-l="zh">无动画</span></div>
+      <div class="variante"><div class="molti" id="molti"></div><span data-l="it">Molte pagine: i punti ai bordi si rimpiccioliscono</span><span data-l="en">Many pages: edge dots shrink</span><span data-l="fr">Beaucoup de pages&#8239;: les points des bords rapetissent</span><span data-l="zh">页数很多：边缘的圆点会缩小</span></div>
+      <div class="variante"><div class="barra"><i id="barra"></i></div><span data-l="it">Variante a barra</span><span data-l="en">Bar variant</span><span data-l="fr">Variante en barre</span><span data-l="zh">条形变体</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">I punti dicono quante pagine ci sono e dove ci si trova; non dicono che cosa contengono, quindi vanno bene solo per poche pagine.</span><span data-l="en">The dots tell how many pages there are and where you are; they don’t say what the pages contain, so they suit only a few pages.</span><span data-l="fr">Les points indiquent combien de pages il y a et où l’on se trouve&#8239;; ils ne disent pas ce qu’elles contiennent, donc ils conviennent à peu de pages.</span><span data-l="zh">圆点表示共有几页、当前在哪一页；但不说明页面内容，因此只适合页数较少的情况。</span></p>
+<script>
+  var PAG = [
+    { c: 'linear-gradient(135deg,#fa9191,#f7c5b6)', t: { it: 'Benvenuto', en: 'Welcome', fr: 'Bienvenue', zh: '欢迎' }, s: { it: 'Il corso in quattro schermate', en: 'The course in four screens', fr: 'Le cours en quatre écrans', zh: '用四屏介绍课程' } },
+    { c: 'linear-gradient(135deg,#698fff,#b9caff)', t: { it: 'Teoria', en: 'Theory', fr: 'Théorie', zh: '理论' }, s: { it: 'Un’ora per ogni lezione', en: 'One hour each lesson', fr: 'Une heure par séance', zh: '每节课一小时' } },
+    { c: 'linear-gradient(135deg,#4caf7a,#bfe6cc)', t: { it: 'Laboratorio', en: 'Lab', fr: 'Atelier', zh: '实践' }, s: { it: 'Si progetta in aula', en: 'Design happens in class', fr: 'On conçoit en classe', zh: '在课堂上动手设计' } },
+    { c: 'linear-gradient(135deg,#f4bd4f,#fbe3ad)', t: { it: 'Mostra finale', en: 'Final show', fr: 'Exposition finale', zh: '期末展' }, s: { it: 'I progetti escono dall’aula', en: 'Projects leave the classroom', fr: 'Les projets sortent de la classe', zh: '作品走出课堂' } }
+  ];
+  var VAI = { it: 'Pagina % di 4', en: 'Page % of 4', fr: 'Page % sur 4', zh: '第 % 页，共 4 页' };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var i = 0, molti = 0, N = 12;
+  function disegna() {
+    var bin = document.getElementById('bin'); bin.innerHTML = '';
+    PAG.forEach(function (p, k) { var d = document.createElement('div'); d.className = 'pagina'; d.style.background = p.c; d.setAttribute('role', 'group'); d.setAttribute('aria-label', T(VAI).replace('%', k + 1)); d.innerHTML = '<b></b><span></span>'; d.firstChild.textContent = T(p.t); d.lastChild.textContent = T(p.s); if (k !== i) d.setAttribute('aria-hidden', 'true'); bin.appendChild(d); });
+    bin.style.transform = 'translateX(' + (-i * 100) + '%)';
+    ['punti', 'statici'].forEach(function (id) {
+      var box = document.getElementById(id); box.innerHTML = '';
+      PAG.forEach(function (p, k) { var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', T(VAI).replace('%', k + 1)); b.setAttribute('aria-current', String(k === i)); b.onclick = function () { vai(k); }; box.appendChild(b); });
+    });
+    disegnaMolti();
+    var bar = document.getElementById('barra'); bar.style.width = (100 / PAG.length) + '%'; bar.style.transform = 'translateX(' + (i * 100) + '%)';
+  }
+  function disegnaMolti() {
+    var m = document.getElementById('molti'); m.innerHTML = '';
+    var da = Math.max(0, Math.min(N - 7, molti - 3));
+    for (var k = da; k < da + 7; k++) { var dot = document.createElement('i'); if (k === molti) dot.className = 'on'; else if ((k === da && da > 0) || (k === da + 6 && da + 7 < N)) dot.className = 'pp'; else if ((k === da + 1 && da > 0) || (k === da + 5 && da + 7 < N)) dot.className = 'p'; m.appendChild(dot); }
+  }
+  function vai(k) { i = (k + PAG.length) % PAG.length; disegna(); }
+  var car = document.getElementById('car');
+  car.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') vai(i + 1); if (e.key === 'ArrowLeft') vai(i - 1); });
+  var x0 = null;
+  car.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  window.addEventListener('pointerup', function (e) { if (x0 === null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) vai(i + (dx < 0 ? 1 : -1)); });
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(function () { molti = (molti + 1) % N; disegnaMolti(); }, 1600);
+  molti = 5;
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

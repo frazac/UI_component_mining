@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- Esempio ricostruito: Trash, bin. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trash — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; }
+  .riquadro { padding: 22px; display: flex; flex-direction: column; min-height: 400px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { display: flex; align-items: center; gap: 10px; padding: 8px 4px; border-bottom: 1px solid var(--c-linea); font-size: 16px; animation: entra .25s ease; }
+  li .nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  li small { color: var(--c-tenue); font-size: 14px; white-space: nowrap; }
+  @keyframes entra { from { opacity: 0; transform: translateX(-6px); } }
+  .ic { width: 22px; height: 26px; flex: none; }
+  .azione { width: 34px; height: 34px; border-radius: 8px; border: 0; background: none; cursor: pointer; display: grid; place-items: center; flex: none; }
+  .azione:hover { background: #fbeeee; }
+  .azione.ripristina:hover { background: rgba(105,143,255,.12); }
+  .testa { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+  .testa .didascalia { margin: 0; flex: 1; }
+  .cestino { position: relative; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 12px; background: var(--c-palco); }
+  .cestino.scuote { animation: scuoti .35s; }
+  @keyframes scuoti { 30% { transform: rotate(-8deg); } 60% { transform: rotate(6deg); } }
+  .conta { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--c-salmone); color: #111; font-size: 13px; font-weight: 500; display: grid; place-items: center; padding: 0 5px; }
+  .conta[hidden] { display: none; }
+  .vuoto { color: var(--c-tenue); font-size: 16px; text-align: center; padding: 40px 0; }
+  .piede { margin-top: auto; padding-top: 12px; display: flex; gap: 10px; align-items: center; justify-content: space-between; font-size: 14px; color: var(--c-tenue); }
+  .svuota { border: 1.5px solid #c03c3c; color: #c03c3c; background: #fff; border-radius: 8px; padding: 6px 12px; font-size: 15px; cursor: pointer; }
+  .svuota:hover:not(:disabled) { background: #c03c3c; color: #fff; }
+  .svuota:disabled { opacity: .35; cursor: default; }
+  .avviso { position: fixed; left: 50%; bottom: 22px; transform: translate(-50%, 16px); background: #1d1d22; color: #fff; border-radius: 10px; padding: 8px 8px 8px 14px; font-size: 15px; display: flex; gap: 14px; align-items: center; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+  .avviso.su { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .avviso button { border: 0; background: none; color: var(--c-salmone); font-size: 15px; font-weight: 500; cursor: pointer; padding: 4px 8px; border-radius: 6px; }
+  .conferma { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: #fbeeee; font-size: 15px; display: grid; gap: 8px; }
+  .conferma[hidden] { display: none; }
+  .conferma div { display: flex; gap: 8px; justify-content: flex-end; }
+  .conferma button { border-radius: 6px; padding: 5px 12px; font-size: 15px; cursor: pointer; border: 1px solid var(--c-linea); background: #fff; }
+  .conferma .si { background: #c03c3c; color: #fff; border-color: #c03c3c; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">I miei file</span><span data-l="en">My files</span><span data-l="fr">Mes fichiers</span><span data-l="zh">我的文件</span></span>
+    <ul id="file"></ul>
+  </div>
+  <div class="riquadro">
+    <div class="testa">
+      <span class="didascalia"><span data-l="it">Cestino</span><span data-l="en">Trash</span><span data-l="fr">Corbeille</span><span data-l="zh">回收站</span></span>
+      <span class="cestino" id="cestino" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" id="ico-cestino"></svg><span class="conta" id="conta" hidden></span></span>
+    </div>
+    <ul id="cest"></ul>
+    <div class="conferma" id="conferma" hidden role="alertdialog" aria-labelledby="conf-t">
+      <span id="conf-t"></span>
+      <div><button type="button" id="no"><span data-l="it">Annulla</span><span data-l="en">Cancel</span><span data-l="fr">Annuler</span><span data-l="zh">取消</span></button><button type="button" class="si" id="si"><span data-l="it">Elimina per sempre</span><span data-l="en">Delete forever</span><span data-l="fr">Supprimer définitivement</span><span data-l="zh">永久删除</span></button></div>
+    </div>
+    <div class="piede"><span><span data-l="it">Svuotato da solo dopo 30 giorni</span><span data-l="en">Emptied automatically after 30 days</span><span data-l="fr">Vidée automatiquement après 30 jours</span><span data-l="zh">30 天后自动清空</span></span><button class="svuota" type="button" id="svuota"><span data-l="it">Svuota</span><span data-l="en">Empty</span><span data-l="fr">Vider</span><span data-l="zh">清空</span></button></div>
+  </div>
+</div>
+<div class="avviso" id="avviso" role="status"><span id="avviso-t"></span><button type="button" id="annulla"></button></div>
+<p class="nota"><span data-l="it">Il cestino rende reversibile l’eliminazione: solo svuotarlo è definitivo, e per questo chiede conferma.</span><span data-l="en">The trash makes deleting reversible: only emptying it is final, which is why it asks for confirmation.</span><span data-l="fr">La corbeille rend la suppression réversible : seul le fait de la vider est définitif, c’est pourquoi une confirmation est demandée.</span><span data-l="zh">回收站让删除变得可撤销：只有清空才是永久的，因此需要确认。</span></p>
+<script>
+  var FILE = [
+    { n: 'tesi-capitolo-1.pdf', d: '2,1 MB', c: 'rgb(223,136,136)' },
+    { n: 'logo-v3.svg', d: '18 KB', c: 'rgb(105,143,255)' },
+    { n: 'foto-mostra.jpg', d: '3,4 MB', c: '#f0b47a' },
+    { n: 'appunti.txt', d: '4 KB', c: '#999' },
+    { n: 'prototipo.fig', d: '9,8 MB', c: 'rgb(250,145,145)' }
+  ];
+  var CEST = [{ n: 'schizzo.png', d: '640 KB', c: 'rgb(105,143,255)', g: 3 }, { n: 'vecchia-bozza.doc', d: '120 KB', c: '#999', g: 12 }];
+  var T = {
+    sposta: { it: 'Sposta nel cestino', en: 'Move to trash', fr: 'Mettre à la corbeille', zh: '移到回收站' },
+    rip: { it: 'Ripristina', en: 'Restore', fr: 'Restaurer', zh: '还原' },
+    spostato: { it: ' spostato nel cestino', en: ' moved to trash', fr: ' mis à la corbeille', zh: ' 已移到回收站' },
+    annulla: { it: 'Annulla', en: 'Undo', fr: 'Annuler', zh: '撤销' },
+    vuoto: { it: 'Il cestino è vuoto', en: 'Trash is empty', fr: 'La corbeille est vide', zh: '回收站是空的' },
+    giorni: { it: ' giorni fa', en: ' days ago', fr: ' jours', zh: ' 天前' }, oggi: { it: 'oggi', en: 'today', fr: 'aujourd’hui', zh: '今天' },
+    conf: { it: 'Eliminare per sempre ', en: 'Permanently delete ', fr: 'Supprimer définitivement ', zh: '永久删除 ' }, el: { it: ' elementi? Non si può annullare.', en: ' items? This cannot be undone.', fr: ' éléments ? Impossible d’annuler.', zh: ' 个项目？此操作无法撤销。' },
+    tutti: { it: 'Tutti i file sono nel cestino', en: 'All files are in the trash', fr: 'Tous les fichiers sont à la corbeille', zh: '所有文件都在回收站里' }
+  };
+  var ultimo = null, timer;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function ic(c) { return '<svg class="ic" viewBox="0 0 20 25" aria-hidden="true"><path d="M1 1h12l6 6v17H1z" fill="#fff" stroke="#bbb"/><path d="M13 1v6h6" fill="none" stroke="#bbb"/><rect x="4" y="13" width="12" height="7" rx="1" fill="' + c + '"/></svg>'; }
+  var BIDONE = '<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" fill="none" stroke="#111" stroke-width="1.8" stroke-linejoin="round"/>';
+  var PIENO = BIDONE + '<path d="M9 11h6M9 14h6M10 17h4" stroke="rgb(223,136,136)" stroke-width="1.8" stroke-linecap="round"/>';
+  function disegna() {
+    var u = document.getElementById('file'); u.innerHTML = '';
+    if (!FILE.length) u.innerHTML = '<li class="vuoto" style="border:0;justify-content:center">' + L(T.tutti) + '</li>';
+    FILE.forEach(function (f, k) {
+      var li = document.createElement('li'); li.innerHTML = ic(f.c) + '<span class="nome"></span><small>' + f.d + '</small>';
+      li.querySelector('.nome').textContent = f.n;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'azione'; b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' + BIDONE + '</svg>';
+      b.setAttribute('aria-label', L(T.sposta) + ': ' + f.n); b.title = L(T.sposta);
+      b.onclick = function () { sposta(k); }; li.appendChild(b); u.appendChild(li);
+    });
+    var c = document.getElementById('cest'); c.innerHTML = '';
+    if (!CEST.length) c.innerHTML = '<li class="vuoto" style="border:0;justify-content:center">' + L(T.vuoto) + '</li>';
+    CEST.forEach(function (f, k) {
+      var li = document.createElement('li'); li.innerHTML = ic(f.c) + '<span class="nome"></span><small>' + (f.g ? f.g + L(T.giorni) : L(T.oggi)) + '</small>';
+      li.querySelector('.nome').textContent = f.n; li.style.opacity = '.8';
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'azione ripristina'; b.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 1.5 6M4 4v6h6" fill="none" stroke="rgb(105,143,255)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      b.setAttribute('aria-label', L(T.rip) + ': ' + f.n); b.title = L(T.rip);
+      b.onclick = function () { FILE.push(CEST.splice(k, 1)[0]); disegna(); }; li.appendChild(b); c.appendChild(li);
+    });
+    document.getElementById('ico-cestino').innerHTML = CEST.length ? PIENO : BIDONE;
+    var n = document.getElementById('conta'); n.hidden = !CEST.length; n.textContent = CEST.length;
+    document.getElementById('svuota').disabled = !CEST.length;
+    document.getElementById('annulla').textContent = L(T.annulla);
+    document.getElementById('conf-t').textContent = L(T.conf) + CEST.length + L(T.el);
+  }
+  function sposta(k) {
+    var f = FILE.splice(k, 1)[0]; f.g = 0; CEST.unshift(f); ultimo = { f: f, k: k };
+    var cs = document.getElementById('cestino'); cs.classList.remove('scuote'); void cs.offsetWidth; cs.classList.add('scuote');
+    var av = document.getElementById('avviso'); document.getElementById('avviso-t').textContent = f.n + L(T.spostato); av.classList.add('su');
+    clearTimeout(timer); timer = setTimeout(function () { av.classList.remove('su'); }, 4000);
+    disegna();
+  }
+  document.getElementById('annulla').onclick = function () {
+    if (!ultimo) return; var i = CEST.indexOf(ultimo.f); if (i >= 0) { CEST.splice(i, 1); FILE.splice(ultimo.k, 0, ultimo.f); }
+    ultimo = null; document.getElementById('avviso').classList.remove('su'); disegna();
+  };
+  document.getElementById('svuota').onclick = function () { document.getElementById('conferma').hidden = false; document.getElementById('no').focus(); };
+  document.getElementById('no').onclick = function () { document.getElementById('conferma').hidden = true; document.getElementById('svuota').focus(); };
+  document.getElementById('si').onclick = function () { CEST = []; document.getElementById('conferma').hidden = true; disegna(); document.getElementById('svuota').focus(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

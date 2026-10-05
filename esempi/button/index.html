@@ -1,0 +1,80 @@
+<!doctype html>
+<!-- Esempio ricostruito: Button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .stati { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px 16px; }
+  .stati figure { margin: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .stati figcaption { font-size: 15px; color: var(--c-tenue); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 20px; border-radius: 9999px; border: 2px solid transparent;
+    font-size: 17px; font-weight: 500; cursor: pointer; transition: background .15s, box-shadow .15s, transform .1s, color .15s; white-space: nowrap; }
+  .primario { background: #111; color: #fff; box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+  .primario:hover, .primario.is-hover { background: var(--c-blu); }
+  .primario:active, .primario.is-active { transform: translateY(2px); box-shadow: none; background: #3f63d6; }
+  .primario.is-focus { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  .btn:disabled { background: #e3e0df; color: rgba(0,0,0,.4); box-shadow: none; cursor: not-allowed; }
+  .secondario { background: #fff; border-color: #111; }
+  .secondario:hover { background: var(--c-palco); }
+  .terziario { background: none; color: var(--c-blu); padding: 0 10px; }
+  .terziario:hover { background: rgba(105,143,255,.12); }
+  .rotella { width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .gerarchia { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .link { color: var(--c-blu); font-size: 17px; }
+  .confronto { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--c-linea); font-size: 15px; color: var(--c-tenue); }
+  .confronto b { display: block; color: var(--c-testo); font-weight: 500; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati di un pulsante primario</span><span data-l="en">States of a primary button</span><span data-l="fr">États d’un bouton principal</span><span data-l="zh">主按钮的状态</span></span>
+    <div class="stati">
+      <figure><button class="btn primario" type="button" tabindex="-1"><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button><figcaption><span data-l="it">Normale</span><span data-l="en">Default</span><span data-l="fr">Par défaut</span><span data-l="zh">默认</span></figcaption></figure>
+      <figure><button class="btn primario is-hover" type="button" tabindex="-1"><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button><figcaption><span data-l="it">Hover (puntatore sopra)</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span></figcaption></figure>
+      <figure><button class="btn primario is-focus" type="button" tabindex="-1"><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button><figcaption><span data-l="it">Focus (tastiera)</span><span data-l="en">Focus (keyboard)</span><span data-l="fr">Focus (clavier)</span><span data-l="zh">焦点（键盘）</span></figcaption></figure>
+      <figure><button class="btn primario is-active" type="button" tabindex="-1"><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button><figcaption><span data-l="it">Premuto</span><span data-l="en">Pressed</span><span data-l="fr">Enfoncé</span><span data-l="zh">按下</span></figcaption></figure>
+      <figure><button class="btn primario" type="button" disabled><span data-l="it">Iscriviti</span><span data-l="en">Sign up</span><span data-l="fr">S’inscrire</span><span data-l="zh">注册</span></button><figcaption><span data-l="it">Disabilitato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></figcaption></figure>
+      <figure><button class="btn primario" type="button" tabindex="-1" aria-busy="true"><span class="rotella" aria-hidden="true"></span><span data-l="it">Invio…</span><span data-l="en">Sending…</span><span data-l="fr">Envoi…</span><span data-l="zh">提交中…</span></button><figcaption><span data-l="it">In caricamento</span><span data-l="en">Loading</span><span data-l="fr">Chargement</span><span data-l="zh">加载中</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Gerarchia, e pulsante vivo: premilo</span><span data-l="en">Hierarchy, and a live button: press it</span><span data-l="fr">Hiérarchie, et un bouton actif&#8239;: appuyez</span><span data-l="zh">层级，以及可用的按钮：按一下</span></span>
+    <div class="gerarchia">
+      <button class="btn primario" type="button" id="vivo"></button>
+      <button class="btn secondario" type="button"><span data-l="it">Salva bozza</span><span data-l="en">Save draft</span><span data-l="fr">Enregistrer</span><span data-l="zh">保存草稿</span></button>
+      <button class="btn terziario" type="button"><span data-l="it">Annulla</span><span data-l="en">Cancel</span><span data-l="fr">Annuler</span><span data-l="zh">取消</span></button>
+      <a class="link" href="#" onclick="return false"><span data-l="it">Leggi le regole</span><span data-l="en">Read the rules</span><span data-l="fr">Lire le règlement</span><span data-l="zh">阅读规则</span></a>
+    </div>
+    <div class="confronto">
+      <div><b><span data-l="it">Pulsante = azione</span><span data-l="en">Button = action</span><span data-l="fr">Bouton = action</span><span data-l="zh">按钮 = 操作</span></b><span data-l="it">invia, salva, annulla: fa qualcosa qui.</span><span data-l="en">submit, save, cancel: does something here.</span><span data-l="fr">envoyer, enregistrer, annuler&#8239;: agit ici.</span><span data-l="zh">提交、保存、取消：在此处执行操作。</span></div>
+      <div><b><span data-l="it">Link = destinazione</span><span data-l="en">Link = destination</span><span data-l="fr">Lien = destination</span><span data-l="zh">链接 = 目的地</span></b><span data-l="it">porta a un’altra pagina o risorsa.</span><span data-l="en">takes you to another page or resource.</span><span data-l="fr">mène à une autre page ou ressource.</span><span data-l="zh">前往另一个页面或资源。</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Forma, colore e ombra sono indizi (affordance): dicono «premimi» prima ancora di leggere l’etichetta.</span><span data-l="en">Shape, colour and shadow are cues (affordances): they say “press me” before you even read the label.</span><span data-l="fr">Forme, couleur et ombre sont des indices (affordances)&#8239;: ils disent «&#8239;appuie&#8239;» avant même qu’on lise le libellé.</span><span data-l="zh">形状、颜色和阴影都是示能线索：在读到文字之前就在说“按我”。</span></p>
+<script>
+  var TESTI = { pronto: { it: 'Iscriviti', en: 'Sign up', fr: 'S’inscrire', zh: '注册' }, invio: { it: 'Invio…', en: 'Sending…', fr: 'Envoi…', zh: '提交中…' }, fatto: { it: 'Iscritto ✓', en: 'Signed up ✓', fr: 'Inscrit ✓', zh: '已注册 ✓' } };
+  var vivo = document.getElementById('vivo'), stato = 'pronto';
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    vivo.innerHTML = (stato === 'invio' ? '<span class="rotella" aria-hidden="true"></span>' : '') + '<span></span>';
+    vivo.lastChild.textContent = T(TESTI[stato]);
+    vivo.setAttribute('aria-busy', String(stato === 'invio'));
+  }
+  vivo.onclick = function () {
+    if (stato !== 'pronto') { if (stato === 'fatto') { stato = 'pronto'; disegna(); } return; }
+    stato = 'invio'; disegna();
+    setTimeout(function () { stato = 'fatto'; disegna(); }, 1400);
+  };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

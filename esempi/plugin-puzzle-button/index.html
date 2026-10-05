@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Esempio ricostruito: Puzzle button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puzzle button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .browser { padding: 0; overflow: visible; box-shadow: 0 18px 40px rgba(0,0,0,.14), 0 0 0 1px rgba(0,0,0,.08); }
+  .barra { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #f6f4f3; border-bottom: 1px solid var(--c-linea); border-radius: 12px 12px 0 0; position: relative; }
+  .pallini { display: flex; gap: 7px; margin-right: 6px; }
+  .pallini i { width: 12px; height: 12px; border-radius: 50%; background: #c9c2c0; }
+  .url { flex: 1; min-width: 0; background: #fff; border: 1px solid var(--c-linea); border-radius: 9999px; padding: 7px 14px; font-size: 15px; color: var(--c-tenue); white-space: nowrap; overflow: hidden; }
+  .bt { width: 36px; height: 36px; border: 0; background: none; border-radius: 8px; display: grid; place-items: center; cursor: pointer; color: #333; flex: none; position: relative; }
+  .bt:hover, .bt[aria-expanded="true"] { background: rgba(0,0,0,.08); }
+  .ext { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 500; }
+  .fissate { display: flex; gap: 2px; }
+  .fissate .bt { animation: entra .2s ease-out; }
+  @keyframes entra { from { transform: scale(.6); opacity: 0; } }
+  .pannello { position: absolute; right: 10px; top: calc(100% + 4px); width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.2), 0 0 0 1px rgba(0,0,0,.06); padding: 10px; z-index: 5; }
+  .pannello[hidden] { display: none; }
+  .pannello h3 { margin: 4px 8px 8px; font-size: 16px; font-weight: 500; }
+  .voce { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; }
+  .voce:hover { background: var(--c-palco); }
+  .voce .nome { flex: 1; font-size: 15px; }
+  .voce .nome small { display: block; color: var(--c-tenue); font-size: 15px; }
+  .spilla { width: 32px; height: 32px; border: 0; background: none; border-radius: 6px; cursor: pointer; display: grid; place-items: center; color: rgba(0,0,0,.4); }
+  .spilla:hover { background: rgba(0,0,0,.08); color: #111; }
+  .spilla[aria-pressed="true"] { color: var(--c-blu); }
+  .gestisci { display: block; margin: 6px 8px 2px; font-size: 15px; color: var(--c-blu); }
+  .pagina { height: 330px; padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .finta p { height: 12px; border-radius: 6px; background: var(--c-palco); margin: 0 0 14px; }
+  .finta .t { height: 22px; width: 70%; background: #e8e3e1; margin-bottom: 20px; }
+  .integra h3 { margin: 0 0 10px; font-size: 18px; font-weight: 500; }
+  .griglia { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tess { border: 1px solid var(--c-linea); border-radius: 10px; padding: 10px; display: flex; align-items: center; gap: 8px; font-size: 15px; }
+  .tess.agg { border-style: dashed; color: var(--c-tenue); justify-content: center; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro browser">
+    <div class="barra">
+      <span class="pallini" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="url">studio.example/progetto</span>
+      <span class="fissate" id="fissate"></span>
+      <button class="bt" type="button" id="puzzle" aria-haspopup="dialog" aria-expanded="true"></button>
+      <div class="pannello" id="pannello" role="dialog" aria-labelledby="p-t"><h3 id="p-t"></h3><div id="voci"></div><a class="gestisci" href="#" onclick="return false" id="gestisci"></a></div>
+    </div>
+    <div class="pagina">
+      <div class="integra"><h3 id="int-t"></h3><div class="griglia" id="griglia"></div></div>
+      <div class="finta" aria-hidden="true"><p class="t"></p><p style="width:95%"></p><p style="width:88%"></p><p style="width:92%"></p><p style="width:60%"></p></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il pezzo di puzzle è diventato il segno comune per «estensioni e integrazioni»: qualcosa che si aggiunge e si incastra nel prodotto.</span><span data-l="en">The puzzle piece has become the common sign for “extensions and integrations”: something that is added and fits into the product.</span><span data-l="fr">La pièce de puzzle est devenue le signe commun des «&#8239;extensions et intégrations&#8239;»&#8239;: quelque chose qu’on ajoute et qui s’emboîte dans le produit.</span><span data-l="zh">拼图块已成为“扩展与集成”的通用符号：可以添加并嵌入产品的东西。</span></p>
+<script>
+  var EXT = [
+    { s: 'Cc', c: '#698fff', n: { it: 'Contagocce colore', en: 'Colour picker', fr: 'Pipette de couleur', zh: '取色器' }, d: { it: 'Legge i colori della pagina', en: 'Reads colours on the page', fr: 'Lit les couleurs de la page', zh: '读取页面颜色' }, pin: true },
+    { s: 'Rg', c: '#fa9191', n: { it: 'Righello', en: 'Ruler', fr: 'Règle', zh: '标尺' }, d: { it: 'Misura gli elementi', en: 'Measures elements', fr: 'Mesure les éléments', zh: '测量元素' }, pin: false },
+    { s: 'Ct', c: '#4caf7a', n: { it: 'Contrasto', en: 'Contrast check', fr: 'Contraste', zh: '对比度检查' }, d: { it: 'Verifica l’accessibilità', en: 'Checks accessibility', fr: 'Vérifie l’accessibilité', zh: '检查无障碍' }, pin: false },
+    { s: 'Tr', c: '#8a6fd1', n: { it: 'Traduttore', en: 'Translator', fr: 'Traducteur', zh: '翻译器' }, d: { it: 'Traduce la selezione', en: 'Translates the selection', fr: 'Traduit la sélection', zh: '翻译所选内容' }, pin: true }
+  ];
+  var TX = { est: { it: 'Estensioni', en: 'Extensions', fr: 'Extensions', zh: '扩展' }, gest: { it: 'Gestisci le estensioni', en: 'Manage extensions', fr: 'Gérer les extensions', zh: '管理扩展' },
+    fissa: { it: 'Fissa nella barra', en: 'Pin to toolbar', fr: 'Épingler à la barre', zh: '固定到工具栏' }, sfissa: { it: 'Togli dalla barra', en: 'Unpin from toolbar', fr: 'Désépingler', zh: '从工具栏取消固定' },
+    int: { it: 'Integrazioni del progetto', en: 'Project integrations', fr: 'Intégrations du projet', zh: '项目集成' }, agg: { it: '+ Aggiungi', en: '+ Add', fr: '+ Ajouter', zh: '+ 添加' },
+    calendario: { it: 'Calendario', en: 'Calendar', fr: 'Calendrier', zh: '日历' }, archivio: { it: 'Archivio file', en: 'File storage', fr: 'Stockage', zh: '文件存储' }, chat: { it: 'Chat del team', en: 'Team chat', fr: 'Chat d’équipe', zh: '团队聊天' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var PUZZLE = '<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3.5a2 2 0 014 0V6h4a1 1 0 011 1v4h-1.5a2 2 0 000 4H18v4a1 1 0 01-1 1h-4v-1.5a2 2 0 00-4 0V20H5a1 1 0 01-1-1v-4h1.5a2 2 0 000-4H4V7a1 1 0 011-1h4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>';
+  var PIN = '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 1.5l4.5 4.5-2 1-2.5 2.5.5 3-1.5 1.5-3-3L2 15l-1-1 4-4-3-3L3.5 5.5l3 .5L9 3.5z" fill="currentColor"/></svg>';
+  var puzzle = document.getElementById('puzzle'), pannello = document.getElementById('pannello');
+  function ico(e) { return '<span class="ext" style="background:' + e.c + '">' + e.s + '</span>'; }
+  function disegna() {
+    puzzle.innerHTML = PUZZLE; puzzle.setAttribute('aria-label', T(TX.est)); puzzle.title = T(TX.est);
+    var f = document.getElementById('fissate'); f.innerHTML = '';
+    EXT.forEach(function (e) { if (!e.pin) return; var b = document.createElement('button'); b.className = 'bt'; b.type = 'button'; b.innerHTML = ico(e); b.title = T(e.n); b.setAttribute('aria-label', T(e.n)); f.appendChild(b); });
+    document.getElementById('p-t').textContent = T(TX.est);
+    var v = document.getElementById('voci'); v.innerHTML = '';
+    EXT.forEach(function (e) {
+      var d = document.createElement('div'); d.className = 'voce'; d.innerHTML = ico(e) + '<span class="nome"><span></span><small></small></span><button class="spilla" type="button">' + PIN + '</button>';
+      d.querySelector('.nome span').textContent = T(e.n); d.querySelector('small').textContent = T(e.d);
+      var p = d.querySelector('.spilla'); p.setAttribute('aria-pressed', String(e.pin)); p.setAttribute('aria-label', T(e.pin ? TX.sfissa : TX.fissa)); p.title = p.getAttribute('aria-label');
+      p.onclick = function (ev) { ev.stopPropagation(); e.pin = !e.pin; disegna(); v.querySelectorAll('.spilla')[EXT.indexOf(e)].focus(); };
+      v.appendChild(d);
+    });
+    document.getElementById('gestisci').textContent = T(TX.gest);
+    document.getElementById('int-t').textContent = T(TX.int);
+    var g = document.getElementById('griglia'); g.innerHTML = '';
+    [['#f4bd4f', TX.calendario], ['#698fff', TX.archivio], ['#fa9191', TX.chat]].forEach(function (x) { g.insertAdjacentHTML('beforeend', '<div class="tess"><span class="ext" style="background:' + x[0] + '">' + PUZZLE.replace('width="20" height="20"', 'width="14" height="14"') + '</span><span></span></div>'); g.lastChild.lastChild.textContent = T(x[1]); });
+    g.insertAdjacentHTML('beforeend', '<div class="tess agg"></div>'); g.lastChild.textContent = T(TX.agg);
+  }
+  function mostra(si) { pannello.hidden = !si; puzzle.setAttribute('aria-expanded', String(si)); }
+  puzzle.onclick = function (e) { e.stopPropagation(); mostra(pannello.hidden); };
+  document.addEventListener('click', function (e) { if (!pannello.hidden && !pannello.contains(e.target) && !e.target.closest('.lingua-selettore')) mostra(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pannello.hidden) { mostra(false); puzzle.focus(); } });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

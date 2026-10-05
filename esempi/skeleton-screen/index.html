@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Esempio ricostruito: Skeleton screen. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skeleton screen — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { align-items: stretch; }
+  .riquadro { min-height: 420px; }
+  .post { display: grid; grid-template-columns: 64px 1fr; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--c-linea); }
+  .img { width: 64px; height: 64px; border-radius: 10px; }
+  .tit { font-size: 16px; font-weight: 500; line-height: 1.3; margin: 2px 0 6px; }
+  .sub { font-size: 15px; color: var(--c-tenue); }
+  .sk { background: #ebe6e4; border-radius: 6px; position: relative; overflow: hidden; }
+  .sk::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent); animation: luccica 1.3s infinite; }
+  @keyframes luccica { to { transform: translateX(100%); } }
+  @media (prefers-reduced-motion: reduce) { .sk::after { display: none; } }
+  .riga1 { height: 16px; width: 85%; margin: 4px 0 10px; }
+  .riga2 { height: 13px; width: 50%; }
+  .entra { animation: entra .35s ease-out; }
+  @keyframes entra { from { opacity: 0; } }
+  .attesa { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 300px; gap: 12px; color: var(--c-tenue); font-size: 15px; }
+  .rotella { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--c-linea); border-top-color: var(--c-blu); animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .comandi { display: flex; justify-content: center; align-items: center; gap: 14px; }
+  .btn { border: 2px solid #111; background: #fff; border-radius: 9999px; padding: 8px 18px; font-size: 16px; cursor: pointer; }
+  .btn:hover { background: var(--c-palco); }
+  .lento { font-size: 15px; color: var(--c-tenue); display: flex; gap: 6px; align-items: center; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Spinner</span><span data-l="en">Spinner</span><span data-l="fr">Indicateur rotatif</span><span data-l="zh">加载转圈</span></span>
+    <div id="a" aria-busy="true"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Skeleton screen</span><span data-l="en">Skeleton screen</span><span data-l="fr">Écran squelette</span><span data-l="zh">骨架屏</span></span>
+    <div id="b" aria-busy="true"></div>
+  </div>
+</div>
+<div class="comandi">
+  <button class="btn" type="button" id="ricarica"><span data-l="it">↻ Ricarica</span><span data-l="en">↻ Reload</span><span data-l="fr">↻ Recharger</span><span data-l="zh">↻ 重新加载</span></button>
+  <label class="lento"><input type="checkbox" id="lento" checked><span data-l="it">Rete lenta (3 s)</span><span data-l="en">Slow network (3 s)</span><span data-l="fr">Réseau lent (3 s)</span><span data-l="zh">慢速网络（3 秒）</span></label>
+</div>
+<p class="nota"><span data-l="it">Lo skeleton anticipa la forma della pagina: l’attesa sembra più breve e il layout non salta quando arrivano i contenuti.</span><span data-l="en">The skeleton previews the shape of the page: the wait feels shorter and the layout does not jump when the content arrives.</span><span data-l="fr">Le squelette annonce la forme de la page&#8239;: l’attente paraît plus courte et la mise en page ne saute pas à l’arrivée du contenu.</span><span data-l="zh">骨架屏预先呈现页面结构：等待感觉更短，内容到达时布局也不会跳动。</span></p>
+<script>
+  var POST = [
+    { c: 'linear-gradient(135deg,#fa9191,#f7c5b6)', t: { it: 'Dieci regole per le griglie', en: 'Ten rules for grids', fr: 'Dix règles pour les grilles', zh: '网格的十条规则' }, s: { it: 'Laura B. · 5 min', en: 'Laura B. · 5 min', fr: 'Laura B. · 5 min', zh: 'Laura B. · 5 分钟' } },
+    { c: 'linear-gradient(135deg,#698fff,#b9caff)', t: { it: 'Il colore negli stati interattivi', en: 'Colour in interaction states', fr: 'La couleur des états interactifs', zh: '交互状态中的颜色' }, s: { it: 'Marco T. · 7 min', en: 'Marco T. · 7 min', fr: 'Marco T. · 7 min', zh: 'Marco T. · 7 分钟' } },
+    { c: 'linear-gradient(135deg,#4caf7a,#bfe6cc)', t: { it: 'Prototipare con il browser', en: 'Prototyping in the browser', fr: 'Prototyper dans le navigateur', zh: '在浏览器中做原型' }, s: { it: 'Wei L. · 4 min', en: 'Wei L. · 4 min', fr: 'Wei L. · 4 min', zh: 'Wei L. · 4 分钟' } },
+    { c: 'linear-gradient(135deg,#f4bd4f,#fbe3ad)', t: { it: 'Microcopy che aiuta', en: 'Microcopy that helps', fr: 'Des microtextes qui aident', zh: '有帮助的微文案' }, s: { it: 'Ada R. · 3 min', en: 'Ada R. · 3 min', fr: 'Ada R. · 3 min', zh: 'Ada R. · 3 分钟' } }
+  ];
+  var CARICA = { it: 'Caricamento…', en: 'Loading…', fr: 'Chargement…', zh: '加载中…' };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var pronto = false, timer = null;
+  function contenuti(el) { el.innerHTML = ''; POST.forEach(function (p) { var d = document.createElement('div'); d.className = 'post entra'; d.innerHTML = '<span class="img"></span><div><div class="tit"></div><div class="sub"></div></div>'; d.firstChild.style.background = p.c; d.querySelector('.tit').textContent = T(p.t); d.querySelector('.sub').textContent = T(p.s); el.appendChild(d); }); el.setAttribute('aria-busy', 'false'); }
+  function disegna() {
+    var a = document.getElementById('a'), b = document.getElementById('b');
+    if (pronto) { contenuti(a); contenuti(b); return; }
+    a.innerHTML = '<div class="attesa" role="status"><span class="rotella"></span><span></span></div>'; a.querySelector('.attesa span:last-child').textContent = T(CARICA);
+    b.innerHTML = POST.map(function () { return '<div class="post" aria-hidden="true"><span class="img sk"></span><div><div class="sk riga1"></div><div class="sk riga2"></div></div></div>'; }).join('');
+  }
+  function ricarica() { pronto = false; disegna(); clearTimeout(timer); timer = setTimeout(function () { pronto = true; disegna(); }, document.getElementById('lento').checked ? 3000 : 900); }
+  document.getElementById('ricarica').onclick = ricarica;
+  // al primo caricamento lo stato di attesa resta visibile più a lungo, per mostrarlo
+  disegna(); timer = setTimeout(function () { pronto = true; disegna(); }, 6000);
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

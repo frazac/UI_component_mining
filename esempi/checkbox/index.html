@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Esempio ricostruito: Checkbox. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkbox — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .casella { appearance: none; -webkit-appearance: none; flex: none; width: 24px; height: 24px; margin: 0; border: 2px solid rgba(0,0,0,.55);
+    border-radius: 6px; background: #fff center / 18px no-repeat; cursor: pointer; transition: background-color .15s, border-color .15s; }
+  .casella:hover { border-color: var(--c-blu); box-shadow: 0 0 0 6px rgba(105,143,255,.14); }
+  .casella:checked, .casella:indeterminate { background-color: var(--c-blu); border-color: var(--c-blu); }
+  .casella:checked { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M3.5 9.5l3.5 3.5 7.5-8' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+  .casella:indeterminate { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M4 9h10' stroke='%23fff' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .casella:disabled { border-color: rgba(0,0,0,.2); background-color: #f4f4f4; cursor: not-allowed; box-shadow: none; }
+  .casella:disabled:checked { background-color: rgba(0,0,0,.2); border-color: transparent; }
+  .casella.errore { border-color: #c0392b; }
+  .casella.finto-focus { outline: 3px solid var(--c-blu); outline-offset: 2px; }
+  label.voce { display: flex; align-items: center; gap: 12px; padding: 7px 0; cursor: pointer; font-size: 17px; }
+  .figli { margin-left: 36px; border-left: 1px solid var(--c-linea); padding-left: 14px; }
+  .conto { font-size: 15px; color: var(--c-tenue); margin: 10px 0 0; }
+  .stati { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; }
+  .stati label.voce { font-size: 16px; }
+  .stati label.voce.dis { color: rgba(0,0,0,.38); cursor: not-allowed; }
+  .stati .err { color: #c0392b; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Selezione multipla</span><span data-l="en">Multiple selection</span><span data-l="fr">Sélection multiple</span><span data-l="zh">多项选择</span></span>
+    <label class="voce"><input class="casella" type="checkbox" id="tutti"> <strong style="font-weight:500"><span data-l="it">Tutti gli argomenti</span><span data-l="en">All topics</span><span data-l="fr">Tous les sujets</span><span data-l="zh">全部主题</span></strong></label>
+    <div class="figli" id="figli">
+      <label class="voce"><input class="casella" type="checkbox" checked> <span><span data-l="it">Tipografia</span><span data-l="en">Typography</span><span data-l="fr">Typographie</span><span data-l="zh">字体排印</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox" checked> <span><span data-l="it">Colore</span><span data-l="en">Colour</span><span data-l="fr">Couleur</span><span data-l="zh">色彩</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox"> <span><span data-l="it">Griglie</span><span data-l="en">Grids</span><span data-l="fr">Grilles</span><span data-l="zh">网格</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox"> <span><span data-l="it">Accessibilità</span><span data-l="en">Accessibility</span><span data-l="fr">Accessibilité</span><span data-l="zh">无障碍</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox"> <span><span data-l="it">Movimento</span><span data-l="en">Motion</span><span data-l="fr">Mouvement</span><span data-l="zh">动效</span></span></label>
+    </div>
+    <p class="conto" id="conto" aria-live="polite"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Stati</span><span data-l="en">States</span><span data-l="fr">États</span><span data-l="zh">状态</span></span>
+    <div class="stati" style="grid-template-columns:1fr">
+      <label class="voce"><input class="casella" type="checkbox"> <span><span data-l="it">Non selezionata</span><span data-l="en">Unchecked</span><span data-l="fr">Non cochée</span><span data-l="zh">未选中</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox" checked> <span><span data-l="it">Selezionata</span><span data-l="en">Checked</span><span data-l="fr">Cochée</span><span data-l="zh">已选中</span></span></label>
+      <label class="voce"><input class="casella" type="checkbox" id="indet"> <span><span data-l="it">Indeterminata</span><span data-l="en">Indeterminate</span><span data-l="fr">Indéterminée</span><span data-l="zh">部分选中</span></span></label>
+      <label class="voce"><input class="casella finto-focus" type="checkbox" tabindex="-1"> <span><span data-l="it">Focus da tastiera</span><span data-l="en">Keyboard focus</span><span data-l="fr">Focus clavier</span><span data-l="zh">键盘焦点</span></span></label>
+      <label class="voce dis"><input class="casella" type="checkbox" disabled> <span><span data-l="it">Disattivata</span><span data-l="en">Disabled</span><span data-l="fr">Désactivée</span><span data-l="zh">禁用</span></span></label>
+      <label class="voce dis"><input class="casella" type="checkbox" disabled checked> <span><span data-l="it">Disattivata e selezionata</span><span data-l="en">Disabled, checked</span><span data-l="fr">Désactivée, cochée</span><span data-l="zh">禁用且已选中</span></span></label>
+      <label class="voce"><input class="casella errore" type="checkbox" aria-invalid="true" aria-describedby="err"> <span><span data-l="it">Accetto le condizioni</span><span data-l="en">I accept the terms</span><span data-l="fr">J’accepte les conditions</span><span data-l="zh">我接受条款</span></span></label>
+      <span class="err" id="err" style="font-size:15px;margin-left:36px"><span data-l="it">Errore: campo obbligatorio</span><span data-l="en">Error: required field</span><span data-l="fr">Erreur : champ obligatoire</span><span data-l="zh">错误：必填项</span></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La casella «tutti» è indeterminata quando solo alcune voci sono scelte. Spazio per selezionare da tastiera.</span><span data-l="en">The “all” box is indeterminate when only some items are chosen. Space toggles from the keyboard.</span><span data-l="fr">La case « tous » est indéterminée quand seules certaines options sont choisies. Espace pour cocher au clavier.</span><span data-l="zh">只选中部分选项时，“全部”复选框显示为部分选中状态。键盘上用空格键切换。</span></p>
+<script>
+  var tutti = document.getElementById('tutti'), figli = document.querySelectorAll('#figli .casella');
+  var CONTO = { it: '{n} di {t} selezionati', en: '{n} of {t} selected', fr: '{n} sur {t} sélectionnés', zh: '已选 {n} / {t}' };
+  function aggiorna() {
+    var n = Array.prototype.filter.call(figli, function (c) { return c.checked; }).length;
+    tutti.checked = n === figli.length; tutti.indeterminate = n > 0 && n < figli.length;
+    document.getElementById('conto').textContent = CONTO[Lingua.get()].replace('{n}', n).replace('{t}', figli.length);
+  }
+  tutti.addEventListener('change', function () { figli.forEach(function (c) { c.checked = tutti.checked; }); aggiorna(); });
+  figli.forEach(function (c) { c.addEventListener('change', aggiorna); });
+  document.getElementById('indet').indeterminate = true;
+  aggiorna();
+  document.addEventListener('lingua', aggiorna);
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<!-- Esempio ricostruito: Cookie consent banner. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookie consent banner — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 20px; }
+  .finestra { position: relative; height: 470px; border: 1px solid var(--c-linea); border-radius: 10px; overflow: hidden; background: #fff; }
+  .barra-f { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: var(--c-palco); border-bottom: 1px solid var(--c-linea); }
+  .barra-f i { width: 11px; height: 11px; border-radius: 50%; background: rgba(0,0,0,.15); display: block; }
+  .barra-f span.ind { margin-left: 12px; flex: 1; background: #fff; border-radius: 6px; font-size: 14px; color: var(--c-tenue); padding: 3px 10px; }
+  .pagina { padding: 22px 26px; display: grid; gap: 10px; }
+  .pagina h2 { margin: 0; font-size: 24px; font-weight: 500; }
+  .r { height: 10px; border-radius: 5px; background: rgba(0,0,0,.07); }
+  .img { height: 110px; border-radius: 8px; background: linear-gradient(135deg, rgba(250,145,145,.35), rgba(105,143,255,.35)); }
+  .banner { position: absolute; left: 14px; right: 14px; bottom: 14px; background: #fff; border-radius: 12px; box-shadow: 0 10px 32px rgba(0,0,0,.2); padding: 16px 18px; transition: transform .3s, opacity .3s; }
+  .banner[hidden] { display: block; transform: translateY(30px); opacity: 0; pointer-events: none; }
+  .banner h3 { margin: 0 0 4px; font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+  .banner p { margin: 0; font-size: 15px; line-height: 1.4; color: rgba(0,0,0,.7); }
+  .bottoni { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .bottoni button { border-radius: 8px; padding: 8px 14px; font-size: 15px; cursor: pointer; border: 1.5px solid var(--c-testo); background: #fff; }
+  .bottoni .pieno { background: var(--c-testo); color: #fff; }
+  .bottoni .link { border-color: transparent; color: var(--c-blu); text-decoration: underline; text-underline-offset: 3px; margin-left: auto; padding-left: 4px; padding-right: 4px; }
+  .bottoni button:hover { opacity: .85; }
+  .categorie { display: grid; gap: 2px; margin-top: 10px; }
+  .cat { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--c-linea); font-size: 15px; }
+  .cat small { color: var(--c-tenue); display: block; font-size: 14px; }
+  .sw { width: 42px; height: 24px; border-radius: 12px; border: 0; background: rgba(0,0,0,.22); position: relative; cursor: pointer; flex: none; }
+  .sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .sw[aria-checked="true"] { background: var(--c-blu); }
+  .sw[aria-checked="true"]::after { transform: translateX(18px); }
+  .sw:disabled { opacity: .5; cursor: not-allowed; }
+  .riapri { position: absolute; left: 14px; bottom: 14px; border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  .categorie[hidden], .riapri[hidden] { display: none; }
+  .esito { position: absolute; right: 14px; bottom: 14px; font-size: 14px; color: var(--c-tenue); max-width: 60%; text-align: right; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Al primo accesso: scegli tu</span><span data-l="en">On the first visit: you choose</span><span data-l="fr">À la première visite : à vous de choisir</span><span data-l="zh">首次访问：由你决定</span></span>
+    <div class="finestra">
+      <div class="barra-f" aria-hidden="true"><i></i><i></i><i></i><span class="ind">esempio.it</span></div>
+      <div class="pagina" aria-hidden="true">
+        <h2><span data-l="it">Corsi di design</span><span data-l="en">Design courses</span><span data-l="fr">Cours de design</span><span data-l="zh">设计课程</span></h2>
+        <span class="r" style="width:85%"></span><span class="r" style="width:70%"></span>
+        <div class="img"></div>
+        <span class="r" style="width:90%"></span><span class="r" style="width:60%"></span>
+      </div>
+      <button class="riapri" type="button" id="riapri" hidden><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#111" stroke-width="2"/><circle cx="9" cy="10" r="1.5" fill="#111"/><circle cx="14.5" cy="14.5" r="1.5" fill="#111"/><circle cx="14" cy="8" r="1" fill="#111"/></svg><span data-l="it">Preferenze cookie</span><span data-l="en">Cookie settings</span><span data-l="fr">Préférences cookies</span><span data-l="zh">Cookie 设置</span></button>
+      <span class="esito" id="esito" aria-live="polite"></span>
+      <section class="banner" id="banner" role="dialog" aria-labelledby="b-tit" aria-describedby="b-desc">
+        <h3 id="b-tit"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 3 3 0 0 1-3.5-3A3 3 0 0 1 14 5.5 3 3 0 0 1 12 3z" fill="var(--c-salmone)"/><circle cx="9" cy="11" r="1.4" fill="#fff"/><circle cx="14" cy="15" r="1.4" fill="#fff"/><circle cx="8.5" cy="16" r="1" fill="#fff"/></svg><span data-l="it">Usiamo i cookie</span><span data-l="en">We use cookies</span><span data-l="fr">Nous utilisons des cookies</span><span data-l="zh">我们使用 Cookie</span></h3>
+        <p id="b-desc"><span data-l="it">Quelli necessari fanno funzionare il sito; gli altri servono a misurare le visite e a personalizzare la pubblicità, solo se acconsenti.</span><span data-l="en">Necessary ones make the site work; the others measure visits and personalise ads, only if you agree.</span><span data-l="fr">Les cookies nécessaires font fonctionner le site ; les autres mesurent les visites et personnalisent la publicité, seulement si vous acceptez.</span><span data-l="zh">必要的 Cookie 让网站正常运行；其他 Cookie 用于统计访问和个性化广告，仅在你同意时启用。</span></p>
+        <div class="categorie" id="categorie" hidden>
+          <div class="cat"><span><span data-l="it">Necessari</span><span data-l="en">Necessary</span><span data-l="fr">Nécessaires</span><span data-l="zh">必要</span><small><span data-l="it">Sempre attivi</span><span data-l="en">Always on</span><span data-l="fr">Toujours actifs</span><span data-l="zh">始终开启</span></small></span><button class="sw" type="button" role="switch" aria-checked="true" disabled aria-label="Necessary"></button></div>
+          <div class="cat"><span id="c-stat"><span data-l="it">Statistiche</span><span data-l="en">Analytics</span><span data-l="fr">Statistiques</span><span data-l="zh">统计</span></span><button class="sw" type="button" role="switch" aria-checked="false" aria-labelledby="c-stat" data-cat="stat"></button></div>
+          <div class="cat"><span id="c-mkt"><span data-l="it">Marketing</span><span data-l="en">Marketing</span><span data-l="fr">Marketing</span><span data-l="zh">营销</span></span><button class="sw" type="button" role="switch" aria-checked="false" aria-labelledby="c-mkt" data-cat="mkt"></button></div>
+        </div>
+        <div class="bottoni">
+          <button type="button" class="pieno" data-scelta="tutti"><span data-l="it">Accetta tutti</span><span data-l="en">Accept all</span><span data-l="fr">Tout accepter</span><span data-l="zh">全部接受</span></button>
+          <button type="button" class="pieno" data-scelta="nessuno"><span data-l="it">Rifiuta tutti</span><span data-l="en">Reject all</span><span data-l="fr">Tout refuser</span><span data-l="zh">全部拒绝</span></button>
+          <button type="button" id="salva" data-scelta="salva" hidden><span data-l="it">Salva le scelte</span><span data-l="en">Save choices</span><span data-l="fr">Enregistrer</span><span data-l="zh">保存选择</span></button>
+          <button type="button" class="link" id="personalizza" aria-expanded="false" aria-controls="categorie"><span data-l="it">Personalizza</span><span data-l="en">Customise</span><span data-l="fr">Personnaliser</span><span data-l="zh">自定义</span></button>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">«Accetta» e «Rifiuta» hanno lo stesso peso visivo: nell’UE rifiutare deve essere facile quanto accettare (GDPR, direttiva ePrivacy).</span><span data-l="en">“Accept” and “Reject” carry the same visual weight: in the EU, refusing must be as easy as accepting (GDPR, ePrivacy Directive).</span><span data-l="fr">« Accepter » et « Refuser » ont le même poids visuel : dans l’UE, refuser doit être aussi simple qu’accepter (RGPD, directive ePrivacy).</span><span data-l="zh">“接受”和“拒绝”视觉权重相同：在欧盟，拒绝必须和接受一样容易（GDPR、电子隐私指令）。</span></p>
+<script>
+  var T = {
+    tutti: { it: 'Tutti i cookie attivi', en: 'All cookies on', fr: 'Tous les cookies actifs', zh: '已启用全部 Cookie' },
+    nessuno: { it: 'Solo i cookie necessari', en: 'Necessary cookies only', fr: 'Cookies nécessaires uniquement', zh: '仅启用必要 Cookie' },
+    alcuni: { it: 'Necessari + ', en: 'Necessary + ', fr: 'Nécessaires + ', zh: '必要 + ' },
+    stat: { it: 'statistiche', en: 'analytics', fr: 'statistiques', zh: '统计' },
+    mkt: { it: 'marketing', en: 'marketing', fr: 'marketing', zh: '营销' }
+  };
+  var scelta = null, banner = document.getElementById('banner');
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function scritta() {
+    if (!scelta) return '';
+    if (scelta.stat && scelta.mkt) return L(T.tutti);
+    if (!scelta.stat && !scelta.mkt) return L(T.nessuno);
+    return L(T.alcuni) + (scelta.stat ? L(T.stat) : L(T.mkt));
+  }
+  function aggiorna() { document.getElementById('esito').textContent = banner.hidden ? scritta() : ''; }
+  function chiudi() { banner.hidden = true; document.getElementById('riapri').hidden = false; aggiorna(); document.getElementById('riapri').focus(); }
+  document.querySelectorAll('.sw[data-cat]').forEach(function (s) { s.onclick = function () { s.setAttribute('aria-checked', String(s.getAttribute('aria-checked') !== 'true')); }; });
+  document.querySelectorAll('[data-scelta]').forEach(function (b) {
+    b.onclick = function () {
+      var k = b.dataset.scelta, sw = {};
+      document.querySelectorAll('.sw[data-cat]').forEach(function (s) {
+        if (k !== 'salva') s.setAttribute('aria-checked', String(k === 'tutti'));
+        sw[s.dataset.cat] = s.getAttribute('aria-checked') === 'true';
+      });
+      scelta = sw; chiudi();
+    };
+  });
+  var pers = document.getElementById('personalizza');
+  pers.onclick = function () {
+    var a = pers.getAttribute('aria-expanded') !== 'true';
+    pers.setAttribute('aria-expanded', String(a));
+    document.getElementById('categorie').hidden = !a; document.getElementById('salva').hidden = !a;
+  };
+  document.getElementById('riapri').onclick = function () { banner.hidden = false; document.getElementById('riapri').hidden = true; aggiorna(); banner.querySelector('button').focus(); };
+  document.addEventListener('lingua', aggiorna);
+</script>
+</body>
+</html>

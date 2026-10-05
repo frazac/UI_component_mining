@@ -1,0 +1,21 @@
+{
+  "livelli": {
+    "introduzione": {"it": "Introduzione", "en": "Introduction", "fr": "Introduction", "zh": "导论"},
+    "fondamentale": {"it": "Fondamentali", "en": "Fundamental", "fr": "Fondamentaux", "zh": "基础"},
+    "avanzato": {"it": "Avanzati", "en": "Advanced", "fr": "Avancés", "zh": "进阶"}
+  },
+  "categorie": {
+    "introduzione": {"it": "Principi e schemi", "en": "Principles and frameworks", "fr": "Principes et schémas", "zh": "原则与框架"},
+    "navigazione": {"it": "Navigazione", "en": "Navigation", "fr": "Navigation", "zh": "导航"},
+    "azioni": {"it": "Pulsanti e azioni", "en": "Buttons and actions", "fr": "Boutons et actions", "zh": "按钮与操作"},
+    "input": {"it": "Selezione e inserimento", "en": "Selection and input", "fr": "Sélection et saisie", "zh": "选择与输入"},
+    "testo": {"it": "Testo e scrittura", "en": "Text and writing", "fr": "Texte et écriture", "zh": "文本与书写"},
+    "feedback": {"it": "Feedback e stato", "en": "Feedback and status", "fr": "Retour et état", "zh": "反馈与状态"},
+    "errori": {"it": "Errori e prevenzione", "en": "Errors and prevention", "fr": "Erreurs et prévention", "zh": "错误与预防"},
+    "contenitori": {"it": "Contenitori e layout", "en": "Containers and layout", "fr": "Conteneurs et mise en page", "zh": "容器与布局"},
+    "contenuti": {"it": "Contenuti e media", "en": "Content and media", "fr": "Contenus et médias", "zh": "内容与媒体"},
+    "social": {"it": "Social e commercio", "en": "Social and commerce", "fr": "Social et commerce", "zh": "社交与商业"},
+    "sistema": {"it": "Sistema e dispositivo", "en": "System and device", "fr": "Système et appareil", "zh": "系统与设备"},
+    "conversazione": {"it": "IA e conversazione", "en": "AI and conversation", "fr": "IA et conversation", "zh": "人工智能与对话"}
+  }
+}

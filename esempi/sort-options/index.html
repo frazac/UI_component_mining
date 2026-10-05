@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- Esempio ricostruito: Sort options in tables and views. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sort options — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 660px; }
+  .testa { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+  .testa label { font-size: 15px; display: flex; align-items: center; gap: 8px; }
+  .testa select { border: 1.5px solid #cfc9c7; border-radius: 8px; padding: 6px 10px; font-size: 15px; background: #fff; }
+  .verso { border: 1.5px solid #cfc9c7; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 15px; display: inline-flex; align-items: center; gap: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 16px; }
+  th { text-align: left; font-weight: 500; padding: 0; border-bottom: 2px solid #111; }
+  th.num, td.num { text-align: right; }
+  th button { width: 100%; border: 0; background: none; padding: 10px 8px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 500; font-size: 15px; justify-content: inherit; }
+  th.num button { justify-content: flex-end; }
+  th button:hover { background: #fdf3f2; }
+  th button .fr { width: 14px; height: 14px; opacity: .25; flex: none; }
+  th[aria-sort="ascending"] .fr, th[aria-sort="descending"] .fr { opacity: 1; color: var(--c-blu); }
+  th[aria-sort="descending"] .fr { transform: rotate(180deg); }
+  th[aria-sort="ascending"], th[aria-sort="descending"] { background: #f6f3ff; }
+  td { padding: 9px 8px; border-bottom: 1px solid var(--c-linea); font-variant-numeric: tabular-nums; }
+  tbody tr { transition: background .3s; }
+  tbody tr.mosso { animation: lampo .5s; }
+  @keyframes lampo { from { background: #fdf3f2; } }
+  .stelle { color: var(--c-salmone); letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Clicca un’intestazione: crescente, poi decrescente</span><span data-l="en">Click a header: ascending, then descending</span><span data-l="fr">Cliquez sur un en-tête : croissant, puis décroissant</span><span data-l="zh">点击表头：先升序，再降序</span></span>
+    <div class="testa">
+      <label><span><span data-l="it">Ordina per</span><span data-l="en">Sort by</span><span data-l="fr">Trier par</span><span data-l="zh">排序方式</span></span><select id="sel"></select></label>
+      <button class="verso" type="button" id="verso"></button>
+    </div>
+    <table>
+      <caption style="caption-side:bottom;text-align:left;padding-top:10px;font-size:15px;color:var(--c-tenue)" id="cap" aria-live="polite"></caption>
+      <thead><tr id="intest"></tr></thead>
+      <tbody id="corpo"></tbody>
+    </table>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La freccia indica la colonna e il verso; il menu fa lo stesso dove non ci sono colonne (griglie, schede, risultati di ricerca).</span><span data-l="en">The arrow shows the column and the direction; the menu does the same where there are no columns (grids, cards, search results).</span><span data-l="fr">La flèche indique la colonne et le sens ; le menu fait de même là où il n’y a pas de colonnes (grilles, cartes, résultats de recherche).</span><span data-l="zh">箭头表示排序列和方向；在没有列的地方（网格、卡片、搜索结果）由菜单完成同样的事。</span></p>
+<script>
+  var COL = [
+    { k: 'n', it: 'Nome', en: 'Name', fr: 'Nom', zh: '名称' },
+    { k: 'd', it: 'Data', en: 'Date', fr: 'Date', zh: '日期' },
+    { k: 'p', it: 'Prezzo', en: 'Price', fr: 'Prix', zh: '价格', num: true },
+    { k: 'v', it: 'Voto', en: 'Rating', fr: 'Note', zh: '评分', num: true }
+  ];
+  var DATI = [
+    { n: { it: 'Lampada', en: 'Lamp', fr: 'Lampe', zh: '台灯' }, d: '2026-03-12', p: 89, v: 4 },
+    { n: { it: 'Sedia', en: 'Chair', fr: 'Chaise', zh: '椅子' }, d: '2025-11-02', p: 145, v: 5 },
+    { n: { it: 'Tavolo', en: 'Table', fr: 'Table', zh: '桌子' }, d: '2026-07-21', p: 420, v: 3 },
+    { n: { it: 'Mensola', en: 'Shelf', fr: 'Étagère', zh: '搁板' }, d: '2026-01-30', p: 39, v: 4 },
+    { n: { it: 'Divano', en: 'Sofa', fr: 'Canapé', zh: '沙发' }, d: '2025-09-15', p: 980, v: 5 },
+    { n: { it: 'Tappeto', en: 'Rug', fr: 'Tapis', zh: '地毯' }, d: '2026-05-08', p: 210, v: 2 }
+  ];
+  var V = { it: ['crescente', 'decrescente', 'Ordinato per {c}, {v}'], en: ['ascending', 'descending', 'Sorted by {c}, {v}'], fr: ['croissant', 'décroissant', 'Trié par {c}, {v}'], zh: ['升序', '降序', '按{c}{v}排列'] };
+  var LOC = { it: 'it-IT', en: 'en-GB', fr: 'fr-FR', zh: 'zh-CN' };
+  var chiave = 'd', su = false;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna(anima) {
+    var lg = l(), col = COL.filter(function (c) { return c.k === chiave; })[0];
+    var tr = document.getElementById('intest'); tr.innerHTML = '';
+    COL.forEach(function (c) {
+      var th = document.createElement('th'); th.scope = 'col'; if (c.num) th.className = 'num';
+      th.setAttribute('aria-sort', c.k === chiave ? (su ? 'ascending' : 'descending') : 'none');
+      th.innerHTML = '<button type="button"><span></span><svg class="fr" viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2 V12 M3 6 L7 2 L11 6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>';
+      th.querySelector('span').textContent = c[lg];
+      th.querySelector('button').onclick = function () { if (chiave === c.k) su = !su; else { chiave = c.k; su = c.k === 'n'; } disegna(true); };
+      tr.appendChild(th);
+    });
+    var righe = DATI.slice().sort(function (a, b) { var x = chiave === 'n' ? a.n[lg].localeCompare(b.n[lg], LOC[lg]) : (a[chiave] > b[chiave] ? 1 : a[chiave] < b[chiave] ? -1 : 0); return su ? x : -x; });
+    var tb = document.getElementById('corpo'); tb.innerHTML = '';
+    righe.forEach(function (r) {
+      var t = document.createElement('tr'); if (anima) t.className = 'mosso';
+      [r.n[lg], new Intl.DateTimeFormat(LOC[lg], { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(r.d)), new Intl.NumberFormat(LOC[lg], { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(r.p), '★★★★★'.slice(0, r.v) + '☆☆☆☆☆'.slice(0, 5 - r.v)].forEach(function (x, i) {
+        var td = document.createElement('td'); td.textContent = x; if (COL[i].num) td.className = 'num'; if (i === 3) { td.className += ' stelle'; td.setAttribute('aria-label', r.v + '/5'); } t.appendChild(td);
+      });
+      tb.appendChild(t);
+    });
+    var sel = document.getElementById('sel'); sel.innerHTML = '';
+    COL.forEach(function (c) { var o = document.createElement('option'); o.value = c.k; o.textContent = c[lg]; o.selected = c.k === chiave; sel.appendChild(o); });
+    document.getElementById('verso').textContent = (su ? '↑ ' : '↓ ') + V[lg][su ? 0 : 1];
+    document.getElementById('cap').textContent = V[lg][2].replace('{c}', col[lg]).replace('{v}', V[lg][su ? 0 : 1]);
+  }
+  document.getElementById('sel').onchange = function () { chiave = this.value; disegna(true); };
+  document.getElementById('verso').onclick = function () { su = !su; disegna(true); };
+  disegna();
+  document.addEventListener('lingua', function () { disegna(); });
+</script>
+</body>
+</html>

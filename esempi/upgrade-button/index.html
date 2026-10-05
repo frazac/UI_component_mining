@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Upgrade button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upgrade button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .app { border-radius: 12px; box-shadow: 0 0 0 1px var(--c-linea); overflow: hidden; }
+  .testa { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--c-linea); background: #fff; }
+  .testa b { font-weight: 500; margin-right: auto; }
+  .upgrade { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px; border: 0; border-radius: 9999px; cursor: pointer; font-size: 15px; font-weight: 500; color: #fff;
+    background: linear-gradient(110deg, var(--c-blu), #b07cff 55%, var(--c-salmone)); background-size: 180% 100%; background-position: 0 0; transition: background-position .4s, transform .15s, box-shadow .2s; box-shadow: 0 4px 12px rgba(105,143,255,.35); }
+  .upgrade:hover { background-position: 100% 0; box-shadow: 0 6px 18px rgba(176,124,255,.45); }
+  .upgrade:active { transform: scale(.97); }
+  .upgrade svg { width: 16px; height: 16px; }
+  .upgrade[aria-busy="true"] { cursor: progress; opacity: .85; }
+  .ruota { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.45); border-top-color: #fff; border-radius: 50%; animation: gira .8s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .pro { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 9999px; background: #fff3d6; color: #8a6100; font-size: 15px; font-weight: 500; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--c-salmone); }
+  .corpo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; background: #faf8f7; }
+  .scheda { background: #fff; border-radius: 10px; padding: 14px; font-size: 15px; }
+  .scheda h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; display: flex; gap: 8px; align-items: center; }
+  .uso { height: 8px; border-radius: 4px; background: rgba(0,0,0,.08); overflow: hidden; margin: 8px 0 6px; }
+  .uso i { display: block; height: 100%; background: #e2a400; border-radius: 4px; transition: width .4s; }
+  .tenue { color: var(--c-tenue); }
+  .lucchetto { font-size: 13px; padding: 2px 8px; border-radius: 9999px; background: #f1ecff; color: #6a3fd1; font-weight: 500; }
+  .link { border: 0; background: none; padding: 0; color: var(--c-blu); cursor: pointer; text-decoration: underline; font-size: 15px; }
+  .piani { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .piano { border: 1px solid var(--c-linea); border-radius: 12px; padding: 16px; font-size: 15px; position: relative; }
+  .piano.consigliato { border: 2px solid #b07cff; }
+  .piano .etichetta { position: absolute; top: -11px; left: 14px; background: #b07cff; color: #fff; font-size: 13px; padding: 2px 8px; border-radius: 9999px; }
+  .piano h3 { margin: 0; font-size: 17px; font-weight: 500; }
+  .prezzo { font-size: 28px; font-weight: 500; margin: 4px 0 8px; } .prezzo small { font-size: 15px; color: var(--c-tenue); font-weight: 400; }
+  .piano ul { margin: 0 0 12px; padding-left: 18px; line-height: 1.6; }
+  .attuale { display: inline-block; height: 38px; line-height: 38px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro" style="padding:20px">
+    <span class="didascalia"><span data-l="it">Nell’app: il pulsante resta visibile, l’uso spiega perché</span><span data-l="en">In the app: the button stays visible, usage explains why</span><span data-l="fr">Dans l’app : le bouton reste visible, l’usage explique pourquoi</span><span data-l="zh">在应用中：按钮始终可见，用量说明升级的理由</span></span>
+    <div class="app">
+      <div class="testa"><b>Atelier</b><span id="slot"></span><span class="avatar" aria-hidden="true"></span></div>
+      <div class="corpo">
+        <div class="scheda"><h3><span data-l="it">Progetti</span><span data-l="en">Projects</span><span data-l="fr">Projets</span><span data-l="zh">项目</span></h3><div class="uso" role="progressbar" aria-valuemin="0" id="usoBar"><i id="uso"></i></div><span class="tenue" id="usoTesto"></span></div>
+        <div class="scheda"><h3><span data-l="it">Esporta in PDF</span><span data-l="en">Export to PDF</span><span data-l="fr">Exporter en PDF</span><span data-l="zh">导出为 PDF</span><span class="lucchetto" id="lucchetto">PRO</span></h3><span class="tenue" id="sblocca"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Il confronto dei piani</span><span data-l="en">The plan comparison</span><span data-l="fr">La comparaison des offres</span><span data-l="zh">方案对比</span></span>
+    <div class="piani">
+      <div class="piano"><h3>Free</h3><div class="prezzo">0 €</div><ul><li><span data-l="it">10 progetti</span><span data-l="en">10 projects</span><span data-l="fr">10 projets</span><span data-l="zh">10 个项目</span></li><li><span data-l="it">Esporta in PNG</span><span data-l="en">PNG export</span><span data-l="fr">Export PNG</span><span data-l="zh">导出 PNG</span></li></ul><span class="attuale" id="attFree"></span></div>
+      <div class="piano consigliato"><span class="etichetta"><span data-l="it">Consigliato</span><span data-l="en">Recommended</span><span data-l="fr">Recommandé</span><span data-l="zh">推荐</span></span><h3>Pro</h3><div class="prezzo">9 € <small><span data-l="it">/ mese</span><span data-l="en">/ month</span><span data-l="fr">/ mois</span><span data-l="zh">/ 月</span></small></div><ul><li><span data-l="it">Progetti illimitati</span><span data-l="en">Unlimited projects</span><span data-l="fr">Projets illimités</span><span data-l="zh">无限项目</span></li><li><span data-l="it">Esporta in PDF</span><span data-l="en">PDF export</span><span data-l="fr">Export PDF</span><span data-l="zh">导出 PDF</span></li></ul><span id="slot2"></span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Stati: normale, hover, in corso, fatto. Simulazione: nessun pagamento. <button class="link" id="reset" type="button">Ricomincia</button></span><span data-l="en">States: default, hover, in progress, done. Simulation: no payment. <button class="link" type="button" data-reset>Start over</button></span><span data-l="fr">États : normal, survol, en cours, terminé. Simulation : aucun paiement. <button class="link" type="button" data-reset>Recommencer</button></span><span data-l="zh">状态：默认、悬停、处理中、完成。仅为模拟，不会付款。<button class="link" type="button" data-reset>重新开始</button></span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = { up: { it: 'Passa a Pro', en: 'Upgrade to Pro', fr: 'Passer à Pro', zh: '升级到 Pro' }, attiva: { it: 'Attivazione…', en: 'Upgrading…', fr: 'Activation…', zh: '正在升级…' },
+    uso: { it: '{n} di {m} progetti usati', en: '{n} of {m} projects used', fr: '{n} projets utilisés sur {m}', zh: '已用 {n} / {m} 个项目' }, illimitati: { it: '{n} progetti · illimitati', en: '{n} projects · unlimited', fr: '{n} projets · illimités', zh: '{n} 个项目 · 无限制' },
+    sblocca: { it: 'Disponibile con Pro.', en: 'Available with Pro.', fr: 'Disponible avec Pro.', zh: 'Pro 版可用。' }, sbloccato: { it: 'Sbloccato ✓', en: 'Unlocked ✓', fr: 'Débloqué ✓', zh: '已解锁 ✓' },
+    attuale: { it: 'Piano attuale', en: 'Current plan', fr: 'Offre actuelle', zh: '当前方案' }, sei: { it: 'Sei Pro', en: 'You’re Pro', fr: 'Vous êtes Pro', zh: '你已是 Pro' } };
+  var stato = 'free';  // free | attesa | pro
+  var STELLA = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1l1.8 4.6L14.5 6l-3.6 3 1.2 4.8L8 11.2l-4.1 2.6L5.1 9 1.5 6l4.7-.4z" fill="#fff"/></svg>';
+  function bottone() {
+    if (stato === 'pro') return '<span class="pro">★ ' + t(TX.sei) + '</span>';
+    return '<button class="upgrade" type="button" data-up ' + (stato === 'attesa' ? 'aria-busy="true"' : '') + '>' + (stato === 'attesa' ? '<span class="ruota"></span>' + t(TX.attiva) : STELLA + t(TX.up)) + '</button>';
+  }
+  function disegna() {
+    document.getElementById('slot').innerHTML = bottone();
+    document.getElementById('slot2').innerHTML = stato === 'pro' ? '<span class="attuale">' + t(TX.attuale) + '</span>' : bottone();
+    document.getElementById('attFree').textContent = stato === 'pro' ? '' : t(TX.attuale);
+    var pro = stato === 'pro';
+    document.getElementById('uso').style.width = pro ? '8%' : '80%';
+    document.getElementById('uso').style.background = pro ? 'var(--c-blu)' : '#e2a400';
+    document.getElementById('usoBar').setAttribute('aria-valuenow', 8); document.getElementById('usoBar').setAttribute('aria-valuemax', pro ? 100 : 10);
+    document.getElementById('usoTesto').textContent = (pro ? t(TX.illimitati) : t(TX.uso)).replace('{n}', 8).replace('{m}', 10);
+    document.getElementById('lucchetto').hidden = pro;
+    document.getElementById('sblocca').textContent = t(pro ? TX.sbloccato : TX.sblocca);
+    document.querySelectorAll('[data-up]').forEach(function (b) { b.onclick = function () { if (stato !== 'free') return; stato = 'attesa'; disegna(); setTimeout(function () { stato = 'pro'; disegna(); }, 1600); }; });
+  }
+  document.querySelectorAll('#reset, [data-reset]').forEach(function (b) { b.onclick = function () { stato = 'free'; disegna(); }; });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

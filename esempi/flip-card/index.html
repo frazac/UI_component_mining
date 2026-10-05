@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- Esempio ricostruito: Flipping cards. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flipping cards — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .carte { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .carta { perspective: 900px; border: 0; padding: 0; background: none; cursor: pointer; height: 290px; text-align: left; border-radius: 14px; }
+  .carta { display: block; width: 100%; }
+  .interno { display: block; position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3,.7,.2,1); }
+  .carta[aria-pressed="true"] .interno { transform: rotateY(180deg); }
+  .faccia { position: absolute; inset: 0; border-radius: 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; clip-path: inset(0 round 14px); padding: 18px; display: flex; flex-direction: column; }
+  .fronte { color: #fff; justify-content: space-between; }
+  .fronte .num { font-size: 14px; letter-spacing: .08em; opacity: .85; }
+  .fronte .tit { margin: 0; font-size: 25px; font-weight: 500; line-height: 1.15; }
+  .fronte .gira { font-size: 15px; display: flex; align-items: center; gap: 6px; opacity: .9; }
+  .retro { background: #fff; border: 1.5px solid var(--c-linea); transform: rotateY(180deg); gap: 10px; font-size: 16px; line-height: 1.4; }
+  .retro b { font-weight: 500; font-size: 17px; }
+  .retro .es { margin-top: auto; font-size: 15px; color: var(--c-tenue); }
+  .carta:hover .interno { box-shadow: 0 10px 24px rgba(0,0,0,.12); border-radius: 14px; }
+  .carta:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 4px; }
+  .forma { position: absolute; border-radius: 50%; border: 3px solid rgba(255,255,255,.35); pointer-events: none; }
+  .azioni { display: flex; justify-content: center; margin-top: 18px; }
+  .azioni button { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 6px 16px; font-size: 15px; cursor: pointer; }
+  .azioni button:hover { border-color: var(--c-blu); color: var(--c-blu); }
+  @media (prefers-reduced-motion: reduce) {
+    .interno { transform: none !important; }
+    .faccia { transition: opacity .01ms; }
+    .retro { transform: none; opacity: 0; }
+    .carta[aria-pressed="true"] .retro { opacity: 1; }
+    .carta[aria-pressed="true"] .fronte { opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Carte di studio: clicca o premi Invio per girarle</span><span data-l="en">Study cards: click or press Enter to flip them</span><span data-l="fr">Cartes d’étude : cliquez ou appuyez sur Entrée pour les retourner</span><span data-l="zh">学习卡片：点击或按回车键翻转</span></span>
+    <div class="carte" id="carte"></div>
+    <div class="azioni"><button type="button" id="tutte"><span data-l="it">Gira tutte</span><span data-l="en">Flip all</span><span data-l="fr">Tout retourner</span><span data-l="zh">全部翻转</span></button></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il retro aggiunge informazioni senza cambiare pagina. Con il movimento ridotto la rotazione diventa una dissolvenza.</span><span data-l="en">The back adds information without leaving the page. With reduced motion the rotation becomes a fade.</span><span data-l="fr">Le verso ajoute des informations sans changer de page. Avec le mouvement réduit, la rotation devient un fondu.</span><span data-l="zh">卡片背面在不离开页面的情况下补充信息。开启“减弱动态效果”时，翻转变为淡入淡出。</span></p>
+<script>
+  var CARTE = [
+    { c: 'linear-gradient(150deg, rgb(250,145,145), rgb(223,136,136))',
+      f: { it: 'Affordance', en: 'Affordance', fr: 'Affordance', zh: '功能可见性' },
+      r: { it: 'Ciò che un oggetto suggerisce di poter fare con lui.', en: 'What an object suggests you can do with it.', fr: 'Ce qu’un objet suggère que l’on peut faire avec lui.', zh: '物体暗示你可以用它做什么。' },
+      e: { it: 'Es.: un pulsante in rilievo invita a premerlo.', en: 'E.g. a raised button invites a press.', fr: 'Ex. : un bouton en relief invite à appuyer.', zh: '例：凸起的按钮让人想按下去。' } },
+    { c: 'linear-gradient(150deg, rgb(105,143,255), rgb(74,111,216))',
+      f: { it: 'Legge di Fitts', en: 'Fitts’s law', fr: 'Loi de Fitts', zh: '菲茨定律' },
+      r: { it: 'Più un bersaglio è grande e vicino, più è veloce raggiungerlo.', en: 'The bigger and closer a target, the faster it is to reach.', fr: 'Plus une cible est grande et proche, plus elle est rapide à atteindre.', zh: '目标越大、越近，就越快能点到。' },
+      e: { it: 'Es.: i menu agli angoli dello schermo.', en: 'E.g. menus at the corners of the screen.', fr: 'Ex. : les menus dans les coins de l’écran.', zh: '例：位于屏幕角落的菜单。' } },
+    { c: 'linear-gradient(150deg, #2c2c34, #4b4b5e)',
+      f: { it: 'Legge di Hick', en: 'Hick’s law', fr: 'Loi de Hick', zh: '希克定律' },
+      r: { it: 'Più opzioni ci sono, più tempo serve per scegliere.', en: 'The more options there are, the longer it takes to choose.', fr: 'Plus il y a d’options, plus il faut de temps pour choisir.', zh: '选项越多，做出选择所需的时间越长。' },
+      e: { it: 'Es.: un menu breve è più rapido di uno lungo.', en: 'E.g. a short menu is quicker than a long one.', fr: 'Ex. : un menu court est plus rapide qu’un long.', zh: '例：短菜单比长菜单更快。' } }
+  ];
+  var T = { gira: { it: 'Gira', en: 'Flip', fr: 'Retourner', zh: '翻转' } };
+  var girate = [false, false, false];
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var ICONA = '<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function disegna() {
+    var box = document.getElementById('carte'); box.innerHTML = '';
+    CARTE.forEach(function (c, k) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'carta';
+      b.setAttribute('aria-pressed', String(girate[k]));
+      b.innerHTML = '<span class="interno">' +
+        '<span class="faccia fronte" style="background:' + c.c + '"><span class="forma" style="width:150px;height:150px;right:-40px;top:-30px"></span><span class="num">0' + (k + 1) + '</span><span class="tit">' + L(c.f) + '</span><span class="gira">' + ICONA + L(T.gira) + '</span></span>' +
+        '<span class="faccia retro"><b>' + L(c.f) + '</b><span>' + L(c.r) + '</span><span class="es">' + L(c.e) + '</span></span></span>';
+      b.onclick = function () { girate[k] = !girate[k]; b.setAttribute('aria-pressed', String(girate[k])); };
+      box.appendChild(b);
+    });
+  }
+  document.getElementById('tutte').onclick = function () {
+    var tutte = girate.every(Boolean); girate = girate.map(function () { return !tutte; });
+    document.querySelectorAll('.carta').forEach(function (b, k) { b.setAttribute('aria-pressed', String(girate[k])); });
+  };
+  girate[1] = true;
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<!-- Esempio ricostruito: Rating system. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rating — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .media { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .voto { font-size: 56px; font-weight: 500; line-height: 1; }
+  .stelle { display: inline-flex; gap: 3px; }
+  .stelle svg { display: block; }
+  .quante { font-size: 15px; color: var(--c-tenue); margin-top: 4px; }
+  .barre { display: grid; gap: 7px; }
+  .barre div { display: grid; grid-template-columns: 26px 1fr 40px; gap: 10px; align-items: center; font-size: 15px; }
+  .barre .b { height: 8px; border-radius: 4px; background: var(--c-palco); overflow: hidden; }
+  .barre .b i { display: block; height: 100%; background: #f4bd4f; border-radius: 4px; transition: width .4s; }
+  .barre span:last-child { color: var(--c-tenue); text-align: right; }
+  /* input a stelle: gruppo di radio */
+  .dai { border: 0; padding: 0; margin: 0 0 6px; display: inline-flex; flex-direction: row-reverse; gap: 4px; }
+  .dai input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .dai label { cursor: pointer; padding: 2px; border-radius: 6px; }
+  .dai label svg path { fill: #e6e1df; transition: fill .15s, transform .15s; transform-origin: center; }
+  .dai input:checked ~ label svg path, .dai label:hover svg path, .dai label:hover ~ label svg path { fill: #f4bd4f; }
+  .dai:hover input:checked ~ label:not(:hover):not(:hover ~ label) svg path { fill: #e6e1df; }
+  .dai input:focus-visible + label { outline: 3px solid var(--c-blu); }
+  .esito { font-size: 16px; min-height: 24px; margin: 4px 0 14px; color: var(--c-tenue); }
+  textarea { width: 100%; border: 1px solid rgba(0,0,0,.25); border-radius: 8px; padding: 10px 12px; font-size: 16px; resize: none; height: 90px; outline: 0; }
+  textarea:focus { border-color: var(--c-blu); }
+  .btn { margin-top: 10px; border: 0; background: #111; color: #fff; border-radius: 9999px; padding: 10px 18px; font-size: 16px; cursor: pointer; }
+  .btn:hover { background: var(--c-blu); }
+  .btn:disabled { background: #e3e0df; color: rgba(0,0,0,.4); cursor: default; }
+  .altre { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--c-linea); font-size: 15px; color: var(--c-tenue); align-items: center; }
+  .pollici { display: inline-flex; gap: 6px; }
+  .pollici button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 5px 10px; cursor: pointer; font-size: 15px; display: inline-flex; gap: 6px; align-items: center; }
+  .pollici button[aria-pressed="true"] { background: #111; color: #fff; border-color: #111; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Valutazione media</span><span data-l="en">Average rating</span><span data-l="fr">Note moyenne</span><span data-l="zh">平均评分</span></span>
+    <div class="media"><span class="voto" id="voto"></span><div><span class="stelle" id="stelle-media"></span><div class="quante" id="quante"></div></div></div>
+    <div class="barre" id="barre"></div>
+    <div class="altre"><span data-l="it">Variante binaria:</span><span data-l="en">Binary variant:</span><span data-l="fr">Variante binaire&#8239;:</span><span data-l="zh">二元变体：</span>
+      <span class="pollici"><button type="button" aria-pressed="true" id="su">▲ 212</button><button type="button" aria-pressed="false" id="giu">▼ 9</button></span></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">La tua valutazione</span><span data-l="en">Your rating</span><span data-l="fr">Votre note</span><span data-l="zh">你的评分</span></span>
+    <fieldset class="dai" id="dai"><legend class="didascalia" style="position:absolute;opacity:0;pointer-events:none">rating</legend></fieldset>
+    <div class="esito" id="esito" aria-live="polite"></div>
+    <textarea id="rec" aria-label="Review"></textarea>
+    <button class="btn" type="button" id="invia" disabled><span data-l="it">Pubblica</span><span data-l="en">Post</span><span data-l="fr">Publier</span><span data-l="zh">发布</span></button>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il punteggio da solo dice poco: conta sapere quante persone hanno votato e come si distribuiscono i voti.</span><span data-l="en">The score alone says little: what matters is how many people voted and how the votes are spread.</span><span data-l="fr">La note seule dit peu&#8239;: ce qui compte, c’est le nombre de votants et la répartition des votes.</span><span data-l="zh">只有分数意义不大：重要的是有多少人评分，以及评分如何分布。</span></p>
+<script>
+  var DIST = [5, 4, 11, 38, 70]; // da 1 a 5 stelle
+  var mio = 0;
+  var TX = { voti: { it: '% valutazioni', en: '% ratings', fr: '% notes', zh: '% 条评分' },
+    giudizi: [{ it: '', en: '', fr: '', zh: '' }, { it: 'Pessimo', en: 'Terrible', fr: 'Très mauvais', zh: '很差' }, { it: 'Scarso', en: 'Poor', fr: 'Médiocre', zh: '较差' }, { it: 'Nella media', en: 'Average', fr: 'Moyen', zh: '一般' }, { it: 'Buono', en: 'Good', fr: 'Bien', zh: '不错' }, { it: 'Eccellente', en: 'Excellent', fr: 'Excellent', zh: '非常好' }],
+    scegli: { it: 'Scegli da 1 a 5 stelle', en: 'Choose from 1 to 5 stars', fr: 'Choisissez de 1 à 5 étoiles', zh: '选择 1 到 5 颗星' }, stelle: { it: '% stelle', en: '% stars', fr: '% étoiles', zh: '% 星' },
+    grazie: { it: 'Grazie! Il tuo voto è stato aggiunto.', en: 'Thanks! Your rating has been added.', fr: 'Merci ! Votre note a été ajoutée.', zh: '谢谢！你的评分已添加。' } };
+  function L() { return window.Lingua ? Lingua.get() : 'en'; }
+  function T(o) { return o[L()] || o.en; }
+  function stella(riemp, dim, id) {
+    return '<svg width="' + dim + '" height="' + dim + '" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="' + id + '"><stop offset="' + riemp + '" stop-color="#f4bd4f"/><stop offset="' + riemp + '" stop-color="#e6e1df"/></linearGradient></defs><path d="M12 2.5l2.9 6.1 6.6.7-5 4.5 1.5 6.6L12 17l-6 3.4 1.5-6.6-5-4.5 6.6-.7z" fill="url(#' + id + ')"/></svg>';
+  }
+  function disegna() {
+    var tot = DIST.reduce(function (a, b) { return a + b; }, 0), media = DIST.reduce(function (a, n, k) { return a + n * (k + 1); }, 0) / tot;
+    var f = new Intl.NumberFormat(L(), { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+    document.getElementById('voto').textContent = f.format(media);
+    var s = ''; for (var k = 0; k < 5; k++) s += stella(Math.max(0, Math.min(1, media - k)), 22, 'm' + k);
+    var sm = document.getElementById('stelle-media'); sm.innerHTML = s; sm.setAttribute('role', 'img'); sm.setAttribute('aria-label', f.format(media) + ' / 5');
+    document.getElementById('quante').textContent = T(TX.voti).replace('%', tot);
+    var b = document.getElementById('barre'); b.innerHTML = '';
+    for (k = 4; k >= 0; k--) b.insertAdjacentHTML('beforeend', '<div><span>' + (k + 1) + '★</span><span class="b"><i style="width:' + (DIST[k] / tot * 100) + '%"></i></span><span>' + Math.round(DIST[k] / tot * 100) + '%</span></div>');
+  }
+  var dai = document.getElementById('dai');
+  for (var k = 5; k >= 1; k--) {
+    dai.insertAdjacentHTML('beforeend', '<input type="radio" name="voto" id="v' + k + '" value="' + k + '"><label for="v' + k + '">' + '<svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.7-5 4.5 1.5 6.6L12 17l-6 3.4 1.5-6.6-5-4.5 6.6-.7z"/></svg><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></span></label>');
+  }
+  var inviato = false;
+  var SEGNAP = { it: 'Scrivi una recensione (facoltativa)', en: 'Write a review (optional)', fr: 'Écrire un avis (facultatif)', zh: '写一条评价（可选）' };
+  function testi() {
+    document.getElementById('rec').placeholder = T(SEGNAP);
+    dai.querySelectorAll('label').forEach(function (l) { l.querySelector('.sr').textContent = T(TX.stelle).replace('%', l.htmlFor.slice(1)); });
+    dai.querySelector('legend').textContent = T(TX.scegli);
+    document.getElementById('esito').textContent = inviato ? T(TX.grazie) : mio ? mio + '/5 · ' + T(TX.giudizi[mio]) : T(TX.scegli);
+  }
+  dai.addEventListener('change', function (e) { mio = +e.target.value; inviato = false; document.getElementById('invia').disabled = false; testi(); });
+  dai.addEventListener('mouseover', function (e) { var l = e.target.closest('label'); if (l && !inviato) { var v = +l.htmlFor.slice(1); document.getElementById('esito').textContent = v + '/5 · ' + T(TX.giudizi[v]); } });
+  dai.addEventListener('mouseleave', testi);
+  document.getElementById('invia').onclick = function () { if (!mio) return; DIST[mio - 1]++; inviato = true; this.disabled = true; disegna(); testi(); };
+  ['su', 'giu'].forEach(function (id) { document.getElementById(id).onclick = function () { var altro = document.getElementById(id === 'su' ? 'giu' : 'su'); var on = this.getAttribute('aria-pressed') !== 'true'; this.setAttribute('aria-pressed', String(on)); if (on) altro.setAttribute('aria-pressed', 'false'); }; });
+  disegna(); testi();
+  document.addEventListener('lingua', function () { disegna(); testi(); });
+</script>
+</body>
+</html>

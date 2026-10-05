@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- Esempio ricostruito: Nielsen's 10 heuristics and the components. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heuristics and components — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  body { padding: 28px 32px; gap: 18px; }
+  .griglia { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 920px; }
+  .euristica { background: #fff; border-radius: var(--raggio); padding: 10px 14px 12px; display: grid; grid-template-columns: 40px 1fr; grid-template-rows: auto 1fr; column-gap: 6px; align-items: start; align-content: start;
+    border: 2px solid transparent; transition: border-color .2s, transform .2s, box-shadow .2s; cursor: default; }
+  .euristica:hover, .euristica:focus-visible { border-color: var(--c-salmone); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.08); outline: none; }
+  .euristica:focus-visible { border-color: var(--c-blu); }
+  .num { font-size: 26px; line-height: 1; font-weight: 500; color: var(--c-salmone); padding-top: 2px; }
+  .euristica:hover .num, .euristica:focus-visible .num { color: var(--c-blu); }
+  .nome { font-size: 16px; line-height: 1.2; font-weight: 500; margin: 0 0 6px; }
+  .num { grid-row: 1 / 3; }
+  .comp { align-self: start; display: flex; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; grid-column: 2; }
+  .comp li { font-size: 15px; line-height: 1; padding: 5px 9px; border-radius: 9999px; background: var(--c-palco); transition: background .2s, color .2s; }
+  .euristica:hover .comp li, .euristica:focus-visible .comp li { background: var(--c-salmone); color: #000; }
+  /* il francese è più lungo: tutto un po' più compatto, così sta nei 705 px delle slide */
+  html[data-lingua="fr"] body { padding-top: 18px; padding-bottom: 18px; gap: 12px; }
+  html[data-lingua="fr"] .griglia { gap: 8px; }
+  html[data-lingua="fr"] .euristica { padding: 8px 12px 9px; }
+  html[data-lingua="fr"] .nome { font-size: 15px; margin-bottom: 4px; }
+  html[data-lingua="fr"] .comp li { padding: 4px 8px; }
+  h1 { font-size: 15px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--c-rosa); margin: 0; align-self: flex-start; max-width: 920px; width: 100%; margin: 0 auto; }
+</style>
+</head>
+<body>
+<h1><span data-l="it">10 euristiche di usabilità → componenti</span><span data-l="en">10 usability heuristics → components</span><span data-l="fr">10 heuristiques d’utilisabilité → composants</span><span data-l="zh">10 条可用性启发式原则 → 组件</span></h1>
+<div class="griglia" id="griglia"></div>
+<p class="nota"><span data-l="it">Da Jakob Nielsen, «10 Usability Heuristics» (1994). Passa sopra o usa Tab per evidenziare.</span><span data-l="en">After Jakob Nielsen, “10 Usability Heuristics” (1994). Hover or Tab to highlight.</span><span data-l="fr">D’après Jakob Nielsen, «&#8239;10 Usability Heuristics&#8239;» (1994). Survolez ou utilisez Tab pour mettre en évidence.</span><span data-l="zh">参照 Jakob Nielsen《十大可用性启发式原则》（1994）。悬停或按 Tab 键高亮。</span></p>
+<script>
+  var H = [
+    [{ it: 'Visibilità dello stato del sistema', en: 'Visibility of system status', fr: 'Visibilité de l’état du système', zh: '系统状态可见' },
+      [{ it: 'Barra di avanzamento', en: 'Progress bar', fr: 'Barre de progression', zh: '进度条' }, { it: 'Skeleton screen', en: 'Skeleton screen', fr: 'Écran squelette', zh: '骨架屏' }, { it: 'Toast', en: 'Toast', fr: 'Toast', zh: '轻提示' }]],
+    [{ it: 'Corrispondenza con il mondo reale', en: 'Match with the real world', fr: 'Correspondance avec le monde réel', zh: '贴合现实世界' },
+      [{ it: 'Pittogrammi', en: 'Pictograms', fr: 'Pictogrammes', zh: '象形图标' }, { it: 'Cestino', en: 'Trash', fr: 'Corbeille', zh: '回收站' }, { it: 'Carrello', en: 'Cart', fr: 'Panier', zh: '购物车' }]],
+    [{ it: 'Controllo e libertà', en: 'User control and freedom', fr: 'Contrôle et liberté', zh: '用户控制与自由' },
+      [{ it: 'Annulla e cronologia', en: 'Undo & history', fr: 'Annuler et historique', zh: '撤销与历史' }, { it: 'Annulla invio', en: 'Undo send', fr: 'Annuler l’envoi', zh: '撤回发送' }, { it: 'Salta', en: 'Skip button', fr: 'Bouton «\u202fpasser\u202f»', zh: '跳过按钮' }]],
+    [{ it: 'Coerenza e standard', en: 'Consistency and standards', fr: 'Cohérence et standards', zh: '一致性与标准' },
+      [{ it: 'Design system', en: 'Design systems', fr: 'Design systems', zh: '设计系统' }, { it: 'Stati interattivi', en: 'Interaction states', fr: 'États interactifs', zh: '交互状态' }]],
+    [{ it: 'Prevenzione degli errori', en: 'Error prevention', fr: 'Prévention des erreurs', zh: '防止出错' },
+      [{ it: 'Avviso irreversibile', en: 'Irreversible-action warning', fr: 'Alerte irréversible', zh: '不可逆操作警告' }, { it: 'Validazione in tempo reale', en: 'Real-time validation', fr: 'Validation en temps réel', zh: '实时校验' }]],
+    [{ it: 'Riconoscere, non ricordare', en: 'Recognition rather than recall', fr: 'Reconnaître plutôt que se souvenir', zh: '识别而非回忆' },
+      [{ it: 'Briciole di pane', en: 'Breadcrumb', fr: 'Fil d’Ariane', zh: '面包屑' }, { it: 'Suggerimenti di prompt', en: 'Prompt suggestions', fr: 'Suggestions de prompt', zh: '提示建议' }, { it: 'Input predittivo', en: 'Predictive input', fr: 'Saisie prédictive', zh: '预测输入' }]],
+    [{ it: 'Flessibilità ed efficienza', en: 'Flexibility and efficiency', fr: 'Flexibilité et efficacité', zh: '灵活高效' },
+      [{ it: 'Command palette', en: 'Command palette', fr: 'Palette de commandes', zh: '命令面板' }, { it: 'Comandi slash', en: 'Slash commands', fr: 'Commandes slash', zh: '斜杠命令' }, { it: 'Menu contestuale', en: 'Context menu', fr: 'Menu contextuel', zh: '右键菜单' }]],
+    [{ it: 'Design estetico e minimalista', en: 'Aesthetic, minimalist design', fr: 'Design esthétique et minimaliste', zh: '美观简约的设计' },
+      [{ it: 'Ghost button', en: 'Ghost button', fr: 'Bouton fantôme', zh: '幽灵按钮' }, { it: 'Senza distrazioni', en: 'Distraction-free mode', fr: 'Mode sans distraction', zh: '专注模式' }]],
+    [{ it: 'Riconoscere e correggere gli errori', en: 'Recognise and recover from errors', fr: 'Reconnaître et corriger les erreurs', zh: '识别并纠正错误' },
+      [{ it: 'Pagina 404', en: '404 page', fr: 'Page 404', zh: '404 页面' }, { it: 'Stato vuoto', en: 'Empty state', fr: 'État vide', zh: '空状态' }]],
+    [{ it: 'Aiuto e documentazione', en: 'Help and documentation', fr: 'Aide et documentation', zh: '帮助与文档' },
+      [{ it: 'Tooltip', en: 'Tooltip', fr: 'Infobulle', zh: '工具提示' }, { it: 'Onboarding', en: 'Onboarding', fr: 'Onboarding', zh: '新手引导' }, { it: 'FAQ', en: 'FAQ', fr: 'FAQ', zh: '常见问题' }]]
+  ];
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function disegna() {
+    var g = document.getElementById('griglia'); g.innerHTML = '';
+    H.forEach(function (h, i) {
+      var d = document.createElement('div'); d.className = 'euristica'; d.tabIndex = 0;
+      d.innerHTML = '<span class="num">' + (i + 1) + '</span><div><p class="nome"></p></div><ul class="comp"></ul>';
+      d.querySelector('.nome').textContent = T(h[0]);
+      d.setAttribute('aria-label', (i + 1) + '. ' + T(h[0]) + ': ' + h[1].map(T).join(', '));
+      h[1].forEach(function (c) { var li = document.createElement('li'); li.textContent = T(c); d.querySelector('.comp').appendChild(li); });
+      g.appendChild(d);
+    });
+  }
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

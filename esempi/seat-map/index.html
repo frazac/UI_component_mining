@@ -1,0 +1,95 @@
+<!doctype html>
+<!-- Esempio ricostruito: Seating map. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seating map — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 190px; }
+  .palcoscenico { margin: 0 auto 18px; width: 70%; height: 30px; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: #2b2f45; color: #fff; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; display: grid; place-items: center; }
+  .sala { display: grid; gap: 6px; justify-content: center; }
+  .fila { display: flex; align-items: center; gap: 4px; }
+  .fila .l { width: 18px; font-size: 13px; color: var(--c-tenue); text-align: center; }
+  .corridoio { width: 14px; }
+  .posto { width: 22px; height: 22px; border: 0; border-radius: 6px 6px 3px 3px; cursor: pointer; padding: 0; font-size: 11px; color: transparent; transition: transform .1s; }
+  .posto:hover:not(:disabled) { transform: scale(1.15); color: #111; }
+  .z1 { background: #fbc9c9; } .z2 { background: #f8a5a5; } .z3 { background: #e98585; }
+  .posto[aria-pressed="true"] { background: var(--c-blu); color: #fff; }
+  .posto:disabled { background: #e6e2e1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7 7l8 8M15 7l-8 8' stroke='%23aaa' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); cursor: not-allowed; }
+  .legenda { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 8px; font-size: 15px; }
+  .legenda li { display: flex; align-items: center; gap: 10px; }
+  .legenda i.occ { background: #e6e2e1 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M6 6l8 8M14 6l-8 8' stroke='%23aaa' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+  .legenda i { width: 20px; height: 20px; border-radius: 5px 5px 2px 2px; flex: none; }
+  .riepilogo { border-top: 1px solid var(--c-linea); padding-top: 14px; font-size: 15px; }
+  .riepilogo ul { list-style: none; margin: 0 0 10px; padding: 0; min-height: 22px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .riepilogo li { background: #e6ecff; border-radius: 6px; padding: 2px 8px; }
+  .totale { display: flex; justify-content: space-between; font-weight: 500; font-size: 17px; margin-bottom: 12px; }
+  .vai { width: 100%; height: 44px; border: 0; border-radius: 10px; background: var(--c-testo); color: #fff; cursor: pointer; font-size: 16px; }
+  .vai:disabled { background: rgba(0,0,0,.15); cursor: not-allowed; }
+  .msg { min-height: 21px; color: var(--c-tenue); font-size: 15px; margin: 8px 0 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Scegli i posti (al massimo 4)</span><span data-l="en">Choose your seats (up to 4)</span><span data-l="fr">Choisissez vos places (4 au maximum)</span><span data-l="zh">选择座位（最多 4 个）</span></span>
+    <div class="palcoscenico"><span data-l="it">Palco</span><span data-l="en">Stage</span><span data-l="fr">Scène</span><span data-l="zh">舞台</span></div>
+    <div class="sala" id="sala" role="group" aria-label="Seats"></div>
+  </div>
+  <div class="riquadro">
+    <ul class="legenda" id="legenda"></ul>
+    <div class="riepilogo">
+      <ul id="scelti" aria-live="polite"></ul>
+      <div class="totale"><span><span data-l="it">Totale</span><span data-l="en">Total</span><span data-l="fr">Total</span><span data-l="zh">合计</span></span><span id="totale"></span></div>
+      <button class="vai" id="vai" type="button"><span data-l="it">Continua</span><span data-l="en">Continue</span><span data-l="fr">Continuer</span><span data-l="zh">继续</span></button>
+      <p class="msg" id="msg" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">I posti occupati hanno anche una croce, non solo un colore diverso. Ogni posto è un pulsante: si sceglie anche da tastiera.</span><span data-l="en">Taken seats also have a cross, not just a different colour. Every seat is a button: you can pick it with the keyboard too.</span><span data-l="fr">Les places prises ont aussi une croix, pas seulement une autre couleur. Chaque place est un bouton : on peut aussi la choisir au clavier.</span><span data-l="zh">已售座位除了颜色不同，还有叉号标记。每个座位都是按钮，也可以用键盘选择。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var FILE = 'ABCDEFGH', POSTI = 12, MAX = 4, PREZZO = { z3: 48, z2: 36, z1: 24 };
+  var ZONE = [{ k: 'z3', n: { it: 'Platea centrale', en: 'Front stalls', fr: 'Orchestre', zh: '前排正厅' } }, { k: 'z2', n: { it: 'Platea', en: 'Stalls', fr: 'Parterre', zh: '正厅' } }, { k: 'z1', n: { it: 'Fondo sala', en: 'Rear', fr: 'Fond de salle', zh: '后排' } }];
+  var TX = { occ: { it: 'Occupato', en: 'Taken', fr: 'Occupée', zh: '已售' }, tuo: { it: 'Scelto', en: 'Selected', fr: 'Choisie', zh: '已选' },
+    fila: { it: 'Fila {f}, posto {n}', en: 'Row {f}, seat {n}', fr: 'Rang {f}, place {n}', zh: '{f} 排 {n} 座' },
+    max: { it: 'Hai già scelto 4 posti.', en: 'You have already chosen 4 seats.', fr: 'Vous avez déjà choisi 4 places.', zh: '你已选了 4 个座位。' },
+    ok: { it: 'Posti bloccati per 10 minuti (simulato).', en: 'Seats held for 10 minutes (simulated).', fr: 'Places réservées 10 minutes (simulé).', zh: '座位已保留 10 分钟（模拟）。' } };
+  var occupati = {}, scelti = [], msg = '';
+  ['A6', 'A7', 'B3', 'B4', 'B9', 'C7', 'C8', 'C9', 'D1', 'D2', 'D12', 'E6', 'E7', 'F10', 'F11', 'G4', 'H8', 'H9'].forEach(function (k) { occupati[k] = true; });
+  ['D6', 'D7'].forEach(function (k) { scelti.push(k); });
+  function zona(f, n) { var r = FILE.indexOf(f); return r < 3 && n > 3 && n < 10 ? 'z3' : r < 6 ? 'z2' : 'z1'; }
+  function disegna() {
+    var sala = document.getElementById('sala'), att = document.activeElement && document.activeElement.dataset.k; sala.innerHTML = '';
+    FILE.split('').forEach(function (f) {
+      var r = document.createElement('div'); r.className = 'fila'; r.innerHTML = '<span class="l">' + f + '</span>';
+      for (var n = 1; n <= POSTI; n++) {
+        if (n === 4 || n === 10) r.insertAdjacentHTML('beforeend', '<span class="corridoio"></span>');
+        var k = f + n, z = zona(f, n), b = document.createElement('button'); b.type = 'button'; b.className = 'posto ' + z; b.dataset.k = k; b.textContent = n;
+        var lab = t(TX.fila).replace('{f}', f).replace('{n}', n);
+        if (occupati[k]) { b.disabled = true; b.setAttribute('aria-label', lab + ', ' + t(TX.occ)); }
+        else { b.setAttribute('aria-pressed', String(scelti.indexOf(k) >= 0)); b.setAttribute('aria-label', lab + ', ' + PREZZO[z] + ' €'); }
+        b.onclick = function () { var k = this.dataset.k, i = scelti.indexOf(k); msg = ''; if (i >= 0) scelti.splice(i, 1); else if (scelti.length < MAX) scelti.push(k); else msg = t(TX.max); disegna(); };
+        r.appendChild(b);
+      }
+      r.insertAdjacentHTML('beforeend', '<span class="l">' + f + '</span>');
+      sala.appendChild(r);
+    });
+    if (att) { var x = sala.querySelector('[data-k="' + att + '"]'); if (x) x.focus(); }
+    document.getElementById('legenda').innerHTML = ZONE.map(function (z) { return '<li><i class="' + z.k + '"></i>' + t(z.n) + ' · ' + PREZZO[z.k] + ' €</li>'; }).join('') +
+      '<li><i style="background:var(--c-blu)"></i>' + t(TX.tuo) + '</li><li><i class="occ"></i>' + t(TX.occ) + '</li>';
+    var tot = 0; document.getElementById('scelti').innerHTML = scelti.map(function (k) { tot += PREZZO[zona(k[0], +k.slice(1))]; return '<li>' + k + '</li>'; }).join('');
+    document.getElementById('totale').textContent = tot + ' €';
+    document.getElementById('vai').disabled = !scelti.length;
+    document.getElementById('msg').textContent = msg;
+  }
+  document.getElementById('vai').onclick = function () { msg = t(TX.ok); disegna(); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

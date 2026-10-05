@@ -1,0 +1,108 @@
+<!doctype html>
+<!-- Esempio ricostruito: Skip button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skip button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .schermo { position: relative; height: 190px; border-radius: 10px; overflow: hidden; background: #111; color: #fff; }
+  .titoli { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; font-size: 26px; letter-spacing: .2em; text-transform: uppercase; padding-bottom: 54px; background: radial-gradient(circle at 50% 60%, #3d4580, #111 70%); transition: opacity .4s; }
+  .titoli small { display: block; font-size: 15px; letter-spacing: .1em; opacity: .7; margin-top: 6px; }
+  .episodio { position: absolute; inset: 0; display: grid; place-content: center; font-size: 18px; background: linear-gradient(180deg, #2a2f5a, rgb(105,143,255) 60%, rgb(250,145,145)); opacity: 0; transition: opacity .4s; }
+  .saltato .titoli { opacity: 0; } .saltato .episodio { opacity: 1; }
+  .salta { position: absolute; right: 14px; bottom: 16px; border: 1.5px solid rgba(255,255,255,.85); background: rgba(0,0,0,.55); color: #fff; padding: 9px 16px; border-radius: 6px; cursor: pointer; font-size: 16px;
+    opacity: 0; transform: translateY(8px); transition: opacity .3s, transform .3s, background .2s; pointer-events: none; display: flex; align-items: center; gap: 8px; }
+  .salta.on { opacity: 1; transform: none; pointer-events: auto; }
+  .salta:hover { background: #fff; color: #111; }
+  .salta:disabled { cursor: default; border-color: rgba(255,255,255,.4); color: rgba(255,255,255,.8); }
+  .salta:disabled:hover { background: rgba(0,0,0,.55); color: rgba(255,255,255,.8); }
+  .salta svg { width: 16px; height: 16px; }
+  .avanz { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--c-salmone); width: 0; }
+  .ann { background: repeating-linear-gradient(135deg, #f2c96b 0 22px, #f0bf52 22px 44px); color: #111; }
+  .ann .marchio { position: absolute; inset: 0 0 50px; display: grid; place-content: center; font-size: 24px; font-weight: 500; }
+  .ann .eti { position: absolute; left: 12px; top: 10px; background: rgba(0,0,0,.6); color: #fff; font-size: 14px; padding: 2px 8px; border-radius: 4px; }
+  .ann.finito .marchio { display: none; }
+  .ann.finito { background: linear-gradient(180deg, #2a2f5a, rgb(105,143,255)); color: #fff; }
+  .ann.finito::after { content: ""; position: absolute; inset: 0; }
+  .ricomincia { margin-top: 10px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 14px; cursor: pointer; font-size: 15px; }
+  .pagina { position: relative; border: 1px solid var(--c-linea); border-radius: 10px; height: 190px; overflow: hidden; padding: 0; }
+  .salto-link { position: absolute; left: 10px; top: -60px; background: var(--c-blu); color: #fff; padding: 8px 14px; border-radius: 6px; text-decoration: none; font-size: 15px; z-index: 2; transition: top .2s; }
+  .salto-link:focus { top: 10px; }
+  .menu { display: flex; gap: 10px; padding: 12px; border-bottom: 1px solid var(--c-linea); flex-wrap: wrap; }
+  .menu a { color: var(--c-testo); font-size: 15px; text-decoration: none; padding: 2px 4px; border-radius: 4px; }
+  .menu a:hover { color: var(--c-rosa); }
+  #contenuto { padding: 12px; font-size: 15px; outline: none; }
+  #contenuto:focus { background: #eef2ff; }
+  .aiuto { font-size: 15px; color: var(--c-tenue); margin: 10px 0 0; }
+  kbd { font: 13px ui-monospace, Menlo, monospace; border: 1px solid #ccc; border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px; background: #fff; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Salta la sigla</span><span data-l="en">Skip intro</span><span data-l="fr">Passer le générique</span><span data-l="zh">跳过片头</span></span>
+    <div class="schermo" id="sigla">
+      <div class="titoli"><span><span data-l="it">La serie</span><span data-l="en">The series</span><span data-l="fr">La série</span><span data-l="zh">剧集</span><small><span data-l="it">sigla di apertura</span><span data-l="en">opening titles</span><span data-l="fr">générique d’ouverture</span><span data-l="zh">片头字幕</span></small></span></div>
+      <div class="episodio"><span><span data-l="it">Episodio 3 · inizia</span><span data-l="en">Episode 3 · starts</span><span data-l="fr">Épisode 3 · début</span><span data-l="zh">第 3 集 · 开始</span></span></div>
+      <button class="salta" type="button" id="b-sigla"><span><span data-l="it">Salta la sigla</span><span data-l="en">Skip intro</span><span data-l="fr">Passer le générique</span><span data-l="zh">跳过片头</span></span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3 L9 8 L2 13 Z M9 3 L16 8 L9 13 Z" fill="currentColor" transform="scale(.9)"/></svg></button>
+      <span class="avanz" id="av-sigla"></span>
+    </div>
+    <button class="ricomincia" type="button" id="r-sigla"><span data-l="it">Ricomincia</span><span data-l="en">Restart</span><span data-l="fr">Recommencer</span><span data-l="zh">重新开始</span></button>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Salta la pubblicità dopo 5 s</span><span data-l="en">Skip the ad after 5 s</span><span data-l="fr">Passer la pub après 5 s</span><span data-l="zh">5 秒后跳过广告</span></span>
+    <div class="schermo ann" id="ann">
+      <span class="marchio"><span data-l="it">Il tuo marchio qui</span><span data-l="en">Your brand here</span><span data-l="fr">Votre marque ici</span><span data-l="zh">你的品牌在此</span></span>
+      <span class="eti" id="eti"></span>
+      <button class="salta on" type="button" id="b-ann" disabled></button>
+      <span class="avanz" id="av-ann"></span>
+    </div>
+    <button class="ricomincia" type="button" id="r-ann"><span data-l="it">Ricomincia</span><span data-l="en">Restart</span><span data-l="fr">Recommencer</span><span data-l="zh">重新开始</span></button>
+  </div>
+  <div class="riquadro" style="grid-column:1/-1;padding:20px 28px">
+    <span class="didascalia"><span data-l="it">Accessibilità: «Vai al contenuto» compare premendo Tab</span><span data-l="en">Accessibility: “Skip to content” appears when you press Tab</span><span data-l="fr">Accessibilité : « Aller au contenu » apparaît avec Tab</span><span data-l="zh">无障碍：按 Tab 键出现“跳到正文”</span></span>
+    <div class="pagina" style="height:auto">
+      <a class="salto-link" href="#contenuto" id="salto"><span data-l="it">Vai al contenuto</span><span data-l="en">Skip to content</span><span data-l="fr">Aller au contenu</span><span data-l="zh">跳到正文</span></a>
+      <nav class="menu" aria-label="menu"><a href="#">Home</a><a href="#"><span data-l="it">Corsi</span><span data-l="en">Courses</span><span data-l="fr">Cours</span><span data-l="zh">课程</span></a><a href="#"><span data-l="it">Docenti</span><span data-l="en">Faculty</span><span data-l="fr">Enseignants</span><span data-l="zh">教师</span></a><a href="#"><span data-l="it">Orari</span><span data-l="en">Timetable</span><span data-l="fr">Horaires</span><span data-l="zh">课表</span></a><a href="#"><span data-l="it">Contatti</span><span data-l="en">Contacts</span><span data-l="fr">Contacts</span><span data-l="zh">联系</span></a></nav>
+      <div id="contenuto" tabindex="-1"><span data-l="it">Contenuto principale: chi usa la tastiera arriva qui senza attraversare tutto il menu.</span><span data-l="en">Main content: keyboard users land here without tabbing through the whole menu.</span><span data-l="fr">Contenu principal : les utilisateurs du clavier arrivent ici sans parcourir tout le menu.</span><span data-l="zh">主要内容：键盘用户无需逐个经过整个菜单即可到达这里。</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il pulsante compare solo quando serve, nello stesso punto ogni volta, e dice esattamente cosa si salta.</span><span data-l="en">The button appears only when it is useful, in the same place every time, and says exactly what is being skipped.</span><span data-l="fr">Le bouton n’apparaît que lorsqu’il est utile, toujours au même endroit, et dit exactement ce qu’on passe.</span><span data-l="zh">按钮只在需要时出现，每次位置相同，并明确说明跳过的是什么。</span></p>
+<script>
+  var T = { it: ['Salta tra {n}', 'Salta l’annuncio', 'Annuncio · {n} s', 'Video'], en: ['Skip in {n}', 'Skip ad', 'Ad · {n} s', 'Video'], fr: ['Passer dans {n}', 'Passer l’annonce', 'Annonce · {n} s', 'Vidéo'], zh: ['{n} 秒后可跳过', '跳过广告', '广告 · {n} 秒', '视频'] };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  // sigla
+  var ts = 0, sigla = document.getElementById('sigla'), saltato = false;
+  function giroSigla() {
+    if (!saltato) { ts += .1; document.getElementById('av-sigla').style.width = Math.min(100, ts / 12 * 100) + '%'; }
+    document.getElementById('b-sigla').classList.toggle('on', !saltato && ts > 1 && ts < 11);
+    if (ts >= 12 && !saltato) { saltato = true; sigla.classList.add('saltato'); }
+  }
+  document.getElementById('b-sigla').onclick = function () { saltato = true; sigla.classList.add('saltato'); this.classList.remove('on'); document.getElementById('r-sigla').focus(); };
+  document.getElementById('r-sigla').onclick = function () { ts = 0; saltato = false; sigla.classList.remove('saltato'); };
+  // annuncio
+  var ta = 0, ann = document.getElementById('ann'), fine = false;
+  function giroAnn() {
+    if (!fine) ta += .1;
+    var b = document.getElementById('b-ann'), rest = Math.ceil(5 - ta);
+    document.getElementById('av-ann').style.width = Math.min(100, ta / 15 * 100) + '%';
+    if (fine) { b.classList.remove('on'); document.getElementById('eti').textContent = T[l()][3]; return; }
+    b.disabled = rest > 0; b.textContent = rest > 0 ? T[l()][0].replace('{n}', rest) : T[l()][1] + ' ▸';
+    document.getElementById('eti').textContent = T[l()][2].replace('{n}', Math.max(0, Math.ceil(15 - ta)));
+    if (ta >= 15) { fine = true; ann.classList.add('finito'); }
+  }
+  document.getElementById('b-ann').onclick = function () { fine = true; ann.classList.add('finito'); giroAnn(); document.getElementById('r-ann').focus(); };
+  document.getElementById('r-ann').onclick = function () { ta = 0; fine = false; ann.classList.remove('finito'); document.getElementById('b-ann').classList.add('on'); };
+  document.getElementById('salto').onclick = function (ev) { ev.preventDefault(); document.getElementById('contenuto').focus(); };
+  document.querySelectorAll('.menu a').forEach(function (a) { a.onclick = function (ev) { ev.preventDefault(); }; });
+  setInterval(function () { giroSigla(); giroAnn(); }, 100);
+  ts = 2; giroSigla(); giroAnn();
+  document.addEventListener('lingua', giroAnn);
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<!-- Esempio ricostruito: Bubble (not just in the AI context). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chat bubble — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco.due { align-items: stretch; }
+  .chat { display: flex; flex-direction: column; padding: 20px; height: 520px; }
+  .fili { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; padding: 4px 2px; }
+  .ora { align-self: center; font-size: 15px; color: var(--c-tenue); margin: 4px 0 8px; }
+  .b { max-width: 82%; padding: 9px 13px; font-size: 16px; line-height: 1.35; border-radius: 18px; position: relative; animation: entra .2s ease-out; overflow-wrap: anywhere; }
+  @keyframes entra { from { transform: translateY(6px); opacity: 0; } }
+  .loro { align-self: flex-start; background: #ece8e7; }
+  .mie { align-self: flex-end; background: var(--c-blu); color: #fff; }
+  .loro + .mie, .mie + .loro { margin-top: 8px; }
+  /* raggruppamento: angoli stretti tra messaggi consecutivi dello stesso mittente, «coda» sull’ultimo */
+  .loro.seg { border-bottom-left-radius: 6px; } .loro.prec { border-top-left-radius: 6px; }
+  .mie.seg { border-bottom-right-radius: 6px; } .mie.prec { border-top-right-radius: 6px; }
+  .loro.ultimo { border-bottom-left-radius: 4px; } .mie.ultimo { border-bottom-right-radius: 4px; }
+  .stato { align-self: flex-end; font-size: 15px; color: var(--c-tenue); margin: 2px 4px 0; }
+  .scrivi { display: flex; gap: 8px; margin-top: 10px; }
+  .scrivi input { flex: 1; min-width: 0; border: 1px solid var(--c-linea); border-radius: 9999px; padding: 9px 14px; font-size: 16px; outline: 0; }
+  .scrivi input:focus { border-color: var(--c-blu); }
+  .scrivi button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--c-blu); color: #fff; cursor: pointer; display: grid; place-items: center; flex: none; }
+  .scrivi button:hover { background: #4b72e6; }
+  /* chat con l’IA: la domanda è un fumetto, la risposta un testo pieno senza fumetto */
+  .ia .mie { background: var(--c-palco); color: var(--c-testo); }
+  .risposta { display: grid; grid-template-columns: 26px 1fr; gap: 10px; margin-top: 12px; font-size: 16px; line-height: 1.45; }
+  .risposta p { margin: 0 0 8px; }
+  .logo { width: 26px; height: 26px; border-radius: 8px; background: var(--c-salmone); display: grid; place-items: center; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro chat">
+    <span class="didascalia"><span data-l="it">App di messaggistica</span><span data-l="en">Messaging app</span><span data-l="fr">Messagerie</span><span data-l="zh">即时通讯应用</span></span>
+    <div class="fili" id="fili" role="log" aria-live="polite"></div>
+    <form class="scrivi" id="form">
+      <input id="campo" autocomplete="off" aria-label="Message" data-it="Messaggio" data-en="Message" data-fr="Message" data-zh="消息">
+      <button type="submit" aria-label="Send"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 9l14-7-5 14-2-6z" fill="currentColor"/></svg></button>
+    </form>
+  </div>
+  <div class="riquadro chat ia">
+    <span class="didascalia"><span data-l="it">Chat con l’IA</span><span data-l="en">AI chat</span><span data-l="fr">Chat avec l’IA</span><span data-l="zh">AI 聊天</span></span>
+    <div class="fili">
+      <div class="b mie ultimo"><span data-l="it">Che differenza c’è tra un toast e una modale?</span><span data-l="en">What’s the difference between a toast and a modal?</span><span data-l="fr">Quelle différence entre un toast et une modale&#8239;?</span><span data-l="zh">轻提示和模态框有什么区别？</span></div>
+      <div class="risposta"><span class="logo" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M7 0l1.6 5.4L14 7l-5.4 1.6L7 14l-1.6-5.4L0 7l5.4-1.6z" fill="#fff"/></svg></span>
+        <div><p><span data-l="it">Il toast informa e sparisce da solo: non blocca nulla.</span><span data-l="en">A toast informs and disappears on its own: it blocks nothing.</span><span data-l="fr">Le toast informe et disparaît tout seul&#8239;: il ne bloque rien.</span><span data-l="zh">轻提示只是告知，会自行消失：不会阻断任何操作。</span></p>
+        <p><span data-l="it">La modale invece interrompe: chiede una risposta prima di andare avanti.</span><span data-l="en">A modal interrupts instead: it asks for an answer before going on.</span><span data-l="fr">La modale, elle, interrompt&#8239;: elle demande une réponse avant de continuer.</span><span data-l="zh">模态框则会打断：在继续之前需要得到回应。</span></p></div></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Posizione e colore dicono chi parla. Nelle chat con l’IA spesso solo la domanda è un fumetto: la risposta occupa la pagina.</span><span data-l="en">Position and colour show who is speaking. In AI chats often only the question is a bubble: the answer fills the page.</span><span data-l="fr">Position et couleur indiquent qui parle. Dans les chats avec l’IA, souvent seule la question est une bulle&#8239;: la réponse occupe la page.</span><span data-l="zh">位置和颜色表明谁在说话。在 AI 聊天中，通常只有提问是气泡，回答则铺满页面。</span></p>
+<script>
+  var MSG = [
+    { mio: false, t: { it: 'Ciao! Hai visto le slide?', en: 'Hi! Did you see the slides?', fr: 'Salut ! Tu as vu les slides ?', zh: '嗨！你看了幻灯片吗？' } },
+    { mio: false, t: { it: 'Quelle sui componenti', en: 'The ones on components', fr: 'Celles sur les composants', zh: '关于组件的那些' } },
+    { mio: true, t: { it: 'Sì, stasera le ripasso', en: 'Yes, I’ll go over them tonight', fr: 'Oui, je les révise ce soir', zh: '看了，今晚复习' } },
+    { mio: true, t: { it: 'Domani in aula alle 9?', en: 'Classroom at 9 tomorrow?', fr: 'Demain en salle à 9 h ?', zh: '明天早上 9 点教室见？' } },
+    { mio: false, t: { it: 'Perfetto 👍', en: 'Perfect 👍', fr: 'Parfait 👍', zh: '好的 👍' } }
+  ];
+  var TX = { oggi: { it: 'Oggi 18:42', en: 'Today 18:42', fr: 'Aujourd’hui 18:42', zh: '今天 18:42' }, letto: { it: 'Letto', en: 'Read', fr: 'Lu', zh: '已读' }, inviato: { it: 'Inviato', en: 'Sent', fr: 'Envoyé', zh: '已发送' },
+    risposta: { it: 'Ok, a domani!', en: 'OK, see you tomorrow!', fr: 'OK, à demain !', zh: '好，明天见！' } };
+  function T(o) { return typeof o === 'string' ? o : (o[window.Lingua ? Lingua.get() : 'en'] || o.en); }
+  var fili = document.getElementById('fili');
+  function disegna() {
+    fili.innerHTML = '<div class="ora"></div>'; fili.firstChild.textContent = T(TX.oggi);
+    MSG.forEach(function (m, i) {
+      var d = document.createElement('div'), p = MSG[i - 1], s = MSG[i + 1];
+      d.className = 'b ' + (m.mio ? 'mie' : 'loro') + (p && p.mio === m.mio ? ' prec' : '') + (s && s.mio === m.mio ? ' seg' : ' ultimo');
+      d.textContent = T(m.t); fili.appendChild(d);
+    });
+    var ultimoMio = MSG.map(function (m) { return m.mio; }).lastIndexOf(true);
+    if (ultimoMio >= 0) { var st = document.createElement('div'); st.className = 'stato'; st.textContent = T(ultimoMio < MSG.length - 1 ? TX.letto : TX.inviato) + (ultimoMio < MSG.length - 1 ? ' ✓✓' : ' ✓');
+      fili.insertBefore(st, fili.children[ultimoMio + 2] || null); }
+    fili.scrollTop = fili.scrollHeight;
+  }
+  document.getElementById('form').onsubmit = function (e) {
+    e.preventDefault(); var c = document.getElementById('campo'), v = c.value.trim(); if (!v) return;
+    MSG.push({ mio: true, t: v }); c.value = ''; disegna();
+    if (MSG.length < 12) setTimeout(function () { MSG.push({ mio: false, t: TX.risposta }); disegna(); }, 1200);
+  };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

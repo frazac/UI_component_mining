@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- Esempio ricostruito: Marquee (rolling stripe). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marquee — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .striscia { position: relative; overflow: hidden; border-radius: 8px; }
+  .nastro { display: flex; width: max-content; animation: scorri var(--durata, 30s) linear infinite; }
+  .nastro > * { flex: none; }
+  .striscia.ferma .nastro, .striscia:hover .nastro, .striscia:focus-within .nastro { animation-play-state: paused; }
+  @keyframes scorri { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .nastro { animation: none !important; } }
+  /* ticker delle notizie */
+  .ticker { display: flex; align-items: stretch; background: #111; color: #fff; border-radius: 8px; overflow: hidden; }
+  .etichetta { flex: none; background: var(--c-salmone); color: #111; font-weight: 500; font-size: 15px; padding: 12px 14px; letter-spacing: .06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .etichetta i { width: 8px; height: 8px; border-radius: 50%; background: #c0392b; animation: pulsa 1.2s infinite; }
+  @keyframes pulsa { 50% { opacity: .2; } }
+  .ticker .striscia { flex: 1; border-radius: 0; }
+  .notizia { padding: 12px 0; font-size: 17px; white-space: nowrap; }
+  .notizia::after { content: "◆"; color: var(--c-salmone); margin: 0 22px; font-size: 12px; vertical-align: 2px; }
+  .pausa { flex: none; border: 0; background: #2b2b2b; color: #fff; width: 48px; cursor: pointer; display: grid; place-items: center; }
+  .pausa:hover { background: #3c3c3c; }
+  /* parete di loghi inventati */
+  .loghi .marchio { display: flex; align-items: center; gap: 10px; margin-right: 48px; font-size: 22px; font-weight: 500; color: rgba(0,0,0,.55); white-space: nowrap; padding: 14px 0; }
+  .sfuma { -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+  .grande { font-size: 64px; line-height: 1.1; font-weight: 500; letter-spacing: -.02em; white-space: nowrap; padding: 6px 0; }
+  .grande span.o { color: var(--c-salmone); margin: 0 26px; }
+  .comandi { display: flex; align-items: center; gap: 14px; margin-top: 12px; font-size: 15px; color: var(--c-tenue); }
+  .comandi input { accent-color: var(--c-blu); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Ticker di notizie (con pausa)</span><span data-l="en">News ticker (with pause)</span><span data-l="fr">Fil d’actualité (avec pause)</span><span data-l="zh">新闻快讯（可暂停）</span></span>
+    <div class="ticker">
+      <span class="etichetta"><i></i><span data-l="it">Live</span><span data-l="en">Live</span><span data-l="fr">Direct</span><span data-l="zh">直播</span></span>
+      <div class="striscia" id="s1"><div class="nastro" id="n1" style="--durata:34s"></div></div>
+      <button class="pausa" type="button" id="pausa" aria-pressed="false"></button>
+    </div>
+    <div class="comandi"><label><span data-l="it">Velocità</span><span data-l="en">Speed</span><span data-l="fr">Vitesse</span><span data-l="zh">速度</span> <input type="range" min="10" max="60" value="34" id="vel" style="vertical-align:middle;direction:rtl"></label><span id="stato" aria-live="polite"></span></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Parete di loghi (marchi inventati)</span><span data-l="en">Logo wall (made-up brands)</span><span data-l="fr">Mur de logos (marques inventées)</span><span data-l="zh">品牌标志墙（虚构品牌）</span></span>
+    <div class="striscia sfuma loghi" aria-hidden="true"><div class="nastro" id="n2" style="--durata:26s"></div></div>
+  </div>
+  <div class="riquadro" style="padding:18px 0;overflow:hidden">
+    <div class="striscia" aria-hidden="true"><div class="nastro" id="n3" style="--durata:22s;animation-direction:reverse"></div></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il testo in movimento è difficile da leggere: deve fermarsi al passaggio del puntatore, al focus e con «riduci movimento», e avere un pulsante di pausa.</span><span data-l="en">Moving text is hard to read: it should stop on hover, on focus and with “reduce motion”, and have a pause button.</span><span data-l="fr">Le texte en mouvement est difficile à lire&#8239;: il doit s’arrêter au survol, au focus et avec «&#8239;réduire les animations&#8239;», et avoir un bouton pause.</span><span data-l="zh">移动的文字难以阅读：悬停、获得焦点或开启“减少动态效果”时应停止，并提供暂停按钮。</span></p>
+<script>
+  var NOTIZIE = [
+    { it: 'Aperte le iscrizioni al laboratorio di Interface Design', en: 'Enrolment open for the Interface Design lab', fr: 'Inscriptions ouvertes à l’atelier d’Interface Design', zh: '界面设计工作坊开放报名' },
+    { it: 'Mostra di fine anno: venerdì alle 18 in aula magna', en: 'End-of-year show: Friday at 6 pm in the main hall', fr: 'Exposition de fin d’année : vendredi à 18 h dans le grand amphi', zh: '年终作品展：周五 18 点，大礼堂' },
+    { it: 'Biblioteca aperta anche il sabato', en: 'Library now open on Saturdays', fr: 'Bibliothèque ouverte aussi le samedi', zh: '图书馆周六也开放' },
+    { it: 'Nuovo corso di tipografia variabile', en: 'New course on variable typography', fr: 'Nouveau cours de typographie variable', zh: '新课程：可变字体排印' }
+  ];
+  var MARCHI = [['Nordlys', '#698fff', 'c'], ['Pebble&Co', '#fa9191', 's'], ['Kōen', '#111', 't'], ['Fernweh', '#4caf7a', 'c'], ['Atelier 9', '#df8888', 's'], ['Lumo', '#f4bd4f', 't']];
+  var TX = { pausa: { it: 'Metti in pausa', en: 'Pause', fr: 'Mettre en pause', zh: '暂停' }, play: { it: 'Riprendi', en: 'Play', fr: 'Reprendre', zh: '继续' },
+    ferma: { it: 'In pausa', en: 'Paused', fr: 'En pause', zh: '已暂停' }, grande: { it: 'Design · Interfacce · Componenti', en: 'Design · Interfaces · Components', fr: 'Design · Interfaces · Composants', zh: '设计 · 界面 · 组件' } };
+  function T(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var fermo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function forma(f, c) { return f === 'c' ? '<svg width="26" height="26"><circle cx="13" cy="13" r="11" fill="' + c + '"/></svg>' : f === 's' ? '<svg width="26" height="26"><rect x="2" y="2" width="22" height="22" rx="5" fill="' + c + '"/></svg>' : '<svg width="26" height="26"><path d="M13 2l11 22H2z" fill="' + c + '"/></svg>'; }
+  function disegna() {
+    // il contenuto si ripete due volte: l’animazione sposta di metà e ricomincia senza salto
+    var n1 = document.getElementById('n1'); n1.innerHTML = '';
+    for (var k = 0; k < 2; k++) NOTIZIE.forEach(function (n) { var s = document.createElement('span'); s.className = 'notizia'; s.textContent = T(n); if (k) s.setAttribute('aria-hidden', 'true'); n1.appendChild(s); });
+    var n2 = document.getElementById('n2'); n2.innerHTML = '';
+    for (k = 0; k < 2; k++) MARCHI.forEach(function (m) { n2.insertAdjacentHTML('beforeend', '<span class="marchio">' + forma(m[2], m[1]) + m[0] + '</span>'); });
+    var n3 = document.getElementById('n3'); n3.innerHTML = '';
+    for (k = 0; k < 4; k++) { var g = document.createElement('span'); g.className = 'grande'; g.innerHTML = '<span></span><span class="o">✳</span>'; g.firstChild.textContent = T(TX.grande); n3.appendChild(g); }
+    var b = document.getElementById('pausa');
+    b.innerHTML = fermo ? '<svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><path d="M2 1l11 7-11 7z" fill="#fff"/></svg>' : '<svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true"><rect x="1" y="1" width="4" height="14" fill="#fff"/><rect x="9" y="1" width="4" height="14" fill="#fff"/></svg>';
+    b.setAttribute('aria-label', T(fermo ? TX.play : TX.pausa)); b.setAttribute('aria-pressed', String(fermo));
+    document.querySelectorAll('.striscia').forEach(function (s) { s.classList.toggle('ferma', fermo); });
+    document.getElementById('stato').textContent = fermo ? T(TX.ferma) : '';
+  }
+  document.getElementById('pausa').onclick = function () { fermo = !fermo; disegna(); };
+  document.getElementById('vel').oninput = function () { document.getElementById('n1').style.setProperty('--durata', this.value + 's'); };
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

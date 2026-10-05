@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- Esempio ricostruito: Slider. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slider — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .campo { margin-bottom: 26px; }
+  .campo:last-child { margin-bottom: 0; }
+  .testa { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-size: 16px; }
+  .testa output { font-weight: 500; font-variant-numeric: tabular-nums; }
+  .riga { display: flex; align-items: center; gap: 12px; }
+  .riga svg { width: 24px; height: 24px; flex: none; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 28px; margin: 0; background: none; cursor: pointer; --p: 50%; }
+  input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(to right, var(--c-blu) var(--p), rgba(0,0,0,.14) var(--p)); }
+  input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: rgba(0,0,0,.14); }
+  input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--c-blu); }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; margin-top: -9px; border-radius: 50%; background: #fff; border: 3px solid var(--c-blu); box-shadow: 0 1px 4px rgba(0,0,0,.25); transition: transform .15s; }
+  input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid var(--c-blu); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+  input[type="range"]:hover::-webkit-slider-thumb { transform: scale(1.12); }
+  input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(105,143,255,.2); }
+  input[type="range"]:focus-visible { outline: none; }
+  input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--c-blu); }
+  input[type="range"]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--c-blu); }
+  input[type="range"]:disabled { cursor: not-allowed; }
+  input[type="range"]:disabled::-webkit-slider-runnable-track { background: linear-gradient(to right, rgba(0,0,0,.3) var(--p), rgba(0,0,0,.1) var(--p)); }
+  input[type="range"]:disabled::-webkit-slider-thumb { border-color: rgba(0,0,0,.3); box-shadow: none; }
+  .doppio { position: relative; height: 28px; }
+  .doppio .binario { position: absolute; left: 0; right: 0; top: 11px; height: 6px; border-radius: 3px; background: rgba(0,0,0,.14); }
+  .doppio .pieno { position: absolute; top: 11px; height: 6px; border-radius: 3px; background: var(--c-salmone); }
+  .doppio input { position: absolute; inset: 0; pointer-events: none; }
+  .doppio input::-webkit-slider-runnable-track { background: none; }
+  .doppio input::-moz-range-track, .doppio input::-moz-range-progress { background: none; }
+  .doppio input::-webkit-slider-thumb { pointer-events: auto; border-color: var(--c-salmone); }
+  .doppio input::-moz-range-thumb { pointer-events: auto; border-color: var(--c-salmone); }
+  .tacche { display: flex; justify-content: space-between; padding: 0 9px; font-size: 15px; color: var(--c-tenue); margin-top: 2px; }
+  .tacche span { width: 0; display: flex; justify-content: center; white-space: nowrap; }
+  .tacche span:first-child { justify-content: flex-start; margin-left: -9px; } .tacche span:last-child { justify-content: flex-end; margin-right: -9px; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Valore singolo</span><span data-l="en">Single value</span><span data-l="fr">Valeur unique</span><span data-l="zh">单值</span></span>
+    <div class="campo">
+      <div class="testa"><label for="vol"><span data-l="it">Volume</span><span data-l="en">Volume</span><span data-l="fr">Volume</span><span data-l="zh">音量</span></label><output id="vol-o" for="vol"></output></div>
+      <div class="riga">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#111"/></svg>
+        <input type="range" id="vol" min="0" max="100" value="60">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z" fill="#111"/><path d="M16 8.5a5 5 0 010 7M18.5 6a8.5 8.5 0 010 12" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="campo">
+      <div class="testa"><label for="pass"><span data-l="it">A passi (tacche)</span><span data-l="en">Stepped (ticks)</span><span data-l="fr">Par crans</span><span data-l="zh">分档（刻度）</span></label><output id="pass-o" for="pass"></output></div>
+      <input type="range" id="pass" min="0" max="4" step="1" value="2">
+      <div class="tacche" id="tacche"></div>
+    </div>
+    <div class="campo">
+      <div class="testa"><label for="dis" style="color:var(--c-tenue)"><span data-l="it">Disattivato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></label><output style="color:var(--c-tenue)">30</output></div>
+      <input type="range" id="dis" min="0" max="100" value="30" disabled style="--p:30%">
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Intervallo (due maniglie)</span><span data-l="en">Range (two handles)</span><span data-l="fr">Plage (deux poignées)</span><span data-l="zh">范围（双滑块）</span></span>
+    <div class="campo">
+      <div class="testa"><span id="prezzo-l"><span data-l="it">Prezzo</span><span data-l="en">Price</span><span data-l="fr">Prix</span><span data-l="zh">价格</span></span><output id="prezzo-o"></output></div>
+      <div class="doppio">
+        <div class="binario"></div><div class="pieno" id="pieno"></div>
+        <input type="range" id="min" min="0" max="500" step="10" value="120" aria-labelledby="prezzo-l">
+        <input type="range" id="max" min="0" max="500" step="10" value="380" aria-labelledby="prezzo-l">
+      </div>
+      <div class="tacche"><span>0 €</span><span>250 €</span><span>500 €</span></div>
+    </div>
+    <p style="font-size:15px;color:var(--c-tenue);margin:6px 0 0" id="trovati" aria-live="polite"></p>
+    <div id="barre" style="display:flex;align-items:flex-end;gap:3px;height:90px;margin-top:14px" aria-hidden="true"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Si trascina la maniglia lungo il binario; da tastiera frecce, Pagina su/giù, Inizio e Fine.</span><span data-l="en">Drag the handle along the track; on the keyboard use arrows, Page Up/Down, Home and End.</span><span data-l="fr">On fait glisser la poignée le long du rail ; au clavier : flèches, Page préc./suiv., Début et Fin.</span><span data-l="zh">沿轨道拖动滑块；键盘可用方向键、Page Up/Down、Home 和 End。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var LIV = [
+    { it: 'Minima', en: 'Lowest', fr: 'Minimale', zh: '最低' }, { it: 'Bassa', en: 'Low', fr: 'Basse', zh: '低' },
+    { it: 'Media', en: 'Medium', fr: 'Moyenne', zh: '中' }, { it: 'Alta', en: 'High', fr: 'Haute', zh: '高' },
+    { it: 'Massima', en: 'Highest', fr: 'Maximale', zh: '最高' }];
+  var TROVATI = { it: '{n} prodotti in questa fascia', en: '{n} products in this range', fr: '{n} produits dans cette plage', zh: '此区间内有 {n} 件商品' };
+  var DATI = []; for (var i = 0; i < 50; i++) DATI.push(Math.round(8 + 40 * Math.exp(-Math.pow((i - 20) / 11, 2)) + (i * 13 % 9)));
+  var vol = document.getElementById('vol'), pass = document.getElementById('pass'), mn = document.getElementById('min'), mx = document.getElementById('max');
+  function perc(el) { return (el.value - el.min) / (el.max - el.min) * 100; }
+  function aggiorna() {
+    vol.style.setProperty('--p', perc(vol) + '%'); document.getElementById('vol-o').textContent = vol.value + '%';
+    pass.style.setProperty('--p', perc(pass) + '%'); document.getElementById('pass-o').textContent = t(LIV[pass.value]);
+    pass.setAttribute('aria-valuetext', t(LIV[pass.value]));
+    document.getElementById('tacche').innerHTML = LIV.map(function (l, i) { return '<span>' + (i % 2 ? '·' : t(l)) + '</span>'; }).join('');
+    if (+mn.value > +mx.value - 20) { if (document.activeElement === mn) mn.value = +mx.value - 20; else mx.value = +mn.value + 20; }
+    var p = document.getElementById('pieno'); p.style.left = perc(mn) + '%'; p.style.right = (100 - perc(mx)) + '%';
+    document.getElementById('prezzo-o').textContent = mn.value + ' – ' + mx.value + ' €';
+    var n = 0, h = '';
+    DATI.forEach(function (d, i) { var dentro = i * 10 >= mn.value && i * 10 < mx.value; if (dentro) n += d; h += '<i style="flex:1;height:' + d * 1.6 + 'px;border-radius:2px;background:' + (dentro ? 'var(--c-salmone)' : 'rgba(0,0,0,.1)') + '"></i>'; });
+    document.getElementById('barre').innerHTML = h;
+    document.getElementById('trovati').textContent = t(TROVATI).replace('{n}', n);
+  }
+  [vol, pass, mn, mx].forEach(function (el) { el.addEventListener('input', aggiorna); });
+  aggiorna();
+  document.addEventListener('lingua', aggiorna);
+</script>
+</body>
+</html>

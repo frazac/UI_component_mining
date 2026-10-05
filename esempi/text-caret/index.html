@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- Esempio ricostruito: Text caret (input text cursor). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text caret — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .grande { position: relative; font-size: 46px; line-height: 1.2; padding: 16px 18px; border: 2px solid var(--c-linea); border-radius: 12px; cursor: text; white-space: pre; overflow: hidden; min-height: 92px; letter-spacing: .01em; }
+  .grande:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 4px rgba(105,143,255,.2); }
+  .grande .c { display: inline-block; width: 3px; height: 1.05em; margin: 0 -1.5px; vertical-align: -0.15em; background: var(--c-salmone); border-radius: 2px; }
+  .grande:focus .c { animation: lampeggia 1.06s steps(1) infinite; }
+  .grande:not(:focus) .c { background: rgba(0,0,0,.25); }
+  @keyframes lampeggia { 50% { opacity: 0; } }
+  .info { display: flex; justify-content: space-between; font-size: 15px; color: var(--c-tenue); margin-top: 10px; font-variant-numeric: tabular-nums; }
+  .varianti { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .var { text-align: center; font-size: 15px; color: var(--c-tenue); }
+  .var .campione { font: 500 26px/1 ui-monospace, Menlo, monospace; color: var(--c-testo); height: 54px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: #faf7f6; margin-bottom: 8px; }
+  .var i { display: inline-block; animation: lampeggia 1.06s steps(1) infinite; font-style: normal; }
+  .barra-c { width: 3px; height: 28px; background: var(--c-salmone); vertical-align: middle; margin: 0 1px; }
+  .blocco { background: var(--c-salmone); color: #fff; }
+  .sotto { border-bottom: 3px solid var(--c-salmone); }
+  .var input { width: 100%; height: 54px; border: 1px solid var(--c-linea); border-radius: 8px; padding: 0 10px; font-size: 22px; caret-color: var(--c-blu); margin-bottom: 8px; text-align: center; }
+  .puntatore svg { width: 26px; height: 32px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Clicca e scrivi: frecce, Inizio, Fine, Backspace</span><span data-l="en">Click and type: arrows, Home, End, Backspace</span><span data-l="fr">Cliquez et tapez : flèches, Début, Fin, Retour arrière</span><span data-l="zh">点击后输入：方向键、Home、End、退格</span></span>
+    <div class="grande" id="campo" tabindex="0" role="textbox" aria-label="Text" aria-multiline="false"></div>
+    <div class="info"><span id="pos"></span><span id="fuoco"></span></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Forme del caret (e il puntatore a I, che non è il caret)</span><span data-l="en">Caret shapes (and the I-beam pointer, which is not the caret)</span><span data-l="fr">Formes du caret (et le pointeur en I, qui n’est pas le caret)</span><span data-l="zh">插入符的形状（以及 I 形鼠标指针，它不是插入符）</span></span>
+    <div class="varianti">
+      <div class="var"><div class="campione">ab<i class="barra-c"></i>c</div><span data-l="it">barra verticale</span><span data-l="en">vertical bar</span><span data-l="fr">barre verticale</span><span data-l="zh">竖线</span></div>
+      <div class="var"><div class="campione">ab<i class="blocco">c</i></div><span data-l="it">blocco (terminale)</span><span data-l="en">block (terminal)</span><span data-l="fr">bloc (terminal)</span><span data-l="zh">方块（终端）</span></div>
+      <div class="var"><div class="campione">ab<i class="sotto">c</i></div><span data-l="it">sottolineato</span><span data-l="en">underline</span><span data-l="fr">souligné</span><span data-l="zh">下划线</span></div>
+      <div class="var puntatore"><div class="campione"><svg viewBox="0 0 26 32" aria-hidden="true"><path d="M8 3h3.5a3 3 0 011.5.5 3 3 0 011.5-.5H18M13 3.5v25M8 29h3.5a3 3 0 001.5-.5 3 3 0 001.5.5H18" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"/></svg></div><span data-l="it">puntatore a I</span><span data-l="en">I-beam pointer</span><span data-l="fr">pointeur en I</span><span data-l="zh">I 形指针</span></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il caret indica il punto di scrittura: lampeggia solo quando il campo ha il focus. In CSS il suo colore si cambia con caret-color.</span><span data-l="en">The caret marks the writing point: it blinks only while the field has focus. In CSS its colour is set with caret-color.</span><span data-l="fr">Le caret indique le point d’écriture : il ne clignote que si le champ a le focus. En CSS, sa couleur se règle avec caret-color.</span><span data-l="zh">插入符标示当前书写位置：只有输入框获得焦点时才闪烁。在 CSS 中可用 caret-color 设置其颜色。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var TX = { pos: { it: 'Posizione {p} di {n}', en: 'Position {p} of {n}', fr: 'Position {p} sur {n}', zh: '位置 {p} / {n}' }, si: { it: 'focus: il caret lampeggia', en: 'focus: the caret blinks', fr: 'focus : le caret clignote', zh: '已聚焦：插入符闪烁' }, no: { it: 'senza focus: caret fermo e grigio', en: 'no focus: caret still and grey', fr: 'sans focus : caret fixe et gris', zh: '未聚焦：插入符静止且为灰色' } };
+  var testo = { it: 'Interfaccia', en: 'Interface', fr: 'Interface', zh: '界面设计' }, s = null, p = 5;
+  var campo = document.getElementById('campo');
+  function esc(x) { return x.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function disegna() {
+    if (s === null) { s = t(testo); p = Math.min(p, s.length); }
+    var ch = Array.from(s);
+    campo.innerHTML = esc(ch.slice(0, p).join('')) + '<span class="c" aria-hidden="true"></span>' + esc(ch.slice(p).join(''));
+    document.getElementById('pos').textContent = t(TX.pos).replace('{p}', p).replace('{n}', ch.length);
+    document.getElementById('fuoco').textContent = t(document.activeElement === campo ? TX.si : TX.no);
+  }
+  campo.addEventListener('keydown', function (e) {
+    var ch = Array.from(s);
+    if (e.key === 'ArrowLeft') p = Math.max(0, p - 1);
+    else if (e.key === 'ArrowRight') p = Math.min(ch.length, p + 1);
+    else if (e.key === 'Home' || e.key === 'ArrowUp') p = 0;
+    else if (e.key === 'End' || e.key === 'ArrowDown') p = ch.length;
+    else if (e.key === 'Backspace') { if (p > 0) { ch.splice(p - 1, 1); p--; } }
+    else if (e.key === 'Delete') { ch.splice(p, 1); }
+    else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && ch.length < 18) { ch.splice(p, 0, e.key); p++; }
+    else return;
+    e.preventDefault(); s = ch.join(''); disegna();
+  });
+  // clic: porta il caret al carattere più vicino
+  campo.addEventListener('mousedown', function (e) {
+    var ch = Array.from(s), r = document.createRange(), meglio = 0, dist = Infinity;
+    var nodi = []; campo.childNodes.forEach(function (n) { if (n.nodeType === 3) nodi.push(n); });
+    var k = 0; nodi.forEach(function (n) { for (var i = 0; i <= n.length; i++) { r.setStart(n, i); r.setEnd(n, i); var b = r.getBoundingClientRect(), d = Math.abs(b.left - e.clientX); if (d < dist) { dist = d; meglio = k + i; } } k += n.length; });
+    p = Math.min(ch.length, meglio); setTimeout(disegna, 0);
+  });
+  campo.addEventListener('focus', disegna); campo.addEventListener('blur', disegna);
+  disegna();
+  document.addEventListener('lingua', function () { s = null; disegna(); });
+</script>
+</body>
+</html>

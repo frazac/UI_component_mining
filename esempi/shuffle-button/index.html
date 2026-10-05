@@ -1,0 +1,113 @@
+<!doctype html>
+<!-- Esempio ricostruito: Shuffle button. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shuffle button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1.15fr; }
+  .lettore { display: grid; gap: 14px; justify-items: center; }
+  .copertina { width: 180px; height: 180px; border-radius: 12px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); position: relative; overflow: hidden; }
+  .copertina::before { content: ""; position: absolute; width: 120px; height: 120px; border-radius: 50%; border: 18px solid rgba(255,255,255,.35); left: 30px; top: 30px; box-sizing: border-box; }
+  .titolo { text-align: center; }
+  .titolo b { display: block; font-weight: 500; font-size: 18px; }
+  .titolo small { color: var(--c-tenue); font-size: 15px; }
+  .comandi { display: flex; align-items: center; gap: 2px; }
+  .comandi button { border: 0; background: none; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; position: relative; color: var(--c-testo); }
+  .comandi button:hover { background: var(--c-palco); }
+  .comandi .play { width: 54px; height: 54px; background: var(--c-testo); color: #fff; }
+  .comandi .play:hover { background: #333; }
+  #shuffle[data-modo="1"], #shuffle[data-modo="2"] { color: var(--c-blu); }
+  #shuffle[data-modo="1"]::after, #shuffle[data-modo="2"]::after { content: ""; position: absolute; bottom: 4px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: currentColor; }
+  .stellina { position: absolute; top: 6px; right: 5px; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .2s; }
+  #shuffle[data-modo="2"] .stellina { opacity: 1; transform: scale(1); }
+  .modo { font-size: 15px; color: var(--c-blu); min-height: 21px; }
+  ol.coda { list-style: none; margin: 0; padding: 0; counter-reset: n; }
+  .coda li { display: grid; grid-template-columns: 24px 1fr auto; gap: 10px; align-items: center; padding: 7px 4px; border-bottom: 1px solid var(--c-linea); font-size: 16px; counter-increment: n; animation: entra .3s ease; }
+  .coda li::before { content: counter(n); color: var(--c-tenue); font-size: 15px; text-align: right; }
+  .coda li.ora { color: var(--c-blu); font-weight: 500; }
+  .coda li small { color: var(--c-tenue); font-size: 15px; font-weight: 400; }
+  .coda .consigliato { background: rgba(105,143,255,.07); }
+  .etichetta-ai { font-size: 13px; color: var(--c-blu); border: 1px solid currentColor; border-radius: 999px; padding: 1px 7px; white-space: nowrap; }
+  @keyframes entra { from { opacity: 0; transform: translateY(-4px); } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Premi più volte il pulsante</span><span data-l="en">Press the button several times</span><span data-l="fr">Appuyez plusieurs fois sur le bouton</span><span data-l="zh">多按几次按钮</span></span>
+    <div class="lettore">
+      <div class="copertina" aria-hidden="true"></div>
+      <div class="titolo"><b id="ora-titolo"></b><small id="ora-autore"></small></div>
+      <div class="comandi">
+        <button type="button" id="shuffle" data-modo="0"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h3c4 0 6 10 10 10h4M3 17h3c1.6 0 2.8-1.4 3.8-3M13.2 10c1-1.6 2.2-3 3.8-3h3M17.5 4l3 3-3 3M17.5 14l3 3-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="stellina" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.4 4.6L12 6l-4.6 1.4L6 12 4.6 7.4 0 6l4.6-1.4z" fill="currentColor"/></svg></button>
+        <button type="button" id="prec" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14L8 12zM6 5v14" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button>
+        <button type="button" class="play" id="play" aria-label="Play"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" id="ico-play"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg></button>
+        <button type="button" id="succ" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14l10-7zM18 5v14" fill="currentColor" stroke="currentColor" stroke-width="2"/></svg></button>
+        <button type="button" aria-label="Repeat" disabled style="opacity:.35"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11V9a3 3 0 0 1 3-3h12l-3-3M20 13v2a3 3 0 0 1-3 3H5l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+      <div class="modo" id="modo" aria-live="polite"></div>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">In coda</span><span data-l="en">Up next</span><span data-l="fr">À suivre</span><span data-l="zh">接下来播放</span></span>
+    <ol class="coda" id="coda"></ol>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Tre stati in un pulsante: in ordine, casuale, casuale «intelligente» con brani consigliati in mezzo (come lo smart shuffle).</span><span data-l="en">Three states in one button: in order, shuffled, and “smart” shuffle with recommended tracks mixed in.</span><span data-l="fr">Trois états dans un bouton : dans l’ordre, aléatoire, aléatoire « intelligent » avec des titres recommandés intercalés.</span><span data-l="zh">一个按钮三种状态：顺序播放、随机播放，以及穿插推荐曲目的“智能”随机播放。</span></p>
+<script>
+  var BRANI = [
+    ['Linea di costa', 'Ottavia'], ['Nebbia bassa', 'Il Faro'], ['Giugno', 'Ottavia'], ['Dodici', 'Banda Tram'],
+    ['Lento', 'Il Faro'], ['Corridoio', 'Banda Tram'], ['Sabbia', 'Ottavia']
+  ];
+  var CONSIGLI = [['Vetro', 'Marea'], ['Orbite', 'Sette Note'], ['Ponte', 'Marea']];
+  var T = {
+    modi: [
+      { it: 'Riproduzione in ordine', en: 'Playing in order', fr: 'Lecture dans l’ordre', zh: '顺序播放' },
+      { it: 'Riproduzione casuale', en: 'Shuffle on', fr: 'Lecture aléatoire', zh: '随机播放' },
+      { it: 'Casuale intelligente: + brani consigliati', en: 'Smart shuffle: + recommended tracks', fr: 'Aléatoire intelligent : + titres recommandés', zh: '智能随机：加入推荐曲目' }],
+    bott: [
+      { it: 'Attiva riproduzione casuale', en: 'Turn on shuffle', fr: 'Activer la lecture aléatoire', zh: '开启随机播放' },
+      { it: 'Attiva casuale intelligente', en: 'Turn on smart shuffle', fr: 'Activer l’aléatoire intelligent', zh: '开启智能随机播放' },
+      { it: 'Disattiva riproduzione casuale', en: 'Turn off shuffle', fr: 'Désactiver la lecture aléatoire', zh: '关闭随机播放' }],
+    cons: { it: 'consigliato', en: 'suggested', fr: 'suggéré', zh: '推荐' }
+  };
+  var modo = 0, coda = [], pos = 0, suona = false;
+  function L(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  function mescola(a) { a = a.slice(); for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var x = a[k]; a[k] = a[j]; a[j] = x; } return a; }
+  function nuovaCoda() {
+    var corrente = coda[pos] || { b: BRANI[0] };
+    var resto = BRANI.filter(function (b) { return b !== corrente.b; }).map(function (b) { return { b: b }; });
+    if (modo >= 1) resto = mescola(resto);
+    if (modo === 2) { CONSIGLI.forEach(function (c, k) { resto.splice(1 + k * 3, 0, { b: c, ai: true }); }); }
+    coda = [corrente].concat(resto); pos = 0;
+  }
+  function disegna() {
+    var sh = document.getElementById('shuffle');
+    sh.dataset.modo = modo; sh.setAttribute('aria-label', L(T.bott[modo])); sh.setAttribute('aria-pressed', String(modo > 0));
+    document.getElementById('modo').textContent = L(T.modi[modo]);
+    var c = coda[pos];
+    document.getElementById('ora-titolo').textContent = c.b[0];
+    document.getElementById('ora-autore').textContent = c.b[1];
+    var ol = document.getElementById('coda'); ol.innerHTML = '';
+    coda.slice(pos, pos + 8).forEach(function (x, k) {
+      var li = document.createElement('li'); if (k === 0) li.className = 'ora'; if (x.ai) li.className += ' consigliato';
+      li.innerHTML = '<span>' + x.b[0] + ' <small>· ' + x.b[1] + '</small></span>' + (x.ai ? '<span class="etichetta-ai">✦ ' + L(T.cons) + '</span>' : '<span></span>');
+      ol.appendChild(li);
+    });
+    document.getElementById('ico-play').innerHTML = suona ? '<rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/>' : '<path d="M7 4l13 8-13 8z" fill="currentColor"/>';
+  }
+  document.getElementById('shuffle').onclick = function () { modo = (modo + 1) % 3; nuovaCoda(); disegna(); };
+  document.getElementById('succ').onclick = function () { pos = (pos + 1) % coda.length; disegna(); };
+  document.getElementById('prec').onclick = function () { pos = (pos - 1 + coda.length) % coda.length; disegna(); };
+  document.getElementById('play').onclick = function () { suona = !suona; disegna(); };
+  nuovaCoda(); disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

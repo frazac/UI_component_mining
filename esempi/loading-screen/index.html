@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Loading screen. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loading screen — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.25fr 1fr; }
+  .schermo { position: relative; height: 400px; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px var(--c-linea); }
+  .caricamento { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: #fbf5f4; transition: opacity .4s; z-index: 2; padding: 20px; text-align: center; }
+  .caricamento.via { opacity: 0; pointer-events: none; }
+  .marchio { width: 64px; height: 64px; animation: respira 1.6s ease-in-out infinite; }
+  @keyframes respira { 50% { transform: scale(.9); opacity: .7; } }
+  .barra { width: 70%; height: 6px; border-radius: 3px; background: rgba(0,0,0,.08); overflow: hidden; }
+  .barra i { display: block; height: 100%; width: 0; background: var(--c-blu); border-radius: 3px; transition: width .2s; }
+  .fase { font-size: 15px; color: var(--c-tenue); min-height: 21px; margin: 0; }
+  .consiglio { font-size: 15px; max-width: 260px; margin: 6px 0 0; }
+  .consiglio b { font-weight: 500; color: var(--c-rosa); }
+  .contenuto { padding: 20px; }
+  .contenuto h2 { margin: 0 0 12px; font-size: 20px; font-weight: 500; }
+  .griglia { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .griglia div { height: 92px; border-radius: 10px; background: linear-gradient(135deg, #fdd, #dfe6ff); }
+  .ripeti { margin-top: 14px; border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 14px; cursor: pointer; font-size: 15px; }
+  .varianti { display: grid; gap: 18px; }
+  .var { display: flex; align-items: center; gap: 16px; font-size: 15px; }
+  .var > :first-child { flex: none; width: 70px; display: flex; justify-content: center; }
+  .var small { display: block; color: var(--c-tenue); font-size: 15px; }
+  .ruota { width: 34px; height: 34px; border: 4px solid rgba(0,0,0,.08); border-top-color: var(--c-salmone); border-radius: 50%; animation: gira .9s linear infinite; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .puntini { display: flex; gap: 6px; } .puntini i { width: 10px; height: 10px; border-radius: 50%; background: var(--c-blu); animation: salta 1s ease-in-out infinite; }
+  .puntini i:nth-child(2) { animation-delay: .15s; } .puntini i:nth-child(3) { animation-delay: .3s; }
+  @keyframes salta { 0%, 60%, 100% { transform: none; opacity: .4; } 30% { transform: translateY(-7px); opacity: 1; } }
+  .anello { width: 40px; height: 40px; }
+  .scheletro { width: 64px; display: grid !important; gap: 6px; }
+  .scheletro i { height: 9px; border-radius: 5px; background: linear-gradient(90deg, #eee 0, #f8f8f8 40%, #eee 80%); background-size: 200% 100%; animation: luccica 1.2s linear infinite; }
+  @keyframes luccica { to { background-position: -200% 0; } }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Schermata di caricamento</span><span data-l="en">Loading screen</span><span data-l="fr">Écran de chargement</span><span data-l="zh">加载界面</span></span>
+    <div class="schermo">
+      <div class="caricamento" id="car" role="status" aria-live="polite">
+        <svg class="marchio" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="32" r="20" fill="#fa9191"/><circle cx="40" cy="32" r="20" fill="#698fff" style="mix-blend-mode:multiply"/></svg>
+        <div class="barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" id="pb"><i id="riemp"></i></div>
+        <p class="fase" id="fase"></p>
+        <p class="consiglio" id="consiglio"></p>
+      </div>
+      <div class="contenuto">
+        <h2><span data-l="it">Bentornata!</span><span data-l="en">Welcome back!</span><span data-l="fr">Bon retour !</span><span data-l="zh">欢迎回来！</span></h2>
+        <div class="griglia"><div></div><div></div><div></div><div></div></div>
+        <button class="ripeti" type="button" id="ripeti"><span data-l="it">↻ Ricarica</span><span data-l="en">↻ Reload</span><span data-l="fr">↻ Recharger</span><span data-l="zh">↻ 重新加载</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="riquadro varianti">
+    <span class="didascalia" style="margin:0"><span data-l="it">Indicatori</span><span data-l="en">Indicators</span><span data-l="fr">Indicateurs</span><span data-l="zh">指示器</span></span>
+    <div class="var"><div><span class="ruota"></span></div><div><span data-l="it">Spinner</span><span data-l="en">Spinner</span><span data-l="fr">Spinner</span><span data-l="zh">旋转图标</span><small><span data-l="it">durata ignota</span><span data-l="en">unknown duration</span><span data-l="fr">durée inconnue</span><span data-l="zh">时长未知</span></small></div></div>
+    <div class="var"><div><span class="puntini"><i></i><i></i><i></i></span></div><div><span data-l="it">Puntini</span><span data-l="en">Dots</span><span data-l="fr">Points</span><span data-l="zh">跳动圆点</span><small><span data-l="it">attesa breve</span><span data-l="en">short wait</span><span data-l="fr">attente courte</span><span data-l="zh">短暂等待</span></small></div></div>
+    <div class="var"><div><svg class="anello" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="none" stroke="#eee" stroke-width="5"/><circle id="anello" cx="20" cy="20" r="16" fill="none" stroke="#698fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5" transform="rotate(-90 20 20)"/></svg></div><div><span data-l="it">Avanzamento</span><span data-l="en">Progress</span><span data-l="fr">Progression</span><span data-l="zh">进度</span><small><span data-l="it">durata nota, in %</span><span data-l="en">known duration, in %</span><span data-l="fr">durée connue, en %</span><span data-l="zh">时长已知，以 % 显示</span></small></div></div>
+    <div class="var"><div><span class="scheletro"><i></i><i style="width:80%"></i><i style="width:60%"></i></span></div><div><span data-l="it">Scheletro</span><span data-l="en">Skeleton</span><span data-l="fr">Squelette</span><span data-l="zh">骨架屏</span><small><span data-l="it">anticipa la forma</span><span data-l="en">previews the layout</span><span data-l="fr">annonce la mise en page</span><span data-l="zh">预示页面布局</span></small></div></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Una schermata di caricamento dice che qualcosa sta succedendo e, se può, quanto manca. Premi «Ricarica» per rivederla.</span><span data-l="en">A loading screen says that something is happening and, if it can, how long is left. Press “Reload” to see it again.</span><span data-l="fr">Un écran de chargement indique que quelque chose se passe et, si possible, combien de temps il reste. Appuyez sur « Recharger » pour le revoir.</span><span data-l="zh">加载界面告诉用户正在发生什么，并尽可能显示还需多久。按“重新加载”可再看一次。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var FASI = [
+    { it: 'Connessione…', en: 'Connecting…', fr: 'Connexion…', zh: '正在连接…' },
+    { it: 'Carico i tuoi progetti…', en: 'Loading your projects…', fr: 'Chargement de vos projets…', zh: '正在加载你的项目…' },
+    { it: 'Quasi pronto…', en: 'Almost ready…', fr: 'Presque prêt…', zh: '马上就好…' }];
+  var CONS = { it: '<b>Lo sapevi?</b> Puoi trascinare i file direttamente nella finestra.', en: '<b>Did you know?</b> You can drag files straight into the window.', fr: '<b>Le saviez-vous ?</b> Vous pouvez glisser vos fichiers directement dans la fenêtre.', zh: '<b>你知道吗？</b>可以把文件直接拖进窗口。' };
+  var p = 0, timer, car = document.getElementById('car');
+  function testo() { document.getElementById('fase').textContent = t(FASI[p < 35 ? 0 : p < 80 ? 1 : 2]) + ' ' + Math.round(p) + '%'; document.getElementById('consiglio').innerHTML = t(CONS); }
+  function avvia() {
+    p = 0; car.classList.remove('via'); clearInterval(timer);
+    timer = setInterval(function () {
+      p = Math.min(100, p + (p < 60 ? 2.2 : p < 85 ? 0.9 : 1.6));
+      document.getElementById('riemp').style.width = p + '%'; document.getElementById('pb').setAttribute('aria-valuenow', Math.round(p)); testo();
+      if (p >= 100) { clearInterval(timer); setTimeout(function () { car.classList.add('via'); }, 400); }
+    }, 90);
+  }
+  // anello di avanzamento a ciclo continuo
+  var q = 0; setInterval(function () { q = (q + 1) % 120; document.getElementById('anello').setAttribute('stroke-dashoffset', 100.5 * (1 - Math.min(q, 100) / 100)); }, 50);
+  document.getElementById('ripeti').onclick = avvia;
+  avvia();
+  document.addEventListener('lingua', testo);
+</script>
+</body>
+</html>

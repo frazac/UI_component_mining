@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- Esempio ricostruito: Scrollbar. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scrollbar — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .area { position: relative; height: 330px; border: 1px solid var(--c-linea); border-radius: 8px; overflow: hidden; }
+  .cont { height: 100%; overflow-y: scroll; scrollbar-width: none; padding: 10px 14px; }
+  .cont::-webkit-scrollbar { display: none; }
+  .cont p { margin: 0; padding: 8px 0; border-bottom: 1px solid var(--c-linea); font-size: 16px; display: flex; gap: 12px; }
+  .cont p span:first-child { color: var(--c-tenue); width: 28px; font-variant-numeric: tabular-nums; }
+  .barra { position: absolute; top: 0; right: 0; bottom: 0; width: 16px; background: #f1edeb; border-left: 1px solid var(--c-linea); }
+  .classica .cont { padding-right: 28px; }
+  .barra .freccia { position: absolute; left: 0; right: 0; height: 16px; border: 0; background: #e6e0de; cursor: pointer; padding: 0; display: grid; place-content: center; }
+  .barra .freccia:hover { background: #d8d0cd; }
+  .barra .freccia svg { width: 8px; height: 8px; }
+  .barra .su { top: 0; } .barra .giu { bottom: 0; }
+  .binario { position: absolute; left: 0; right: 0; top: 16px; bottom: 16px; cursor: pointer; }
+  .pollice { position: absolute; left: 3px; right: 3px; border-radius: 5px; background: #a9a2a0; cursor: grab; touch-action: none; }
+  .pollice:hover, .pollice.tiro { background: #7d7674; }
+  .sovrap .barra { background: none; border: 0; width: 12px; opacity: 0; transition: opacity .4s, width .15s; }
+  .sovrap .barra.vista, .sovrap .barra:hover { opacity: 1; }
+  .sovrap .barra:hover { width: 16px; background: rgba(0,0,0,.05); }
+  .sovrap .binario { top: 4px; bottom: 4px; }
+  .sovrap .pollice { background: rgba(0,0,0,.45); border-radius: 6px; left: 3px; right: 3px; }
+  .lettura { margin-top: 10px; font-size: 15px; color: var(--c-tenue); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Classica: sempre visibile</span><span data-l="en">Classic: always visible</span><span data-l="fr">Classique : toujours visible</span><span data-l="zh">经典：始终可见</span></span>
+    <div class="area classica" data-b></div>
+    <p class="lettura"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Sovrapposta: compare quando scorri</span><span data-l="en">Overlay: appears when you scroll</span><span data-l="fr">Superposée : apparaît au défilement</span><span data-l="zh">悬浮式：滚动时出现</span></span>
+    <div class="area sovrap" data-b></div>
+    <p class="lettura"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">La lunghezza del cursore è proporzionale alla parte visibile; trascinalo, clicca il binario per saltare di una pagina, o usa rotella e tastiera.</span><span data-l="en">The thumb length is proportional to the visible part; drag it, click the track to jump a page, or use the wheel and keyboard.</span><span data-l="fr">La longueur du curseur est proportionnelle à la partie visible ; faites-le glisser, cliquez sur la piste pour sauter d’une page, ou utilisez molette et clavier.</span><span data-l="zh">滑块长度与可见部分成正比；可拖动滑块、点击轨道翻一页，或使用滚轮和键盘。</span></p>
+<script>
+  var VOCI = { it: ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'], en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], fr: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'], zh: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'] };
+  var LET = { it: 'visibile {a}% del totale · posizione {b}%', en: '{a}% of the total visible · position {b}%', fr: '{a} % du total visible · position {b} %', zh: '可见 {a}% · 位置 {b}%' };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  var FRECCIA = function (d) { return '<svg viewBox="0 0 8 8"><path d="' + (d ? 'M1 2 L4 6 L7 2' : 'M1 6 L4 2 L7 6') + '" fill="#555"/></svg>'; };
+  document.querySelectorAll('[data-b]').forEach(function (area) {
+    var classica = area.classList.contains('classica');
+    area.innerHTML = '<div class="cont" tabindex="0"></div><div class="barra" aria-hidden="true">' + (classica ? '<button class="freccia su" tabindex="-1">' + FRECCIA(0) + '</button><button class="freccia giu" tabindex="-1">' + FRECCIA(1) + '</button>' : '') + '<div class="binario"><div class="pollice"></div></div></div>';
+    var cont = area.querySelector('.cont'), barra = area.querySelector('.barra'), bin = area.querySelector('.binario'), pol = area.querySelector('.pollice'), let = area.nextElementSibling, timer;
+    cont.setAttribute('role', 'region');
+    function riempi() { cont.innerHTML = ''; for (var i = 0; i < 36; i++) { var p = document.createElement('p'); p.innerHTML = '<span></span><span></span>'; p.firstChild.textContent = i + 1; p.lastChild.textContent = VOCI[l()][i % 12] + ' ' + (2025 + Math.floor(i / 12)); cont.appendChild(p); } aggiorna(); }
+    function aggiorna() {
+      var H = bin.clientHeight, r = cont.clientHeight / cont.scrollHeight, h = Math.max(24, H * r), max = cont.scrollHeight - cont.clientHeight;
+      pol.style.height = h + 'px'; pol.style.top = (max ? cont.scrollTop / max * (H - h) : 0) + 'px';
+      let.textContent = LET[l()].replace('{a}', Math.round(r * 100)).replace('{b}', Math.round(max ? cont.scrollTop / max * 100 : 0));
+    }
+    cont.addEventListener('scroll', function () { aggiorna(); if (!classica) { barra.classList.add('vista'); clearTimeout(timer); timer = setTimeout(function () { barra.classList.remove('vista'); }, 900); } });
+    var y0, s0;
+    pol.addEventListener('pointerdown', function (ev) { ev.stopPropagation(); pol.setPointerCapture(ev.pointerId); y0 = ev.clientY; s0 = cont.scrollTop; pol.classList.add('tiro'); });
+    pol.addEventListener('pointermove', function (ev) { if (!pol.hasPointerCapture(ev.pointerId)) return; var H = bin.clientHeight - pol.offsetHeight; cont.scrollTop = s0 + (ev.clientY - y0) / H * (cont.scrollHeight - cont.clientHeight); });
+    pol.addEventListener('pointerup', function () { pol.classList.remove('tiro'); });
+    bin.addEventListener('pointerdown', function (ev) { if (ev.target !== bin) return; var sopra = ev.clientY < pol.getBoundingClientRect().top; cont.scrollTop += (sopra ? -1 : 1) * cont.clientHeight * .9; });
+    if (classica) { area.querySelector('.su').onclick = function () { cont.scrollTop -= 40; }; area.querySelector('.giu').onclick = function () { cont.scrollTop += 40; }; }
+    riempi();
+    if (!classica) { barra.classList.add('vista'); timer = setTimeout(function () { barra.classList.remove('vista'); }, 2500); }
+    document.addEventListener('lingua', riempi);
+  });
+</script>
+</body>
+</html>
