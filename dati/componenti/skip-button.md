@@ -14,7 +14,7 @@ Si usa spesso per saltare intro o sezioni ripetitive.
 
 ## en
 # Skip button
-Frequently used to bypass intros or repetitive sections
+Frequently used to bypass intros or repetitive sections.
 
 ## fr
 # Bouton « Passer »
