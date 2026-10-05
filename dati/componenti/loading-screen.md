@@ -15,7 +15,7 @@ Vedi anche Skeleton screen
 
 ## en
 # Loading screen
-See also Skeleton screen
+See also the skeleton screen.
 
 ## fr
 # Écran de chargement
