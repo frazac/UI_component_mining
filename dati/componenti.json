@@ -294,6 +294,125 @@
    }
   },
   {
+   "id": "microinteractions",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2026,
+   "ordine": 40,
+   "parole": [
+    "microinteraction",
+    "trigger",
+    "rules",
+    "feedback",
+    "loops",
+    "modes",
+    "Dan Saffer",
+    "motion"
+   ],
+   "esempio": "esempi/microinteractions/",
+   "vedi": [
+    "interaction-states",
+    "feedback",
+    "like-dislike",
+    "pull-to-refresh",
+    "typing-indicator",
+    "switch",
+    "states-transitions"
+   ],
+   "origine": "nuova 2026",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/microinteractions/",
+     "titolo": "Microinteractions in User Experience – Nielsen Norman Group"
+    },
+    {
+     "url": "https://microinteractions.com/",
+     "titolo": "Dan Saffer, Microinteractions: Designing with Details (O’Reilly, 2013)"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Microinterazioni",
+     "note": "Una microinterazione è un momento minimo con un solo compito: mettere un «mi piace», attivare un interruttore, aggiornare una lista trascinandola verso il basso. Sono piccole, ma è lì che un'interfaccia sembra viva o morta.\n\nDan Saffer le scompone in quattro parti:\n\n- **trigger**: che cosa la avvia (un gesto della persona o un evento del sistema);\n- **regole**: che cosa succede, e che cosa non può succedere;\n- **feedback**: come lo si mostra (movimento, colore, suono, vibrazione);\n- **cicli e modalità**: che cosa cambia col tempo o con l'uso (un contatore che cresce, un comportamento che si adatta).\n\nProgettare una microinterazione vuol dire decidere tutte e quattro le parti, non solo l'animazione."
+    },
+    "en": {
+     "nome": "Microinteractions",
+     "note": "A microinteraction is a tiny moment with a single task: liking a post, flipping a switch, refreshing a list by pulling it down. They are small, but they are where an interface feels alive or dead.\n\nDan Saffer breaks them into four parts:\n\n- **trigger**: what starts it (a gesture by the person or a system event);\n- **rules**: what happens, and what cannot happen;\n- **feedback**: how it is shown (motion, colour, sound, vibration);\n- **loops and modes**: what changes over time or with use (a counter that grows, a behaviour that adapts).\n\nDesigning a microinteraction means deciding all four parts, not just the animation."
+    },
+    "fr": {
+     "nome": "Micro-interactions",
+     "note": "Une micro-interaction est un moment minuscule avec une seule tâche : aimer une publication, actionner un interrupteur, actualiser une liste en la tirant vers le bas. Elles sont petites, mais c’est là qu’une interface paraît vivante ou morte.\n\nDan Saffer les décompose en quatre parties :\n\n- **déclencheur** : ce qui la lance (un geste de la personne ou un événement du système) ;\n- **règles** : ce qui se passe, et ce qui ne peut pas se passer ;\n- **retour** : comment on le montre (mouvement, couleur, son, vibration) ;\n- **boucles et modes** : ce qui change avec le temps ou l’usage (un compteur qui grandit, un comportement qui s’adapte).\n\nConcevoir une micro-interaction, c’est décider les quatre parties, pas seulement l’animation."
+    },
+    "zh": {
+     "nome": "微交互",
+     "note": "微交互是只完成一项任务的极小时刻：点个“赞”、拨动开关、下拉刷新列表。它们很小，却决定了界面显得生动还是呆板。\n\n丹·萨弗（Dan Saffer）把微交互拆成四个部分：\n\n- **触发器（trigger）**：由什么启动（用户的手势或系统事件）；\n- **规则（rules）**：会发生什么，以及不能发生什么；\n- **反馈（feedback）**：如何呈现（动效、颜色、声音、振动）；\n- **循环与模式（loops and modes）**：随时间或使用而变化的部分（不断增长的计数、逐渐适应的行为）。\n\n设计一个微交互，意味着把这四个部分都想清楚，而不仅仅是动画。"
+    }
+   }
+  },
+  {
+   "id": "states-transitions",
+   "livello": "introduzione",
+   "categoria": "introduzione",
+   "anno": 2026,
+   "ordine": 45,
+   "parole": [
+    "states",
+    "transitions",
+    "motion",
+    "duration",
+    "easing",
+    "reduced motion",
+    "accessibility",
+    "animation"
+   ],
+   "esempio": "esempi/states-transitions/",
+   "vedi": [
+    "interaction-states",
+    "feedback",
+    "microinteractions",
+    "skeleton-screen",
+    "loading-screen",
+    "live-validation"
+   ],
+   "origine": "nuova 2026",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/animation-duration/",
+     "titolo": "Executing UX Animations: Duration and Motion Characteristics – Nielsen Norman Group"
+    },
+    {
+     "url": "https://m3.material.io/styles/motion/overview",
+     "titolo": "Motion – Material Design 3"
+    },
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion",
+     "titolo": "prefers-reduced-motion – MDN"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Stati e transizioni",
+     "note": "Ogni componente vive in più stati: normale, hover, focus, premuto, disabilitato, caricamento, errore, successo. Progettarlo vuol dire disegnarli tutti, non solo quello «bello».\n\nLa transizione è il passaggio da uno stato all'altro, e ha tre decisioni:\n\n- **durata**: di solito tra 100 e 300 millisecondi; sotto i 100 non si percepisce, sopra i 500 sembra lenta;\n- **curva di accelerazione** (*easing*): un oggetto reale non parte e non si ferma di colpo; *ease-out* per ciò che entra, *ease-in* per ciò che esce;\n- **che cosa si muove**: solo ciò che aiuta a capire il cambiamento.\n\nAccessibilità: chi soffre di disturbi vestibolari può chiedere al sistema di ridurre il movimento (`prefers-reduced-motion`). Il design deve rispettarlo: meno movimento, stesso significato."
+    },
+    "en": {
+     "nome": "States and transitions",
+     "note": "Every component lives in several states: default, hover, focus, pressed, disabled, loading, error, success. Designing it means drawing all of them, not only the \"nice\" one.\n\nA transition is the passage from one state to another, and it involves three decisions:\n\n- **duration**: usually between 100 and 300 milliseconds; under 100 it is not perceived, over 500 it feels slow;\n- **easing curve**: a real object does not start or stop abruptly; *ease-out* for what enters, *ease-in* for what leaves;\n- **what moves**: only what helps to understand the change.\n\nAccessibility: people with vestibular disorders can ask the system to reduce motion (`prefers-reduced-motion`). Design must respect it: less motion, same meaning."
+    },
+    "fr": {
+     "nome": "États et transitions",
+     "note": "Chaque composant vit dans plusieurs états : normal, survol, focus, appuyé, désactivé, chargement, erreur, succès. Le concevoir, c’est les dessiner tous, pas seulement le « beau ».\n\nLa transition est le passage d’un état à l’autre, et elle demande trois décisions :\n\n- **durée** : en général entre 100 et 300 millisecondes ; sous 100 on ne la perçoit pas, au-delà de 500 elle paraît lente ;\n- **courbe d’accélération** (*easing*) : un objet réel ne démarre ni ne s’arrête d’un coup ; *ease-out* pour ce qui entre, *ease-in* pour ce qui sort ;\n- **ce qui bouge** : seulement ce qui aide à comprendre le changement.\n\nAccessibilité : les personnes souffrant de troubles vestibulaires peuvent demander au système de réduire les animations (`prefers-reduced-motion`). Le design doit le respecter : moins de mouvement, même sens."
+    },
+    "zh": {
+     "nome": "状态与过渡",
+     "note": "每个组件都有多种状态：默认、悬停、焦点、按下、禁用、加载、错误、成功。设计一个组件，就要把所有状态都画出来，而不只是“好看”的那一个。\n\n过渡是从一个状态到另一个状态的变化，需要做三个决定：\n\n- **时长**：通常在 100 到 300 毫秒之间；低于 100 毫秒几乎察觉不到，超过 500 毫秒会显得迟缓；\n- **缓动曲线（easing）**：真实物体不会突然启动或停止；进入用 *ease-out*，离开用 *ease-in*；\n- **什么在动**：只让有助于理解变化的部分动起来。\n\n无障碍：患有前庭功能障碍的人可以让系统减少动效（`prefers-reduced-motion`）。设计必须尊重这一设置：动效更少，含义不变。"
+    }
+   }
+  },
+  {
    "id": "hyperlink",
    "livello": "fondamentale",
    "categoria": "navigazione",

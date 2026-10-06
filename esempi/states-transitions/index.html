@@ -1,0 +1,130 @@
+<!doctype html>
+<!-- Esempio ricostruito: States and transitions. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>States and transitions — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  body { gap: 18px; padding: 26px; }
+  :root { --durata: 200ms; --curva: ease-out; }
+  .stati { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 18px; }
+  .stati button { font-size: 15px; padding: 6px 12px; border-radius: 9999px; border: 1px solid var(--c-linea); background: #fff; cursor: pointer; }
+  .stati button[aria-pressed="true"] { background: var(--c-testo); color: #fff; border-color: var(--c-testo); }
+  .scena { display: grid; place-items: center; height: 110px; background: var(--c-palco); border-radius: 10px; }
+  .pulsante { position: relative; min-width: 190px; padding: 14px 26px; border-radius: 9999px; border: 0; font-size: 17px; font-weight: 500; color: #fff; background: var(--c-blu);
+    transition: background var(--durata) var(--curva), transform var(--durata) var(--curva), box-shadow var(--durata) var(--curva), opacity var(--durata) var(--curva); }
+  .pulsante[data-stato="hover"] { background: rgb(80, 120, 245); box-shadow: 0 6px 16px rgba(105, 143, 255, .45); transform: translateY(-2px); }
+  .pulsante[data-stato="focus"] { outline: 3px solid var(--c-testo); outline-offset: 3px; }
+  .pulsante[data-stato="premuto"] { background: rgb(60, 100, 230); transform: scale(.96); }
+  .pulsante[data-stato="disabilitato"] { background: #c9c9c9; color: #777; }
+  .pulsante[data-stato="caricamento"] { color: transparent; }
+  .pulsante[data-stato="caricamento"]::after { content: ""; position: absolute; inset: 0; margin: auto; width: 20px; height: 20px; border-radius: 50%; border: 3px solid rgba(255,255,255,.5); border-top-color: #fff; animation: gira .8s linear infinite; }
+  .pulsante[data-stato="errore"] { background: #d0453b; }
+  .pulsante[data-stato="successo"] { background: #2e9d5b; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  .comandi { display: grid; grid-template-columns: auto 1fr auto; gap: 10px 12px; align-items: center; font-size: 15px; margin-top: 16px; }
+  .comandi input[type="range"] { width: 100%; accent-color: var(--c-blu); }
+  .comandi select { font-size: 15px; padding: 4px 8px; border-radius: 8px; border: 1px solid var(--c-linea); grid-column: 2 / 4; }
+  output { font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: right; }
+  .pista { position: relative; height: 34px; background: var(--c-palco); border-radius: 9999px; margin-top: 4px; }
+  .pallino { position: absolute; top: 5px; left: 5px; width: 24px; height: 24px; border-radius: 50%; background: var(--c-salmone); transition: left calc(var(--durata) * 3) var(--curva); }
+  .pista.fine .pallino { left: calc(100% - 29px); }
+  .ridotto { display: flex; align-items: center; gap: 8px; font-size: 15px; margin-top: 14px; }
+  .giudizio { font-size: 14px; color: var(--c-rosa); margin: 6px 0 0; min-height: 1.3em; }
+  html.movimento-ridotto .pulsante, html.movimento-ridotto .pallino { transition-property: background, opacity !important; transform: none !important; }
+  html.movimento-ridotto .pulsante[data-stato="caricamento"]::after { animation-duration: 2.4s; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Gli stati di un pulsante</span><span data-l="en">The states of a button</span><span data-l="fr">Les états d’un bouton</span><span data-l="zh">按钮的各种状态</span></span>
+    <div class="stati" id="stati" role="group" aria-label="States"></div>
+    <div class="scena"><button type="button" class="pulsante" id="pulsante" data-stato="normale" tabindex="-1"><span id="etichetta"></span></button></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">La transizione</span><span data-l="en">The transition</span><span data-l="fr">La transition</span><span data-l="zh">过渡</span></span>
+    <div class="comandi">
+      <label for="durata"><span data-l="it">Durata</span><span data-l="en">Duration</span><span data-l="fr">Durée</span><span data-l="zh">时长</span></label>
+      <input type="range" id="durata" min="0" max="1000" step="25" value="200">
+      <output id="v-durata" for="durata">200 ms</output>
+      <label for="curva"><span data-l="it">Curva</span><span data-l="en">Easing</span><span data-l="fr">Courbe</span><span data-l="zh">缓动</span></label>
+      <select id="curva">
+        <option value="linear">linear</option><option value="ease-in">ease-in</option>
+        <option value="ease-out" selected>ease-out</option><option value="ease-in-out">ease-in-out</option>
+        <option value="cubic-bezier(.2,.9,.3,1.4)">cubic-bezier (overshoot)</option>
+      </select>
+    </div>
+    <div class="pista" id="pista"><div class="pallino"></div></div>
+    <p class="giudizio" id="giudizio" aria-live="polite"></p>
+    <label class="ridotto"><input type="checkbox" id="ridotto"> <span data-l="it">Movimento ridotto (<code>prefers-reduced-motion</code>)</span><span data-l="en">Reduced motion (<code>prefers-reduced-motion</code>)</span><span data-l="fr">Mouvement réduit (<code>prefers-reduced-motion</code>)</span><span data-l="zh">减少动效（<code>prefers-reduced-motion</code>）</span></label>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Scegli uno stato, poi cambia durata e curva: sotto i 100 ms il passaggio non si vede, sopra i 500 ms sembra lento.</span><span data-l="en">Pick a state, then change duration and easing: under 100 ms the change is not seen, over 500 ms it feels slow.</span><span data-l="fr">Choisissez un état, puis changez durée et courbe : sous 100 ms le passage ne se voit pas, au-delà de 500 ms il paraît lent.</span><span data-l="zh">选择一个状态，再调整时长和曲线：低于 100 毫秒几乎看不到变化，超过 500 毫秒会显得迟缓。</span></p>
+<script>
+  var STATI = [
+    ['normale', { it: 'Normale', en: 'Default', fr: 'Normal', zh: '默认' }, { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' }],
+    ['hover', { it: 'Hover', en: 'Hover', fr: 'Survol', zh: '悬停' }, { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' }],
+    ['focus', { it: 'Focus', en: 'Focus', fr: 'Focus', zh: '焦点' }, { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' }],
+    ['premuto', { it: 'Premuto', en: 'Pressed', fr: 'Appuyé', zh: '按下' }, { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' }],
+    ['disabilitato', { it: 'Disabilitato', en: 'Disabled', fr: 'Désactivé', zh: '禁用' }, { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' }],
+    ['caricamento', { it: 'Caricamento', en: 'Loading', fr: 'Chargement', zh: '加载中' }, { it: 'Invio…', en: 'Sending…', fr: 'Envoi…', zh: '发送中…' }],
+    ['errore', { it: 'Errore', en: 'Error', fr: 'Erreur', zh: '错误' }, { it: 'Riprova', en: 'Try again', fr: 'Réessayer', zh: '重试' }],
+    ['successo', { it: 'Successo', en: 'Success', fr: 'Succès', zh: '成功' }, { it: 'Inviato ✓', en: 'Sent ✓', fr: 'Envoyé ✓', zh: '已发送 ✓' }]
+  ];
+  var GIUDIZIO = {
+    rapido: { it: 'Troppo rapido: il cambiamento quasi non si percepisce.', en: 'Too fast: the change is barely perceived.', fr: 'Trop rapide : le changement se perçoit à peine.', zh: '太快：几乎察觉不到变化。' },
+    giusto: { it: 'Nella fascia consigliata (100–300 ms).', en: 'In the recommended range (100–300 ms).', fr: 'Dans la plage conseillée (100–300 ms).', zh: '在建议范围内（100–300 毫秒）。' },
+    lento: { it: 'Comincia a sembrare lento.', en: 'It starts to feel slow.', fr: 'Cela commence à paraître lent.', zh: '开始显得迟缓。' },
+    lentissimo: { it: 'Troppo lento: fa aspettare.', en: 'Too slow: it makes people wait.', fr: 'Trop lent : cela fait attendre.', zh: '太慢：让人等待。' }
+  };
+  var html = document.documentElement, pulsante = document.getElementById('pulsante'), stati = document.getElementById('stati');
+  var durata = document.getElementById('durata'), curva = document.getElementById('curva'), pista = document.getElementById('pista');
+  var attuale = 'normale';
+  function L() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna() {
+    stati.innerHTML = '';
+    STATI.forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = s[1][L()]; b.setAttribute('aria-pressed', String(s[0] === attuale));
+      b.addEventListener('click', function () { attuale = s[0]; aggiorna(); });
+      stati.appendChild(b);
+    });
+    var s = STATI.filter(function (x) { return x[0] === attuale; })[0];
+    document.getElementById('etichetta').textContent = s[2][L()];
+  }
+  function aggiorna() {
+    pulsante.setAttribute('data-stato', attuale);
+    pulsante.disabled = attuale === 'disabilitato';
+    disegna();
+  }
+  function giudica() {
+    var ms = +durata.value;
+    document.getElementById('v-durata').textContent = ms + ' ms';
+    html.style.setProperty('--durata', ms + 'ms');
+    html.style.setProperty('--curva', curva.value);
+    var k = ms < 100 ? 'rapido' : ms <= 300 ? 'giusto' : ms <= 500 ? 'lento' : 'lentissimo';
+    document.getElementById('giudizio').textContent = GIUDIZIO[k][L()];
+    pista.classList.remove('fine'); void pista.offsetWidth;
+    requestAnimationFrame(function () { pista.classList.add('fine'); });
+  }
+  durata.addEventListener('input', giudica);
+  curva.addEventListener('change', giudica);
+  var ridotto = document.getElementById('ridotto');
+  ridotto.checked = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function movimento() { html.classList.toggle('movimento-ridotto', ridotto.checked); }
+  ridotto.addEventListener('change', movimento);
+  pista.addEventListener('click', giudica);
+  document.addEventListener('lingua', function () { disegna(); giudica(); });
+  movimento(); aggiorna(); giudica();
+  // all'apertura gli stati scorrono da soli una volta, così nella slide si vede il passaggio
+  var giro = ['hover', 'premuto', 'caricamento', 'successo', 'normale'], i = 0;
+  var auto = setInterval(function () { if (i >= giro.length) return clearInterval(auto); attuale = giro[i++]; aggiorna(); }, 1100);
+  stati.addEventListener('click', function () { clearInterval(auto); }, true);
+</script>
+</body>
+</html>

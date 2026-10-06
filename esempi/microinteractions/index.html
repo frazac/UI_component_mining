@@ -1,0 +1,108 @@
+<!doctype html>
+<!-- Esempio ricostruito: Microinteractions. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microinteractions — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  body { gap: 20px; padding: 28px; }
+  .palco.due { grid-template-columns: 1fr 1.25fr; align-items: stretch; }
+  .post { display: flex; flex-direction: column; gap: 14px; }
+  .immagine { height: 150px; border-radius: 10px; background: linear-gradient(135deg, var(--c-salmone), var(--c-blu)); }
+  .riga { display: flex; align-items: center; gap: 12px; }
+  .cuore { width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--c-linea); background: #fff; cursor: pointer; display: grid; place-items: center; padding: 0; }
+  .cuore svg { width: 28px; height: 28px; transition: transform .25s cubic-bezier(.2, .9, .3, 1.4); }
+  .cuore path { fill: none; stroke: #444; stroke-width: 1.8; transition: fill .2s, stroke .2s; }
+  .cuore[aria-pressed="true"] path { fill: var(--c-salmone); stroke: var(--c-rosa); }
+  .cuore.pulsa svg { transform: scale(1.35); }
+  .conta { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .conta b { font-weight: 500; }
+  .velocita { margin-top: auto; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--c-tenue); }
+  .velocita input { accent-color: var(--c-blu); }
+  ol.fasi { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; counter-reset: fase; }
+  ol.fasi li { counter-increment: fase; border: 1px solid var(--c-linea); border-radius: 10px; padding: 10px 12px 10px 46px; position: relative; transition: background .25s, border-color .25s; }
+  ol.fasi li::before { content: counter(fase); position: absolute; left: 12px; top: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--c-palco); display: grid; place-items: center; font-size: 14px; }
+  ol.fasi li.accesa { background: rgba(105, 143, 255, .1); border-color: var(--c-blu); }
+  ol.fasi li.accesa::before { background: var(--c-blu); color: #fff; }
+  ol.fasi b { display: block; font-weight: 500; font-size: 16px; }
+  ol.fasi span.desc { font-size: 15px; color: var(--c-tenue); line-height: 1.35; }
+  .esito { font-size: 15px; color: var(--c-rosa); min-height: 1.4em; margin: 0; }
+  @media (prefers-reduced-motion: reduce) { .cuore.pulsa svg { transform: none; } }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro post">
+    <span class="didascalia"><span data-l="it">Un «mi piace»</span><span data-l="en">A "like"</span><span data-l="fr">Un « j’aime »</span><span data-l="zh">一个“赞”</span></span>
+    <div class="immagine" role="img" aria-label="Post"></div>
+    <div class="riga">
+      <button type="button" class="cuore" id="cuore" aria-pressed="false" aria-label="Like">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"/></svg>
+      </button>
+      <span class="conta"><b id="numero">41</b> <span data-l="it">mi piace</span><span data-l="en">likes</span><span data-l="fr">j’aime</span><span data-l="zh">个赞</span></span>
+    </div>
+    <p class="esito" id="esito" aria-live="polite"></p>
+    <label class="velocita"><input type="checkbox" id="lento"> <span data-l="it">Al rallentatore</span><span data-l="en">Slow motion</span><span data-l="fr">Au ralenti</span><span data-l="zh">慢动作</span></label>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Le quattro parti (Dan Saffer)</span><span data-l="en">The four parts (Dan Saffer)</span><span data-l="fr">Les quatre parties (Dan Saffer)</span><span data-l="zh">四个部分（丹·萨弗）</span></span>
+    <ol class="fasi" id="fasi">
+      <li><b><span data-l="it">Trigger</span><span data-l="en">Trigger</span><span data-l="fr">Déclencheur</span><span data-l="zh">触发器</span></b>
+        <span class="desc"><span data-l="it">Il tocco sul cuore.</span><span data-l="en">The tap on the heart.</span><span data-l="fr">Le toucher sur le cœur.</span><span data-l="zh">点击爱心。</span></span></li>
+      <li><b><span data-l="it">Regole</span><span data-l="en">Rules</span><span data-l="fr">Règles</span><span data-l="zh">规则</span></b>
+        <span class="desc"><span data-l="it">Un solo «mi piace» a persona: il secondo tocco lo toglie.</span><span data-l="en">One like per person: a second tap removes it.</span><span data-l="fr">Un seul « j’aime » par personne : le second toucher l’enlève.</span><span data-l="zh">每人只能点一次赞：再点一次即取消。</span></span></li>
+      <li><b><span data-l="it">Feedback</span><span data-l="en">Feedback</span><span data-l="fr">Retour</span><span data-l="zh">反馈</span></b>
+        <span class="desc"><span data-l="it">Il cuore si riempie e pulsa; il numero cambia.</span><span data-l="en">The heart fills and pulses; the number changes.</span><span data-l="fr">Le cœur se remplit et pulse ; le nombre change.</span><span data-l="zh">爱心填色并跳动；数字随之变化。</span></span></li>
+      <li><b><span data-l="it">Cicli e modalità</span><span data-l="en">Loops and modes</span><span data-l="fr">Boucles et modes</span><span data-l="zh">循环与模式</span></b>
+        <span class="desc"><span data-l="it">Col tempo arrivano altri «mi piace»; dopo tre tocchi di fila si smette di festeggiare.</span><span data-l="en">Over time other likes arrive; after three taps in a row the celebration stops.</span><span data-l="fr">Avec le temps, d’autres « j’aime » arrivent ; après trois touchers d’affilée, on cesse de fêter.</span><span data-l="zh">随着时间会有其他人点赞；连续点三次后不再播放庆祝动效。</span></span></li>
+    </ol>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Premi il cuore e guarda quale parte si accende: progettare una microinterazione vuol dire decidere tutte e quattro.</span><span data-l="en">Press the heart and watch which part lights up: designing a microinteraction means deciding all four.</span><span data-l="fr">Appuyez sur le cœur et regardez quelle partie s’allume : concevoir une micro-interaction, c’est décider les quatre.</span><span data-l="zh">点一下爱心，看看哪一部分亮起：设计微交互就要把这四部分都想清楚。</span></p>
+<script>
+  var cuore = document.getElementById('cuore'), numero = document.getElementById('numero'), esito = document.getElementById('esito');
+  var fasi = document.querySelectorAll('#fasi li'), lento = document.getElementById('lento');
+  var conta = 41, tocchi = 0, ultimo = 0, timer = [];
+  var MSG = {
+    piace: { it: 'Ti piace.', en: 'You like it.', fr: 'Vous aimez.', zh: '你点了赞。' },
+    tolto: { it: '«Mi piace» tolto.', en: 'Like removed.', fr: '« J’aime » retiré.', zh: '已取消点赞。' },
+    calma: { it: 'Tre tocchi di fila: niente più festa, solo il cambio di stato.', en: 'Three taps in a row: no more celebration, just the state change.',
+             fr: 'Trois touchers d’affilée : plus de fête, seulement le changement d’état.', zh: '连续点了三次：不再庆祝，只切换状态。' },
+    altri: { it: 'Un altro «mi piace» è arrivato.', en: 'Another like has arrived.', fr: 'Un autre « j’aime » est arrivé.', zh: '又有人点了赞。' }
+  };
+  function t(k) { return MSG[k][window.Lingua ? Lingua.get() : 'en']; }
+  var ridotto = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function accendi(i) { fasi.forEach(function (f, j) { f.classList.toggle('accesa', j === i); }); }
+  function sequenza(passi) {
+    timer.forEach(clearTimeout); timer = [];
+    var passo = lento.checked ? 900 : 260;
+    passi.forEach(function (fn, i) { timer.push(setTimeout(fn, i * passo)); });
+  }
+  cuore.addEventListener('click', function () {
+    var ora = Date.now();
+    tocchi = ora - ultimo < 1500 ? tocchi + 1 : 1;
+    ultimo = ora;
+    var acceso = cuore.getAttribute('aria-pressed') !== 'true';
+    sequenza([
+      function () { accendi(0); },
+      function () { accendi(1); cuore.setAttribute('aria-pressed', String(acceso)); conta += acceso ? 1 : -1; },
+      function () {
+        accendi(2); numero.textContent = conta; esito.textContent = t(acceso ? 'piace' : 'tolto');
+        if (acceso && tocchi < 3 && !ridotto) { cuore.classList.add('pulsa'); setTimeout(function () { cuore.classList.remove('pulsa'); }, 250); }
+      },
+      function () {
+        accendi(3);
+        if (tocchi >= 3) esito.textContent = t('calma');
+      },
+      function () { setTimeout(function () { accendi(-1); }, lento.checked ? 1200 : 600); }
+    ]);
+  });
+  // ciclo: ogni tanto arriva un «mi piace» da qualcun altro
+  setInterval(function () { conta += 1; numero.textContent = conta; esito.textContent = t('altri'); accendi(3); setTimeout(function () { accendi(-1); }, 900); }, 9000);
+</script>
+</body>
+</html>
