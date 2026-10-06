@@ -68,14 +68,14 @@ def main():
     try:
         for l in lingue:
             if pubblica:
-                nome = f'{conf["nome"]} . v{conf["versione"]:02d} . {NOME_LINGUA[l]}.pdf'
+                nome = f'{conf["nome"]} . V. {conf["versione"]:02d} . {NOME_LINGUA[l]}.pdf'  # formato fisso «V. 01»
             else:
                 nome = f'ui-components-{(R / "VERSION").read_text().strip()}.{l}.pdf'
             uscita = cartella / nome
             stampa(l, uscita)
             print(f'pdf/{nome}  {uscita.stat().st_size / 1e6:.1f} MB')
             if pubblica:
-                for vecchio in dest.glob(f'{conf["nome"]} . v* . {NOME_LINGUA[l]}.pdf'):
+                for vecchio in [*dest.glob(f'{conf["nome"]} . v* . {NOME_LINGUA[l]}.pdf'), *dest.glob(f'{conf["nome"]} . V. * . {NOME_LINGUA[l]}.pdf')]:
                     if vecchio.name != nome:
                         (cartella / 'archivio').mkdir(exist_ok=True)
                         shutil.move(str(vecchio), cartella / 'archivio' / vecchio.name)
