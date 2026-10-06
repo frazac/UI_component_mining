@@ -274,7 +274,7 @@ def slide_componente(s, n):
 
 def slide(tutte):
     parti = [f'''<section class="slide s-copertina senza-pie">
-  <p class="etichetta">NABA — Interface Design · UI_component_mining</p>
+  <p class="etichetta">NABA — UI Design · UI_component_mining</p>
   <h1 class="strillo">{tt('titolo')}</h1>
   <div><p class="meta">{AUTORE}<br>{tt('sottotitolo')}</p></div>
 </section>''']

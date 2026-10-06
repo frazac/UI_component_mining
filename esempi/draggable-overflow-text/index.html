@@ -53,10 +53,10 @@
 <p class="nota"><span data-l="it">Il trascinamento rivela il testo nascosto senza animazioni continue; le sfumature ai bordi dicono che c’è ancora qualcosa da vedere.</span><span data-l="en">Dragging reveals the hidden text without continuous motion; the fades at the edges say there is more to see.</span><span data-l="fr">Le glissement révèle le texte caché sans animation continue ; les fondus sur les bords indiquent qu’il reste quelque chose à voir.</span><span data-l="zh">拖动可以显示被隐藏的文字，而无需持续的动画；边缘的渐隐提示还有内容可看。</span></p>
 <script>
   var T = {
-    it: ['Corso di Interface Design — Lezione 7: componenti, stati e microinterazioni', 'Notturno per pianoforte e rumore di città, versione registrata dal vivo', 'Ensemble immaginario · 2026'],
-    en: ['Interface Design course — Lesson 7: components, states and micro-interactions', 'Nocturne for piano and city noise, version recorded live', 'Imaginary Ensemble · 2026'],
-    fr: ['Cours d’Interface Design — Leçon 7 : composants, états et micro-interactions', 'Nocturne pour piano et bruit de ville, version enregistrée en public', 'Ensemble imaginaire · 2026'],
-    zh: ['界面设计课程——第 7 课：组件、状态与微交互，以及如何处理超出空间的长文本', '为钢琴与城市噪音而作的夜曲（现场录音版本）', '虚构乐团 · 2026']
+    it: ['Corso di UI Design — Lezione 7: componenti, stati e microinterazioni', 'Notturno per pianoforte e rumore di città, versione registrata dal vivo', 'Ensemble immaginario · 2026'],
+    en: ['UI Design course — Lesson 7: components, states and micro-interactions', 'Nocturne for piano and city noise, version recorded live', 'Imaginary Ensemble · 2026'],
+    fr: ['Cours d’UI Design — Leçon 7 : composants, états et micro-interactions', 'Nocturne pour piano et bruit de ville, version enregistrée en public', 'Ensemble imaginaire · 2026'],
+    zh: ['UI 设计课程——第 7 课：组件、状态与微交互，以及如何处理超出空间的长文本', '为钢琴与城市噪音而作的夜曲（现场录音版本）', '虚构乐团 · 2026']
   };
   function testi() { var l = window.Lingua ? Lingua.get() : 'en'; document.querySelectorAll('[data-t]').forEach(function (e) { e.textContent = T[l][e.dataset.t]; }); document.querySelectorAll('.pan').forEach(function (p) { p._x = 0; p._agg(); }); }
   document.querySelectorAll('.pan').forEach(function (p) {

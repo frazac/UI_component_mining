@@ -48,7 +48,7 @@
 <script>
   function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
   var TX = { pos: { it: 'Posizione {p} di {n}', en: 'Position {p} of {n}', fr: 'Position {p} sur {n}', zh: '位置 {p} / {n}' }, si: { it: 'focus: il caret lampeggia', en: 'focus: the caret blinks', fr: 'focus : le caret clignote', zh: '已聚焦：插入符闪烁' }, no: { it: 'senza focus: caret fermo e grigio', en: 'no focus: caret still and grey', fr: 'sans focus : caret fixe et gris', zh: '未聚焦：插入符静止且为灰色' } };
-  var testo = { it: 'Interfaccia', en: 'Interface', fr: 'Interface', zh: '界面设计' }, s = null, p = 5;
+  var testo = { it: 'Interfaccia', en: 'Interface', fr: 'Interface', zh: '界面' }, s = null, p = 5;
   var campo = document.getElementById('campo');
   function esc(x) { return x.replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
   function disegna() {

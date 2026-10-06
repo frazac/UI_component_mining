@@ -10,7 +10,7 @@ Two formats, four languages: **Italiano, English, Français, 中文**.
 - **Data** — every component as plain text in [`dati/componenti/`](dati/componenti/), all of them in
   [`dati/componenti.json`](dati/componenti.json)
 
-Born as classroom "mining" with the students of the UI Design / Interface Design course by
+Born as classroom "mining" with the students of the UI Design course by
 [Francesco Zaccaria](https://linktr.ee/frazac) at NABA, Milan, and grown into a catalogue.
 Every component has its source; the examples are **rebuilt from scratch** in HTML, CSS and JavaScript
 ([`esempi/`](esempi/)), so that no third-party screenshots or code are redistributed.
