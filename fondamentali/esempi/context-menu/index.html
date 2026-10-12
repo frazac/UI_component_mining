@@ -1,0 +1,178 @@
+<!doctype html>
+<!-- Esempio ricostruito: Contextual menu (versione per le slide: menu diversi per immagine, audio, altri file e spazio vuoto; icone Lucide, ISC). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contextual menu — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .area { position: relative; min-height: 400px; border-radius: 10px; }
+  .file { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 18px; }
+  .file button { width: 100%; border: 0; background: none; border-radius: 10px; padding: 14px 8px 10px; display: flex; flex-direction: column;
+    align-items: center; gap: 10px; cursor: default; font-size: 17px; -webkit-user-select: none; user-select: none; }
+  .file button:hover { background: #f6f2f1; }
+  .file button[aria-selected="true"] { background: #e6ecff; }
+  .file .ic { width: 72px; height: 72px; display: grid; place-items: center; }
+  .file .ic svg { width: 64px; height: 64px; }
+  /* l'immagine: una miniatura vera, pittogramma bianco su un gradiente multicolore */
+  .file .miniatura { width: 96px; height: 72px; border-radius: 8px; display: grid; place-items: center; color: #fff;
+    background: linear-gradient(135deg, rgb(250,145,145) 0%, rgb(255,200,120) 28%, rgb(140,210,150) 52%, rgb(105,143,255) 76%, rgb(190,130,230) 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+  .file .miniatura svg { width: 40px; height: 40px; }
+  .menu { position: absolute; z-index: 5; min-width: 250px; margin: 0; padding: 6px; list-style: none; background: #fff; border-radius: 10px;
+    box-shadow: 0 0 0 1px var(--c-linea), 0 12px 32px rgba(0,0,0,.18); font-size: 17px; animation: apri .12s ease-out; }
+  @keyframes apri { from { opacity: 0; transform: scale(.96); } }
+  .menu[hidden] { display: none; }
+  .menu li[role="menuitem"] { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 6px 12px; border-radius: 6px; cursor: default; outline: none; white-space: nowrap; }
+  .menu li[role="menuitem"]:hover, .menu li[role="menuitem"]:focus { background: var(--c-blu); color: #fff; }
+  .menu li[role="menuitem"]:hover kbd, .menu li[role="menuitem"]:focus kbd { color: #fff; }
+  .menu li[aria-disabled="true"] { color: rgba(0,0,0,.32); }
+  .menu li[aria-disabled="true"]:hover, .menu li[aria-disabled="true"]:focus { background: #f3f3f3; color: rgba(0,0,0,.32); }
+  .menu li.pericolo { color: #c0392b; }
+  .menu li.pericolo:hover, .menu li.pericolo:focus { background: #c0392b; color: #fff; }
+  .menu kbd { font: inherit; font-size: 15px; color: var(--c-tenue); display: inline-flex; }
+  .menu kbd svg { width: 16px; height: 16px; }
+  .menu li[role="separator"] { height: 1px; background: var(--c-linea); margin: 5px 6px; }
+  .esito { margin: 14px 0 0; min-height: 22px; font-size: 16px; color: var(--c-tenue); text-align: center; }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Clic destro su un file o nello spazio vuoto</span><span data-l="en">Right-click a file or the empty space</span><span data-l="fr">Clic droit sur un fichier ou dans l’espace vide</span><span data-l="zh">右键点击文件或空白处</span></span>
+    <div class="area" id="area">
+      <ul class="file" id="file" role="listbox" aria-label="Files"></ul>
+      <ul class="menu" id="menu" role="menu" hidden></ul>
+    </div>
+    <p class="esito" id="esito" aria-live="polite"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il menu cambia con l’oggetto: un’immagine si salva o si copia, un audio si ascolta, lo spazio vuoto offre nuova cartella e vista. Da tastiera: Maiusc+F10 su un file; frecce, Invio, Esc. Icone: Lucide (ISC).</span><span data-l="en">The menu changes with the object: an image can be saved or copied, an audio file played, the empty space offers new folder and view. Keyboard: Shift+F10 on a file; arrows, Enter, Esc. Icons: Lucide (ISC).</span><span data-l="fr">Le menu change selon l’objet : une image s’enregistre ou se copie, un audio s’écoute, l’espace vide propose nouveau dossier et présentation. Au clavier : Maj+F10 sur un fichier ; flèches, Entrée, Échap. Icônes : Lucide (ISC).</span><span data-l="zh">菜单随对象而变：图片可以存储或复制，音频可以播放，空白处提供新建文件夹和显示方式。键盘：在文件上按 Shift+F10；方向键、回车、Esc。图标：Lucide（ISC）。</span></p>
+<script>
+  function t(o) { return o[window.Lingua ? Lingua.get() : 'en'] || o.en; }
+  var SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">';
+  var P = {
+    testo: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+    foglio: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/>',
+    audio: '<path d="M17.5 22h.5a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M2 19a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0v-4a6 6 0 0 1 12 0v4a2 2 0 1 1-4 0v-1a2 2 0 1 1 4 0"/>',
+    codice: '<path d="M10 12.5 8 15l2 2.5"/><path d="m14 12.5 2 2.5-2 2.5"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/>',
+    montagna: '<path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"/>'
+  };
+  var FRECCIA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>';
+  var FILE = [
+    { it: 'Locandina.png', en: 'Poster.png', fr: 'Affiche.png', zh: '海报.png', m: 'immagine' },
+    { it: 'Relazione.doc', en: 'Report.doc', fr: 'Rapport.doc', zh: '报告.doc', c: '#698fff', i: 'testo', m: 'file' },
+    { it: 'Intervista.mp3', en: 'Interview.mp3', fr: 'Entretien.mp3', zh: '访谈.mp3', c: '#9b6fe0', i: 'audio', m: 'audio' },
+    { it: 'Bilancio.xls', en: 'Budget.xls', fr: 'Budget.xls', zh: '预算.xls', c: '#3f9c6f', i: 'foglio', m: 'file' },
+    { it: 'Note.txt', en: 'Notes.txt', fr: 'Notes.txt', zh: '笔记.txt', c: '#888', i: 'testo', m: 'file' },
+    { it: 'Prototipo.html', en: 'Prototype.html', fr: 'Prototype.html', zh: '原型.html', c: '#df8888', i: 'codice', m: 'file' }
+  ];
+  var RINOMINA = { id: 'rinomina', it: 'Rinomina…', en: 'Rename…', fr: 'Renommer…', zh: '重命名…', k: 'F2' };
+  var CESTINO = { id: 'elimina', it: 'Sposta nel cestino', en: 'Move to bin', fr: 'Mettre à la corbeille', zh: '移到废纸篓', k: '⌫', pericolo: true };
+  var APRI = { id: 'apri', it: 'Apri', en: 'Open', fr: 'Ouvrir', zh: '打开', k: '↵' };
+  var APRICON = { id: 'apricon', it: 'Apri con', en: 'Open with', fr: 'Ouvrir avec', zh: '打开方式', sub: true };
+  var MENU = {
+    immagine: [
+      APRI,
+      { id: 'salva', it: 'Salva immagine con nome…', en: 'Save image as…', fr: 'Enregistrer l’image sous…', zh: '图片存储为…', k: '⌘S' },
+      { id: 'copiaimg', it: 'Copia immagine', en: 'Copy image', fr: 'Copier l’image', zh: '复制图片', k: '⌘C' },
+      { id: 'scheda', it: 'Apri immagine in una nuova scheda', en: 'Open image in new tab', fr: 'Ouvrir l’image dans un nouvel onglet', zh: '在新标签页中打开图片' },
+      '-', RINOMINA, '-', CESTINO
+    ],
+    audio: [
+      { id: 'riproduci', it: 'Riproduci', en: 'Play', fr: 'Lire', zh: '播放', k: '␣' },
+      { id: 'anteprima', it: 'Anteprima', en: 'Preview', fr: 'Aperçu', zh: '预览' },
+      APRICON, '-', RINOMINA, '-', CESTINO
+    ],
+    file: [
+      APRI, APRICON,
+      { id: 'copia', it: 'Copia', en: 'Copy', fr: 'Copier', zh: '复制', k: '⌘C' },
+      { id: 'duplica', it: 'Duplica', en: 'Duplicate', fr: 'Dupliquer', zh: '创建副本', k: '⌘D' },
+      '-', RINOMINA, '-', CESTINO
+    ],
+    vuoto: [
+      { id: 'cartella', it: 'Nuova cartella', en: 'New folder', fr: 'Nouveau dossier', zh: '新建文件夹', k: '⇧⌘N' },
+      { id: 'incolla', it: 'Incolla', en: 'Paste', fr: 'Coller', zh: '粘贴', k: '⌘V', off: true },
+      '-',
+      { id: 'ordina', it: 'Ordina per', en: 'Sort by', fr: 'Trier par', zh: '排序方式', sub: true },
+      { id: 'vista', it: 'Vista', en: 'View', fr: 'Présentation', zh: '显示方式', sub: true },
+      '-',
+      { id: 'info', it: 'Ottieni informazioni', en: 'Get info', fr: 'Lire les informations', zh: '显示简介', k: '⌘I' }
+    ]
+  };
+  var CARTELLA = { it: 'questa cartella', en: 'this folder', fr: 'ce dossier', zh: '此文件夹' };
+  var ESITO = { it: '«{a}» su {f}', en: '“{a}” on {f}', fr: '« {a} » sur {f}', zh: '对 {f} 执行“{a}”' };
+  // scelto: indice del file, oppure -1 = spazio vuoto
+  var scelto = 0, aperto = true, pos = null, ultimo = '';
+  var area = document.getElementById('area'), menu = document.getElementById('menu');
+  function icona(f) {
+    if (f.m === 'immagine') return '<span class="miniatura">' + SVG.replace('1.5', '1.8') + P.montagna + '</svg></span>';
+    return '<span class="ic" style="color:' + f.c + '">' + SVG + P[f.i] + '</svg></span>';
+  }
+  function nome(i) { return i < 0 ? t(CARTELLA) : t(FILE[i]); }
+  function disegna() {
+    var ul = document.getElementById('file'); ul.innerHTML = '';
+    FILE.forEach(function (f, i) {
+      var li = document.createElement('li'), b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'option'); b.setAttribute('aria-selected', String(i === scelto));
+      b.setAttribute('aria-haspopup', 'menu');
+      b.innerHTML = icona(f) + '<span>' + t(f) + '</span>';
+      b.onclick = function () { scelto = i; chiudi(); disegna(); };
+      b.oncontextmenu = function (ev) { ev.preventDefault(); ev.stopPropagation(); var r = area.getBoundingClientRect(); apri(i, ev.clientX - r.left, ev.clientY - r.top); };
+      b.onkeydown = function (ev) { if ((ev.shiftKey && ev.key === 'F10') || ev.key === 'ContextMenu') { ev.preventDefault(); apri(i, b.offsetLeft + b.offsetWidth / 2, b.offsetTop + b.offsetHeight / 2); } };
+      var timer; b.addEventListener('touchstart', function (ev) { var p = ev.touches[0]; timer = setTimeout(function () { var r = area.getBoundingClientRect(); apri(i, p.clientX - r.left, p.clientY - r.top); }, 500); }, { passive: true });
+      b.addEventListener('touchend', function () { clearTimeout(timer); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    disegnaMenu();
+    document.getElementById('esito').textContent = ultimo ? ESITO[Lingua.get()].replace('{a}', t(ultimo.v)).replace('{f}', nome(ultimo.f)) : '';
+  }
+  function disegnaMenu() {
+    menu.innerHTML = '';
+    var voci = scelto < 0 ? MENU.vuoto : MENU[FILE[scelto].m];
+    voci.forEach(function (v) {
+      var li = document.createElement('li');
+      if (v === '-') { li.setAttribute('role', 'separator'); menu.appendChild(li); return; }
+      li.setAttribute('role', 'menuitem'); li.tabIndex = -1;
+      if (v.sub) li.setAttribute('aria-haspopup', 'menu');
+      if (v.off) li.setAttribute('aria-disabled', 'true');
+      if (v.pericolo) li.className = 'pericolo';
+      li.innerHTML = '<span>' + t(v) + '</span><kbd>' + (v.sub ? FRECCIA : (v.k || '')) + '</kbd>';
+      li.onclick = function () { if (v.off) return; ultimo = { v: v, f: scelto }; var f = scelto; chiudi(); disegna(); focusFile(f); };
+      menu.appendChild(li);
+    });
+    menu.hidden = !aperto;
+    if (aperto) {
+      // all'avvio (schermata statica) il menu della locandina si apre sotto la miniatura, senza coprirne il nome
+      if (!pos) { var b0 = document.querySelectorAll('#file button')[0]; pos = { x: b0.offsetLeft + b0.offsetWidth * .55, y: b0.offsetTop + b0.offsetHeight + 2 }; }
+      var w = menu.offsetWidth, h = menu.offsetHeight;
+      var x = Math.min(pos.x, area.clientWidth - w), y = Math.min(pos.y, area.clientHeight - h);
+      menu.style.left = Math.max(0, x) + 'px'; menu.style.top = Math.max(0, y) + 'px';
+    }
+  }
+  function voci() { return Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]')); }
+  function apri(i, x, y) { scelto = i; aperto = true; pos = { x: x, y: y }; disegna(); voci()[0].focus(); }
+  function chiudi() { aperto = false; menu.hidden = true; }
+  function focusFile(i) { var b = document.querySelectorAll('#file button')[i]; if (b) b.focus(); }
+  menu.addEventListener('keydown', function (ev) {
+    var v = voci(), i = v.indexOf(document.activeElement);
+    if (ev.key === 'ArrowDown') { ev.preventDefault(); v[(i + 1) % v.length].focus(); }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); v[(i - 1 + v.length) % v.length].focus(); }
+    else if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); document.activeElement.click(); }
+    else if (ev.key === 'Escape' || ev.key === 'Tab') { ev.preventDefault(); var f = scelto; chiudi(); focusFile(f); }
+  });
+  document.addEventListener('mousedown', function (ev) { if (aperto && !menu.contains(ev.target)) { chiudi(); } });
+  // clic destro nello spazio vuoto: menu della cartella
+  document.querySelector('.riquadro').addEventListener('contextmenu', function (ev) {
+    if (menu.contains(ev.target)) { ev.preventDefault(); return; }
+    if (ev.target.closest('#file button')) return;
+    ev.preventDefault(); var r = area.getBoundingClientRect(); apri(-1, ev.clientX - r.left, ev.clientY - r.top);
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

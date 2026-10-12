@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-PDF delle slide, uno per lingua.
+PDF delle slide (fondamentali.html, esportate da formazione-ui-design), uno per lingua.
   python3 strumenti/pdf.py [it en fr zh]      bozze in pdf/ui-components-<VERSION>.<lingua>.pdf
   python3 strumenti/pdf.py --pubblica          numero di versione +1, PDF in pdf/ e copia diretta nella cartella
                                                indicata in pdf.locale.json (es. OneDrive del semestre);
@@ -39,7 +39,7 @@ def server():
 def stampa(lingua, uscita):
     for _ in range(3):  # a volte Chrome stampa la pagina ancora vuota: si riprova
         chrome.esegui(['--no-pdf-header-footer', '--virtual-time-budget=15000', '--run-all-compositor-stages-before-draw',
-                       f'--print-to-pdf={uscita}', f'http://127.0.0.1:{PORTA}/slide.html?lingua={lingua}'], uscita, attesa=600)
+                       f'--print-to-pdf={uscita}', f'http://127.0.0.1:{PORTA}/fondamentali.html?lingua={lingua}'], uscita, attesa=600)
         if uscita.stat().st_size > 200_000:
             return
     sys.exit(f'{uscita.name}: resta vuoto dopo 3 tentativi')

@@ -3,7 +3,8 @@
 Genera le pagine dalle schede (dati/componenti/*.md), solo libreria standard:
   dati/componenti.json   tutti i dati, per chi li vuole riusare
   index.html             la grande tabella (ricerca, filtri, 4 lingue)
-  slide.html             le slide (una per componente, 4 lingue; ?lingua=xx per il PDF)
+  slide.html             rimanda a fondamentali.html (le slide dei fondamentali, esportate da formazione-ui-design
+                         con strumenti/esporta_fondamentali.py: qui non si generano)
 Uso: python3 strumenti/costruisci.py
 """
 import html
@@ -48,10 +49,9 @@ T = {  # testi fissi dell'interfaccia
     'componenti': {'it': 'componenti', 'en': 'components', 'fr': 'composants', 'zh': '个组件'},
     'nessuno': {'it': 'Nessun componente corrisponde alla ricerca.', 'en': 'No component matches your search.',
                 'fr': 'Aucun composant ne correspond à la recherche.', 'zh': '没有符合搜索条件的组件。'},
-    'slide': {'it': 'Le slide', 'en': 'Slides', 'fr': 'Les diapositives', 'zh': '幻灯片'},
+    'slide': {'it': 'Fondamentali', 'en': 'Fundamentals', 'fr': 'Fondamentaux', 'zh': '基础'},
     'tabella': {'it': 'La tabella', 'en': 'Table', 'fr': 'Le tableau', 'zh': '表格'},
     'claude': {'it': 'Testo di Claude, da rivedere', 'en': 'Text by Claude, to be reviewed', 'fr': 'Texte de Claude, à relire', 'zh': '由 Claude 撰写，待审阅'},
-    'da-ricostruire': {'it': 'Esempio da ricostruire', 'en': 'Example to be rebuilt', 'fr': 'Exemple à reconstruire', 'zh': '示例待重建'},
     'licenza': {'it': 'Testi, tabella e slide: CC BY-NC-SA 4.0. Codice degli esempi: MIT.',
                 'en': 'Texts, table and slides: CC BY-NC-SA 4.0. Example code: MIT.',
                 'fr': 'Textes, tableau et diapositives : CC BY-NC-SA 4.0. Code des exemples : MIT.',
@@ -217,7 +217,7 @@ def tabella(tutte):
     righe = '\n'.join(riga(s, per_id) for s in tutte)
     return testa('UI Design: Components — table · Francesco Zaccaria') + f'''<body class="pagina-tabella">
 <header class="testata">
-  <nav class="viste"><a aria-current="page" href="index.html">{tt('tabella')}</a> <a href="slide.html">{tt('slide')}</a></nav>
+  <nav class="viste"><a aria-current="page" href="index.html">{tt('tabella')}</a> <a href="fondamentali.html">{tt('slide')}</a></nav>
   <h1>{tt('titolo')}</h1>
   <p class="sottotitolo">{tt('sottotitolo')}</p>
   <p class="intro">{tt('intro')}</p>
@@ -246,60 +246,21 @@ def tabella(tutte):
 
 
 # --- slide -----------------------------------------------------------------
+# Le slide sono quelle dei fondamentali di «Salienti dispense» (formazione-ui-design), esportate in fondamentali.html;
+# slide.html resta solo per i vecchi link.
 
-def slide_componente(s, n):
-    lunghezza = max(len(s['testi'][l]['note']) for l in LINGUE)
-    classe = 'lungo' if lunghezza > 700 else 'medio' if lunghezza > 350 else ''
-    es = s['esempio'] + ('index.html' if s['esempio'].endswith('/') else '')
-    if es.endswith('.html'):
-        figura = f'<figure class="esempio"><iframe src="{e(es)}" loading="lazy" title="{e(s["testi"]["en"]["nome"])}"></iframe></figure>'
-    elif re.search(r'\.(jpe?g|png|gif|svg|webp)$', es):
-        figura = f'<figure class="esempio"><img src="{e(es)}" alt="" loading="lazy"></figure>'
-    else:
-        figura = f'<figure class="esempio da-ricostruire"><p>{tt("da-ricostruire")}</p></figure>'
-    fonti = s['fonti'] + s['letture']
-    piede = '<p class="fonte-breve">' + '<br>'.join(link_md(x) for x in fonti[:4]) + '</p>' if fonti else ''
-    nome_en = f'<p class="nome-en">{e(s["testi"]["en"]["nome"])}</p>'
-    return f'''<section class="slide s-componente {classe}" id="{e(s['id'])}" data-cap-it="{e(CAT['categorie'][s['categoria']]['it'])}" data-cap-en="{e(CAT['categorie'][s['categoria']]['en'])}" data-cap-fr="{e(CAT['categorie'][s['categoria']]['fr'])}" data-cap-zh="{e(CAT['categorie'][s['categoria']]['zh'])}">
-  <div class="colonna">
-    <p class="etichetta">{liv(s)} · {cat(s)}</p>
-    <h2>{nomi(s)}</h2>
-    {nome_en}
-    <div class="testo">{note(s)}</div>
-  </div>
-  {figura}
-  {piede}
-</section>'''
-
-
-def slide(tutte):
-    parti = [f'''<section class="slide s-copertina senza-pie">
-  <p class="etichetta">NABA — UI Design · UI_component_mining</p>
-  <h1 class="strillo">{tt('titolo')}</h1>
-  <div><p class="meta">{AUTORE}<br>{tt('sottotitolo')}</p></div>
-</section>''']
-    livello = None
-    n = 1
-    for s in tutte:
-        if s['livello'] != livello:
-            livello = s['livello']
-            quanti = sum(1 for x in tutte if x['livello'] == livello)
-            parti.append(f'''<section class="slide s-sezione senza-pie">
-  <p class="etichetta">{quanti} {tt('componenti')}</p>
-  <h2 class="strillo">{varianti({l: e(CAT['livelli'][livello][l]) for l in LINGUE})}</h2>
-</section>''')
-        n += 1
-        parti.append(slide_componente(s, n))
-    parti.append(f'''<section class="slide s-crediti senza-pie">
-  <h2>{AUTORE}</h2>
-  <p>{tt('intro')}</p>
-  <p>© 2024–{date.today().year} {AUTORE} · <a href="{LICENZA}">CC BY-NC-SA 4.0</a> · {tt('licenza')}</p>
-  <p>{tt('gradiente')}</p>
-  <p>{tt('versione')} {e(VERSIONE)} · github.com/frazac/UI_component_mining</p>
-</section>''')
-    return testa('UI Design: Components — slides · Francesco Zaccaria',
-                 f'\n  <link rel="stylesheet" href="assets/slide-print.css?v={VERSIONE}" media="print">') + \
-        '<body class="pagina-slide">\n' + '\n\n'.join(parti) + f'\n{MATOMO}\n</body>\n</html>\n'
+RINVIO = '''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UI Design: Fundamental Components</title>
+  <meta http-equiv="refresh" content="0; url=fondamentali.html">
+  <link rel="canonical" href="fondamentali.html">
+  <script>location.replace('fondamentali.html' + location.search + location.hash);</script>
+</head>
+<body><p><a href="fondamentali.html">fondamentali.html</a></p></body>
+</html>
+'''
 
 
 def readme_revisori():
@@ -327,9 +288,9 @@ if __name__ == '__main__':
     tutte = schede.tutte()
     (R / 'dati' / 'componenti.json').write_text(json_dati(tutte))
     (R / 'index.html').write_text(tabella(tutte))
-    (R / 'slide.html').write_text(slide(tutte))
+    (R / 'slide.html').write_text(RINVIO)
     readme_revisori()
     mancano = [(s['id'], l) for s in tutte for l in LINGUE if not (s['testi'][l]['nome'] and (s['testi'][l]['note'] or not s['testi']['en']['note']))]
-    print(f'{len(tutte)} componenti → index.html, slide.html, dati/componenti.json')
+    print(f'{len(tutte)} componenti → index.html, dati/componenti.json')
     if mancano:
         print(f'{len(mancano)} testi da tradurre (es. {mancano[:3]})')

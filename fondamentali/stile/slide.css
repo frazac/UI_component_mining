@@ -1,0 +1,875 @@
+/* ==========================================================================
+   Formazione UI Design (NABA) · Slide (schermo)
+   Ogni .slide è un contenitore 16:9. Tutte le misure interne sono in "px di
+   progetto" (--px = 1/1280 della larghezza della slide), così la slide scala
+   con la finestra e in stampa torna esattamente a 1280 × 720.
+   Niente JS: scorrimento con scroll-snap, numerazione con i contatori CSS.
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-snap-type: y mandatory;
+  background: var(--c-schermo);
+}
+
+body {
+  margin: 0;
+  background: var(--c-schermo);
+  color: var(--c-testo);
+  font-family: var(--f-testo);
+  counter-reset: slide;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Contenitore slide --------------------------------------------------- */
+
+.slide {
+  --px: calc(100cqw / var(--slide-w));
+  container-type: inline-size;
+  position: relative;
+  width: min(100vw, calc(100dvh * 16 / 9));
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--c-fondo);
+  scroll-snap-align: center;
+  counter-increment: slide;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* spazio tra le slide solo a schermo */
+.slide + .slide { margin-top: 2vh; }
+
+.slide > * {
+  margin-inline: calc(var(--margine) * var(--px));
+}
+
+/* --- Piè di slide ----------------------------------------------------------
+   sinistra: UI DESIGN — NABA — © 2026 Francesco Zaccaria
+   destra:   KICKOFF — Titolo del capitolo (nella lingua scelta) — numero
+   data-cap-it / data-cap-en / data-cap-zh li scrive strumenti/doc.py      */
+
+.slide::before,
+.slide::after {
+  position: absolute;
+  bottom: calc(20 * var(--px));
+  font-family: var(--f-testo);
+  font-size: calc(13 * var(--px));
+  color: var(--c-tenue);
+  letter-spacing: 0.02em;
+}
+
+.slide::before {
+  content: "UI DESIGN — NABA — © 2026 Francesco Zaccaria";
+  left: calc(var(--margine) * var(--px));
+}
+
+.slide::after {
+  content: attr(data-doc) " — " attr(data-cap-en) " — " counter(slide);
+  right: calc(var(--margine) * var(--px));
+}
+html[data-lingua="it"] .slide::after { content: attr(data-doc) " — " attr(data-cap-it) " — " counter(slide); }
+html[data-lingua="zh"] .slide::after { content: attr(data-doc) " — " attr(data-cap-zh) " — " counter(slide); }
+
+.slide.senza-pie::before,
+.slide.senza-pie::after { content: none; }
+
+/* slide su una parola chiave del glossario: chiave (Lucide key-square, ISC) nel piede, prima di G1…,
+   nello stesso grigio e alta come le cifre del piede */
+.slide.chiave::after {
+  padding-left: 1.15em;
+  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg opacity='.35'%3E%3Cpath d='M12.4 2.7a2.5 2.5 0 0 1 3.4 0l5.5 5.5a2.5 2.5 0 0 1 0 3.4l-3.7 3.7a2.5 2.5 0 0 1-3.4 0L8.7 9.8a2.5 2.5 0 0 1 0-3.4z'/%3E%3Cpath d='m14 7 3 3'/%3E%3Cpath d='m9.4 10.6-6.814 6.814A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814'/%3E%3C/g%3E%3C/svg%3E") no-repeat left 52% / 0.8em 0.8em;
+}
+
+/* --- Tipografia di base -------------------------------------------------- */
+
+.slide h1,
+.slide h2,
+.slide h3,
+.slide p,
+.slide ul,
+.slide ol,
+.slide blockquote,
+.slide figure { margin-top: 0; margin-bottom: 0; }
+
+.slide p,
+.slide li {
+  font-size: calc(var(--t-grande) * var(--px));
+  line-height: var(--interlinea);
+  font-weight: 400;
+}
+
+.slide a {
+  color: var(--c-blu);
+  text-decoration: none;
+  border-bottom: calc(2 * var(--px)) solid var(--c-bordo);
+}
+
+.slide em { font-style: italic; }
+
+.slide strong { font-weight: 700; }
+
+/* evidenziatore salmone, come la selezione di masterismi */
+.slide mark {
+  background: rgba(250, 145, 145, 0.85); /* salmone all'85% di opacità */
+  color: var(--c-testo);
+  padding: 0 0.08em;
+}
+
+/* termine inglese con traduzione (prima occorrenza) */
+.slide .en { font-style: italic; }
+.slide .trad { color: var(--c-tenue-forte); }
+
+/* etichetta mono sopra un titolo */
+.slide .etichetta {
+  font-family: var(--f-testo);
+  font-size: calc(var(--t-piccolo) * var(--px));
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--c-rosa);
+  margin-bottom: calc(24 * var(--px)) !important;
+}
+
+/* --- Strilli (Space Grotesk, senza Lisbeth) ---------------------------- */
+
+.strillo {
+  font-family: var(--f-strillo);
+  font-weight: 700;
+  font-size: calc(var(--t-strillo) * var(--px));
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+html[data-lingua="zh"] .strillo { line-height: 1.15; letter-spacing: 0; }
+
+/* --- Tipi di slide ------------------------------------------------------- */
+
+/* Copertina di giornata */
+.s-copertina { justify-content: space-between; padding-block: calc(var(--margine-alto) * var(--px)); }
+.s-copertina .strillo { font-size: calc(var(--t-strillo) * var(--px)); }
+.s-copertina .meta {
+  font-family: var(--f-testo);
+  font-size: calc(var(--t-piccolo) * var(--px));
+  line-height: 1.5;
+  color: var(--c-tenue-forte);
+}
+
+/* Sezione: numero + titolo strillato */
+.s-sezione .numero {
+  font-family: var(--f-testo);
+  font-size: calc(var(--t-piccolo) * var(--px));
+  color: var(--c-salmone);
+  margin-bottom: calc(16 * var(--px));
+}
+
+/* Tema-focus: una sola frase, grandissima */
+.s-focus .strillo { font-size: calc(var(--t-mega) * var(--px)); }
+
+/* Strilli (tema-focus): fondo blu masterismi, testo bianco. Le aperture di capitolo (s-sezione) restano bianche. */
+.slide.s-focus { background: var(--c-focus); color: #fff; }
+.s-focus::before, .s-focus::after { color: rgba(255, 255, 255, 0.7); }
+
+/* Testo: titolo + poche righe */
+/* titolo 40 px più in alto del margine standard, testo 24 px più in basso: più aria in mezzo */
+.s-testo { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-testo h2 {
+  font-family: var(--f-testo);
+  font-weight: 700;
+  font-size: calc(var(--t-titolo) * var(--px));
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: calc((48 + 40 + 24) * var(--px));
+}
+.s-testo ul {
+  list-style: none;
+  padding: 0;
+}
+/* corpo del testo: dimensione in tokens.css (--t-corpo); rientro e spazi in em, seguono il corpo */
+.s-testo li {
+  font-size: calc(var(--t-corpo) * var(--px));
+  line-height: 1.35;
+  padding-left: 1.2em;
+  position: relative;
+}
+.s-testo li + li { margin-top: 0.6em; }
+/* sottoelenco: freccia con rientro, corpo un po' più piccolo */
+.s-testo li ul { margin-top: 0.3em; }
+.s-testo li li { font-size: 0.8em; }
+.s-testo li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: inherit; /* la freccia sta sempre sulla prima riga, alla stessa altezza rispetto alla linea di base */
+  color: var(--c-salmone);
+}
+/* apici e pedici non alzano la riga (altrimenti il testo scende e la freccia dell'elenco resta in alto) */
+.slide sup, .slide sub { line-height: 0; position: relative; vertical-align: baseline; font-size: 0.7em; }
+.slide sup { top: -0.5em; }
+.slide sub { top: 0.25em; }
+
+/* Tabella (es. scala AIAS): filo sopra ogni riga, pittogramma a tratto */
+.s-tabella { padding-top: calc(40 * var(--px)); }
+.s-tabella h2 { font-size: calc(44 * var(--px)); margin-bottom: calc(40 * var(--px)); }
+.s-tabella table { width: calc((var(--slide-w) - 2 * var(--margine)) * var(--px)); table-layout: fixed; border-collapse: collapse; }
+.s-tabella tr { border-top: calc(1 * var(--px)) solid rgba(0, 0, 0, 0.15); }
+.s-tabella th,
+.s-tabella td {
+  text-align: left;
+  vertical-align: top;
+  padding: calc(8 * var(--px)) calc(16 * var(--px)) calc(8 * var(--px)) 0;
+  font-size: calc(20 * var(--px));
+  line-height: 1.25;
+}
+/* etichetta: numero e icona sulla prima riga; sotto (<br>) l'etichetta, allineata a sinistra nella stessa colonna.
+   Nomi dei livelli di Gradiente IA (Autonomia…Sperimentazione), sotto il sottotitolo in chiaro; descrizioni a corpo minore. */
+.s-tabella th {
+  width: calc(240 * var(--px));
+  font-weight: 700;
+}
+.s-tabella th .sott { font-weight: 400; color: var(--c-tenue-forte); }
+.s-tabella td { font-size: calc(18 * var(--px)); }
+.s-tabella .liv {
+  display: inline-block;
+  min-width: calc(28 * var(--px));
+  color: var(--c-salmone);
+}
+.s-tabella th svg {
+  display: inline-block;
+  vertical-align: calc(-4 * var(--px));
+  width: calc(24 * var(--px)); height: calc(24 * var(--px));
+  fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Enunciato: una frase grande in Space Grotesk, senza titolo */
+.s-enunciato p { font-size: calc(72 * var(--px)); line-height: 1.08; letter-spacing: -0.02em; font-weight: 500; }
+
+/* Citazione */
+.s-citazione blockquote p {
+  font-size: calc(var(--t-grande) * var(--px));
+  line-height: 1.2;
+  font-weight: 400;
+}
+/* virgolette e parentesi nello stesso colore del testo (il grigio solo per le informazioni secondarie) */
+.s-citazione blockquote p::before { content: "«"; }
+.s-citazione blockquote p::after { content: "»"; }
+/* virgolette della lingua: IT « », EN “ ”, 中文 “ ” (regole redazionali in CLAUDE.md) */
+html[data-lingua="en"] .s-citazione blockquote p::before, html[data-lingua="zh"] .s-citazione blockquote p::before { content: "“"; }
+html[data-lingua="en"] .s-citazione blockquote p::after, html[data-lingua="zh"] .s-citazione blockquote p::after { content: "”"; }
+.s-citazione .fonte {
+  font-family: var(--f-testo);
+  font-size: calc(var(--t-piccolo) * var(--px));
+  color: var(--c-tenue-forte);
+  margin-top: calc(36 * var(--px));
+}
+
+/* Immagine al vivo: nessun testo. L'immagine occupa la slide fino alla didascalia;
+   sotto, sul fondo della slide, didascalia e piè come nelle altre slide. */
+.s-immagine {
+  background: var(--c-testo);
+  justify-content: flex-start;
+  padding-bottom: calc(44 * var(--px)); /* spazio del piè di slide */
+}
+.s-immagine > * { margin: 0; }
+.s-immagine img {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+}
+.s-immagine.intera img { object-fit: contain; }
+.s-immagine.pixel img { image-rendering: pixelated; } /* schermate di vecchi computer: pixel netti */
+.s-immagine .credito {
+  margin: calc(12 * var(--px)) calc(var(--margine) * var(--px)) 0;
+  font-family: var(--f-testo);
+  font-size: calc(14 * var(--px));
+  line-height: 1.45;
+  color: #fff; /* bianco pieno, senza fusione (difference/multiply rendevano illeggibile) */
+}
+.slide.s-immagine::before,
+.slide.s-immagine::after { color: rgba(255, 255, 255, 0.7); }
+.s-immagine .credito a.link-md,
+.s-immagine .credito a.link-md .u { color: inherit; --c-link-testo: currentColor; }
+
+/* Esercitazione */
+.s-esercizio .etichetta { color: var(--c-blu); }
+.s-esercizio h2 {
+  font-family: var(--f-testo);
+  font-weight: 700;
+  font-size: calc(var(--t-titolo) * var(--px));
+  line-height: 1.05;
+  margin-bottom: calc(40 * var(--px));
+}
+.s-esercizio ol {
+  padding-left: calc(var(--t-corpo) * 1.3 * var(--px));
+}
+.s-esercizio li { font-size: calc(var(--t-corpo) * var(--px)); line-height: 1.35; }
+.s-esercizio li + li { margin-top: 0.5em; }
+.s-esercizio li::marker { font-family: var(--f-testo); color: var(--c-blu); }
+.s-esercizio .tempo {
+  position: absolute;
+  top: calc(var(--margine-alto) * var(--px));
+  right: calc(var(--margine) * var(--px));
+  margin: 0;
+  font-family: var(--f-testo);
+  font-size: calc(var(--t-medio) * var(--px));
+  color: var(--c-blu);
+}
+.s-esercizio .facoltativo { color: var(--c-blu); }
+/* Livello AIAS: etichetta in coda al testo, filo grigio leggero ad angoli stondati */
+.s-esercizio .aias {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(12 * var(--px));
+  margin-top: calc(36 * var(--px)) !important;
+  font-size: calc(18 * var(--px));
+  color: var(--c-tenue-forte);
+}
+.aias-liv {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--px));
+  padding: calc(6 * var(--px)) calc(14 * var(--px));
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: calc(10 * var(--px));
+}
+.aias-liv b { font-weight: 500; color: var(--c-testo); }
+/* più livelli nella stessa esercitazione: l'etichetta segue la voce a cui si riferisce */
+.s-esercizio li .aias-liv {
+  margin-left: calc(10 * var(--px));
+  padding: calc(3 * var(--px)) calc(10 * var(--px));
+  font-size: calc(18 * var(--px));
+  color: var(--c-tenue-forte);
+  vertical-align: calc(2 * var(--px));
+}
+.aias-liv svg {
+  width: calc(20 * var(--px)); height: calc(20 * var(--px));
+  fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Traccia audio in una slide «Da ascoltare» */
+.audio-slide { display: block; width: calc(640 * var(--px)); max-width: 100%; margin-top: calc(28 * var(--px)); }
+
+/* Link esterno */
+.s-link p { font-size: calc(var(--t-corpo) * var(--px)); }
+.s-link p:not(.url) + p:not(.url) { margin-top: calc(20 * var(--px)); }
+.s-link .url {
+  font-size: calc(var(--t-corpo) * var(--px));
+  margin-top: calc(28 * var(--px));
+  overflow-wrap: anywhere;
+}
+/* QR code della cartella condivisa: a destra, il testo resta nella colonna di sinistra */
+.s-link:has(.qr) > :not(.qr) { max-width: calc((var(--slide-w) - 3 * var(--margine) - 300 - 80) * var(--px)); }
+.s-link .url.grande { font-size: calc(var(--t-medio) * var(--px)); }
+.s-link .qr {
+  position: absolute;
+  right: calc(var(--margine) * var(--px));
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc(300 * var(--px));
+  height: auto;
+}
+
+/* Da vedere e da leggere sulla stessa slide: corpo delle note, in nero */
+.s-letture { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-letture ul { margin-top: 0; margin-bottom: 0; padding-left: 0; list-style: none; }
+.s-letture li {
+  font-size: calc(var(--t-piccolo) * var(--px));
+  line-height: 1.4;
+  color: var(--c-testo);
+}
+.s-letture li + li { margin-top: calc(14 * var(--px)); }
+.s-letture ul + .etichetta { margin-top: calc(40 * var(--px)); }
+
+/* Fonti / bibliografia */
+.s-fonti { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-fonti ol {
+  padding-left: 0;
+  list-style: none;
+}
+.s-fonti li {
+  font-size: calc(var(--t-fonti) * var(--px));
+  line-height: 1.4;
+}
+.s-fonti li + li { margin-top: calc(6 * var(--px)); }
+
+/* Licenza (copertina e chiusura): righe con etichetta */
+.licenza {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: calc(16 * var(--px));
+  row-gap: calc(4 * var(--px));
+  margin-top: calc(28 * var(--px)) !important;
+  font-size: calc( 18 * var(--px));
+  line-height: 1.4;
+  color: var(--c-tenue-forte);
+}
+.licenza dt { color: var(--c-tenue); }
+.licenza dd { margin: 0; }
+
+/* Link: sempre interi, titolo + url, in forma [titolo](url) */
+.slide a.link-md {
+  --c-link-testo: var(--c-testo);
+  border-bottom: none;
+  color: var(--c-link-testo);
+}
+/* parentesi nel colore del titolo del link, non grigie */
+.slide a.link-md::before { content: "["; }
+.slide a.link-md .u::before { content: "]("; color: var(--c-link-testo); }
+.slide a.link-md::after { content: ")"; }
+.slide a.link-md .u {
+  color: var(--c-blu);
+  overflow-wrap: anywhere;
+}
+
+/* Immagine su fondo bianco (incisioni, stampe) */
+.s-immagine.su-bianco { background: var(--c-fondo); }
+.s-immagine.su-bianco .credito,
+.s-immagine.passepartout .credito { color: var(--c-tenue-forte); }
+.slide.s-immagine.su-bianco::before,
+.slide.s-immagine.su-bianco::after,
+.slide.s-immagine.passepartout::before,
+.slide.s-immagine.passepartout::after { color: var(--c-tenue); }
+
+/* Testo lungo (archivio slide): paragrafi e citazioni al corpo del testo, non in grande; titolo più vicino */
+.slide.denso p:not(.etichetta):not(.small):not(.credito):not(.fonte):not(.tempo):not(.numero),
+.slide.denso li { font-size: calc(var(--t-corpo) * var(--px)); line-height: 1.35; }
+.slide.denso p + p { margin-top: 0.6em; }
+.slide.denso li + li { margin-top: 0.35em; }
+.slide.denso.s-testo h2 { margin-bottom: calc(48 * var(--px)); }
+.slide.denso .strillo { font-size: calc(var(--t-titolo) * var(--px)); }
+
+/* Definizioni da etimo.it (ritagli trasparenti del Pianigiani): fondo sabbia chiaro come il sito, ritaglio intero */
+.s-immagine.etimo { background: #f4ecd8; }
+.s-immagine.etimo img { object-fit: contain; padding: calc(80 * var(--px)) calc(var(--margine) * var(--px)) calc(20 * var(--px)); }
+.s-immagine.etimo .credito { color: var(--c-tenue-forte); }
+.slide.s-immagine.etimo::before,
+.slide.s-immagine.etimo::after { color: var(--c-tenue); }
+
+/* Immagine con passepartout del colore della carta: --pp-sx / --pp-dx campionati ai bordi della foto.
+   Passaggio sfumato al centro (coperto dalla foto): sotto, nella fascia di didascalia e piè, nessuna linea di giunzione. */
+.s-immagine.passepartout {
+  background: linear-gradient(to right, var(--pp-sx) 25%, var(--pp-dx) 75%);
+}
+/* Immagine intera su carta (diagrammi, schemi): un po' d'aria sopra e ai lati, non contro i bordi della slide */
+.s-immagine.intera.passepartout img { padding: calc(56 * var(--px)) calc(var(--margine) * var(--px)) 0; }
+
+/* Immagine ancora da scegliere (solo bozze) */
+.s-immagine.da-scegliere {
+  background: var(--c-schermo);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.s-immagine.da-scegliere p {
+  margin: 0 !important;
+  font-size: calc(var(--t-piccolo) * var(--px));
+  color: var(--c-tenue-forte);
+}
+
+/* Schema disegnato (SVG) a tutta slide */
+.s-immagine figure { flex: 1 1 0; min-height: 0; display: flex; }
+.s-immagine svg { flex: 1 1 0; min-height: 0; width: 100%; height: 100%; }
+
+/* Fonte breve: in basso, appena sopra il piè di slide (FORMAZIONE IA — BASE …).
+   Link e fonti nello stesso blocco, uno per riga (<br>); il blocco cresce verso l'alto. */
+.slide .fonte-breve {
+  position: absolute;
+  left: calc(var(--margine) * var(--px));
+  right: calc(var(--margine) * var(--px));
+  bottom: calc(44 * var(--px));
+  margin: 0;
+  font-size: calc(14 * var(--px));
+  line-height: 1.45;
+  color: var(--c-tenue);
+}
+
+.slide .fonte-breve a.link-md { --c-link-testo: var(--c-tenue); }
+
+/* Testo piccolo di servizio (piè di slide, fonti brevi) */
+.s-testo ul + p.small { margin-top: calc(32 * var(--px)); }
+.slide p.small {
+  font-size: calc(var(--t-etichetta) * var(--px));
+  line-height: 1.4;
+  color: var(--c-tenue);
+}
+
+
+/* Post incorporato (es. Instagram): a schermo l'iframe, in stampa solo il link */
+.s-embed { background: var(--c-testo); align-items: center; }
+.s-embed iframe {
+  width: calc(400 * var(--px));
+  height: calc(640 * var(--px));
+  border: 0;
+  background: #fff;
+  margin: auto;
+}
+.slide .solo-stampa { display: none; }
+
+/* --- Menu e copyright dopo l'ultima slide (generati da strumenti/menu.py; solo a schermo) --- */
+.piede-slide {
+  width: min(100vw, calc(100dvh * 16 / 9));
+  margin: 2vh auto 0;
+  padding: 2rem clamp(1rem, 7vw, 88px) 3rem;
+  background: var(--c-fondo);
+  font-family: var(--f-testo);
+  font-size: 0.85rem;
+  scroll-snap-align: end;
+}
+.piede-slide nav.menu ul { list-style: none; padding: 0; margin: 0; }
+.piede-slide nav.menu li { margin: 0; padding: 0.3rem 0; border-top: 1px solid rgba(0, 0, 0, 0.15); }
+.piede-slide nav.menu a { color: var(--c-blu); text-decoration: none; }
+.piede-slide nav.menu a:hover { border-bottom: 1px solid var(--c-blu); }
+.piede-slide .disattivo { color: var(--c-tenue); }
+.piede-slide .stato {
+  display: inline-block; margin-left: 0.5rem; padding: 0.1em 0.6em; border-radius: 9999px;
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  border: 1px solid rgba(0, 0, 0, 0.2); color: var(--c-tenue-forte);
+}
+.piede-slide .menu--admin { margin-top: 2rem; }
+.piede-slide .etichetta {
+  margin: 0 0 0.3rem; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--c-rosa);
+}
+.piede-slide footer.licenza { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(0, 0, 0, 0.15); color: var(--c-tenue-forte); }
+.piede-slide footer.licenza p { margin: 0; }
+@media print { .piede-slide { display: none; } }
+
+
+/* --- Lingue -----------------------------------------------------------------
+   Ogni testo ha tre varianti: <span data-l="it">…</span><span data-l="en">…</span><span data-l="zh">…</span>.
+   Si vede solo quella della lingua scelta (html[data-lingua], impostato da assets/js/lingua.js).
+   Se una variante manca o è vuota, lingua.js mostra l'inglese con data-ripiego (tratteggiato nelle bozze). */
+
+html[data-lingua="it"] [data-l]:not([data-l="it"]),
+html[data-lingua="en"] [data-l]:not([data-l="en"]),
+html[data-lingua="zh"] [data-l]:not([data-l="zh"]) { display: none; }
+html [data-l][data-ripiego] { display: inline !important; }
+html img[data-l][data-ripiego] { display: inline-block !important; }
+html.bozza [data-l][data-ripiego] { text-decoration: underline dashed var(--c-salmone); text-underline-offset: 0.2em; }
+html[data-lingua="zh"] .slide em { font-style: normal; }
+
+/* --- Slide su AI + UI e AI + UX: etichetta in alto a destra ------------------ */
+.slide.ai-ui > .ai-etichetta,
+.slide.ai-ux > .ai-etichetta {
+  position: absolute;
+  top: calc(36 * var(--px));
+  right: calc(var(--margine) * var(--px));
+  margin: 0;
+  padding: calc(6 * var(--px)) calc(14 * var(--px));
+  border-radius: 9999px;
+  font-size: calc(15 * var(--px));
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--c-blu);
+}
+.slide.ai-ux > .ai-etichetta { background: var(--c-salmone); color: var(--c-testo); }
+
+/* --- Sito (galleria del Kickoff): schermata in una cornice di browser, sotto i tag e il link ---- */
+.s-sito { justify-content: flex-start; padding-top: calc(44 * var(--px)); padding-bottom: calc(44 * var(--px)); }
+.s-sito .browser {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: calc(10 * var(--px));
+  overflow: hidden;
+  box-shadow: 0 0 0 calc(1 * var(--px)) rgba(0, 0, 0, 0.12), 0 calc(8 * var(--px)) calc(28 * var(--px)) rgba(0, 0, 0, 0.12);
+  background: var(--c-schermo);
+}
+.s-sito .browser-barra {
+  display: flex;
+  align-items: center;
+  gap: calc(7 * var(--px));
+  height: calc(30 * var(--px));
+  padding: 0 calc(14 * var(--px));
+  background: #f3f3f3;
+  border-bottom: calc(1 * var(--px)) solid rgba(0, 0, 0, 0.08);
+  font-size: calc(13 * var(--px));
+  color: var(--c-tenue-forte);
+}
+.s-sito .browser-barra i { width: calc(10 * var(--px)); height: calc(10 * var(--px)); border-radius: 50%; background: rgba(0, 0, 0, 0.14); }
+.s-sito .browser-barra span { margin-left: calc(12 * var(--px)); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.s-sito .browser img { flex: 1 1 0; min-height: 0; width: 100%; object-fit: cover; object-position: top center; }
+.s-sito .browser.da-scegliere { align-items: stretch; }
+.s-sito .browser.da-scegliere > p { margin: auto; }
+.s-sito .browser.da-scegliere p { font-size: calc(var(--t-piccolo) * var(--px)); color: var(--c-tenue-forte); }
+.s-sito .tag {
+  margin-top: calc(16 * var(--px)) !important;
+  font-size: calc(18 * var(--px));
+  color: var(--c-salmone);
+}
+.s-sito .sito {
+  margin-top: calc(4 * var(--px)) !important;
+  font-size: calc(22 * var(--px));
+  line-height: 1.3;
+}
+.s-sito .sito .nota { color: var(--c-tenue-forte); }
+
+/* --- Video (griglia): fotogrammi verticali affiancati, sotto ciascuno il titolo e il link ----- */
+.s-video { justify-content: flex-start; padding-top: calc(56 * var(--px)); padding-bottom: calc(96 * var(--px)); }
+.s-video > p.small { margin-top: calc(28 * var(--px)); }
+.s-video .griglia-video {
+  flex: 1 1 0;
+  min-height: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr; /* tante colonne quanti i video visibili: con figure[data-l] la griglia cambia per lingua */
+  gap: calc(32 * var(--px));
+  margin-top: calc(28 * var(--px));
+}
+.s-video figure { margin: 0; display: flex; flex-direction: column; min-height: 0; }
+.s-video figure img {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  object-fit: cover;
+  border-radius: calc(10 * var(--px));
+  box-shadow: 0 0 0 calc(1 * var(--px)) rgba(0, 0, 0, 0.12), 0 calc(8 * var(--px)) calc(28 * var(--px)) rgba(0, 0, 0, 0.12);
+  background: var(--c-schermo);
+}
+.s-video figcaption { margin-top: calc(12 * var(--px)); font-size: calc(15 * var(--px)); line-height: 1.3; }
+.s-video figcaption .tag { display: block; color: var(--c-salmone); }
+
+/* --- Bozze: slide nuove e segnaposto ----------------------------------------- */
+html.bozza .slide[data-nuova]::before { content: "NUOVA — " var(--versione-bozza, ""); color: var(--c-blu); }
+.slide .segnaposto { color: var(--c-tenue); }
+
+/* Elenchi lunghi a due colonne (riferimenti, aree di studio) */
+.slide ul.due-colonne { columns: 2; column-gap: calc(48 * var(--px)); }
+.slide ul.due-colonne li { break-inside: avoid; }
+.s-letture ul.due-colonne li { font-size: calc(15 * var(--px)); line-height: 1.35; }
+.s-letture ul.due-colonne li + li { margin-top: calc(7 * var(--px)); }
+.s-letture .tag { color: var(--c-salmone); }
+.s-testo ul.due-colonne li { font-size: calc(22 * var(--px)); }
+
+/* Slide trattenuta: solo nelle bozze, la pubblicazione la toglie (data-non-pubblicare="motivo") */
+html.bozza .slide[data-non-pubblicare] { outline: calc(6 * var(--px)) dashed var(--c-salmone); outline-offset: calc(-6 * var(--px)); }
+html.bozza .slide[data-non-pubblicare]::before { content: "NON SI PUBBLICA — " attr(data-non-pubblicare); color: #b24a4a; }
+.s-sito .sito a.link-md ~ a.link-md { font-size: 0.72em; --c-link-testo: var(--c-tenue-forte); }
+
+/* Timbri del Gradiente IA (SVG da github.com/frazac/gradient-ai via jsDelivr, IT e EN; il cinese usa l'inglese) */
+.slide img.timbro { display: inline-block; width: calc(64 * var(--px)); height: auto; vertical-align: middle; }
+.s-tabella th .timbri { float: left; margin: 0 calc(14 * var(--px)) calc(4 * var(--px)) 0; }
+.s-tabella th img.timbro { width: calc(58 * var(--px)); }
+.timbro-copertina {
+  position: absolute;
+  right: calc(var(--margine) * var(--px));
+  bottom: calc(var(--margine-alto) * var(--px));
+  margin: 0 !important;
+  border: 0 !important;
+}
+.timbro-copertina img.timbro { width: calc(150 * var(--px)); }
+
+/* Etichette del Gradiente IA nella tabella (SVG da github.com/frazac/gradient-ai) */
+.s-tabella th img.etichetta-gai { height: calc(40 * var(--px)); width: auto; display: inline-block; }
+/* Passepartout bianco: l'immagine intera con un margine bianco attorno */
+.s-immagine.pp-bianco { background: var(--c-fondo); }
+.s-immagine.pp-bianco img { margin: calc(40 * var(--px)) calc(var(--margine) * var(--px)) 0; width: auto; }
+.s-immagine.pp-bianco .credito { color: var(--c-tenue-forte); }
+.slide.s-immagine.pp-bianco::before, .slide.s-immagine.pp-bianco::after { color: var(--c-tenue); }
+
+/* Gradiente IA in copertina: solo testo con link, sotto la licenza */
+.s-copertina .gradiente-testo {
+  margin: calc(12 * var(--px)) 0 0 !important;
+  font-size: calc(18 * var(--px));
+  line-height: 1.4;
+}
+
+/* Riferimenti degli anni scorsi: titoletto di tema dentro l'elenco */
+.s-letture ul.due-colonne li.tema {
+  break-after: avoid;
+  margin-top: calc(14 * var(--px));
+  font-size: calc(13 * var(--px));
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-tenue-forte);
+}
+.s-letture ul.due-colonne li.tema:first-child { margin-top: 0; }
+
+/* Elenco di principi: enunciato in grassetto, sotto la fonte più piccola e tenue */
+.s-testo ol.principi li + li { margin-top: calc(28 * var(--px)); }
+.s-testo ol.principi .nota { display: inline-block; margin-top: calc(6 * var(--px)); font-size: 0.72em; line-height: 1.4; color: var(--c-tenue-forte); }
+.s-testo ol + p.small { margin-top: calc(32 * var(--px)); }
+
+/* --- Schema a rettangoli (struttura del corso, argomenti del capitolo; dalle dispense 2025/26, p. 27 e 162) ---
+   .cap = capitolo (riquadro a tutta larghezza, bordo salmone); .arg = argomento (riquadro pieno, due per riga);
+   .attivo = argomento della lezione; .spento = gli altri (solo negli argomenti del capitolo). */
+.s-schema { justify-content: flex-start; padding-top: calc(48 * var(--px)); }
+.s-schema h2 { font-size: calc(36 * var(--px)); font-weight: 500; margin-bottom: calc(22 * var(--px)); }
+.s-schema .schema { display: grid; grid-template-columns: 1fr 1fr; gap: calc(7 * var(--px)) calc(12 * var(--px)); }
+.s-schema .schema > p {
+  margin: 0; padding: calc(5 * var(--px)) calc(12 * var(--px));
+  font-size: calc(17 * var(--px)); line-height: 1.2; text-align: center;
+  border: calc(1.5 * var(--px)) solid transparent;
+}
+.s-schema .cap { grid-column: 1 / -1; border-color: var(--c-salmone) !important; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.s-schema .arg { background: rgba(250, 145, 145, 0.16); border-color: rgba(250, 145, 145, 0.45) !important; }
+.s-schema .arg.ai { background: rgba(105, 143, 255, 0.10); border-color: var(--c-bordo) !important; }
+.s-schema.grande .schema { gap: calc(14 * var(--px)) calc(20 * var(--px)); }
+.s-schema.grande .schema > p { padding: calc(14 * var(--px)) calc(16 * var(--px)); font-size: calc(24 * var(--px)); }
+.s-schema .arg.attivo { background: none; border-color: var(--c-salmone) !important; color: var(--c-salmone); font-weight: 700; }
+.s-schema .arg.spento { background: none; border-color: rgba(0, 0, 0, 0.12) !important; color: var(--c-tenue); }
+.s-schema .small { margin-top: calc(16 * var(--px)); }
+
+/* --- Parole chiave: tabella a tre colonne con le domande (dispense 2025/26, p. 6–8) --- */
+.s-parole { justify-content: center; }
+.s-parole .parole { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.s-parole .parole > * { margin: 0; padding: calc(18 * var(--px)) calc(20 * var(--px)); font-size: calc(26 * var(--px)); line-height: 1.2; border-top: calc(1.5 * var(--px)) solid var(--c-salmone); }
+.s-parole .parole > .intest { border-top: 0; font-size: calc(18 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-tenue-forte); }
+.s-parole .parole > :nth-child(3n+2) { border-left: calc(1.5 * var(--px)) solid var(--c-salmone); border-right: calc(1.5 * var(--px)) solid var(--c-salmone); font-style: italic; }
+.s-parole .domanda { display: block; margin-top: calc(6 * var(--px)); font-size: calc(17 * var(--px)); font-style: normal; color: var(--c-salmone); }
+
+/* --- Componente (dal sottoprogetto Componenti): colonna di testo al 40%, esempio a destra ---
+   L'esempio ha il fondo del palco (#f3efee): il riquadro esce di mezzo gutter a sinistra e a destra (nel margine)
+   e va dal margine alto al piè di slide; la schermata è intera (contain) sullo stesso fondo. */
+.s-componente { --gutter: 48; justify-content: flex-start; padding-top: calc(var(--margine) * var(--px)); }
+.s-componente > .colonna { width: calc((var(--slide-w) - 2 * var(--margine)) * 0.4 * var(--px)); }
+.s-componente .esempio {
+  position: absolute; margin: 0;
+  top: calc(var(--margine) * 0.6 * var(--px)); bottom: calc(52 * var(--px));
+  left: calc((var(--margine) + (var(--slide-w) - 2 * var(--margine)) * 0.4 + var(--gutter) / 2) * var(--px));
+  right: calc((var(--margine) - var(--gutter) / 2) * var(--px));
+  background: #fff;   /* tutto su bianco, niente pecette pulce (FZ, 2026-10-12) */
+}
+.s-componente .esempio img { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.s-componente .esempio { overflow: hidden; }
+.s-componente .esempio iframe { position: absolute; top: 0; left: 0; display: block; border: 0; background: #fff; }
+.s-componente .etichetta { font-size: calc(16 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-rosa); margin: 0 0 calc(16 * var(--px)); }
+.s-componente h2 { font-size: calc(48 * var(--px)); font-weight: 500; line-height: 1.05; letter-spacing: -0.015em; margin: 0; }
+.s-componente .nome-en { font-size: calc(18 * var(--px)); color: var(--c-tenue-forte); margin: calc(8 * var(--px)) 0 0; }
+html[data-lingua="en"] .s-componente .nome-en { display: none; }
+.s-componente .testo { font-size: calc(22 * var(--px)); line-height: 1.38; margin: calc(22 * var(--px)) 0 0; }
+.s-componente .nota-esempio { font-size: calc(18 * var(--px)); line-height: 1.38; color: var(--c-tenue-forte); margin: calc(16 * var(--px)) 0 0; }
+.s-componente .prova { font-size: calc(16 * var(--px)); margin: calc(16 * var(--px)) 0 0; }
+.s-componente .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); width: calc((var(--slide-w) - 2 * var(--margine)) * 0.4 * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); line-height: 1.45; color: var(--c-tenue); }
+.s-componente .fonte-breve a.link-md { color: var(--c-tenue); }
+/* testo lungo (schede d'introduzione): la prima slide è solo testo */
+.s-testo .testo-lungo p { font-size: calc(24 * var(--px)); line-height: 1.4; max-width: calc(980 * var(--px)); }
+.s-testo .testo-lungo p + p { margin-top: calc(14 * var(--px)); }
+.s-testo ul.euristiche { columns: 2; column-gap: calc(40 * var(--px)); margin-top: calc(18 * var(--px)); }
+.s-testo ul.euristiche li { font-size: calc(19 * var(--px)); line-height: 1.3; break-inside: avoid; }
+.s-testo ul.euristiche li + li { margin-top: calc(8 * var(--px)); }
+
+/* --- Approfondimenti (FZ, 2026-10-12): corpo 9 pt, link interi, filetto grigio chiarissimo sopra ogni link --- */
+.s-letture ul:not(.due-colonne) li {
+  font-size: calc(12 * var(--px)); line-height: 1.35;
+  padding-top: calc(7 * var(--px)); border-top: calc(1 * var(--px)) solid rgba(0, 0, 0, 0.08);
+}
+.s-letture ul:not(.due-colonne) li + li { margin-top: calc(7 * var(--px)); }
+.s-letture ul.mining { margin-top: calc(24 * var(--px)); }
+
+/* --- Schemi «hipster» (economia, strategia; dispense 2025/26 p. 24–25): serif, filetti magenta, diagonali sottili --- */
+.s-diagramma { --serif: "Iowan Old Style", "Palatino", Georgia, serif; font-family: var(--serif); }
+.s-diagramma > * { position: absolute; margin: 0; }
+.s-diagramma svg.linee { inset: 0; width: 100%; height: 100%; margin: 0; }
+.s-diagramma svg.linee line { stroke: rgba(250, 0, 160, 0.45); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.s-diagramma svg.linee line.forte { stroke: rgb(250, 0, 160); }
+.s-diagramma svg.linee rect { fill: none; stroke: rgb(250, 0, 160); stroke-width: 1.5; stroke-dasharray: 1 4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.s-diagramma h2 { font-family: var(--f-testo); left: calc(var(--margine) * var(--px)); top: calc(48 * var(--px)); font-size: calc(36 * var(--px)); font-weight: 500; }
+.s-diagramma .fonte { right: calc(145 * var(--px)); top: calc(112 * var(--px)); font-size: calc(15 * var(--px)); font-style: italic; }
+.s-diagramma .voce { font-size: calc(24 * var(--px)); letter-spacing: 0.02em; }
+.s-diagramma .fattori { font-size: calc(20 * var(--px)); font-style: italic; }
+.s-diagramma .fattore { font-size: calc(20 * var(--px)); font-style: italic; line-height: 1.3; width: calc(300 * var(--px)); }
+
+/* --- Diagramma IDEO con le note (dispense 2025/26 p. 23) --- */
+.s-venn > * { position: absolute; margin: 0; }
+.s-venn svg.venn { inset: 0; width: 100%; height: 100%; }
+.s-venn svg.venn circle.cerchio { fill: rgba(0, 0, 0, 0.09); }
+.s-venn svg.venn text { font-family: var(--f-testo); font-size: 14px; fill: #222; }
+.s-venn svg.venn text.forte { font-weight: 700; letter-spacing: 0.04em; }
+.s-venn svg.venn path.freccia, .s-venn svg.venn line.freccia { fill: none; stroke: #222; stroke-width: 2; }
+.s-venn svg.venn line.nota { stroke: var(--c-salmone); stroke-width: 2; }
+.s-venn .nota { font-size: calc(19 * var(--px)); line-height: 1.3; color: var(--c-salmone); width: calc(300 * var(--px)); }
+.s-venn .nota.dx { text-align: right; }
+.s-venn .nota a { color: inherit; }
+/* esempio interattivo: a schermo l'iframe è già pronto, senza clic (assets/js/esempi.js); in stampa la schermata */
+.s-componente .esempio.interattivo img { display: none; }
+@media print { .s-componente .esempio::after { content: none !important; } .s-componente .esempio iframe { display: none; } .s-componente .esempio.interattivo img { display: block; } }
+/* schede d'introduzione dei componenti (testo intero): dall'alto, titolo vicino al testo */
+.s-testo:has(.testo-lungo) { justify-content: flex-start; padding-top: calc(var(--margine) * var(--px)); }
+.s-testo:has(.testo-lungo) h2 { margin-bottom: calc(24 * var(--px)); }
+.s-testo .testo-lungo ul.euristiche li { font-size: calc(18 * var(--px)); }
+.s-testo:has(.testo-lungo) h2 { font-size: calc(48 * var(--px)); }
+/* --- Le 10 euristiche e i componenti, a tutta pagina (FZ, 2026-10-12): riquadri stondati color pulce, chip bianchi --- */
+.s-euristiche { justify-content: flex-start; padding-top: calc(48 * var(--px)); }
+.s-euristiche .etichetta { font-size: calc(16 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-rosa); margin-bottom: calc(16 * var(--px)); }
+.s-euristiche .griglia { display: grid; grid-template-columns: 1fr 1fr; gap: calc(16 * var(--px)) calc(16 * var(--px)); }
+.s-euristiche .euristica { display: grid; grid-template-columns: calc(44 * var(--px)) 1fr; column-gap: calc(6 * var(--px)); align-items: baseline; padding: calc(16 * var(--px)) calc(18 * var(--px)) calc(18 * var(--px)); border-radius: calc(12 * var(--px)); background: #f3efee; }
+.s-euristiche .num { grid-row: 1; font-size: calc(30 * var(--px)); line-height: 1; font-weight: 500; color: var(--c-salmone); }
+.s-euristiche .nome { margin: 0 0 calc(10 * var(--px)); font-size: calc(19 * var(--px)); line-height: 1.2; font-weight: 500; }
+.s-euristiche .comp { grid-column: 2; display: flex; flex-wrap: wrap; gap: calc(5 * var(--px)); margin: 0; padding: 0; list-style: none; }
+.s-euristiche .comp li { font-size: calc(16 * var(--px)); line-height: 1; padding: calc(6 * var(--px)) calc(11 * var(--px)); border-radius: 9999px; background: #fff; }
+.s-euristiche .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); color: var(--c-tenue); }
+.s-euristiche .fonte-breve a.link-md { color: var(--c-tenue); }
+/* schede d'introduzione dei componenti: solo la colonna di testo, come le slide dei componenti (FZ, 2026-10-12) */
+.s-componente.solo-testo .testo p + p { margin-top: calc(12 * var(--px)); }
+.s-componente.solo-testo .testo p { margin: 0; }
+.s-componente .chimica { font-size: calc(20 * var(--px)); line-height: 1.4; color: var(--c-tenue-forte); margin: calc(22 * var(--px)) 0 0; }
+.s-componente .chimica b { color: var(--c-blu); font-weight: 500; }
+.s-componente .esempio.su-bianco { background: #fff; }
+.s-componente.solo-testo .testo p { font-size: calc(22 * var(--px)); line-height: 1.38; }
+/* colonna destra senza esempio (es. la metafora chimica di atomic design): stessa area del riquadro dell'esempio */
+.s-componente .destra {
+  position: absolute; margin: 0; display: flex; align-items: center;
+  top: calc(var(--margine) * 0.6 * var(--px)); bottom: calc(52 * var(--px));
+  left: calc((var(--margine) + (var(--slide-w) - 2 * var(--margine)) * 0.4 + var(--gutter)) * var(--px));
+  right: calc(var(--margine) * var(--px));
+}
+.s-componente .destra .chimica { font-size: calc(40 * var(--px)); line-height: 1.35; margin: 0; color: var(--c-testo); }
+/* post-it sugli esempi interattivi: mentre si piazza una nota (body.annotate-placing, postit-js) l'iframe non riceve
+   il clic, che arriva al riquadro dell'esempio: la nota si aggancia alla figura (selettore + coordinate al suo interno) */
+body.annotate-placing .s-componente .esempio iframe { pointer-events: none; }
+body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dashed var(--c-bordo); outline-offset: calc(-2 * var(--px)); }
+.s-componente .destra .chimica p { margin: 0; }
+.s-componente .destra .chimica p + p { margin-top: calc(48 * var(--px)); }
+/* --- La barra di Facebook nel tempo (dalla slide originale «Bar (and header)», FZ 2026-10-12) --- */
+.s-facebook { justify-content: flex-start; padding-top: calc(var(--margine) * var(--px)); }
+.s-facebook .etichetta { font-size: calc(16 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-rosa); margin-bottom: calc(14 * var(--px)); }
+.s-facebook h2 { font-size: calc(36 * var(--px)); font-weight: 500; margin-top: 0; margin-bottom: calc(20 * var(--px)); }
+.s-facebook { padding-top: calc(44 * var(--px)) !important; }
+.s-facebook .barre { gap: calc(13 * var(--px)) !important; }
+.s-facebook .barre { display: flex; flex-direction: column; gap: calc(14 * var(--px)); }
+.s-facebook figure { position: relative; margin: 0; }
+.s-facebook figure img { display: block; width: 100%; height: auto; }
+.s-facebook figcaption { position: absolute; right: calc(-8 * var(--px)); bottom: calc(-12 * var(--px)); font-size: calc(14 * var(--px)); padding: calc(2 * var(--px)) calc(12 * var(--px)); border: calc(1.5 * var(--px)) solid #f0f; border-radius: 9999px; background: #fff; color: var(--c-rosa); }
+.s-facebook .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); color: var(--c-tenue); }
+.s-facebook .fonte-breve a.link-md { color: var(--c-tenue); }
+/* le 10 euristiche come icone (Lucide), nella colonna destra della scheda d'introduzione */
+.s-componente .destra .icone-euristiche { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); gap: calc(28 * var(--px)) calc(16 * var(--px)); }
+.s-componente .destra .icone-euristiche li { display: flex; flex-direction: column; align-items: center; gap: calc(10 * var(--px)); }
+.s-componente .destra .icone-euristiche .n { font-size: calc(22 * var(--px)); font-weight: 500; color: var(--c-salmone); }
+.s-componente .destra .icone-euristiche img { width: calc(64 * var(--px)); height: calc(64 * var(--px)); }
+/* --- I design system di riferimento (quattro immagini; il quarto con l'IA) --- */
+.s-ds { justify-content: flex-start; padding-top: calc(48 * var(--px)); }
+.s-ds .etichetta { font-size: calc(16 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-rosa); margin-bottom: calc(16 * var(--px)); }
+.s-ds .ds { display: grid; grid-template-columns: repeat(3, 1fr); gap: calc(18 * var(--px)) calc(28 * var(--px)); }
+.s-ds figure { margin: 0; }
+.s-ds figure img { display: block; width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; border: calc(1 * var(--px)) solid #f3efee; border-radius: calc(8 * var(--px)); }
+.s-ds figcaption { margin-top: calc(12 * var(--px)); font-size: calc(17 * var(--px)); line-height: 1.4; }
+.s-ds figcaption a.link-md { font-size: calc(14 * var(--px)); }
+.s-ds .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); color: var(--c-tenue); }
+/* tabella delle euristiche: il pittogramma (Lucide) a sinistra, sul bianco, fuori dal box (FZ, 2026-10-12) */
+.s-euristiche .euristica { display: flex !important; align-items: center; gap: calc(16 * var(--px)); padding: 0 !important; background: none !important; border-radius: 0 !important; }
+.s-euristiche .euristica .picto { flex: none; width: calc(40 * var(--px)); height: calc(40 * var(--px)); opacity: 0.85; }
+.s-euristiche .euristica .box { flex: 1; display: grid; grid-template-columns: calc(40 * var(--px)) 1fr; column-gap: calc(6 * var(--px)); align-items: baseline;
+  padding: calc(14 * var(--px)) calc(18 * var(--px)) calc(16 * var(--px)); border-radius: calc(12 * var(--px)); background: #f3efee; }
+/* AI + UI con l'esempio: elenco numerato breve nella colonna */
+.s-componente .ai-punti { padding-left: 1.2em; margin-top: calc(22 * var(--px)); }
+.s-componente .ai-punti li { font-size: calc(21 * var(--px)); line-height: 1.35; }
+.s-componente .ai-punti li + li { margin-top: calc(8 * var(--px)); }
+.s-componente.ai-ui .ai-etichetta { margin: 0 0 calc(12 * var(--px)); }
+/* barre di Facebook distribuite sull'altezza disponibile (FZ, 2026-10-12) */
+.s-facebook .barre { flex: 1 1 auto; justify-content: space-evenly; gap: 0 !important; padding-bottom: calc(76 * var(--px)); }
+/* la UI è una lingua giovane: cronologia e nomi */
+.s-testo ul.cronologia li { font-size: calc(23 * var(--px)); line-height: 1.35; }
+.s-testo ul.cronologia li + li { margin-top: calc(12 * var(--px)); }
+.s-testo p.nomi { font-size: calc(46 * var(--px)); line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; margin-top: calc(10 * var(--px)); margin-bottom: calc(28 * var(--px)); }

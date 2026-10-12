@@ -1,0 +1,38 @@
+/* Aggiunte per fondamentali.html nel mining (copiato da strumenti/esporta_fondamentali.py sopra slide.css):
+   quarta lingua (FR), piè di slide del mining, copertina e crediti, viste e selettore della lingua del mining. */
+
+html[data-lingua="fr"] [data-l]:not([data-l="fr"]) { display: none; }
+html [data-l][data-ripiego] { display: inline !important; }
+html img[data-l][data-ripiego] { display: inline-block !important; }
+html div[data-l][data-ripiego] { display: block !important; }
+
+/* virgolette francesi « » */
+html[data-lingua="fr"] .s-citazione blockquote p::before { content: "« "; }
+html[data-lingua="fr"] .s-citazione blockquote p::after { content: " »"; }
+
+/* piè di slide */
+.slide::before { content: "UI DESIGN: COMPONENTS — © Francesco Zaccaria — CC BY-NC-SA 4.0"; }
+.slide::after { content: attr(data-cap-en) " — " counter(slide); }
+html[data-lingua="it"] .slide::after { content: attr(data-cap-it) " — " counter(slide); }
+html[data-lingua="fr"] .slide::after { content: attr(data-cap-fr) " — " counter(slide); }
+html[data-lingua="zh"] .slide::after { content: attr(data-cap-zh) " — " counter(slide); }
+.slide.senza-pie::before, .slide.senza-pie::after { content: none !important; }
+
+/* copertina e crediti */
+.s-copertina { justify-content: space-between; padding-block: calc(72 * var(--px)); }
+.s-copertina .meta { font-size: calc(24 * var(--px)); line-height: 1.35; color: var(--c-tenue-forte); max-width: calc(980 * var(--px)); }
+.s-crediti { gap: calc(16 * var(--px)); }
+.s-crediti h2 { font-size: calc(40 * var(--px)); font-weight: 500; margin: 0; }
+.s-crediti p { font-size: calc(20 * var(--px)); line-height: 1.4; max-width: calc(900 * var(--px)); margin: 0; }
+
+/* viste (tabella / fondamentali) e selettore della lingua, come nella tabella del mining */
+.viste { position: fixed; top: 12px; left: 16px; z-index: 10; display: flex; gap: 4px; padding: 4px; border-radius: 9999px;
+  background: rgba(255, 255, 255, .92); box-shadow: 0 1px 6px rgba(0, 0, 0, .12); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.viste a { padding: 8px 14px; border-radius: 9999px; color: rgba(0, 0, 0, .55); text-decoration: none; border: 0; }
+.viste a[aria-current] { background: #000; color: #fff; }
+.lingua-selettore { position: fixed; top: 12px; right: 16px; z-index: 10; display: flex; gap: 2px; padding: 4px; border-radius: 9999px;
+  background: rgba(255, 255, 255, .92); box-shadow: 0 1px 6px rgba(0, 0, 0, .12); font-size: 14px; }
+.lingua-selettore button { border: 0; background: none; cursor: pointer; padding: 8px 12px; border-radius: 9999px; color: rgba(0, 0, 0, .55); font: inherit; }
+.lingua-selettore button[aria-pressed="true"] { background: #000; color: #fff; }
+@media screen { body.pagina-fondamentali { padding-top: 64px; } }
+@media print { .viste, .lingua-selettore { display: none; } }

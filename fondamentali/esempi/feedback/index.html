@@ -1,0 +1,128 @@
+<!doctype html>
+<!-- Esempio ricostruito: Feedback (versione per le slide, da resources/component-handout-feedback.html). © Francesco Zaccaria, codice con licenza MIT. Icone: Lucide (ISC). -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  :root { --rosa-scuro: #b85c5c; --ombra: rgba(205, 106, 106, .3); }
+  .palco { max-width: 760px; }
+  .riquadro { padding: 26px 28px 22px; }
+  /* scena: il pulsante al centro */
+  .scena { position: relative; display: grid; place-items: center; height: 300px; }
+  .fb { position: relative; width: 260px; height: 92px; border-radius: 9999px; border: 2px solid var(--c-rosa); background: #fff; color: var(--rosa-scuro);
+    font-size: 23px; font-weight: 500; cursor: pointer; overflow: visible; box-shadow: 10px 10px 22px var(--ombra);
+    transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
+  .fb.hover { background: var(--c-rosa); border-color: var(--c-rosa); color: #fff; }
+  .fb.press { animation: preme .2s cubic-bezier(.25,.46,.45,.94); background: var(--c-rosa); color: #fff; }
+  @keyframes preme { 50% { transform: scale(.95); box-shadow: 0 0 20px var(--ombra); } }
+  .fb.loading { background: #fbeeee; }
+  /* livelli sovrapposti: testo, rotella, spunta, mano */
+  .livello { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .3s, transform .3s; pointer-events: none; }
+  .testo { opacity: 1; }
+  .rotella, .spunta { opacity: 0; transform: scale(.5); }
+  .fb.loading .testo, .fb.success .testo { opacity: 0; }
+  .fb.loading .rotella, .fb.success .spunta { opacity: 1; transform: scale(1); }
+  .rotella circle { fill: none; stroke: var(--c-rosa); stroke-width: 3; stroke-dasharray: 0 57; transform: rotate(-90deg); transform-origin: center; }
+  .fb.loading .rotella circle { animation: riempi 3s linear forwards; }
+  @keyframes riempi { to { stroke-dasharray: 57 57; } }
+  .spunta svg { width: 34px; height: 34px; color: var(--c-rosa); }
+  .mano { inset: auto; right: -46px; bottom: -14px; width: 40px; height: 40px; opacity: 0; transition: opacity .5s, right .5s, bottom .5s; }
+  .mano svg { width: 40px; height: 40px; fill: none; stroke: #111; stroke-width: 1.6; }
+  .fb.hover .mano, .fb.press .mano { opacity: 1; right: 34px; bottom: 6px; }
+  .fb.press .mano, .fb.default .mano { transition: none; }
+  /* sequenza degli stati sotto il pulsante */
+  .sequenza { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .sequenza li { text-align: center; font-size: 16px; padding: 9px 4px 0; border-top: 4px solid var(--c-linea); color: var(--c-tenue); transition: color .2s, border-color .2s; }
+  .sequenza li small { display: block; font-size: 15px; color: var(--c-tenue); font-variant-numeric: tabular-nums; }
+  .sequenza li.ora { border-color: var(--c-rosa); color: var(--c-testo); }
+  /* debug, in fondo */
+  .debug { display: flex; align-items: center; gap: 14px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--c-linea); font-size: 16px; min-height: 62px; }
+  .interruttore { display: inline-flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; cursor: pointer; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; font-size: 15px; }
+  .binario { position: relative; width: 52px; height: 30px; border-radius: 9999px; background: rgba(0,0,0,.14); transition: background .25s; }
+  .binario::after { content: ""; position: absolute; top: 4px; left: 4px; width: 22px; height: 22px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform .25s; }
+  .interruttore[aria-checked="true"] .binario { background: #d0453b; }
+  .interruttore[aria-checked="true"] .binario::after { transform: translateX(22px); }
+  .controlli { display: none; align-items: center; gap: 10px; margin-left: auto; }
+  .debug-on .controlli { display: flex; }
+  .stato { padding: 6px 14px; border-radius: 9999px; background: rgba(208,69,59,.1); color: #b2372e; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .avanti { padding: 6px 16px; border-radius: 9999px; border: 0; background: #d0453b; color: #fff; font-size: 15px; font-weight: 500; cursor: pointer; }
+  /* con debug acceso: ombra in rosso e livelli nascosti resi visibili */
+  .debug-on .fb { box-shadow: 10px 10px 22px rgba(255,0,0,.7); }
+  .debug-on .livello { outline: 1.5px dashed #d0453b; outline-offset: -1px; border-radius: 9999px; }
+  .debug-on .rotella, .debug-on .spunta, .debug-on .mano { opacity: .35; transform: none; }
+  .debug-on .fb.loading .rotella, .debug-on .fb.success .spunta, .debug-on .fb.hover .mano, .debug-on .fb.press .mano { opacity: 1; }
+  .debug-on .rotella, .debug-on .spunta { inset: 24px 108px; }
+  .debug-on .testo { inset: 24px 60px; }
+  .debug-on .mano { border-radius: 6px; }
+  .debug-on .rotella circle { stroke-dasharray: 20 57; }
+  .debug-on .fb.loading .rotella circle { stroke-dasharray: 0 57; }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro" id="riquadro">
+    <span class="didascalia"><span data-l="it">Il feedback di un pulsante: premilo</span><span data-l="en">A button’s feedback: press it</span><span data-l="fr">Le feedback d’un bouton&#8239;: appuyez</span><span data-l="zh">按钮的反馈：按一下</span></span>
+    <div class="scena">
+      <button type="button" class="fb" id="fb">
+        <span class="livello testo"><span data-l="it">Invia</span><span data-l="en">Submit</span><span data-l="fr">Envoyer</span><span data-l="zh">提交</span></span>
+        <span class="livello rotella" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg></span>
+        <!-- Lucide «check» (ISC) -->
+        <span class="livello spunta" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+        <!-- Lucide «pointer» (ISC) -->
+        <span class="livello mano" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path fill="#fff" stroke="none" d="M6 15V4a2 2 0 0 1 4 0v4a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82z"/><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
+      </button>
+    </div>
+    <ol class="sequenza" id="sequenza">
+      <li data-s="default"><span data-l="it">Normale</span><span data-l="en">Default</span><span data-l="fr">Normal</span><span data-l="zh">默认</span><small>1000 ms</small></li>
+      <li data-s="hover"><span data-l="it">Hover</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span><small>1000 ms</small></li>
+      <li data-s="press"><span data-l="it">Premuto</span><span data-l="en">Pressed</span><span data-l="fr">Appuyé</span><span data-l="zh">按下</span><small>200 ms</small></li>
+      <li data-s="loading"><span data-l="it">Attesa</span><span data-l="en">Loading</span><span data-l="fr">Chargement</span><span data-l="zh">加载中</span><small>3000 ms</small></li>
+      <li data-s="success"><span data-l="it">Fatto</span><span data-l="en">Success</span><span data-l="fr">Réussi</span><span data-l="zh">成功</span><small>3000 ms</small></li>
+    </ol>
+    <div class="debug">
+      <button type="button" class="interruttore" id="interruttore" role="switch" aria-checked="false"><span class="binario"></span>Debug</button>
+      <div class="controlli">
+        <span class="stato" id="stato"></span>
+        <button type="button" class="avanti" id="avanti"><span data-l="it">Avanti</span><span data-l="en">Next</span><span data-l="fr">Suivant</span><span data-l="zh">下一步</span> →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Ogni stato risponde a un gesto: la mano sopra, la pressione, l’attesa, la conferma. Con «Debug» gli stati si avanzano a mano e si vedono i livelli nascosti del pulsante. Icone: Lucide (ISC).</span><span data-l="en">Each state answers a gesture: the hand over it, the press, the wait, the confirmation. With “Debug” you step through the states by hand and see the button’s hidden layers. Icons: Lucide (ISC).</span><span data-l="fr">Chaque état répond à un geste&#8239;: la main dessus, l’appui, l’attente, la confirmation. Avec «&#8239;Debug&#8239;» on avance les états à la main et on voit les calques cachés du bouton. Icônes&#8239;: Lucide (ISC).</span><span data-l="zh">每个状态都回应一个动作：手指悬停、按下、等待、确认。打开“Debug”可以手动逐步切换状态，并看到按钮中隐藏的图层。图标：Lucide（ISC）。</span></p>
+<script>
+  var SEQ = [['default', 1000], ['hover', 1000], ['press', 200], ['loading', 3000], ['success', 3000]];
+  var fb = document.getElementById('fb'), riquadro = document.getElementById('riquadro'), sw = document.getElementById('interruttore');
+  var i = 0, timer = null, debug = false;
+  function mostra(n) {
+    var s = SEQ[n];
+    fb.className = 'fb ' + s[0];
+    fb.setAttribute('aria-busy', String(s[0] === 'loading'));
+    document.querySelectorAll('#sequenza li').forEach(function (li) { li.classList.toggle('ora', li.getAttribute('data-s') === s[0]); });
+    document.getElementById('stato').textContent = s[0].toUpperCase() + ' · ' + s[1] + ' ms';
+  }
+  function passo() {
+    clearTimeout(timer);
+    mostra(i);
+    var durata = SEQ[i][1];
+    i = (i + 1) % SEQ.length;
+    if (!debug) timer = setTimeout(passo, durata);
+  }
+  fb.addEventListener('click', function () { if (!debug) { i = 0; passo(); } });
+  sw.addEventListener('click', function () {
+    debug = !debug;
+    sw.setAttribute('aria-checked', String(debug));
+    riquadro.classList.toggle('debug-on', debug);
+    clearTimeout(timer);
+    if (!debug) { i = 0; passo(); }
+  });
+  document.getElementById('avanti').addEventListener('click', function () { if (debug) passo(); });
+  // nella schermata della slide (Chrome headless) il pulsante resta fermo sullo stato «hover», con la mano
+  if (/HeadlessChrome/.test(navigator.userAgent)) { i = 1; debug = true; passo(); debug = false; } else passo();
+</script>
+</body>
+</html>

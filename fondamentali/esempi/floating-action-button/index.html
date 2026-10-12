@@ -1,0 +1,166 @@
+<!doctype html>
+<!-- Esempio ricostruito: Floating Action Button (FAB). © Francesco Zaccaria, codice con licenza MIT. -->
+<!-- Versione per le slide (FZ, 2026-10-12): due telefoni affiancati: a sinistra il FAB apre i sottopulsanti (speed dial,
+     aperti nella schermata), a destra «Nuova nota» apre subito l'editor della nota. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Floating Action Button — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .riquadro { padding: 14px; }
+  .didascalia { text-align: center; }
+  .telefono { position: relative; width: 320px; height: 580px; margin: 0 auto; border: 10px solid #222; border-radius: 40px; background: #fbf9f8; overflow: hidden; }
+  .barra { height: 62px; display: flex; align-items: center; padding: 0 20px; font-weight: 500; font-size: 22px; background: #fff; border-bottom: 1px solid var(--c-linea); }
+  .lista { list-style: none; margin: 0; padding: 6px 0 90px; height: calc(100% - 62px); overflow-y: auto; scrollbar-width: none; }
+  .lista li { display: flex; gap: 14px; align-items: center; padding: 11px 18px; font-size: 17px; }
+  .lista i { flex: none; width: 42px; height: 42px; border-radius: 50%; background: var(--c-salmone); opacity: .55; }
+  .lista li:nth-child(3n) i { background: var(--c-blu); }
+  .lista div { flex: 1; display: grid; gap: 7px; min-width: 0; }
+  .lista div > span { display: block; height: 10px; border-radius: 5px; background: rgba(0,0,0,.12); }
+  .lista li.nuova { animation: entra .5s; }
+  .lista li.nuova i { opacity: 1; }
+  .lista li.nuova b { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .lista li.nuova small { font-size: 15px; color: var(--c-tenue); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  @keyframes entra { from { background: #fdecec; } to { background: transparent; } }
+  .fab { position: absolute; right: 20px; bottom: 20px; z-index: 3; height: 64px; min-width: 64px; padding: 0 20px; border: 0; border-radius: 20px;
+    background: var(--c-salmone); color: var(--c-testo); display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,.22); font-weight: 500; font-size: 19px; transition: padding .25s, gap .25s, box-shadow .2s, background .2s, opacity .2s, transform .2s; }
+  .fab:hover { box-shadow: 0 10px 22px rgba(0,0,0,.26); background: #f87f7f; }
+  .fab:active { box-shadow: 0 3px 8px rgba(0,0,0,.2); }
+  .fab svg { width: 28px; height: 28px; flex: none; }
+  .fab .testo { overflow: hidden; white-space: nowrap; max-width: 180px; transition: max-width .25s; }
+  .ridotto .fab .testo { max-width: 0; }
+  .ridotto .fab { gap: 0; }
+  .scrivendo .fab { opacity: 0; transform: scale(.6); pointer-events: none; }
+  /* speed dial: il FAB apre i sottopulsanti (mini FAB con etichetta) sopra un velo */
+  .velo { position: absolute; inset: 0; z-index: 2; background: rgba(255,255,255,.8); opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .aperto .velo { opacity: 1; pointer-events: auto; }
+  .aperto .fab .testo { max-width: 0; }
+  .aperto .fab { gap: 0; }
+  .fab svg.piu { transition: transform .25s; }
+  .aperto .fab svg.piu { transform: rotate(45deg); }
+  .azioni { position: absolute; right: 24px; bottom: 98px; z-index: 3; list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; justify-items: end; }
+  .azioni li { display: flex; align-items: center; gap: 12px; opacity: 0; transform: translateY(12px); transition: opacity .2s, transform .2s; pointer-events: none; }
+  .aperto .azioni li { opacity: 1; transform: none; pointer-events: auto; }
+  .azioni li:nth-child(3) { transition-delay: .03s; } .azioni li:nth-child(2) { transition-delay: .06s; } .azioni li:nth-child(1) { transition-delay: .09s; }
+  .azioni li > span { background: #fff; padding: 5px 12px; border-radius: 8px; font-size: 17px; box-shadow: 0 2px 6px rgba(0,0,0,.15); white-space: nowrap; }
+  .azioni button { width: 52px; height: 52px; border: 0; border-radius: 16px; background: #fff; box-shadow: 0 3px 10px rgba(0,0,0,.2); cursor: pointer; display: grid; place-items: center; }
+  .azioni button:hover { background: #fdecec; }
+  .azioni svg { width: 24px; height: 24px; }
+  /* l'editor della nota: si apre dal FAB (in basso a destra) e riempie lo schermo */
+  .editor { position: absolute; inset: 0; z-index: 4; background: #fff; display: flex; flex-direction: column;
+    transform-origin: 88% 92%; transform: scale(.15); opacity: 0; pointer-events: none; border-radius: 20px; transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .2s, border-radius .3s; }
+  .scrivendo .editor { transform: none; opacity: 1; pointer-events: auto; border-radius: 0; }
+  .editor .testa { height: 62px; flex: none; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; border-bottom: 1px solid var(--c-linea); }
+  .icona { width: 44px; height: 44px; border: 0; border-radius: 50%; background: none; cursor: pointer; display: grid; place-items: center; }
+  .icona:hover { background: #fdecec; }
+  .icona svg { width: 26px; height: 26px; }
+  .fatto { border: 0; border-radius: 9999px; background: var(--c-testo); color: #fff; padding: 9px 18px; font-size: 17px; cursor: pointer; }
+  .fatto:hover { background: #333; }
+  .editor input, .editor textarea { border: 0; outline: none; background: none; padding: 0 22px; width: 100%; }
+  .editor input { font-size: 24px; font-weight: 500; margin: 22px 0 12px; }
+  .editor textarea { flex: 1; font-size: 18px; line-height: 1.5; resize: none; }
+  .editor ::placeholder { color: rgba(0,0,0,.35); }
+  .editor .data { padding: 14px 22px; font-size: 15px; color: var(--c-tenue); border-top: 1px solid var(--c-linea); }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Con sottopulsanti (speed dial)</span><span data-l="en">With sub-buttons (speed dial)</span><span data-l="fr">Avec sous-boutons (speed dial)</span><span data-l="zh">带子按钮（快速拨号）</span></span>
+    <div class="telefono" id="tel-a">
+      <div class="barra"><span data-l="it">Note</span><span data-l="en">Notes</span><span data-l="fr">Notes</span><span data-l="zh">笔记</span></div>
+      <ul class="lista"></ul>
+      <div class="velo" id="velo"></div>
+      <ul class="azioni" id="azioni" aria-hidden="true">
+        <li><span><span data-l="it">Foto</span><span data-l="en">Photo</span><span data-l="fr">Photo</span><span data-l="zh">照片</span></span><button type="button" tabindex="-1" aria-label="Photo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 6l1.5-2h5L16 6" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+        <li><span><span data-l="it">Nota vocale</span><span data-l="en">Voice note</span><span data-l="fr">Note vocale</span><span data-l="zh">语音笔记</span></span><button type="button" tabindex="-1" aria-label="Voice note"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+        <li><span><span data-l="it">Nuova lista</span><span data-l="en">New list</span><span data-l="fr">Nouvelle liste</span><span data-l="zh">新建清单</span></span><button type="button" tabindex="-1" aria-label="New list"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="4.5" cy="6" r="1.5" fill="#111"/><circle cx="4.5" cy="12" r="1.5" fill="#111"/><circle cx="4.5" cy="18" r="1.5" fill="#111"/></svg></button></li>
+        <li><span><span data-l="it">Nuova nota</span><span data-l="en">New note</span><span data-l="fr">Nouvelle note</span><span data-l="zh">新建笔记</span></span><button type="button" tabindex="-1" aria-label="New note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6V4h14v2M12 4v16M9 20h6" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+      </ul>
+      <button class="fab" id="fab-a" type="button" aria-expanded="false" aria-controls="azioni"><svg class="piu" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span class="testo"><span data-l="it">Nuovo</span><span data-l="en">New</span><span data-l="fr">Nouveau</span><span data-l="zh">新建</span></span></button>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Apre subito la nota</span><span data-l="en">Opens the note directly</span><span data-l="fr">Ouvre directement la note</span><span data-l="zh">直接打开笔记</span></span>
+    <div class="telefono" id="tel">
+      <div class="barra"><span data-l="it">Note</span><span data-l="en">Notes</span><span data-l="fr">Notes</span><span data-l="zh">笔记</span></div>
+      <ul class="lista" id="lista"></ul>
+      <button class="fab" id="fab" type="button" aria-controls="editor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span class="testo"><span data-l="it">Nuova nota</span><span data-l="en">New note</span><span data-l="fr">Nouvelle note</span><span data-l="zh">新建笔记</span></span></button>
+      <div class="editor" id="editor" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="testa">
+          <button class="icona" type="button" id="indietro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="fatto" type="button" id="fatto"><span data-l="it">Fine</span><span data-l="en">Done</span><span data-l="fr">OK</span><span data-l="zh">完成</span></button>
+        </div>
+        <input id="titolo" autocomplete="off" data-it="Titolo" data-en="Title" data-fr="Titre" data-zh="标题">
+        <textarea id="corpo" data-it="Scrivi qui la nota…" data-en="Write your note here…" data-fr="Écrivez votre note ici…" data-zh="在这里写笔记…"></textarea>
+        <div class="data" id="data"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Un solo FAB per schermata, per l’azione principale: resta sopra il contenuto e, mentre si scorre, si riduce alla sola icona. Due modi di usarlo: a sinistra apre un piccolo menu di sottopulsanti (speed dial, da tre a sei azioni affini); a destra fa una cosa sola e apre subito una nota vuota.</span><span data-l="en">One FAB per screen, for the primary action: it floats above the content and shrinks to its icon while scrolling. Two ways to use it: on the left it opens a small menu of sub-buttons (speed dial, three to six related actions); on the right it does one thing and opens an empty note straight away.</span><span data-l="fr">Un seul FAB par écran, pour l’action principale : il flotte au-dessus du contenu et se réduit à son icône pendant le défilement. Deux usages : à gauche, il ouvre un petit menu de sous-boutons (speed dial, de trois à six actions proches) ; à droite, il fait une seule chose et ouvre tout de suite une note vide.</span><span data-l="zh">每个屏幕只放一个 FAB，用于主要操作：它浮在内容之上，滚动时缩成只剩图标。两种用法：左边按下后展开一组子按钮（快速拨号，三到六个相关操作）；右边只做一件事，直接打开一条空白笔记。</span></p>
+<script>
+  var T = {
+    it: { indietro: 'Indietro', oggi: 'Oggi', senza: 'Nota senza titolo' },
+    en: { indietro: 'Back', oggi: 'Today', senza: 'Untitled note' },
+    fr: { indietro: 'Retour', oggi: 'Aujourd’hui', senza: 'Note sans titre' },
+    zh: { indietro: '返回', oggi: '今天', senza: '无标题笔记' }
+  };
+  function t() { return T[window.Lingua ? Lingua.get() : 'en'] || T.en; }
+  var lista = document.getElementById('lista'), tel = document.getElementById('tel'), fab = document.getElementById('fab');
+  var editor = document.getElementById('editor'), titolo = document.getElementById('titolo'), corpo = document.getElementById('corpo');
+  // le due liste: righe finte; scorrendo, il FAB esteso si riduce alla sola icona
+  document.querySelectorAll('.lista').forEach(function (ul) {
+    for (var i = 0; i < 16; i++) ul.insertAdjacentHTML('beforeend', '<li><i></i><div><span style="width:' + (60 + (i * 37) % 35) + '%"></span><span style="width:' + (40 + (i * 23) % 40) + '%;opacity:.6"></span></div></li>');
+    ul.addEventListener('scroll', function () { ul.closest('.telefono').classList.toggle('ridotto', ul.scrollTop > 10); });
+  });
+  // telefono di sinistra: speed dial
+  var telA = document.getElementById('tel-a'), fabA = document.getElementById('fab-a');
+  function dial(apri, focus) {
+    telA.classList.toggle('aperto', apri); fabA.setAttribute('aria-expanded', String(apri));
+    document.getElementById('azioni').setAttribute('aria-hidden', String(!apri));
+    document.querySelectorAll('#azioni button').forEach(function (x) { x.tabIndex = apri ? 0 : -1; });
+    if (focus) fabA.focus({ preventScroll: true });
+  }
+  fabA.onclick = function () { dial(!telA.classList.contains('aperto')); };
+  document.getElementById('velo').onclick = function () { dial(false, true); };
+  document.querySelectorAll('#azioni button').forEach(function (x) { x.onclick = function () { dial(false, true); }; });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && telA.classList.contains('aperto')) dial(false, true); });
+  dial(true); // all'apertura il menu è già aperto (senza rubare il focus)
+  function testi() {
+    var l = window.Lingua ? Lingua.get() : 'en';
+    [titolo, corpo].forEach(function (el) { el.placeholder = el.dataset[l] || el.dataset.en; });
+    document.getElementById('indietro').setAttribute('aria-label', t().indietro);
+    document.getElementById('data').textContent = t().oggi + ', ' + new Date().toLocaleTimeString(l === 'zh' ? 'zh-CN' : l, { hour: '2-digit', minute: '2-digit' });
+  }
+  function apri() {
+    titolo.value = ''; corpo.value = ''; testi();
+    tel.classList.add('scrivendo'); editor.setAttribute('aria-hidden', 'false');
+    setTimeout(function () { titolo.focus({ preventScroll: true }); }, 250);
+  }
+  function chiudi() {
+    var ti = titolo.value.trim(), co = corpo.value.trim();
+    if (ti || co) {
+      var li = document.createElement('li'); li.className = 'nuova';
+      li.innerHTML = '<i></i><div><b></b><small></small></div>';
+      li.querySelector('b').textContent = ti || t().senza; li.querySelector('small').textContent = co;
+      lista.insertBefore(li, lista.firstChild); lista.scrollTop = 0;
+    }
+    tel.classList.remove('scrivendo'); editor.setAttribute('aria-hidden', 'true'); fab.focus({ preventScroll: true });
+  }
+  fab.onclick = apri;
+  document.getElementById('fatto').onclick = chiudi;
+  document.getElementById('indietro').onclick = chiudi;
+  titolo.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); corpo.focus(); } });
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && tel.classList.contains('scrivendo')) chiudi(); });
+  testi();
+  document.addEventListener('lingua', testi);
+</script>
+</body>
+</html>

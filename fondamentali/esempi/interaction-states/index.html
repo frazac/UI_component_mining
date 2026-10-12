@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- Esempio ricostruito: Interaction states, stati di interazione (versione per le slide, da resources/component-handout-states2.html). © Francesco Zaccaria, codice con licenza MIT. Icone: Lucide (ISC). -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interaction states — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 920px; gap: 16px; }
+  .riquadro { padding: 22px 16px 26px; display: flex; flex-direction: column; align-items: center; gap: 26px; min-height: 290px; }
+  .riquadro .didascalia { margin: 0; align-self: stretch; text-align: center; }
+  .contenuto { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; }
+  .pos { position: relative; display: inline-block; }
+  /* pulsante */
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 30px; border-radius: 9999px; border: 0;
+    font-size: 18px; font-weight: 500; background: #111; color: #fff; cursor: pointer; white-space: nowrap; }
+  .btn.sopra { background: var(--c-blu); }
+  .btn.premuto { background: #3f63d6; transform: translateY(2px); }
+  .btn.focus { outline: 3px solid var(--c-blu); outline-offset: 3px; }
+  .btn:disabled { background: #e3e0df; color: rgba(0,0,0,.4); cursor: not-allowed; }
+  /* link */
+  .link { font-size: 18px; color: var(--c-blu); text-decoration: underline; text-underline-offset: 4px; padding: 2px 6px; border-radius: 4px; }
+  .link.sopra { color: #2f5fe0; text-decoration-thickness: 3px; }
+  .link.premuto { color: #111; background: rgba(105,143,255,.18); }
+  .link.focus { outline: 3px solid var(--c-blu); outline-offset: 3px; }
+  .link.disabilitato { color: rgba(0,0,0,.3); text-decoration: none; cursor: not-allowed; }
+  /* cursori disegnati (Lucide «pointer» e «ban») */
+  .cursore { position: absolute; width: 28px; height: 28px; pointer-events: none; }
+  .cursore svg { width: 28px; height: 28px; fill: none; stroke: #111; stroke-width: 1.6; }
+  .cursore.divieto svg { fill: none; stroke: #d0453b; stroke-width: 2.2; width: 22px; height: 22px; }
+  .su-btn { right: 14px; bottom: -14px; }
+  .su-link { right: -18px; bottom: -18px; }
+  .divieto.su-btn { right: 8px; bottom: -8px; }
+  .divieto.su-link { right: -26px; top: -10px; }
+  /* badge */
+  .badge { position: absolute; top: -6px; right: -6px; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 9999px; background: #e5372b; color: #fff;
+    font-size: 13px; font-weight: 500; line-height: 18px; text-align: center; border: 2px solid #fff; }
+  .badge.punto { min-width: 0; width: 14px; height: 14px; padding: 0; top: -4px; right: -10px; }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco tre">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Normale</span><span data-l="en">Default</span><span data-l="fr">Par défaut</span><span data-l="zh">默认</span></span>
+    <div class="contenuto">
+      <button type="button" class="btn" tabindex="-1"><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button>
+      <a class="link" href="#" tabindex="-1" onclick="return false"><span data-l="it">Dettagli</span><span data-l="en">Details</span><span data-l="fr">Détails</span><span data-l="zh">详情</span></a>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Hover</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span></span>
+    <div class="contenuto">
+      <span class="pos"><button type="button" class="btn sopra" tabindex="-1"><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button><span class="cursore su-btn" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path fill="#fff" stroke="none" d="M6 15V4a2 2 0 0 1 4 0v4a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82z"/><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span></span>
+      <span class="pos"><a class="link sopra" href="#" tabindex="-1" onclick="return false"><span data-l="it">Dettagli</span><span data-l="en">Details</span><span data-l="fr">Détails</span><span data-l="zh">详情</span></a><span class="cursore su-link" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path fill="#fff" stroke="none" d="M6 15V4a2 2 0 0 1 4 0v4a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82z"/><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span></span>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Premuto / tap</span><span data-l="en">Active / tap</span><span data-l="fr">Actif / tap</span><span data-l="zh">按下 / 轻触</span></span>
+    <div class="contenuto">
+      <button type="button" class="btn premuto" tabindex="-1"><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button>
+      <a class="link premuto" href="#" tabindex="-1" onclick="return false"><span data-l="it">Dettagli</span><span data-l="en">Details</span><span data-l="fr">Détails</span><span data-l="zh">详情</span></a>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Focus</span><span data-l="en">Focus</span><span data-l="fr">Focus</span><span data-l="zh">焦点</span></span>
+    <div class="contenuto">
+      <button type="button" class="btn focus" tabindex="-1"><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button>
+      <a class="link focus" href="#" tabindex="-1" onclick="return false"><span data-l="it">Dettagli</span><span data-l="en">Details</span><span data-l="fr">Détails</span><span data-l="zh">详情</span></a>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Disabilitato</span><span data-l="en">Disabled</span><span data-l="fr">Désactivé</span><span data-l="zh">禁用</span></span>
+    <div class="contenuto">
+      <span class="pos"><button type="button" class="btn" disabled><span data-l="it">Invia</span><span data-l="en">Send</span><span data-l="fr">Envoyer</span><span data-l="zh">发送</span></button><span class="cursore divieto su-btn" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span></span>
+      <span class="pos"><a class="link disabilitato" aria-disabled="true" tabindex="-1"><span data-l="it">Dettagli</span><span data-l="en">Details</span><span data-l="fr">Détails</span><span data-l="zh">详情</span></a><span class="cursore divieto su-link" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></svg></span></span>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Con badge</span><span data-l="en">Badge</span><span data-l="fr">Badge</span><span data-l="zh">徽标</span></span>
+    <div class="contenuto">
+      <span class="pos"><button type="button" class="btn" tabindex="-1"><span data-l="it">Messaggi</span><span data-l="en">Messages</span><span data-l="fr">Messages</span><span data-l="zh">消息</span></button><span class="badge">3</span></span>
+      <span class="pos"><a class="link" href="#" tabindex="-1" onclick="return false"><span data-l="it">Novità</span><span data-l="en">What’s new</span><span data-l="fr">Nouveautés</span><span data-l="zh">新内容</span></a><span class="badge punto"></span></span>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Lo stesso pulsante e lo stesso link in sei stati: ogni stato va disegnato, non solo il primo. Icone: Lucide (ISC).</span><span data-l="en">The same button and the same link in six states: every state must be designed, not just the first one. Icons: Lucide (ISC).</span><span data-l="fr">Le même bouton et le même lien dans six états&#8239;: chaque état doit être dessiné, pas seulement le premier. Icônes&#8239;: Lucide (ISC).</span><span data-l="zh">同一个按钮和同一个链接的六种状态：每个状态都需要设计，而不只是第一个。图标：Lucide（ISC）。</span></p>
+</body>
+</html>

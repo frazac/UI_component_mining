@@ -5,7 +5,7 @@ forms…) to the advanced ones mined in class (command palette, skeleton screen,
 Two formats, four languages: **Italiano, English, Français, 中文**.
 
 - **Table** — searchable, with filters by level and category: <https://frazac.github.io/UI_component_mining/>
-- **Slides** — one slide per component: <https://frazac.github.io/UI_component_mining/slide.html>
+- **Fundamentals** — the slides of the fundamental components, from the course's “Distilled Handouts”: <https://frazac.github.io/UI_component_mining/fondamentali.html>
   (PDFs are distributed to the students of the course)
 - **Data** — every component as plain text in [`dati/componenti/`](dati/componenti/), all of them in
   [`dati/componenti.json`](dati/componenti.json)
@@ -22,7 +22,7 @@ further reading, example) and four sections, `## it`, `## en`, `## fr`, `## zh`,
 The format is described at the top of [`strumenti/schede.py`](strumenti/schede.py).
 
 ```bash
-python3 strumenti/costruisci.py      # cards → index.html, slide.html, dati/componenti.json
+python3 strumenti/costruisci.py      # cards → index.html, dati/componenti.json
 python3 strumenti/pdf.py             # slides → one PDF per language (needs Google Chrome)
 ```
 

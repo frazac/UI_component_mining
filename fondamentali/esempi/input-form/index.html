@@ -1,0 +1,164 @@
+<!doctype html>
+<!-- Esempio ricostruito: Input form. © Francesco Zaccaria, codice con licenza MIT. -->
+<!-- Versione per le slide (FZ, 2026-10-12): anatomia di un modulo (come quella del pulsante in component-anatomy):
+     iscrizione alla newsletter con due campi, numeri con linee tratteggiate e legenda; resta interattivo (controllo all'invio). -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Input form — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 26px 28px 22px; }
+  .scena { position: relative; }
+  .scena svg.linee { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+  .scena svg.linee line { stroke: var(--c-testo); stroke-width: 1.2; stroke-dasharray: 3 3; }
+  form { width: 420px; margin: 0 auto; display: grid; gap: 14px; }
+  .campo { display: flex; flex-direction: column; gap: 6px; }
+  label.et { font-size: 17px; font-weight: 500; align-self: flex-start; }
+  label.et small { font-weight: 400; color: var(--c-tenue); font-size: 15px; }
+  .obbligo { color: #b03a2e; margin-left: 3px; display: inline-block; padding: 0 2px; }
+  .campo input { border: 1.5px solid #cfc9c7; border-radius: 10px; padding: 11px 13px; font-size: 18px; background: #fff; width: 100%; transition: border-color .15s; }
+  .campo input::placeholder { color: rgba(0,0,0,.38); transition: color .15s; }
+  .campo input:hover { border-color: #9d9795; }
+  .campo input:focus { outline: none; border-color: var(--c-blu); box-shadow: 0 0 0 3px rgba(105,143,255,.25); }
+  .campo.err input { border-color: #c0392b; }
+  .campo.ok input { border-color: #2f9a52; }
+  .msg { font-size: 15px; min-height: 21px; color: var(--c-tenue); align-self: flex-start; }
+  .campo.err .msg { color: #b03a2e; }
+  .spunta { display: flex; align-items: center; gap: 10px; font-size: 16px; cursor: pointer; }
+  .spunta input { width: 20px; height: 20px; accent-color: var(--c-blu); margin: 0; flex: none; }
+  .spunta.err { color: #b03a2e; }
+  .azioni { display: flex; align-items: center; }
+  .invia { border: 0; background: var(--c-testo); color: #fff; padding: 12px 26px; border-radius: 9999px; cursor: pointer; font-size: 17px; min-width: 150px; }
+  .invia:hover { background: #333; }
+  .invia[disabled] { background: #9d9795; cursor: progress; }
+  .esito { font-size: 15px; min-height: 21px; margin-top: -6px; }
+  .esito.ok { color: #22673a; } .esito.err { color: #b03a2e; }
+  .num { position: absolute; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: var(--c-testo); color: #fff;
+    font-size: 15px; font-weight: 500; display: grid; place-items: center; transition: transform .2s, background .2s; }
+  .num.acceso { background: var(--c-salmone); color: var(--c-testo); transform: scale(1.25); }
+  .parte-accesa { outline: 3px solid var(--c-salmone); outline-offset: 3px; border-radius: 4px; }
+  input.parte-accesa { outline-offset: 4px; border-radius: 10px; }
+  input.segnaposto-acceso::placeholder { color: #e0605f; }
+  .legenda { list-style: none; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--c-linea); display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 12px; }
+  .legenda li { display: flex; gap: 10px; padding: 5px 8px; border-radius: 8px; cursor: default; font-size: 15px; line-height: 1.3; }
+  .legenda li:hover, .legenda li:focus-visible { background: #fdecec; }
+  .legenda b { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--c-testo); color: #fff; font-size: 13px; font-weight: 500; display: grid; place-items: center; }
+  .legenda strong { font-weight: 500; display: block; }
+  .legenda small { color: var(--c-tenue); font-size: 15px; }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Anatomia di un modulo: iscrizione alla newsletter</span><span data-l="en">Anatomy of a form: newsletter sign-up</span><span data-l="fr">Anatomie d’un formulaire : inscription à la newsletter</span><span data-l="zh">表单的结构：订阅新闻简报</span></span>
+    <div class="scena" id="scena">
+      <svg class="linee" id="linee" aria-hidden="true"></svg>
+      <form id="modulo" novalidate>
+        <div class="campo" data-c="nome">
+          <label class="et" for="f-nome"><span data-l="it">Nome</span><span data-l="en">Name</span><span data-l="fr">Prénom</span><span data-l="zh">姓名</span> <small><span data-l="it">(facoltativo)</span><span data-l="en">(optional)</span><span data-l="fr">(facultatif)</span><span data-l="zh">（选填）</span></small></label>
+          <input id="f-nome" autocomplete="off" data-it="Come ti chiami?" data-en="What’s your name?" data-fr="Votre prénom ?" data-zh="怎么称呼你？">
+        </div>
+        <div class="campo" data-c="mail">
+          <label class="et" for="f-mail" data-parte="1"><span data-l="it">E-mail</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮箱</span><span class="obbligo" data-parte="2" aria-hidden="true">*</span></label>
+          <input id="f-mail" type="email" required autocomplete="off" aria-describedby="m-mail" data-parte="3" data-it="nome@esempio.it" data-en="name@example.com" data-fr="nom@exemple.fr" data-zh="name@example.cn">
+          <span class="msg" id="m-mail" data-parte="5"></span>
+        </div>
+        <label class="spunta" id="l-ok"><input type="checkbox" id="f-ok"><span><span data-l="it">Voglio ricevere la newsletter (una al mese)</span><span data-l="en">I want the newsletter (once a month)</span><span data-l="fr">Je veux la newsletter (une par mois)</span><span data-l="zh">我想订阅新闻简报（每月一期）</span></span></label>
+        <div class="azioni"><button class="invia" type="submit" id="invia" data-parte="6"></button></div>
+        <span class="esito" id="esito" role="status"></span>
+      </form>
+    </div>
+    <ul class="legenda" id="legenda">
+      <li tabindex="0" data-n="1"><b>1</b><span><strong><span data-l="it">Etichetta</span><span data-l="en">Label</span><span data-l="fr">Libellé</span><span data-l="zh">标签</span></strong><small><span data-l="it">dice cosa scrivere; sempre visibile</span><span data-l="en">says what to enter; always visible</span><span data-l="fr">dit quoi saisir ; toujours visible</span><span data-l="zh">说明要填什么；始终可见</span></small></span></li>
+      <li tabindex="0" data-n="2"><b>2</b><span><strong><span data-l="it">Segno di obbligo</span><span data-l="en">Required marker</span><span data-l="fr">Marque d’obligation</span><span data-l="zh">必填标记</span></strong><small><span data-l="it">l’asterisco; o «facoltativo» sugli altri</span><span data-l="en">the asterisk, or “optional” on the others</span><span data-l="fr">l’astérisque, ou « facultatif » sur les autres</span><span data-l="zh">星号；或在其他字段标“选填”</span></small></span></li>
+      <li tabindex="0" data-n="3"><b>3</b><span><strong><span data-l="it">Campo</span><span data-l="en">Input field</span><span data-l="fr">Champ</span><span data-l="zh">输入框</span></strong><small><span data-l="it">contenitore: bordo e stati (focus, errore)</span><span data-l="en">container: border and states (focus, error)</span><span data-l="fr">conteneur : bordure et états (focus, erreur)</span><span data-l="zh">容器：边框与状态（焦点、错误）</span></small></span></li>
+      <li tabindex="0" data-n="4"><b>4</b><span><strong><span data-l="it">Segnaposto</span><span data-l="en">Placeholder</span><span data-l="fr">Texte indicatif</span><span data-l="zh">占位文字</span></strong><small><span data-l="it">un esempio; non sostituisce l’etichetta</span><span data-l="en">an example; never replaces the label</span><span data-l="fr">un exemple ; ne remplace pas le libellé</span><span data-l="zh">示例；不能代替标签</span></small></span></li>
+      <li tabindex="0" data-n="5"><b>5</b><span><strong><span data-l="it">Testo d’aiuto / errore</span><span data-l="en">Helper / error text</span><span data-l="fr">Aide / message d’erreur</span><span data-l="zh">提示 / 错误文字</span></strong><small><span data-l="it">aiuta prima, spiega l’errore dopo</span><span data-l="en">helps before, explains the error after</span><span data-l="fr">aide avant, explique l’erreur après</span><span data-l="zh">先给提示，出错后说明原因</span></small></span></li>
+      <li tabindex="0" data-n="6"><b>6</b><span><strong><span data-l="it">Pulsante d’invio</span><span data-l="en">Submit button</span><span data-l="fr">Bouton d’envoi</span><span data-l="zh">提交按钮</span></strong><small><span data-l="it">il verbo dell’azione</span><span data-l="en">the verb of the action</span><span data-l="fr">le verbe de l’action</span><span data-l="zh">用动词说明操作</span></small></span></li>
+    </ul>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’anatomia di un modulo: etichette sempre visibili, campi obbligatori segnati, errori accanto al campo e in parole semplici. Prova a inviarlo vuoto; i dati qui non vanno da nessuna parte.</span><span data-l="en">The anatomy of a form: labels always visible, required fields marked, errors next to the field in plain words. Try submitting it empty; the data here goes nowhere.</span><span data-l="fr">L’anatomie d’un formulaire : libellés toujours visibles, champs obligatoires signalés, erreurs à côté du champ et en mots simples. Essayez de l’envoyer vide ; ici les données ne vont nulle part.</span><span data-l="zh">表单的结构：标签始终可见，必填字段有标记，错误提示紧挨字段并用简单的话说明。试试空着提交；这里的数据不会发送到任何地方。</span></p>
+<script>
+  var T = {
+    it: { aiuto: 'Una e-mail al mese, niente spam', req: 'Scrivi la tua e-mail', mail: 'Manca la @ o il dominio', invia: 'Iscriviti', invio: 'Invio…', fatto: 'Fatto! Controlla la posta per confermare.', errori: 'Correggi i campi segnati.' },
+    en: { aiuto: 'One email a month, no spam', req: 'Enter your email', mail: 'Missing @ or domain', invia: 'Subscribe', invio: 'Sending…', fatto: 'Done! Check your inbox to confirm.', errori: 'Please fix the marked fields.' },
+    fr: { aiuto: 'Un e-mail par mois, pas de spam', req: 'Saisissez votre e-mail', mail: 'Il manque le @ ou le domaine', invia: 'S’abonner', invio: 'Envoi…', fatto: 'C’est fait ! Confirmez depuis votre boîte mail.', errori: 'Corrigez les champs signalés.' },
+    zh: { aiuto: '每月一封邮件，绝无垃圾信息', req: '请输入你的电子邮箱', mail: '缺少 @ 或域名', invia: '订阅', invio: '提交中…', fatto: '完成！请查收邮件确认。', errori: '请修改标出的字段。' }
+  };
+  var tentato = false, stato = '', toccato = false;
+  var mail = document.getElementById('f-mail'), ok = document.getElementById('f-ok'), b = document.getElementById('invia');
+  function t() { return T[window.Lingua ? Lingua.get() : 'en'] || T.en; }
+  function errore() {
+    var v = mail.value.trim();
+    if (!v) return t().req;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return t().mail;
+    return '';
+  }
+  function disegna() {
+    var box = mail.closest('.campo'), e = errore(), mostra = tentato || toccato;
+    box.classList.toggle('err', !!(mostra && e)); box.classList.toggle('ok', !!(mostra && !e));
+    mail.setAttribute('aria-invalid', String(!!(mostra && e)));
+    document.getElementById('m-mail').textContent = mostra && e ? e : t().aiuto;
+    document.getElementById('l-ok').classList.toggle('err', tentato && !ok.checked);
+    b.textContent = b.disabled ? t().invio : t().invia;
+    var es = document.getElementById('esito'); es.className = 'esito ' + stato;
+    es.textContent = stato === 'ok' ? t().fatto : stato === 'err' ? t().errori : '';
+    richiami();
+  }
+  // numeri e linee: misurati sulla pagina, così seguono la lingua e i cambi di stato
+  var PARTI = [ // n, lato, elemento, punto d'arrivo
+    { n: 1, lato: 's', el: function () { return document.querySelector('label[for="f-mail"]'); }, x: 'sx' },
+    { n: 3, lato: 's', el: function () { return mail; }, x: 'sx' },
+    { n: 5, lato: 's', el: function () { return document.getElementById('m-mail'); }, x: 'sx' },
+    { n: 2, lato: 'd', el: function () { return document.querySelector('.obbligo'); }, x: 'dx' },
+    { n: 4, lato: 'd', el: function () { return mail; }, x: 'segnaposto' },
+    { n: 6, lato: 'd', el: function () { return b; }, x: 'dx' }
+  ];
+  var misura = document.createElement('canvas').getContext('2d');
+  function richiami() {
+    var scena = document.getElementById('scena'), r0 = scena.getBoundingClientRect(), svg = document.getElementById('linee'), w = r0.width;
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + r0.height); svg.innerHTML = '';
+    scena.querySelectorAll('.num').forEach(function (x) { x.remove(); });
+    PARTI.forEach(function (p) {
+      var r = p.el().getBoundingClientRect(), y = r.top - r0.top + r.height / 2, xa, xn = p.lato === 's' ? 22 : w - 22;
+      if (p.x === 'sx') xa = r.left - r0.left - 4;
+      else if (p.x === 'dx') xa = r.right - r0.left + 4;
+      else { var cs = getComputedStyle(mail); misura.font = cs.fontSize + ' ' + cs.fontFamily;
+        xa = r.left - r0.left + parseFloat(cs.paddingLeft) + 2 + (mail.value ? 0 : misura.measureText(mail.placeholder).width) + 8; }
+      var l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', p.lato === 's' ? xn + 15 : xn - 15); l.setAttribute('x2', xa); l.setAttribute('y1', y); l.setAttribute('y2', y);
+      svg.appendChild(l);
+      var s = document.createElement('span'); s.className = 'num'; s.dataset.n = p.n; s.textContent = p.n;
+      s.style.left = xn + 'px'; s.style.top = y + 'px'; scena.appendChild(s);
+    });
+  }
+  function accendi(n) {
+    document.querySelectorAll('.num').forEach(function (el) { el.classList.toggle('acceso', el.dataset.n === n); });
+    document.querySelectorAll('[data-parte]').forEach(function (el) { el.classList.toggle('parte-accesa', el.dataset.parte === n); });
+    mail.classList.toggle('segnaposto-acceso', n === '4');
+  }
+  document.querySelectorAll('#legenda li').forEach(function (li) {
+    ['mouseenter', 'focus'].forEach(function (e) { li.addEventListener(e, function () { accendi(li.dataset.n); }); });
+    ['mouseleave', 'blur'].forEach(function (e) { li.addEventListener(e, function () { accendi(null); }); });
+  });
+  mail.addEventListener('blur', function () { if (mail.value) toccato = true; disegna(); });
+  mail.addEventListener('input', function () { stato = ''; disegna(); });
+  ok.addEventListener('change', function () { stato = ''; disegna(); });
+  document.getElementById('modulo').addEventListener('submit', function (ev) {
+    ev.preventDefault(); tentato = true;
+    if (errore() || !ok.checked) { stato = 'err'; disegna(); if (errore()) mail.focus(); else ok.focus(); return; }
+    b.disabled = true; stato = ''; disegna();
+    setTimeout(function () { b.disabled = false; stato = 'ok'; disegna(); }, 1200);
+  });
+  disegna();
+  document.addEventListener('lingua', disegna);
+  window.addEventListener('resize', richiami);
+  if (document.fonts) document.fonts.ready.then(richiami);
+</script>
+</body>
+</html>

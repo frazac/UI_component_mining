@@ -1,0 +1,144 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tag e chip (versione per le slide, da resources/component-tag.html, con i chip aggiunti). © Francesco Zaccaria, codice con licenza MIT. Icone: Lucide (ISC). Foto di Luca Beatrice: veDro – l’Italia al futuro, Wikimedia Commons, CC BY-SA 2.0. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tag and chip — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 760px; gap: 16px; }
+  .riquadro { padding: 22px 28px; }
+  /* tag: l'etichetta col forellino */
+  .tags { display: flex; flex-wrap: wrap; gap: 12px 14px; padding-left: 18px; }
+  .tag { position: relative; display: inline-block; height: 36px; line-height: 36px; padding: 0 14px 0 12px; margin-left: 4px; background: #dc143c; color: #fff;
+    font-size: 16px; font-weight: 500; text-decoration: none; border-radius: 0 8px 8px 0; box-shadow: 0 3px 5px rgba(0,0,0,.2); transition: background .2s, transform .2s; cursor: pointer; }
+  .tag::after { content: ""; position: absolute; left: -18px; top: 0; border-top: 18px solid transparent; border-bottom: 18px solid transparent; border-right: 18px solid #dc143c; transition: border-color .2s; }
+  .tag::before { content: ""; position: absolute; top: 14px; left: -4px; width: 8px; height: 8px; border-radius: 50%; background: #fff; box-shadow: inset 0 1px 1px rgba(0,0,0,.25); z-index: 1; }
+  .tag:hover { background: #b0102f; transform: translateY(-2px); }
+  .tag:hover::after { border-right-color: #b0102f; }
+  /* chip */
+  .gruppo { margin-top: 4px; }
+  .gruppo + .gruppo { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--c-linea); }
+  .etichetta { display: block; font-size: 15px; color: var(--c-tenue); margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 9999px; border: 1px solid rgba(0,0,0,.25); background: #fff;
+    font-size: 16px; cursor: pointer; transition: background .15s, border-color .15s, color .15s; }
+  .chip:hover { background: rgba(105,143,255,.08); }
+  .chip svg { width: 18px; height: 18px; flex: none; }
+  .chip .spunta { display: none; }
+  .chip[aria-pressed="true"] { background: rgba(105,143,255,.18); border-color: var(--c-blu); color: #1d3fa8; padding-left: 12px; }
+  .chip[aria-pressed="true"] .spunta { display: block; }
+  .chip.input { cursor: default; padding: 0 6px 0 16px; background: #f1f1f1; border-color: transparent; }
+  .chip.input:hover { background: #e9e9e9; }
+  .togli { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 0; background: none; padding: 0; cursor: pointer; color: rgba(0,0,0,.6); }
+  .togli:hover { background: rgba(0,0,0,.1); color: #111; }
+  .chip.avatar { padding-left: 4px; }
+  .iniziali { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: #fff; font-size: 14px; font-weight: 500; flex: none; overflow: hidden; }
+  .iniziali img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .aggiungi { flex: 1; min-width: 150px; height: 40px; border: 0; border-bottom: 1px dashed rgba(0,0,0,.25); font-size: 16px; padding: 0 4px; background: none; }
+  .aggiungi:focus { outline: none; border-bottom: 2px solid var(--c-blu); }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tag: parole chiave cliccabili</span><span data-l="en">Tags: clickable keywords</span><span data-l="fr">Tags&#8239;: mots-clés cliquables</span><span data-l="zh">标签：可点击的关键词</span></span>
+    <div class="tags" id="tags"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Chip: filtri e valori inseriti</span><span data-l="en">Chips: filters and entered values</span><span data-l="fr">Chips&#8239;: filtres et valeurs saisies</span><span data-l="zh">纸片：筛选与输入的值</span></span>
+    <div class="gruppo">
+      <span class="etichetta"><span data-l="it">Chip di filtro: scegline uno o più</span><span data-l="en">Filter chips: pick one or more</span><span data-l="fr">Chips de filtre&#8239;: choisissez-en un ou plusieurs</span><span data-l="zh">筛选纸片：可选一个或多个</span></span>
+      <div class="chips" id="filtri" role="group"></div>
+    </div>
+    <div class="gruppo">
+      <span class="etichetta"><span data-l="it">Chip di input: scrivi e premi Invio, × per togliere</span><span data-l="en">Input chips: type and press Enter, × to remove</span><span data-l="fr">Chips de saisie&#8239;: tapez puis Entrée, × pour retirer</span><span data-l="zh">输入纸片：输入后按回车，点 × 删除</span></span>
+      <div class="chips" id="inseriti"><input class="aggiungi" id="aggiungi" type="text" data-it="Aggiungi…" data-en="Add…" data-fr="Ajouter…" data-zh="添加…" aria-label="Add"></div>
+    </div>
+    <div class="gruppo">
+      <span class="etichetta"><span data-l="it">Chip con avatar: persone</span><span data-l="en">Avatar chips: people</span><span data-l="fr">Chips avec avatar&#8239;: personnes</span><span data-l="zh">头像纸片：人员</span></span>
+      <div class="chips" id="persone"></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il tag classifica e rimanda ad altri contenuti con la stessa etichetta; il chip è un piccolo controllo: filtra, si seleziona, si toglie. Icone: Lucide (ISC). Foto di Luca Beatrice: veDro – l’Italia al futuro, Wikimedia Commons, CC BY-SA 2.0.</span><span data-l="en">A tag classifies and leads to other content with the same label; a chip is a small control: it filters, gets selected, gets removed. Icons: Lucide (ISC). Photo of Luca Beatrice: veDro – l’Italia al futuro, Wikimedia Commons, CC BY-SA 2.0.</span><span data-l="fr">Le tag classe et renvoie à d’autres contenus portant la même étiquette&#8239;; le chip est un petit contrôle&#8239;: il filtre, se sélectionne, se retire. Icônes&#8239;: Lucide (ISC). Photo de Luca Beatrice&#8239;: veDro – l’Italia al futuro, Wikimedia Commons, CC BY-SA 2.0.</span><span data-l="zh">标签用于分类，并链接到带有相同标签的其他内容；纸片是一个小控件：可以筛选、选中、删除。图标：Lucide（ISC）。Luca Beatrice 的照片：veDro – l’Italia al futuro，Wikimedia Commons，CC BY-SA 2.0。</span></p>
+<script>
+  // Lucide «check» e «x» (ISC)
+  var CHECK = '<svg class="spunta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+  var X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
+  var TAG = {
+    it: ['tipografia', 'icone', 'griglia', 'layout', 'colore', 'navigazione', 'menu', 'pattern', 'carta', 'mobile', 'accessibilità', 'minimal'],
+    en: ['typography', 'icons', 'grid', 'layout', 'colour', 'navigation', 'menu', 'pattern', 'paper', 'mobile', 'accessibility', 'minimal'],
+    fr: ['typographie', 'icônes', 'grille', 'mise en page', 'couleur', 'navigation', 'menu', 'motif', 'papier', 'mobile', 'accessibilité', 'minimal'],
+    zh: ['字体', '图标', '网格', '布局', '色彩', '导航', '菜单', '图案', '纸张', '移动端', '无障碍', '极简']
+  };
+  var FILTRI = {
+    it: ['Tutti', 'Gratis', 'Online', 'In presenza', 'Questa settimana', 'Principianti'],
+    en: ['All', 'Free', 'Online', 'In person', 'This week', 'Beginners'],
+    fr: ['Tous', 'Gratuit', 'En ligne', 'Sur place', 'Cette semaine', 'Débutants'],
+    zh: ['全部', '免费', '线上', '线下', '本周', '入门']
+  };
+  var INSERITI = {
+    it: ['Milano', 'Torino', 'Roma'], en: ['Milan', 'Turin', 'Rome'], fr: ['Milan', 'Turin', 'Rome'], zh: ['米兰', '都灵', '罗马']
+  };
+  var PERSONE = [['Anna Rossi', 'AR', 'var(--c-blu)'], ['Luca Beatrice', 'LB', 'var(--c-salmone)', 'luca-beatrice.jpg'], ['Mei Chen', 'MC', '#111']];
+  var scelti = [1, 4], inseriti = null, persone = PERSONE.slice();
+  function L() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegnaTag() {
+    var c = document.getElementById('tags'); c.innerHTML = '';
+    TAG[L()].forEach(function (t) { var a = document.createElement('a'); a.className = 'tag'; a.href = '#'; a.textContent = t; a.onclick = function () { return false; }; c.appendChild(a); });
+  }
+  function disegnaFiltri() {
+    var c = document.getElementById('filtri'); c.innerHTML = '';
+    FILTRI[L()].forEach(function (t, n) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip';
+      b.setAttribute('aria-pressed', String(scelti.indexOf(n) >= 0));
+      b.innerHTML = CHECK + '<span></span>'; b.lastChild.textContent = t;
+      b.onclick = function () { var k = scelti.indexOf(n); if (k >= 0) scelti.splice(k, 1); else scelti.push(n); disegnaFiltri(); };
+      c.appendChild(b);
+    });
+  }
+  function disegnaInseriti() {
+    var c = document.getElementById('inseriti'), campo = document.getElementById('aggiungi');
+    c.querySelectorAll('.chip').forEach(function (x) { x.remove(); });
+    inseriti.forEach(function (t, n) {
+      var s = document.createElement('span'); s.className = 'chip input';
+      s.innerHTML = '<span></span><button type="button" class="togli">' + X + '</button>';
+      s.firstChild.textContent = t;
+      s.lastChild.setAttribute('aria-label', '× ' + t);
+      s.lastChild.onclick = function () { inseriti.splice(n, 1); disegnaInseriti(); campo.focus(); };
+      c.insertBefore(s, campo);
+    });
+  }
+  function disegnaPersone() {
+    var c = document.getElementById('persone'); c.innerHTML = '';
+    if (!persone.length) persone = PERSONE.slice(); // tolte tutte: si ricomincia
+    persone.forEach(function (p, n) {
+      var s = document.createElement('span'); s.className = 'chip input avatar';
+      s.innerHTML = '<span class="iniziali" aria-hidden="true"></span><span></span><button type="button" class="togli">' + X + '</button>';
+      if (p[3]) { var img = document.createElement('img'); img.src = p[3]; img.alt = ''; s.firstChild.appendChild(img); }
+      else { s.firstChild.textContent = p[1]; s.firstChild.style.background = p[2]; }
+      s.children[1].textContent = p[0];
+      s.lastChild.setAttribute('aria-label', '× ' + p[0]);
+      s.lastChild.onclick = function () { persone.splice(n, 1); disegnaPersone(); };
+      c.appendChild(s);
+    });
+  }
+  document.getElementById('aggiungi').addEventListener('keydown', function (e) {
+    var v = this.value.trim();
+    if (e.key === 'Enter' && v) { inseriti.push(v); this.value = ''; disegnaInseriti(); }
+    if (e.key === 'Backspace' && !this.value && inseriti.length) { inseriti.pop(); disegnaInseriti(); }
+  });
+  function tutto() {
+    inseriti = INSERITI[L()].slice(); // al cambio di lingua si riparte dai valori d’esempio
+    disegnaTag(); disegnaFiltri(); disegnaInseriti(); disegnaPersone();
+    var campo = document.getElementById('aggiungi'); campo.placeholder = campo.getAttribute('data-' + L()) || 'Add…';
+  }
+  document.addEventListener('lingua', tutto);
+  tutto();
+</script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<!-- Esempio ricostruito: AI × UI, i componenti di un assistente a chat. © Francesco Zaccaria, codice con licenza MIT. -->
+<!-- Versione per le slide (FZ, 2026-10-12): esempio nuovo, senza originale in componenti/. Si apre su uno stato "fermo" con tutto in vista
+     (risposta con i suoi comandi, seconda risposta in arrivo, suggerimenti, campo del prompt); da lì è interattivo. Icone: Lucide 0.469.0 (ISC). -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI × UI — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .riquadro { padding: 22px 28px 20px; }
+  .didascalia { margin-bottom: 10px; }
+  .app { position: relative; margin-left: 34px; font-size: 16px; }
+  .ico { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* numeri di anatomia, a sinistra del componente */
+  .parte { position: relative; }
+  .num { position: absolute; left: -34px; top: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--c-testo); color: #fff;
+         font-size: 13px; font-weight: 500; display: grid; place-items: center; transition: transform .2s, background .2s; }
+  .num.acceso { background: var(--c-salmone); color: var(--c-testo); transform: scale(1.2); }
+  .parte.acceso { outline: 2px dashed var(--c-salmone); outline-offset: 4px; border-radius: 10px; }
+
+  /* conversazione */
+  .chat { height: 318px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-left: -34px; padding: 2px 4px 6px 36px; scroll-behavior: smooth; }
+  .utente { align-self: flex-end; max-width: 78%; background: #f1f1f1; border-radius: 16px 16px 4px 16px; padding: 7px 14px; line-height: 1.35; }
+  .ia { align-self: stretch; display: flex; flex-direction: column; gap: 6px; line-height: 1.45; }
+  .ia .testo { margin: 0; }
+  .cursore { display: inline-block; width: 8px; height: 1.05em; background: var(--c-testo); vertical-align: -2px; margin-left: 2px; animation: lampeggia 1s steps(1) infinite; }
+  @keyframes lampeggia { 50% { opacity: 0; } }
+
+  .controlli { display: flex; gap: 2px; margin-left: -6px; }
+  .controlli button { border: 0; background: none; border-radius: 8px; padding: 5px 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; color: #444; font-size: 14px; }
+  .controlli button:hover { background: #f1f1f1; color: #111; }
+  .controlli button[aria-pressed="true"] { color: #111; background: #ececec; }
+  .controlli .ico { width: 17px; height: 17px; }
+  .controlli .num { left: -28px; top: 2px; }
+
+  .pensa { align-self: flex-start; border: 1px solid var(--c-linea); border-radius: 12px; padding: 4px 6px; min-width: 300px; }
+  .pensa > button { border: 0; background: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 3px 6px; font-size: 15px; color: #333; width: 100%; text-align: left; }
+  .pensa .ico.scintille { color: var(--c-blu); }
+  .pensa.attivo .ico.scintille { animation: pulsa 1.2s ease-in-out infinite; }
+  @keyframes pulsa { 50% { opacity: .35; transform: scale(.85); } }
+  .pensa .freccia { margin-left: auto; transition: transform .2s; color: #777; }
+  .pensa.aperto .freccia { transform: rotate(180deg); }
+  .pensa ol { margin: 0; padding: 2px 10px 4px 34px; font-size: 14px; color: #666; display: none; }
+  .pensa.aperto ol { display: block; }
+  .pensa li { margin: 1px 0; }
+  .pensa li.ora { color: #111; }
+  .puntini::after { content: '…'; }
+  .pensa.attivo .puntini::after { content: ''; animation: puntini 1.2s steps(4) infinite; }
+  @keyframes puntini { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+
+  /* suggerimenti */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 10px; }
+  .chips button { border: 1px solid var(--c-linea); background: #fff; border-radius: 999px; padding: 6px 14px; font-size: 15px; cursor: pointer; }
+  .chips button:hover { background: #f5f5f5; border-color: rgba(0,0,0,.25); }
+
+  /* campo del prompt */
+  .prompt { border: 1px solid rgba(0,0,0,.18); border-radius: 20px; padding: 10px 10px 8px 16px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .prompt:focus-within { border-color: rgba(0,0,0,.4); }
+  .prompt textarea { width: 100%; border: 0; outline: none; resize: none; font-size: 16px; line-height: 1.4; height: 46px; padding: 0; background: none; }
+  .prompt textarea::placeholder { color: #888; }
+  .barra { display: flex; align-items: center; gap: 6px; }
+  .tondo { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--c-linea); background: #fff; display: grid; place-items: center; cursor: pointer; color: #333; padding: 0; }
+  .tondo:hover { background: #f3f3f3; }
+  .tondo.invia { margin-left: auto; background: var(--c-testo); border-color: var(--c-testo); color: #fff; }
+  .tondo.invia:disabled { background: #cfcfcf; border-color: #cfcfcf; cursor: default; }
+  .tondo.ascolta { background: #fde7e7; border-color: var(--c-salmone); }
+
+  .legenda { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; font-size: 14px; line-height: 1.25; }
+  .legenda li { display: flex; gap: 7px; align-items: flex-start; padding: 4px 6px; border-radius: 8px; cursor: default; }
+  .legenda li:hover, .legenda li:focus-visible { background: #fdecec; }
+  .legenda b { flex: none; width: 20px; height: 20px; border-radius: 50%; background: var(--c-testo); color: #fff; font-size: 12px; font-weight: 500; display: grid; place-items: center; }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Un assistente IA, componente per componente</span><span data-l="en">An AI assistant, component by component</span><span data-l="fr">Un assistant IA, composant par composant</span><span data-l="zh">AI 助手，逐个组件拆解</span></span>
+    <div class="app">
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div class="parte chips" id="chips" data-n="2"><span class="num" data-n="2">2</span></div>
+      <form class="parte prompt" id="modulo" data-n="1">
+        <span class="num" data-n="1">1</span>
+        <textarea id="campo" rows="2" aria-label="Prompt"></textarea>
+        <div class="barra">
+          <button class="tondo" type="button" id="allega"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+          <button class="tondo" type="button" id="voce"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></button>
+          <button class="tondo invia" type="submit" id="invia"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg></button>
+        </div>
+      </form>
+      <ul class="legenda" id="legenda">
+        <li tabindex="0" data-n="1"><b>1</b><span><span data-l="it">Campo del prompt</span><span data-l="en">Prompt field</span><span data-l="fr">Champ de prompt</span><span data-l="zh">提示输入框</span></span></li>
+        <li tabindex="0" data-n="2"><b>2</b><span><span data-l="it">Suggerimenti</span><span data-l="en">Suggestions</span><span data-l="fr">Suggestions</span><span data-l="zh">建议提示</span></span></li>
+        <li tabindex="0" data-n="3"><b>3</b><span><span data-l="it">Comandi della risposta</span><span data-l="en">Answer controls</span><span data-l="fr">Commandes de la réponse</span><span data-l="zh">回答操作</span></span></li>
+        <li tabindex="0" data-n="4"><b>4</b><span><span data-l="it">Attesa e scrittura</span><span data-l="en">Waiting and streaming</span><span data-l="fr">Attente et écriture</span><span data-l="zh">等待与逐字输出</span></span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Nelle interfacce IA il campo del prompt è il centro: intorno ci sono suggerimenti per cominciare, stati di attesa che mostrano il ragionamento, testo che arriva parola per parola e comandi per rigenerare, copiare e valutare la risposta. Prova un suggerimento e invia. Icone: Lucide (ISC).</span><span data-l="en">In AI interfaces the prompt field is the centre: around it are suggestions to get started, waiting states that show the reasoning, text arriving word by word and controls to regenerate, copy and rate the answer. Try a suggestion and send it. Icons: Lucide (ISC).</span><span data-l="fr">Dans les interfaces d’IA, le champ de prompt est au centre : autour, des suggestions pour commencer, des états d’attente qui montrent le raisonnement, un texte qui arrive mot à mot et des commandes pour régénérer, copier et évaluer la réponse. Essayez une suggestion et envoyez-la. Icônes : Lucide (ISC).</span><span data-l="zh">在 AI 界面中，提示输入框是核心：周围有帮助起步的建议、展示推理过程的等待状态、逐字出现的文本，以及重新生成、复制和评价回答的操作。试着点一个建议并发送。图标：Lucide（ISC）。</span></p>
+<script>
+  var ICO = {
+    rigenera: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>',
+    copia: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
+    su: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z"/></svg>',
+    giu: '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z"/></svg>',
+    scintille: '<svg class="ico scintille" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></svg>',
+    freccia: '<svg class="ico freccia" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>'
+  };
+  var T = {
+    segnaposto: { it: 'Chiedi qualcosa…', en: 'Ask anything…', fr: 'Demandez ce que vous voulez…', zh: '有问题，尽管问…' },
+    allega: { it: 'Allega un file', en: 'Attach a file', fr: 'Joindre un fichier', zh: '添加附件' },
+    voce: { it: 'Detta a voce', en: 'Dictate', fr: 'Dicter', zh: '语音输入' },
+    invia: { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' },
+    rigenera: { it: 'Rigenera', en: 'Regenerate', fr: 'Régénérer', zh: '重新生成' },
+    copia: { it: 'Copia', en: 'Copy', fr: 'Copier', zh: '复制' },
+    copiato: { it: 'Copiato', en: 'Copied', fr: 'Copié', zh: '已复制' },
+    su: { it: 'Risposta utile', en: 'Good response', fr: 'Réponse utile', zh: '有帮助' },
+    giu: { it: 'Risposta non utile', en: 'Bad response', fr: 'Réponse inutile', zh: '没帮助' },
+    pensa: { it: 'Sto pensando', en: 'Thinking', fr: 'Je réfléchis', zh: '正在思考' },
+    pensato: { it: 'Ragionamento: 3 passi', en: 'Reasoning: 3 steps', fr: 'Raisonnement : 3 étapes', zh: '推理：3 步' }
+  };
+  var CHIP = [
+    { it: 'Riassumi questo testo', en: 'Summarise this text', fr: 'Résume ce texte', zh: '总结这段文字' },
+    { it: 'Proponi tre titoli', en: 'Suggest three titles', fr: 'Propose trois titres', zh: '拟三个标题' },
+    { it: 'Spiegalo in parole semplici', en: 'Explain it simply', fr: 'Explique-le simplement', zh: '用简单的话解释' }
+  ];
+  var DOMANDA = { it: 'Che cos’è un design system?', en: 'What is a design system?', fr: 'Qu’est-ce qu’un design system ?', zh: '什么是设计系统？' };
+  var RISPOSTE = [
+    { it: 'In breve: il testo descrive un design system come una lingua comune fatta di componenti, regole e tono di voce, che rende un prodotto coerente e il lavoro del team più veloce.',
+      en: 'In short: the text describes a design system as a shared language of components, rules and tone of voice that keeps a product consistent and the team faster.',
+      fr: 'En bref : le texte décrit un design system comme une langue commune de composants, de règles et de ton, qui rend un produit cohérent et l’équipe plus rapide.',
+      zh: '简而言之：这段文字把设计系统描述为由组件、规则和语气构成的共同语言，让产品保持一致，也让团队工作更快。' },
+    { it: 'Ecco tre titoli: 1. «Prove di futuro» 2. «Fuori dal quaderno» 3. «Tutto quello che abbiamo imparato».',
+      en: 'Here are three titles: 1. “Rehearsing the future” 2. “Off the sketchbook” 3. “Everything we learned”.',
+      fr: 'Voici trois titres : 1. « Répétitions d’avenir » 2. « Hors du carnet » 3. « Tout ce que nous avons appris ».',
+      zh: '这里有三个标题：1.《排练未来》2.《跳出速写本》3.《我们学到的一切》。' },
+    { it: 'In parole semplici: è una scatola di mattoncini uguali per tutti, con le istruzioni per montarli. Così ogni schermata sembra parte della stessa casa.',
+      en: 'Simply put: it is a box of building blocks everyone shares, with the instructions to assemble them. So every screen looks like part of the same house.',
+      fr: 'Simplement : c’est une boîte de briques communes à tous, avec la notice pour les assembler. Chaque écran semble ainsi faire partie de la même maison.',
+      zh: '简单地说：它是一盒大家共用的积木，附带拼装说明。这样每个界面看起来都属于同一座房子。' },
+    { it: 'Un design system è un insieme condiviso di componenti, regole e linguaggio visivo: rende coerente un prodotto e più veloce il lavoro del team.',
+      en: 'A design system is a shared set of components, rules and visual language: it keeps a product consistent and the team faster.',
+      fr: 'Un design system est un ensemble partagé de composants, de règles et de langage visuel : il rend un produit cohérent et l’équipe plus rapide.',
+      zh: '设计系统是一套共享的组件、规则和视觉语言：它让产品保持一致，也让团队工作更快。' }
+  ];
+  var PASSI = [
+    { it: 'Leggo la richiesta', en: 'Reading the request', fr: 'Je lis la demande', zh: '阅读请求' },
+    { it: 'Cerco toni diversi', en: 'Looking for different tones', fr: 'Je cherche des tons différents', zh: '寻找不同的语气' },
+    { it: 'Scelgo e scrivo la risposta', en: 'Choosing and writing the answer', fr: 'Je choisis et j’écris la réponse', zh: '挑选并撰写回答' }
+  ];
+  var FERMO = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Stato iniziale "fermo": tutto in vista (risposta completa con i comandi, seconda risposta che sta arrivando)
+  var MSG = [
+    { ruolo: 'utente', testo: DOMANDA },
+    { ruolo: 'ia', r: 3, fase: 'fatto', parole: 999, aperto: false },
+    { ruolo: 'utente', testo: CHIP[1] },
+    { ruolo: 'ia', r: 1, fase: 'pensa', passo: 2, parole: 0, aperto: true }
+  ];
+  var lavoro = null;
+
+  function L(o) { return typeof o === 'string' ? o : (o[window.Lingua ? Lingua.get() : 'en'] || o.en); }
+  function parole(r) { var t = L(RISPOSTE[r]); return /^zh/.test(window.Lingua ? Lingua.get() : '') ? Array.from(t) : t.split(' '); }
+  function esc(t) { return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+
+  function disegna() {
+    var c = document.getElementById('chat'), h = '', zh = window.Lingua && Lingua.get() === 'zh';
+    MSG.forEach(function (m, k) {
+      if (m.ruolo === 'utente') { h += '<div class="utente">' + esc(L(m.testo)) + '</div>'; return; }
+      h += '<div class="ia">';
+      var attivo = m.fase === 'pensa';
+      h += '<div class="pensa parte' + (attivo ? ' attivo' : '') + (m.aperto ? ' aperto' : '') + '" data-n="4">' +
+           '<button type="button" data-k="' + k + '" data-a="apri" aria-expanded="' + m.aperto + '">' + ICO.scintille +
+           '<span>' + (attivo ? '<span class="puntini">' + L(T.pensa) + '</span>' : L(T.pensato)) + '</span>' + ICO.freccia + '</button><ol>';
+      PASSI.forEach(function (p, j) { if (!attivo || j < m.passo) h += '<li' + (attivo && j === m.passo - 1 ? ' class="ora"' : '') + '>' + L(p) + '</li>'; });
+      h += '</ol></div>';
+      if (m.fase !== 'pensa') {
+        var w = parole(m.r), fine = m.parole >= w.length;
+        h += '<p class="testo">' + esc(w.slice(0, m.parole).join(zh ? '' : ' ')) + (fine ? '' : '<span class="cursore"></span>') + '</p>';
+        if (fine) h += '<div class="controlli parte" data-n="3">' +
+          '<button type="button" data-k="' + k + '" data-a="rigenera">' + ICO.rigenera + L(T.rigenera) + '</button>' +
+          '<button type="button" data-k="' + k + '" data-a="copia">' + ICO.copia + (m.copiato ? L(T.copiato) : L(T.copia)) + '</button>' +
+          '<button type="button" data-k="' + k + '" data-a="su" aria-label="' + L(T.su) + '" aria-pressed="' + (m.voto === 'su') + '">' + ICO.su + '</button>' +
+          '<button type="button" data-k="' + k + '" data-a="giu" aria-label="' + L(T.giu) + '" aria-pressed="' + (m.voto === 'giu') + '">' + ICO.giu + '</button></div>';
+      }
+      h += '</div>';
+    });
+    c.innerHTML = h;
+    // numeri 3 e 4 sulla prima occorrenza visibile (la più recente)
+    var ctl = c.querySelectorAll('.controlli'), pen = c.querySelectorAll('.pensa');
+    if (ctl.length) ctl[0].insertAdjacentHTML('afterbegin', '<span class="num" data-n="3">3</span>');
+    if (pen.length) pen[pen.length - 1].insertAdjacentHTML('afterbegin', '<span class="num" data-n="4">4</span>');
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function genera(k) {
+    clearTimeout(lavoro);
+    var m = MSG[k]; m.fase = 'pensa'; m.passo = 1; m.parole = 0; m.aperto = true; m.voto = null; m.copiato = false;
+    disegna();
+    (function avanti() {
+      if (m.fase === 'pensa') {
+        if (m.passo < PASSI.length) { m.passo++; }
+        else { m.fase = 'scrive'; m.aperto = false; }
+        disegna(); lavoro = setTimeout(avanti, 650); return;
+      }
+      if (m.parole < parole(m.r).length) { m.parole = FERMO ? 999 : m.parole + 1; disegna(); lavoro = setTimeout(avanti, 70); }
+      else { m.fase = 'fatto'; disegna(); }
+    })();
+  }
+
+  function etichette() {
+    var campo = document.getElementById('campo');
+    campo.placeholder = L(T.segnaposto);
+    ['allega', 'voce', 'invia'].forEach(function (id) { document.getElementById(id).setAttribute('aria-label', L(T[id])); });
+    var ch = document.getElementById('chips');
+    ch.querySelectorAll('button').forEach(function (b) { b.remove(); });
+    CHIP.forEach(function (c, j) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = L(c);
+      b.onclick = function () { campo.value = L(c); campo.dataset.chip = j; campo.focus(); aggiorna(); };
+      ch.appendChild(b);
+    });
+    aggiorna(); disegna();
+  }
+  function aggiorna() { document.getElementById('invia').disabled = !document.getElementById('campo').value.trim(); }
+
+  document.getElementById('campo').addEventListener('input', function () { delete this.dataset.chip; aggiorna(); });
+  document.getElementById('campo').addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('modulo').requestSubmit(); } });
+  document.getElementById('modulo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var campo = document.getElementById('campo'), t = campo.value.trim(); if (!t) return;
+    // chiude il messaggio in corso, se c'è
+    MSG.forEach(function (m) { if (m.ruolo === 'ia' && m.fase !== 'fatto') { m.fase = 'fatto'; m.parole = 999; m.aperto = false; } });
+    var r = campo.dataset.chip !== undefined ? Number(campo.dataset.chip) : 3;
+    MSG.push({ ruolo: 'utente', testo: campo.dataset.chip !== undefined ? CHIP[r] : t });
+    MSG.push({ ruolo: 'ia', r: r, fase: 'pensa', passo: 1, parole: 0, aperto: true });
+    campo.value = ''; delete campo.dataset.chip; aggiorna();
+    genera(MSG.length - 1);
+  });
+  document.getElementById('voce').addEventListener('click', function () { this.classList.toggle('ascolta'); });
+  document.getElementById('chat').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-a]'); if (!b) return;
+    var k = Number(b.dataset.k), m = MSG[k], a = b.dataset.a;
+    if (a === 'apri') { m.aperto = !m.aperto; disegna(); return; }
+    if (a === 'rigenera') { genera(k); return; }
+    if (a === 'copia') { try { navigator.clipboard.writeText(L(RISPOSTE[m.r])); } catch (x) {} m.copiato = true; disegna(); setTimeout(function () { m.copiato = false; disegna(); }, 1500); return; }
+    if (a === 'su' || a === 'giu') { m.voto = m.voto === a ? null : a; disegna(); }
+  });
+  // legenda: evidenzia la parte
+  function accendi(n) {
+    document.querySelectorAll('.num').forEach(function (el) { el.classList.toggle('acceso', el.dataset.n === n); });
+    document.querySelectorAll('.parte').forEach(function (el) { el.classList.toggle('acceso', el.dataset.n === n && !!el.querySelector('.num')); });
+  }
+  document.querySelectorAll('#legenda li').forEach(function (li) {
+    li.addEventListener('mouseenter', function () { accendi(li.dataset.n); });
+    li.addEventListener('focus', function () { accendi(li.dataset.n); });
+    li.addEventListener('mouseleave', function () { accendi(null); });
+    li.addEventListener('blur', function () { accendi(null); });
+  });
+  etichette();
+  document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>

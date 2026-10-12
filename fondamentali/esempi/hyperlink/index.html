@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- Esempio ricostruito: Hyperlink, gli stati di un link (versione per le slide, da resources/component-handout-states1.html). © Francesco Zaccaria, codice con licenza MIT. Icone: Lucide (ISC). -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hyperlink — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  :root { --l-normale: #2f5fe0; --l-visitato: #7b3fb5; --l-hover: #d0453b; --l-attivo: #111; }
+  .palco { max-width: 760px; }
+  /* bordo grigio attorno al riquadro (richiesto per la slide) */
+  .palco .riquadro.grigio { border: 1px solid #bdbdbd !important; }
+  .stati { margin: 0; display: grid; grid-template-columns: auto 1fr; }
+  .stati dt, .stati dd { margin: 0; padding: 18px 0; border-top: 1px solid var(--c-linea); display: flex; align-items: center; }
+  .stati dt:first-of-type, .stati dt:first-of-type + dd { border-top: 0; }
+  .stati dt { flex-direction: column; align-items: flex-start; justify-content: center; padding-right: 28px; font-size: 17px; }
+  .stati dt code { font: 15px/1.3 ui-monospace, Menlo, monospace; color: var(--c-tenue); }
+  .stati dd { font-size: 21px; position: relative; }
+  .esempio { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+  .normale { color: var(--l-normale); }
+  .visitato { color: var(--l-visitato); }
+  .sopra { color: var(--l-hover); text-decoration-thickness: 3px; }
+  .premuto { color: var(--l-attivo); background: rgba(105,143,255,.18); border-radius: 4px; }
+  .focus { color: var(--l-normale); outline: 3px solid var(--c-blu); outline-offset: 4px; border-radius: 3px; }
+  .mano { display: inline-block; width: 30px; height: 30px; margin: 18px 0 0 -4px; vertical-align: top; }
+  .mano svg { width: 30px; height: 30px; fill: none; stroke: #111; stroke-width: 1.6; }
+  /* link vero, da provare */
+  .vivo a { color: var(--l-normale); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; border-radius: 3px; }
+  .vivo a:visited { color: var(--l-visitato); }
+  .vivo a:hover { color: var(--l-hover); text-decoration-thickness: 3px; }
+  .vivo a:active { color: var(--l-attivo); background: rgba(105,143,255,.18); }
+  .vivo a:focus-visible { outline: 3px solid var(--c-blu); outline-offset: 4px; }
+  .stati dt.vivo { color: var(--c-rosa); }
+</style>
+<style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
+<body>
+<div class="palco">
+  <div class="riquadro grigio">
+    <span class="didascalia"><span data-l="it">Gli stati di un link</span><span data-l="en">The states of a link</span><span data-l="fr">Les états d’un lien</span><span data-l="zh">链接的状态</span></span>
+    <dl class="stati">
+      <dt><span><span data-l="it">Da visitare</span><span data-l="en">Unvisited</span><span data-l="fr">Non visité</span><span data-l="zh">未访问</span></span><code>:link</code></dt>
+      <dd><span class="esempio normale"><span data-l="it">Leggi il programma del corso</span><span data-l="en">Read the course syllabus</span><span data-l="fr">Lire le programme du cours</span><span data-l="zh">阅读课程大纲</span></span></dd>
+      <dt><span><span data-l="it">Visitato</span><span data-l="en">Visited</span><span data-l="fr">Visité</span><span data-l="zh">已访问</span></span><code>:visited</code></dt>
+      <dd><span class="esempio visitato"><span data-l="it">Leggi il programma del corso</span><span data-l="en">Read the course syllabus</span><span data-l="fr">Lire le programme du cours</span><span data-l="zh">阅读课程大纲</span></span></dd>
+      <dt><span><span data-l="it">Mouse sopra</span><span data-l="en">Hover</span><span data-l="fr">Survol</span><span data-l="zh">悬停</span></span><code>:hover</code></dt>
+      <!-- Lucide «pointer» (ISC): la mano del cursore -->
+      <dd><span class="esempio sopra"><span data-l="it">Leggi il programma del corso</span><span data-l="en">Read the course syllabus</span><span data-l="fr">Lire le programme du cours</span><span data-l="zh">阅读课程大纲</span></span><span class="mano" aria-hidden="true"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path fill="#fff" stroke="none" d="M6 15V4a2 2 0 0 1 4 0v4a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82z"/><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span></dd>
+      <dt><span><span data-l="it">Premuto</span><span data-l="en">Active (pressed)</span><span data-l="fr">Actif (enfoncé)</span><span data-l="zh">激活（按下）</span></span><code>:active</code></dt>
+      <dd><span class="esempio premuto"><span data-l="it">Leggi il programma del corso</span><span data-l="en">Read the course syllabus</span><span data-l="fr">Lire le programme du cours</span><span data-l="zh">阅读课程大纲</span></span></dd>
+      <dt><span><span data-l="it">Focus (tastiera)</span><span data-l="en">Focus (keyboard)</span><span data-l="fr">Focus (clavier)</span><span data-l="zh">焦点（键盘）</span></span><code>:focus-visible</code></dt>
+      <dd><span class="esempio focus"><span data-l="it">Leggi il programma del corso</span><span data-l="en">Read the course syllabus</span><span data-l="fr">Lire le programme du cours</span><span data-l="zh">阅读课程大纲</span></span></dd>
+      <dt class="vivo"><span><span data-l="it">Provalo</span><span data-l="en">Try it</span><span data-l="fr">Essayez</span><span data-l="zh">试一试</span></span><code>&lt;a href&gt;</code></dt>
+      <dd class="vivo"><a href="#prova" onclick="return false"><span data-l="it">Un link vero: passa, premi, usa Tab</span><span data-l="en">A real link: hover, press, use Tab</span><span data-l="fr">Un vrai lien&#8239;: survolez, appuyez, Tab</span><span data-l="zh">真实链接：悬停、按下、按 Tab</span></a></dd>
+    </dl>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Colore e sottolineatura dicono «qui si va altrove»; ogni stato cambia almeno un indizio, così chi usa mouse, dito o tastiera sa sempre dove si trova. Icone: Lucide (ISC).</span><span data-l="en">Colour and underline say “this goes elsewhere”; each state changes at least one cue, so mouse, finger and keyboard users always know where they are. Icons: Lucide (ISC).</span><span data-l="fr">Couleur et soulignement disent «&#8239;cela mène ailleurs&#8239;»&#8239;; chaque état change au moins un indice, pour que souris, doigt ou clavier sachent toujours où ils sont. Icônes&#8239;: Lucide (ISC).</span><span data-l="zh">颜色和下划线在说“这里通往别处”；每个状态至少改变一个线索，让使用鼠标、手指或键盘的人都知道自己在哪里。图标：Lucide（ISC）。</span></p>
+</body>
+</html>
