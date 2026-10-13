@@ -859,9 +859,12 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-ds .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); color: var(--c-tenue); }
 /* tabella delle euristiche: il pittogramma (Lucide) a sinistra, sul bianco, fuori dal box (FZ, 2026-10-12) */
 .s-euristiche .euristica { display: flex !important; align-items: center; gap: calc(16 * var(--px)); padding: 0 !important; background: none !important; border-radius: 0 !important; }
-.s-euristiche .euristica .picto { flex: none; width: calc(40 * var(--px)); height: calc(40 * var(--px)); opacity: 0.85; }
+.s-euristiche .euristica .picto { flex: none; align-self: flex-start; width: calc(28 * var(--px)); height: calc(28 * var(--px)); margin-top: calc(9 * var(--px)); opacity: 0.85; }
+/* pittogrammi più piccoli, appoggiati alla linea di base del titolo; più grondaia tra le colonne (FZ, 2026-10-12) */
+.s-euristiche .griglia { column-gap: calc(40 * var(--px)); row-gap: calc(10 * var(--px)); }
+.s-euristiche .euristica .nome { margin-bottom: calc(8 * var(--px)); }
 .s-euristiche .euristica .box { flex: 1; display: grid; grid-template-columns: calc(40 * var(--px)) 1fr; column-gap: calc(6 * var(--px)); align-items: baseline;
-  padding: calc(14 * var(--px)) calc(18 * var(--px)) calc(16 * var(--px)); border-radius: calc(12 * var(--px)); background: #f3efee; }
+  padding: calc(10 * var(--px)) calc(18 * var(--px)) calc(12 * var(--px)); border-radius: calc(12 * var(--px)); background: #f3efee; }
 /* AI + UI con l'esempio: elenco numerato breve nella colonna */
 .s-componente .ai-punti { padding-left: 1.2em; margin-top: calc(22 * var(--px)); }
 .s-componente .ai-punti li { font-size: calc(21 * var(--px)); line-height: 1.35; }
