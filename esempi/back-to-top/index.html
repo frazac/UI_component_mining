@@ -1,0 +1,78 @@
+<!doctype html>
+<!-- Esempio ricostruito: Scroll back to top. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scroll back to top — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .finestra { position: relative; height: 430px; border-radius: 10px; border: 1px solid var(--c-linea); overflow: hidden; }
+  .pagina { height: 100%; overflow-y: auto; padding: 24px 28px 80px; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { .pagina { scroll-behavior: auto; } }
+  .pagina h2 { margin: 0 0 6px; font-size: 26px; font-weight: 500; }
+  .pagina .meta { color: var(--c-tenue); font-size: 14px; margin: 0 0 20px; }
+  .riga { height: 12px; border-radius: 6px; background: #eee8e6; margin: 0 0 10px; }
+  .riga.corta { width: 62%; margin-bottom: 26px; }
+  .foto { height: 140px; border-radius: 10px; background: linear-gradient(135deg, rgb(105,143,255), rgb(250,145,145)); margin: 6px 0 26px; }
+  .capitolo { font-size: 15px; font-weight: 500; margin: 0 0 12px; color: var(--c-rosa); }
+  .su { position: absolute; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px 0 6px; border: 0; border-radius: 9999px; background: var(--c-testo); color: #fff; cursor: pointer; font-size: 15px; box-shadow: 0 6px 18px rgba(0,0,0,.2);
+        opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .25s, transform .25s, background .2s; }
+  .su.visibile { opacity: 1; transform: none; pointer-events: auto; }
+  .su:hover { background: #333; }
+  .anello { width: 36px; height: 36px; position: relative; display: grid; place-content: center; }
+  .anello svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+  .anello .freccia { position: relative; width: 18px; height: 18px; }
+  .pos { position: absolute; left: 18px; bottom: 18px; font-size: 13px; color: var(--c-tenue); background: rgba(255,255,255,.9); border-radius: 9999px; padding: 6px 12px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Scorri l’articolo: dopo un paio di schermate compare «Torna su»</span><span data-l="en">Scroll the article: after a couple of screens “Back to top” appears</span><span data-l="fr">Fais défiler l’article : après quelques écrans apparaît « Haut de page »</span><span data-l="zh">滚动文章：滚过几屏后会出现“返回顶部”</span></span>
+    <div class="finestra">
+      <div class="pagina" id="pagina"></div>
+      <span class="pos" id="pos">0%</span>
+      <button class="su" type="button" id="su">
+        <span class="anello" aria-hidden="true">
+          <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/><circle id="arco" cx="18" cy="18" r="16" fill="none" stroke="rgb(250,145,145)" stroke-width="3" stroke-linecap="round" stroke-dasharray="100.5" stroke-dashoffset="100.5"/></svg>
+          <svg class="freccia" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:relative;transform:none"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+        </span>
+        <span data-l="it">Torna su</span><span data-l="en">Back to top</span><span data-l="fr">Haut de page</span><span data-l="zh">返回顶部</span>
+      </button>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il pulsante non c’è all’inizio della pagina, dove non servirebbe; l’anello mostra quanto si è letto. Lo scorrimento è morbido, ma immediato con «riduci movimento».</span><span data-l="en">The button is absent at the top of the page, where it would be useless; the ring shows how much has been read. Scrolling is smooth, but instant with “reduce motion”.</span><span data-l="fr">Le bouton est absent en haut de la page, où il ne servirait à rien ; l’anneau montre ce qu’on a lu. Le défilement est doux, mais immédiat avec « réduire les animations ».</span><span data-l="zh">页面顶部不显示这个按钮，因为在那里没有用；圆环显示已阅读的进度。滚动是平滑的，但开启“减弱动态效果”时会立即跳转。</span></p>
+<script>
+  var pagina = document.getElementById('pagina');
+  var TITOLO = { it: 'Una pagina molto lunga', en: 'A very long page', fr: 'Une très longue page', zh: '一个很长的页面' };
+  var META = { it: '12 minuti di lettura', en: '12 min read', fr: '12 minutes de lecture', zh: '阅读时间 12 分钟' };
+  var CAP = { it: 'Capitolo', en: 'Chapter', fr: 'Chapitre', zh: '第' };
+  function costruisci() {
+    var l = window.Lingua ? Lingua.get() : 'en', h = '<h2>' + TITOLO[l] + '</h2><p class="meta">' + META[l] + '</p>';
+    for (var c = 1; c <= 7; c++) {
+      h += '<p class="capitolo">' + (l === 'zh' ? CAP.zh + c + ' 章' : CAP[l] + ' ' + c) + '</p>';
+      for (var i = 0; i < 6; i++) h += '<div class="riga"></div>';
+      h += '<div class="riga corta"></div>';
+      if (c % 2) h += '<div class="foto"></div>';
+    }
+    pagina.innerHTML = h;
+  }
+  var su = document.getElementById('su'), arco = document.getElementById('arco'), pos = document.getElementById('pos');
+  function aggiorna() {
+    var tot = pagina.scrollHeight - pagina.clientHeight, f = tot ? pagina.scrollTop / tot : 0;
+    su.classList.toggle('visibile', pagina.scrollTop > pagina.clientHeight * 1.5);
+    arco.setAttribute('stroke-dashoffset', String(100.5 * (1 - f)));
+    pos.textContent = Math.round(f * 100) + '%';
+  }
+  pagina.addEventListener('scroll', aggiorna, { passive: true });
+  su.onclick = function () { pagina.scrollTo({ top: 0 }); pagina.focus({ preventScroll: true }); };
+  pagina.tabIndex = -1;
+  costruisci(); aggiorna();
+  document.addEventListener('lingua', function () { costruisci(); aggiorna(); });
+</script>
+</body>
+</html>

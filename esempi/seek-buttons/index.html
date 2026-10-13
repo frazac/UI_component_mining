@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- Esempio ricostruito: Forward and rewind few seconds (seek). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forward and rewind few seconds (seek) — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .video { position: relative; height: 230px; border-radius: 10px; overflow: hidden; background: #1c1a24; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+  .scena { position: absolute; inset: 0; background: linear-gradient(90deg, #2a2f5a, rgb(105,143,255) 35%, rgb(250,145,145) 65%, #ffe3b0); background-size: 400% 100%; }
+  .orologio { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 48px; font-weight: 500; color: rgba(255,255,255,.9); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+  .lato { position: absolute; top: 0; bottom: 0; width: 38%; display: grid; place-content: center; color: #fff; font-size: 15px; opacity: 0; pointer-events: none; }
+  .lato.sx { left: 0; border-radius: 0 50% 50% 0 / 0 100% 100% 0; background: rgba(255,255,255,.18); }
+  .lato.dx { right: 0; border-radius: 50% 0 0 50% / 100% 0 0 100%; background: rgba(255,255,255,.18); }
+  .lato.vai { animation: lampo .6s ease-out; }
+  @keyframes lampo { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+  .lato b { display: block; text-align: center; font-size: 22px; letter-spacing: -.1em; }
+  .ctrl { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 14px; }
+  .tondo { width: 52px; height: 52px; border-radius: 50%; border: 0; background: none; color: var(--c-testo); cursor: pointer; display: grid; place-content: center; position: relative; }
+  .tondo:hover { background: #f3efee; }
+  .tondo svg { width: 40px; height: 40px; }
+  .tondo .n { position: absolute; inset: 0; display: grid; place-content: center; font-size: 12px; font-weight: 500; padding-top: 2px; }
+  .tondo.giro svg { animation: giro .35s ease-out; }
+  @keyframes giro { from { transform: rotate(0); } to { transform: rotate(var(--g)); } }
+  .indietro { --g: -40deg; } .avanti { --g: 40deg; }
+  .pp { width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--c-testo); color: #fff; cursor: pointer; display: grid; place-content: center; }
+  .pp:hover { background: #333; }
+  .pp svg { width: 24px; height: 24px; }
+  .barra { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 14px; color: var(--c-tenue); font-variant-numeric: tabular-nums; }
+  .binario { flex: 1; height: 6px; border-radius: 3px; background: #eee8e6; position: relative; cursor: pointer; }
+  .avanz { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 3px; background: var(--c-salmone); }
+  .tasti { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 16px; font-size: 14px; color: var(--c-tenue); margin-top: 14px; }
+  kbd { font: 13px/1 var(--f-testo); border: 1px solid var(--c-linea); border-radius: 5px; padding: 3px 6px; color: var(--c-testo); }
+  .sistema { display: flex; align-items: center; gap: 14px; background: #2b2b33; color: #fff; border-radius: 18px; padding: 14px 18px; }
+  .copertina { width: 46px; height: 46px; border-radius: 8px; background: linear-gradient(135deg, rgb(105,143,255), rgb(250,145,145)); flex: none; }
+  .sistema .testo { flex: 1; font-size: 14px; line-height: 1.3; min-width: 0; }
+  .sistema .testo small { display: block; color: rgba(255,255,255,.55); }
+  .sistema .tondo { color: #fff; width: 40px; height: 40px; }
+  .sistema .tondo:hover { background: rgba(255,255,255,.12); }
+  .sistema .tondo svg { width: 28px; height: 28px; }
+  .sistema .tondo .n { font-size: 9px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Indietro e avanti di 10 secondi (anche con doppio tocco ai lati)</span><span data-l="en">Back and forward 10 seconds (also by double-tapping the sides)</span><span data-l="fr">Reculer et avancer de 10 secondes (aussi par double toucher sur les côtés)</span><span data-l="zh">后退与快进 10 秒（也可双击两侧）</span></span>
+    <div class="video" id="video">
+      <div class="scena" id="scena"></div>
+      <div class="orologio" id="orologio">0:00</div>
+      <div class="lato sx" id="lsx"><span><b>◀◀</b>10 s</span></div>
+      <div class="lato dx" id="ldx"><span><b>▶▶</b>10 s</span></div>
+    </div>
+    <div class="barra"><span id="t">0:00</span><div class="binario" id="binario"><div class="avanz" id="avanz"></div></div><span id="d">1:30</span></div>
+    <div class="ctrl">
+      <button class="tondo indietro" type="button" data-salto="-10"></button>
+      <button class="pp" type="button" id="pp"></button>
+      <button class="tondo avanti" type="button" data-salto="10"></button>
+    </div>
+    <div class="tasti">
+      <span><kbd>J</kbd> <kbd>L</kbd> ±10 s</span><span><kbd>←</kbd> <kbd>→</kbd> ±5 s</span><span><kbd>K</kbd> <span data-l="it">play/pausa</span><span data-l="en">play/pause</span><span data-l="fr">lecture/pause</span><span data-l="zh">播放/暂停</span></span>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Nei comandi di sistema: salti a tempo (15 s) invece di brano precedente e successivo</span><span data-l="en">In system controls: time-based skips (15 s) instead of previous and next track</span><span data-l="fr">Dans les commandes du système : sauts temporels (15 s) au lieu de piste précédente et suivante</span><span data-l="zh">在系统控件中：按时间跳转（15 秒），而不是上一曲和下一曲</span></span>
+    <div class="sistema">
+      <span class="copertina"></span>
+      <span class="testo"><span data-l="it">Puntata 12 · Il design dei suoni</span><span data-l="en">Episode 12 · Designing sounds</span><span data-l="fr">Épisode 12 · Le design des sons</span><span data-l="zh">第 12 集 · 声音设计</span><small>Podcast</small></span>
+      <button class="tondo indietro" type="button" data-salto="-15"></button>
+      <button class="tondo" type="button" id="pp2"></button>
+      <button class="tondo avanti" type="button" data-salto="15"></button>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Il numero dentro la freccia dice di quanto si salta; il gesto (doppio tocco a sinistra o a destra) e i tasti fanno la stessa cosa dei pulsanti.</span><span data-l="en">The number inside the arrow says how far it jumps; the gesture (double tap left or right) and the keys do the same as the buttons.</span><span data-l="fr">Le nombre dans la flèche indique de combien on saute ; le geste (double toucher à gauche ou à droite) et les touches font la même chose que les boutons.</span><span data-l="zh">箭头里的数字表示跳转的秒数；手势（双击左侧或右侧）和按键与按钮的作用相同。</span></p>
+<script>
+  var DURATA = 90, t = 0, va = false, ultimo = 0;
+  var PLAY = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 L20 12 L7 20 Z" fill="currentColor"/></svg>';
+  var PAUSA = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1" fill="currentColor"/><rect x="14" y="4" width="4" height="16" rx="1" fill="currentColor"/></svg>';
+  // freccia circolare aperta: indietro = punta a sinistra in alto, avanti = specchiata
+  function icona(s) {
+    var sp = s > 0 ? ' transform="matrix(-1 0 0 1 24 0)"' : '';
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g' + sp + '><path d="M4.5 9.5A8 8 0 1 1 4 13"/><path d="M4 4.5v5h5"/></g></svg><span class="n">' + Math.abs(s) + '</span>';
+  }
+  var ETI = {
+    it: function (s) { return (s > 0 ? 'Avanti di ' : 'Indietro di ') + Math.abs(s) + ' secondi'; },
+    en: function (s) { return (s > 0 ? 'Forward ' : 'Rewind ') + Math.abs(s) + ' seconds'; },
+    fr: function (s) { return (s > 0 ? 'Avancer de ' : 'Reculer de ') + Math.abs(s) + ' secondes'; },
+    zh: function (s) { return (s > 0 ? '快进 ' : '后退 ') + Math.abs(s) + ' 秒'; }
+  };
+  var PPL = { it: ['Riproduci', 'Pausa'], en: ['Play', 'Pause'], fr: ['Lire', 'Pause'], zh: ['播放', '暂停'] };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function fmt(s) { s = Math.floor(s); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
+  function disegna() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-salto]'), function (b) {
+      var s = +b.dataset.salto; b.innerHTML = icona(s); b.setAttribute('aria-label', ETI[l()](s)); b.title = ETI[l()](s);
+    });
+    ['pp', 'pp2'].forEach(function (id) { var b = document.getElementById(id); b.innerHTML = va ? PAUSA : PLAY; b.setAttribute('aria-label', PPL[l()][va ? 1 : 0]); });
+  }
+  function salta(s, b) {
+    t = Math.max(0, Math.min(DURATA, t + s));
+    var lato = document.getElementById(s > 0 ? 'ldx' : 'lsx');
+    lato.querySelector('span').lastChild.textContent = Math.abs(s) + ' s';
+    lato.classList.remove('vai'); void lato.offsetWidth; lato.classList.add('vai');
+    if (b) { b.classList.remove('giro'); void b.offsetWidth; b.classList.add('giro'); }
+    mostra();
+  }
+  function commuta() { va = !va; disegna(); }
+  function mostra() {
+    document.getElementById('avanz').style.width = (t / DURATA * 100) + '%';
+    document.getElementById('t').textContent = fmt(t);
+    document.getElementById('orologio').textContent = fmt(t);
+    document.getElementById('scena').style.backgroundPosition = (t / DURATA * 100) + '% 0';
+  }
+  function passo(ora) {
+    if (va) { t += (ora - ultimo) / 1000; if (t >= DURATA) { t = DURATA; va = false; disegna(); } mostra(); }
+    ultimo = ora; requestAnimationFrame(passo);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-salto]'), function (b) {
+    b.addEventListener('click', function () { salta(+b.dataset.salto, b); });
+  });
+  document.getElementById('pp').onclick = commuta;
+  document.getElementById('pp2').onclick = commuta;
+  document.getElementById('binario').addEventListener('click', function (e) {
+    var r = this.getBoundingClientRect(); t = DURATA * (e.clientX - r.left) / r.width; mostra();
+  });
+  // doppio tocco: a sinistra indietro, a destra avanti, al centro play/pausa
+  var video = document.getElementById('video');
+  video.addEventListener('dblclick', function (e) {
+    var r = video.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+    if (x < 0.38) salta(-10); else if (x > 0.62) salta(10); else commuta();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'INPUT') return;
+    var k = e.key.toLowerCase();
+    if (k === 'j') salta(-10); else if (k === 'l') salta(10);
+    else if (e.key === 'ArrowLeft') salta(-5); else if (e.key === 'ArrowRight') salta(5);
+    else if (k === 'k' || (e.code === 'Space' && e.target.tagName !== 'BUTTON')) { e.preventDefault(); commuta(); }
+    else return;
+    e.preventDefault();
+  });
+  disegna(); mostra(); requestAnimationFrame(function (o) { ultimo = o; passo(o); });
+  document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

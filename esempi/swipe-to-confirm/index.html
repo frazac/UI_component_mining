@@ -1,0 +1,116 @@
+<!doctype html>
+<!-- Esempio ricostruito: Swipe to confirm. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swipe to confirm — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .telefono { position: relative; height: 300px; border-radius: 22px; overflow: hidden; background: linear-gradient(160deg, #3b3f6e, rgb(105,143,255) 55%, rgb(250,145,145)); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 34px; transition: background .6s; }
+  .telefono::before { content: ""; position: absolute; inset: 0; backdrop-filter: blur(8px); background: rgba(20,20,30,.35); }
+  .telefono.spento { background: #000; }
+  .telefono.spento::before { background: #000; }
+  .telefono > * { position: relative; }
+  .riaccendi { display: none; margin-top: 90px; border: 1px solid rgba(255,255,255,.4); background: none; color: #fff; border-radius: 9999px; padding: 8px 18px; cursor: pointer; }
+  .spento .riaccendi { display: block; }
+  .spento .binario { display: none; }
+
+  .binario { position: relative; width: 300px; max-width: 100%; height: 64px; border-radius: 9999px; padding: 4px; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .binario.scuro { background: rgba(255,255,255,.22); }
+  .binario.chiaro { background: #f3efee; }
+  .scritta { position: absolute; inset: 0; display: grid; place-content: center; padding-left: 56px; font-size: 17px; pointer-events: none; transition: opacity .15s; }
+  .scuro .scritta { color: transparent; background: linear-gradient(90deg, rgba(255,255,255,.65) 0 40%, #fff 50%, rgba(255,255,255,.65) 60% 100%) 0 0 / 300% 100%; -webkit-background-clip: text; background-clip: text; animation: luce 2.6s linear infinite; }
+  @keyframes luce { from { background-position: 100% 0; } to { background-position: -50% 0; } }
+  .chiaro .scritta { color: var(--c-tenue); }
+  .riempi { position: absolute; left: 4px; top: 4px; bottom: 4px; width: 56px; border-radius: 9999px; background: var(--c-salmone); }
+  .scuro .riempi { display: none; }
+  .pomello { position: absolute; left: 4px; top: 4px; width: 56px; height: 56px; border-radius: 50%; border: 0; display: grid; place-content: center; cursor: grab; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.2); transition: transform .3s cubic-bezier(.3,1.4,.5,1); }
+  .pomello:active { cursor: grabbing; }
+  .trascina .pomello, .trascina .riempi { transition: none; }
+  .riempi { transition: width .3s cubic-bezier(.3,1.4,.5,1); }
+  .pomello svg { width: 26px; height: 26px; }
+  .scuro .pomello svg { color: #e5484d; }
+  .chiaro .pomello { background: var(--c-testo); color: #fff; }
+  .fatto .pomello { background: rgb(46,139,123); }
+  .fatto .scritta { opacity: 0; }
+  .esito { min-height: 22px; margin-top: 14px; font-size: 15px; color: var(--c-tenue); text-align: center; }
+  .ordine { display: flex; justify-content: space-between; font-size: 15px; margin-bottom: 18px; }
+  .ordine b { font-weight: 500; }
+  .alternativa { display: block; margin: 12px auto 0; border: 0; background: none; color: var(--c-tenue); text-decoration: underline; cursor: pointer; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Il caso emblematico: spegnere l’iPhone</span><span data-l="en">The emblematic case: powering off the iPhone</span><span data-l="fr">Le cas emblématique : éteindre l’iPhone</span><span data-l="zh">典型案例：iPhone 关机</span></span>
+    <div class="telefono" id="telefono">
+      <div class="binario scuro" id="b1" data-azione="spegni">
+        <span class="scritta"><span data-l="it">scorri per spegnere</span><span data-l="en">slide to power off</span><span data-l="fr">glisser pour éteindre</span><span data-l="zh">滑动来关机</span></span>
+        <button class="pomello" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.8a8 8 0 1 0 11.4 0"/></svg></button>
+      </div>
+      <button class="riaccendi" type="button" id="riaccendi"><span data-l="it">Riaccendi</span><span data-l="en">Turn back on</span><span data-l="fr">Rallumer</span><span data-l="zh">重新开机</span></button>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Conferma di un pagamento</span><span data-l="en">Confirming a payment</span><span data-l="fr">Confirmation d’un paiement</span><span data-l="zh">确认付款</span></span>
+    <div class="ordine"><span><span data-l="it">Corsa in centro</span><span data-l="en">Ride downtown</span><span data-l="fr">Course en centre-ville</span><span data-l="zh">市中心行程</span></span><b>€ 24,90</b></div>
+    <div class="binario chiaro" id="b2" data-azione="paga">
+      <span class="riempi"></span>
+      <span class="scritta"><span data-l="it">scorri per pagare</span><span data-l="en">swipe to pay</span><span data-l="fr">glisser pour payer</span><span data-l="zh">滑动付款</span></span>
+      <button class="pomello" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button>
+    </div>
+    <button class="alternativa" type="button" id="alt"><span data-l="it">Paga con un tocco</span><span data-l="en">Pay with one tap</span><span data-l="fr">Payer d’un toucher</span><span data-l="zh">一键付款</span></button>
+    <p class="esito" id="esito"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Se lo lasci prima della fine, il cursore torna indietro. Anche da tastiera: Tab sul pomello, poi → o Fine. Il link sotto è l’alternativa con un solo tocco (WCAG 2.5.7).</span><span data-l="en">Release it before the end and the handle springs back. Keyboard works too: Tab to the handle, then → or End. The link below is the single-tap alternative (WCAG 2.5.7).</span><span data-l="fr">Si on le relâche avant la fin, le curseur revient en arrière. Au clavier aussi : Tab sur le curseur, puis → ou Fin. Le lien en dessous est l’alternative en un seul toucher (WCAG 2.5.7).</span><span data-l="zh">在到达末端前松手，滑块会弹回。也可以用键盘：按 Tab 选中滑块，再按 → 或 End。下方的链接是单击替代方式（WCAG 2.5.7）。</span></p>
+<script>
+  var ESITI = {
+    paga: { it: 'Pagamento confermato ✓', en: 'Payment confirmed ✓', fr: 'Paiement confirmé ✓', zh: '付款已确认 ✓' },
+    torna: { it: 'Non abbastanza: il cursore torna indietro', en: 'Not far enough: the handle springs back', fr: 'Pas assez loin : le curseur revient', zh: '距离不够：滑块弹回' }
+  };
+  function lingua() { return window.Lingua ? Lingua.get() : 'en'; }
+  function scrivi(chiave) { var e = document.getElementById('esito'); e.dataset.k = chiave || ''; e.textContent = chiave ? ESITI[chiave][lingua()] : ''; }
+  document.addEventListener('lingua', function () { scrivi(document.getElementById('esito').dataset.k); });
+
+  function cursore(b, conferma) {
+    var p = b.querySelector('.pomello'), r = b.querySelector('.riempi');
+    var x0 = 0, dx = 0, attivo = false;
+    function max() { return b.clientWidth - p.offsetWidth - 8; }
+    function metti(x) { dx = Math.max(0, Math.min(max(), x)); p.style.transform = 'translateX(' + dx + 'px)'; if (r) r.style.width = (dx + 56) + 'px'; }
+    function fine() {
+      b.classList.remove('trascina');
+      if (dx >= max() - 2) { metti(max()); b.classList.add('fatto'); conferma(); }
+      else { if (dx > 10 && b.dataset.azione === 'paga') scrivi('torna'); metti(0); }
+    }
+    p.addEventListener('pointerdown', function (e) {
+      if (b.classList.contains('fatto')) return;
+      attivo = true; x0 = e.clientX - dx; b.classList.add('trascina'); p.setPointerCapture(e.pointerId);
+    });
+    p.addEventListener('pointermove', function (e) { if (attivo) metti(e.clientX - x0); });
+    p.addEventListener('pointerup', function () { if (attivo) { attivo = false; fine(); } });
+    p.addEventListener('pointercancel', function () { attivo = false; metti(0); b.classList.remove('trascina'); });
+    p.addEventListener('keydown', function (e) {
+      if (b.classList.contains('fatto')) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); metti(dx + max() / 4); if (dx >= max() - 2) fine(); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); metti(dx - max() / 4); }
+      else if (e.key === 'End') { e.preventDefault(); metti(max()); fine(); }
+    });
+    return { azzera: function () { b.classList.remove('fatto'); metti(0); }, completa: function () { metti(max()); fine(); } };
+  }
+
+  var tel = document.getElementById('telefono');
+  var spegni = cursore(document.getElementById('b1'), function () { setTimeout(function () { tel.classList.add('spento'); }, 250); });
+  document.getElementById('riaccendi').onclick = function () { tel.classList.remove('spento'); spegni.azzera(); };
+
+  var paga = cursore(document.getElementById('b2'), function () {
+    scrivi('paga');
+    setTimeout(function () { paga.azzera(); scrivi(''); }, 2500);
+  });
+  document.getElementById('alt').onclick = function () { paga.completa(); };
+</script>
+</body>
+</html>

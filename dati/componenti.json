@@ -4618,6 +4618,174 @@
      "note": "首次使用时介绍产品的体验：欢迎页、分步引导（walkthrough），以及指向界面各部分的指引标记（coach marks）。引导应简短，并且容易跳过。"
     }
    }
+  },
+  {
+   "id": "swipe-to-confirm",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 860,
+   "parole": [
+    "swipe to confirm",
+    "slide to confirm",
+    "slide to unlock",
+    "slide to power off",
+    "swipe to pay",
+    "drag",
+    "gesture",
+    "accidental activation"
+   ],
+   "esempio": "esempi/swipe-to-confirm/",
+   "vedi": [
+    "irreversible-action-warning",
+    "slider",
+    "pull-to-refresh"
+   ],
+   "origine": "FZ, 2026-10-12",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
+     "titolo": "Understanding Success Criterion 2.5.7: Dragging Movements | WAI | W3C"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Scorri per confermare (swipe to confirm)",
+     "note": "Un cursore da trascinare fino in fondo per confermare un’azione importante: un gesto deliberato, più difficile da compiere per sbaglio di un tocco. L’esempio emblematico è «scorri per spegnere» dell’iPhone, erede di «scorri per sbloccare» presentato con il primo iPhone nel 2007; oggi si trova anche nei pagamenti e nelle conferme delle app di servizio.\n\nSe il cursore si lascia prima della fine torna al punto di partenza. Il gesto di trascinamento va sempre affiancato da un’alternativa con un solo tocco o dalla tastiera (WCAG 2.2, criterio 2.5.7)."
+    },
+    "en": {
+     "nome": "Swipe to confirm",
+     "note": "A handle to drag all the way to the end to confirm an important action: a deliberate gesture, harder to perform by mistake than a tap. The emblematic example is the iPhone’s “slide to power off”, heir to the “slide to unlock” introduced with the first iPhone in 2007; today it also appears in payments and in confirmations within service apps.\n\nIf the handle is released before the end, it springs back to the start. The dragging gesture should always come with a single-tap or keyboard alternative (WCAG 2.2, success criterion 2.5.7)."
+    },
+    "fr": {
+     "nome": "Glisser pour confirmer (swipe to confirm)",
+     "note": "Un curseur à faire glisser jusqu’au bout pour confirmer une action importante : un geste délibéré, plus difficile à faire par erreur qu’un simple toucher. L’exemple emblématique est « glisser pour éteindre » de l’iPhone, héritier de « glisser pour déverrouiller » présenté avec le premier iPhone en 2007 ; on le retrouve aujourd’hui dans les paiements et dans les confirmations des applications de service.\n\nSi on relâche le curseur avant la fin, il revient au point de départ. Le geste de glissement doit toujours être accompagné d’une alternative en un seul toucher ou au clavier (WCAG 2.2, critère 2.5.7)."
+    },
+    "zh": {
+     "nome": "滑动确认（swipe to confirm）",
+     "note": "需要把滑块一直拖到末端才能确认一项重要操作：这是一个有意识的手势，比轻点更难误触。最典型的例子是 iPhone 的“滑动来关机”，它继承自 2007 年随第一代 iPhone 推出的“滑动来解锁”；如今在支付和各类服务应用的确认步骤中也很常见。\n\n如果在到达末端之前松手，滑块会弹回起点。拖动手势必须同时提供单击或键盘的替代方式（WCAG 2.2，成功标准 2.5.7）。"
+    }
+   }
+  },
+  {
+   "id": "back-to-top",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2026,
+   "ordine": 870,
+   "parole": [
+    "scroll back to top",
+    "back to top",
+    "scroll to top",
+    "go to top",
+    "torna su",
+    "floating button",
+    "long page",
+    "smooth scroll"
+   ],
+   "esempio": "esempi/back-to-top/",
+   "vedi": [
+    "floating-action-button",
+    "scrollbar",
+    "sticky"
+   ],
+   "origine": "FZ, 2026-10-12",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://www.nngroup.com/articles/back-to-top/",
+     "titolo": "Back-to-Top Button Design Guidelines - NN/G"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Torna su (scroll back to top)",
+     "note": "Un pulsante che riporta all’inizio di una pagina lunga senza doverla risalire tutta. Compare solo dopo che si è scesi di qualche schermata, sta in un angolo (di solito in basso a destra) e non deve coprire i contenuti; meglio se ha un’etichetta («Torna su») oltre alla freccia.\n\nSui telefoni esiste anche come gesto di sistema: su iOS un tocco sulla barra di stato riporta in cima."
+    },
+    "en": {
+     "nome": "Scroll back to top",
+     "note": "A button that takes users back to the start of a long page without scrolling all the way up. It appears only after users have scrolled down a few screens, sits in a corner (usually bottom right) and must not cover the content; better if it has a label (“Back to top”) as well as the arrow.\n\nOn phones it also exists as a system gesture: on iOS, tapping the status bar scrolls back to the top."
+    },
+    "fr": {
+     "nome": "Retour en haut (scroll back to top)",
+     "note": "Un bouton qui ramène au début d’une longue page sans devoir tout remonter. Il n’apparaît qu’après avoir fait défiler quelques écrans, se place dans un coin (en général en bas à droite) et ne doit pas cacher le contenu ; mieux vaut qu’il ait une étiquette (« Haut de page ») en plus de la flèche.\n\nSur les téléphones, il existe aussi comme geste du système : sur iOS, un toucher sur la barre d’état ramène en haut."
+    },
+    "zh": {
+     "nome": "返回顶部（scroll back to top）",
+     "note": "一个按钮，让用户无需一路向上滚动就能回到长页面的开头。它只在用户向下滚动几屏之后才出现，位于一角（通常是右下角），不能遮挡内容；除了箭头最好再加上文字标签（“返回顶部”）。\n\n在手机上它也是系统手势：在 iOS 上轻点状态栏即可回到顶部。"
+    }
+   }
+  },
+  {
+   "id": "seek-buttons",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 880,
+   "parole": [
+    "seek",
+    "seek forward",
+    "seek backward",
+    "forward and rewind few seconds",
+    "skip few seconds",
+    "skip forward",
+    "skip back",
+    "rewind",
+    "replay 10",
+    "forward 10",
+    "double tap",
+    "hotkeys",
+    "J L keys"
+   ],
+   "esempio": "esempi/seek-buttons/",
+   "vedi": [
+    "play-pause-button",
+    "skip-button",
+    "slider",
+    "picture-in-picture"
+   ],
+   "origine": "FZ, 2026-10-12",
+   "scritto": "claude",
+   "fonti": [
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler",
+     "titolo": "MediaSession: setActionHandler() method - MDN"
+    },
+    {
+     "url": "https://foliovision.com/player/demos/rewind-button",
+     "titolo": "Rewind and Forward Buttons - Foliovision"
+    },
+    {
+     "url": "https://github.com/dayanch96/YTLite/issues/634",
+     "titolo": "Skip-forward / back buttons in iOS Media Controls - GitHub"
+    },
+    {
+     "url": "https://www.youtube.com/watch?v=EZA-TnVAyDo",
+     "titolo": "Global Speed: Seek, pause, adjust volume for PiP videos using hotkeys! - YouTube"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Avanti e indietro di qualche secondo (seek)",
+     "note": "Due pulsanti accanto al play che spostano la riproduzione di un intervallo fisso, di solito 10 secondi (a volte 5, 15 o 30 nei podcast): l’icona è una freccia circolare con il numero dei secondi dentro. In inglese si chiama seek (seek forward, seek backward), ma anche skip forward / skip back o forward and rewind few seconds: è il nome che usano anche le API dei browser (Media Session, azioni seekforward e seekbackward).\n\nHa quasi sempre una scorciatoia: su YouTube il doppio tocco ai lati del video, i tasti J e L (10 secondi) e le frecce (5 secondi). Diverso dal pulsante «Salta», che salta un intero blocco (l’intro, la pubblicità). Anche i comandi di sistema (schermata di blocco, Centro di Controllo di iOS) mostrano questi pulsanti «a tempo» per i media lunghi, al posto di brano o capitolo precedente e successivo: ogni app sceglie quali chiedere."
+    },
+    "en": {
+     "nome": "Forward and rewind few seconds (seek)",
+     "note": "Two buttons next to play that move playback by a fixed interval, usually 10 seconds (sometimes 5, 15 or 30 in podcasts): the icon is a circular arrow with the number of seconds inside. It is called seek (seek forward, seek backward), but also skip forward / skip back, skip few seconds or forward and rewind few seconds; seek is also the name used by browser APIs (Media Session, actions seekforward and seekbackward).\n\nIt almost always has a shortcut: on YouTube, double-tapping the sides of the video, the J and L keys (10 seconds) and the arrow keys (5 seconds). Unlike the Skip button, which jumps over a whole block (the intro, an ad). System controls (Lock Screen, iOS Control Center) also show these time-based buttons for long-form media, instead of previous and next track or chapter: each app chooses which ones to request."
+    },
+    "fr": {
+     "nome": "Avancer et reculer de quelques secondes (seek)",
+     "note": "Deux boutons à côté de la lecture qui déplacent la lecture d’un intervalle fixe, en général 10 secondes (parfois 5, 15 ou 30 dans les podcasts) : l’icône est une flèche circulaire avec le nombre de secondes à l’intérieur. En anglais on dit seek (seek forward, seek backward), mais aussi skip forward / skip back ou forward and rewind few seconds ; c’est aussi le nom utilisé par les API des navigateurs (Media Session, actions seekforward et seekbackward).\n\nIl a presque toujours un raccourci : sur YouTube, le double toucher sur les côtés de la vidéo, les touches J et L (10 secondes) et les flèches (5 secondes). À ne pas confondre avec le bouton « Passer », qui saute tout un bloc (l’intro, la publicité). Les commandes du système (écran verrouillé, Centre de contrôle d’iOS) affichent aussi ces boutons « temporels » pour les médias longs, à la place de la piste ou du chapitre précédent et suivant : chaque application choisit lesquels demander."
+    },
+    "zh": {
+     "nome": "快进与快退几秒（seek）",
+     "note": "播放键旁边的两个按钮，把播放位置前后移动固定的时长，通常是 10 秒（播客中有时是 5、15 或 30 秒）：图标是一个环形箭头，中间写着秒数。英文叫 seek（seek forward、seek backward），也叫 skip forward / skip back、skip few seconds 或 forward and rewind few seconds；浏览器 API 也用这个名字（Media Session 的 seekforward 和 seekbackward 操作）。\n\n它几乎总有快捷方式：在 YouTube 上，双击视频两侧、按 J 和 L 键（10 秒）或方向键（5 秒）。它不同于“跳过”按钮，后者跳过整段内容（片头、广告）。对于长时媒体，系统控件（锁屏、iOS 控制中心）也会显示这类按时间跳转的按钮，而不是上一曲/下一曲或上一章/下一章：由每个应用决定请求哪一种。"
+    }
+   }
   }
  ]
 }
