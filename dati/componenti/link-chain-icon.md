@@ -6,7 +6,6 @@ anno: 2025
 ordine: 310
 esempio: esempi/link-chain-icon/
 origine: mining 31
-scritto: claude
 ---
 
 ## it

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 130
 esempio: esempi/current-location-button/
 origine: mining 13
-scritto: claude
 fonti:
   - https://developer.apple.com/documentation/corelocationui/locationbutton | developer.apple.com
 ---

@@ -6,7 +6,6 @@ anno: 2026
 ordine: 840
 esempio: esempi/like-dislike/
 origine: mining 84
-scritto: claude
 ---
 
 ## it

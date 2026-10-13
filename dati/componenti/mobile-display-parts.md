@@ -6,7 +6,6 @@ anno: 2025
 ordine: 370
 esempio: esempi/mobile-display-parts/
 origine: mining 37
-scritto: claude
 letture:
   - https://www.macrumors.com/guide/dynamic-island/ | Everything You Need to Know About Dynamic Island - MacRumors
 ---

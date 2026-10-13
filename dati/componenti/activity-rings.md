@@ -6,7 +6,6 @@ anno: 2025
 ordine: 20
 esempio: esempi/activity-rings/
 origine: mining 2
-scritto: claude
 ---
 
 ## it

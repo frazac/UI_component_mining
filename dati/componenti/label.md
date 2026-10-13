@@ -7,7 +7,6 @@ ordine: 320
 esempio: esempi/label/
 vedi: tag-chip
 origine: mining 32
-scritto: claude
 ---
 
 ## it

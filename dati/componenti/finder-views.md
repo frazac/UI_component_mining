@@ -6,7 +6,6 @@ anno: 2025
 ordine: 390
 esempio: esempi/finder-views/
 origine: mining 39
-scritto: claude
 ---
 
 ## it

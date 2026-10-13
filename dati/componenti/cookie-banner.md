@@ -6,7 +6,6 @@ anno: 2025
 ordine: 190
 esempio: esempi/cookie-banner/
 origine: mining 19
-scritto: claude
 ---
 
 ## it

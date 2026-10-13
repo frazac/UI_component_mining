@@ -8,7 +8,6 @@ parole: scroll back to top, back to top, scroll to top, go to top, torna su, flo
 esempio: esempi/back-to-top/
 vedi: floating-action-button, scrollbar, sticky
 origine: FZ, 2026-10-12
-scritto: claude
 fonti:
   - https://www.nngroup.com/articles/back-to-top/ | Back-to-Top Button Design Guidelines - NN/G
 ---

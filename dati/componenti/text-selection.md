@@ -6,7 +6,6 @@ anno: 2025
 ordine: 470
 esempio: esempi/text-selection/
 origine: mining 47
-scritto: claude
 ---
 
 ## it

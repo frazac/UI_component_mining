@@ -8,7 +8,6 @@ parole: anatomy, container, label, icon, state layer, variants, sizes
 esempio: esempi/component-anatomy/
 vedi: interaction-states, button, design-systems
 origine: nuova 2026
-scritto: claude
 fonti:
   - https://m3.material.io/components/buttons/specs | Buttons: specs (anatomy) – Material Design 3
   - https://carbondesignsystem.com/components/button/style/ | Button: style – Carbon Design System

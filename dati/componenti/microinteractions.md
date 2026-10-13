@@ -8,7 +8,6 @@ parole: microinteraction, trigger, rules, feedback, loops, modes, Dan Saffer, mo
 esempio: esempi/microinteractions/
 vedi: interaction-states, feedback, like-dislike, pull-to-refresh, typing-indicator, switch, states-transitions
 origine: nuova 2026
-scritto: claude
 fonti:
   - https://www.nngroup.com/articles/microinteractions/ | Microinteractions in User Experience – Nielsen Norman Group
   - https://microinteractions.com/ | Dan Saffer, Microinteractions: Designing with Details (O’Reilly, 2013)

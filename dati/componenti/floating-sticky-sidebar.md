@@ -6,7 +6,6 @@ anno: 2025
 ordine: 290
 esempio: esempi/floating-sticky-sidebar/
 origine: mining 29
-scritto: claude
 fonti:
   - https://immersivetranslate.com/ | language switcher example
   - https://sharethis.com/onboarding/#sticky-share-buttons | sharethis.com

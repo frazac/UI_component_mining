@@ -6,7 +6,6 @@ anno: 2025
 ordine: 460
 esempio: esempi/seat-map/
 origine: mining 46
-scritto: claude
 fonti:
   - https://www.teatroallascala.org/en/season/box-office/tickets/prezzi-opera-23-24.html | teatroallascala.org
 ---

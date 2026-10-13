@@ -6,7 +6,6 @@ anno: 2025
 ordine: 660
 esempio: esempi/voice-ui/
 origine: mining 66
-scritto: claude
 ---
 
 ## it

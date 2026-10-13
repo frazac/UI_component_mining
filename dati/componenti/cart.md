@@ -6,7 +6,6 @@ anno: 2025
 ordine: 160
 esempio: esempi/cart/
 origine: mining 16
-scritto: claude
 ---
 
 ## it

@@ -7,7 +7,6 @@ ordine: 360
 esempio: esempi/marquee/
 vedi: draggable-overflow-text
 origine: mining 36
-scritto: claude
 ---
 
 ## it

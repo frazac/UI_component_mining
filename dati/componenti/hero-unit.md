@@ -6,7 +6,6 @@ anno: 2025
 ordine: 300
 esempio: esempi/hero-unit/
 origine: mining 30
-scritto: claude
 ---
 
 ## it

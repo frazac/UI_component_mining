@@ -7,7 +7,6 @@ ordine: 380
 esempio: esempi/notification-system/
 vedi: toast, badge
 origine: mining 38
-scritto: claude
 ---
 
 ## it

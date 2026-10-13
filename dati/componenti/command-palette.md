@@ -6,7 +6,6 @@ anno: 2025
 ordine: 180
 esempio: esempi/command-palette/
 origine: mining 18
-scritto: claude
 fonti:
   - https://code.visualstudio.com/api/ux-guidelines/command-palette | code.visualstudio.com
 ---

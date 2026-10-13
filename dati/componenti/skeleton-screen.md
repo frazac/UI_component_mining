@@ -6,7 +6,6 @@ anno: 2025
 ordine: 480
 esempio: esempi/skeleton-screen/
 origine: mining 48
-scritto: claude
 fonti:
   - https://www.nngroup.com/articles/skeleton-screens/ | nngroup.com
 ---

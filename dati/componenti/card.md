@@ -6,7 +6,6 @@ anno: 2025
 ordine: 620
 esempio: esempi/card/
 origine: mining 62
-scritto: claude
 letture:
   - https://www.smashingmagazine.com//10/designing-card-based-user-interfaces/ | Designing Card-Based User Interfaces — Smashing Magazine
 ---

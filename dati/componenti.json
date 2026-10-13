@@ -113,7 +113,6 @@
    "esempio": "esempi/atomic-design/",
    "vedi": [],
    "origine": "slide 3-5",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://atomicdesign.bradfrost.com/chapter-2/",
@@ -162,7 +161,6 @@
     "design-systems"
    ],
    "origine": "nuova 2026",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://m3.material.io/components/buttons/specs",
@@ -208,7 +206,6 @@
    "esempio": "esempi/design-systems/",
    "vedi": [],
    "origine": "slide 41",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://carbondesignsystem.com/migrating/guide/overview/",
@@ -266,7 +263,6 @@
     "empty-state"
    ],
    "origine": "nuova 2026",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
@@ -320,7 +316,6 @@
     "states-transitions"
    ],
    "origine": "nuova 2026",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/microinteractions/",
@@ -377,7 +372,6 @@
     "live-validation"
    ],
    "origine": "nuova 2026",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/animation-duration/",
@@ -430,7 +424,6 @@
     "button"
    ],
    "origine": "slide 6",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -474,7 +467,6 @@
     "feedback"
    ],
    "origine": "slide 7-9, mining 8",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://uxdesign.cc/an-interaction-state-of-mind-705572b3ad51",
@@ -536,7 +528,6 @@
     "interaction-states"
    ],
    "origine": "slide 10-11",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -576,7 +567,6 @@
     "text-caret"
    ],
    "origine": "slide 12",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://developer.apple.com/design/human-interface-guidelines/pointing-devices",
@@ -626,7 +616,6 @@
    "esempio": "esempi/breadcrumb/",
    "vedi": [],
    "origine": "slide 13",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -665,7 +654,6 @@
     "kebab-menu"
    ],
    "origine": "slide 14",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -707,7 +695,6 @@
     "dropdown-filter"
    ],
    "origine": "slide 19",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -753,7 +740,6 @@
     "predictive-input"
    ],
    "origine": "slide 15",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -790,7 +776,6 @@
     "selectors"
    ],
    "origine": "slide 16",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://m3.material.io/components/radio-button/overview",
@@ -833,7 +818,6 @@
     "selectors"
    ],
    "origine": "slide 17",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://m3.material.io/components/checkbox/overview",
@@ -876,7 +860,6 @@
     "dark-mode-switch"
    ],
    "origine": "slide 18",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://m3.material.io/components/switch/overview",
@@ -925,7 +908,6 @@
     "tooltip"
    ],
    "origine": "slide 20, 22, 24",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://uxdesign.cc/button-design-user-interface-components-series-85243b6736c7",
@@ -973,7 +955,6 @@
     "button"
    ],
    "origine": "slide 21",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1013,7 +994,6 @@
     "notification-system"
    ],
    "origine": "slide 23",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1051,7 +1031,6 @@
     "button"
    ],
    "origine": "slide 23",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://m3.material.io/components/floating-action-button/overview",
@@ -1094,7 +1073,6 @@
     "button"
    ],
    "origine": "slide 23",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -1139,7 +1117,6 @@
     "image-tags"
    ],
    "origine": "slide 25",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -1184,7 +1161,6 @@
     "sheet"
    ],
    "origine": "slide 26, 37",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://itnext.io/managing-modals-with-react-hooks-c9c55c458368",
@@ -1239,7 +1215,6 @@
     "selectors"
    ],
    "origine": "slide 27-29",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://uxdesign.cc/text-fields-forms-design-ui-components-series-2b32b2beebd0",
@@ -1287,7 +1262,6 @@
     "page-dots"
    ],
    "origine": "slide 30",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -1333,7 +1307,6 @@
     "sticky"
    ],
    "origine": "slide 31-32",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -1381,7 +1354,6 @@
     "prompt-suggestions"
    ],
    "origine": "slide 33",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://www.behance.net/gallery/28198219/CSS3-JQUERY-Search-Animation",
@@ -1426,7 +1398,6 @@
     "color-picker"
    ],
    "origine": "slide 34",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1464,7 +1435,6 @@
     "loading-screen"
    ],
    "origine": "slide 35",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -1504,7 +1474,6 @@
    "esempio": "esempi/slider/",
    "vedi": [],
    "origine": "slide 36",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1540,7 +1509,6 @@
    "esempio": "esempi/stepper/",
    "vedi": [],
    "origine": "slide 36",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1578,7 +1546,6 @@
     "notification-system"
    ],
    "origine": "slide 37",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1617,7 +1584,6 @@
     "skeleton-screen"
    ],
    "origine": "slide 38",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1656,7 +1622,6 @@
     "sort-options"
    ],
    "origine": "slide 38",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1694,7 +1659,6 @@
     "page-dots"
    ],
    "origine": "slide 39",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1733,7 +1697,6 @@
     "faq"
    ],
    "origine": "slide 39",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1773,7 +1736,6 @@
     "emoji"
    ],
    "origine": "slide 40",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1805,7 +1767,6 @@
    "esempio": "esempi/page-404/",
    "vedi": [],
    "origine": "mining 1",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.404s.design/",
@@ -1842,7 +1803,6 @@
    "esempio": "esempi/activity-rings/",
    "vedi": [],
    "origine": "mining 2",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1874,7 +1834,6 @@
    "esempio": "esempi/archiving-systems/",
    "vedi": [],
    "origine": "mining 3",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1906,7 +1865,6 @@
    "esempio": "esempi/ar-video-filters/",
    "vedi": [],
    "origine": "mining 4",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1938,7 +1896,6 @@
    "esempio": "esempi/battery-indicator/",
    "vedi": [],
    "origine": "mining 5",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -1970,7 +1927,6 @@
    "esempio": "esempi/read-receipts/",
    "vedi": [],
    "origine": "mining 6, 75",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2002,7 +1958,6 @@
    "esempio": "esempi/chat-bubble/",
    "vedi": [],
    "origine": "mining 7",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2034,7 +1989,6 @@
    "esempio": "esempi/play-pause-button/",
    "vedi": [],
    "origine": "mining 9",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2066,7 +2020,6 @@
    "esempio": "esempi/share-button/",
    "vedi": [],
    "origine": "mining 10",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2098,7 +2051,6 @@
    "esempio": "esempi/shuffle-button/",
    "vedi": [],
    "origine": "mining 11",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2130,7 +2082,6 @@
    "esempio": "esempi/window-close-button/",
    "vedi": [],
    "origine": "mining 12",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://www.reddit.com/r/apple/comments/1he688/just_found_out_what_this_little_dot_means/",
@@ -2167,7 +2118,6 @@
    "esempio": "esempi/current-location-button/",
    "vedi": [],
    "origine": "mining 13",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://developer.apple.com/documentation/corelocationui/locationbutton",
@@ -2206,7 +2156,6 @@
     "picker"
    ],
    "origine": "mining 14",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2238,7 +2187,6 @@
    "esempio": "esempi/flip-card/",
    "vedi": [],
    "origine": "mining 15",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2270,7 +2218,6 @@
    "esempio": "esempi/cart/",
    "vedi": [],
    "origine": "mining 16",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2304,7 +2251,6 @@
     "picker"
    ],
    "origine": "mining 17",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2336,7 +2282,6 @@
    "esempio": "esempi/command-palette/",
    "vedi": [],
    "origine": "mining 18",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://code.visualstudio.com/api/ux-guidelines/command-palette",
@@ -2373,7 +2318,6 @@
    "esempio": "esempi/cookie-banner/",
    "vedi": [],
    "origine": "mining 19",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2407,7 +2351,6 @@
     "switch"
    ],
    "origine": "mining 20",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2439,7 +2382,6 @@
    "esempio": "esempi/distraction-free-mode/",
    "vedi": [],
    "origine": "mining 21",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.macworld.com/article/6/safari5.html",
@@ -2480,7 +2422,6 @@
    "esempio": "esempi/drag-drop-uploader/",
    "vedi": [],
    "origine": "mining 22",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -2517,7 +2458,6 @@
    "esempio": "esempi/emoji/",
    "vedi": [],
    "origine": "mining 23",
-   "scritto": "claude",
    "fonti": [],
    "letture": [
     {
@@ -2556,7 +2496,6 @@
     "page-404"
    ],
    "origine": "mining 24",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/empty-state-interface-design/",
@@ -2593,7 +2532,6 @@
    "esempio": "esempi/expand-collapse/",
    "vedi": [],
    "origine": "mining 25",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2625,7 +2563,6 @@
    "esempio": "esempi/faq/",
    "vedi": [],
    "origine": "mining 26",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2657,7 +2594,6 @@
    "esempio": "esempi/favicon/",
    "vedi": [],
    "origine": "mining 27",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2689,7 +2625,6 @@
    "esempio": "esempi/favourites-wishlist/",
    "vedi": [],
    "origine": "mining 28",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2721,7 +2656,6 @@
    "esempio": "esempi/floating-sticky-sidebar/",
    "vedi": [],
    "origine": "mining 29",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://immersivetranslate.com/",
@@ -2762,7 +2696,6 @@
    "esempio": "esempi/hero-unit/",
    "vedi": [],
    "origine": "mining 30",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2794,7 +2727,6 @@
    "esempio": "esempi/link-chain-icon/",
    "vedi": [],
    "origine": "mining 31",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2828,7 +2760,6 @@
     "tag-chip"
    ],
    "origine": "mining 32",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2860,7 +2791,6 @@
    "esempio": "esempi/language-switch/",
    "vedi": [],
    "origine": "mining 33",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2896,7 +2826,6 @@
     "progress-bar"
    ],
    "origine": "mining 34",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -2928,7 +2857,6 @@
    "esempio": "esempi/login/",
    "vedi": [],
    "origine": "mining 35",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.ibm.com/docs/en/doc/4.0.3?topic=rights-permission-system-general-introduction",
@@ -2972,7 +2900,6 @@
     "draggable-overflow-text"
    ],
    "origine": "mining 36",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3004,7 +2931,6 @@
    "esempio": "esempi/mobile-display-parts/",
    "vedi": [],
    "origine": "mining 37",
-   "scritto": "claude",
    "fonti": [],
    "letture": [
     {
@@ -3044,7 +2970,6 @@
     "badge"
    ],
    "origine": "mining 38",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3076,7 +3001,6 @@
    "esempio": "esempi/finder-views/",
    "vedi": [],
    "origine": "mining 39",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3108,7 +3032,6 @@
    "esempio": "esempi/page-dots/",
    "vedi": [],
    "origine": "mining 40",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://madearts.it/",
@@ -3149,7 +3072,6 @@
    "esempio": "esempi/picture-in-picture/",
    "vedi": [],
    "origine": "mining 41",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API",
@@ -3186,7 +3108,6 @@
    "esempio": "esempi/pin/",
    "vedi": [],
    "origine": "mining 42",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3218,7 +3139,6 @@
    "esempio": "esempi/image-placeholder/",
    "vedi": [],
    "origine": "mining 43",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3250,7 +3170,6 @@
    "esempio": "esempi/rating/",
    "vedi": [],
    "origine": "mining 44",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3282,7 +3201,6 @@
    "esempio": "esempi/scrollbar/",
    "vedi": [],
    "origine": "mining 45",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3314,7 +3232,6 @@
    "esempio": "esempi/seat-map/",
    "vedi": [],
    "origine": "mining 46",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.teatroallascala.org/en/season/box-office/tickets/prezzi-opera-23-24.html",
@@ -3351,7 +3268,6 @@
    "esempio": "esempi/text-selection/",
    "vedi": [],
    "origine": "mining 47",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3383,7 +3299,6 @@
    "esempio": "esempi/skeleton-screen/",
    "vedi": [],
    "origine": "mining 48",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/skeleton-screens/",
@@ -3420,7 +3335,6 @@
    "esempio": "esempi/sort-options/",
    "vedi": [],
    "origine": "mining 49",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3452,7 +3366,6 @@
    "esempio": "esempi/sticky/",
    "vedi": [],
    "origine": "mining 50",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://designers.italia.it/design-system/componenti/affix/",
@@ -3497,7 +3410,6 @@
    "esempio": "esempi/stories/",
    "vedi": [],
    "origine": "mining 51",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3529,7 +3441,6 @@
    "esempio": "esempi/tab-audio-indicator/",
    "vedi": [],
    "origine": "mining 52",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3561,7 +3472,6 @@
    "esempio": "esempi/image-tags/",
    "vedi": [],
    "origine": "mining 53",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3596,7 +3506,6 @@
     "live-validation"
    ],
    "origine": "mining 54, 86",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -3633,7 +3542,6 @@
    "esempio": "esempi/ocr-text-recognition/",
    "vedi": [],
    "origine": "mining 55",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://en.wikipedia.org/wiki/Optical_character_recognition",
@@ -3674,7 +3582,6 @@
    "esempio": "esempi/ai-thinking-steps/",
    "vedi": [],
    "origine": "mining 56",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3706,7 +3613,6 @@
    "esempio": "esempi/thumbnav/",
    "vedi": [],
    "origine": "mining 57",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://getuikit.com/docs/thumbnav",
@@ -3747,7 +3653,6 @@
    "esempio": "esempi/timer-countdown/",
    "vedi": [],
    "origine": "mining 58",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3779,7 +3684,6 @@
    "esempio": "esempi/trash/",
    "vedi": [],
    "origine": "mining 59",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3813,7 +3717,6 @@
     "context-menu"
    ],
    "origine": "mining 60",
-   "scritto": "claude",
    "fonti": [],
    "letture": [
     {
@@ -3853,7 +3756,6 @@
     "chat-bubble"
    ],
    "origine": "mining 61",
-   "scritto": "",
    "fonti": [],
    "letture": [
     {
@@ -3894,7 +3796,6 @@
    "esempio": "esempi/card/",
    "vedi": [],
    "origine": "mining 62",
-   "scritto": "claude",
    "fonti": [],
    "letture": [
     {
@@ -3931,7 +3832,6 @@
    "esempio": "esempi/undo-history/",
    "vedi": [],
    "origine": "mining 63",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3963,7 +3863,6 @@
    "esempio": "esempi/undo-send/",
    "vedi": [],
    "origine": "mining 64",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -3995,7 +3894,6 @@
    "esempio": "esempi/versioning/",
    "vedi": [],
    "origine": "mining 65",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://github.blog/developer-skills/programming-languages-and-frameworks/what-is-git-our-beginners-guide-to-version-control/",
@@ -4032,7 +3930,6 @@
    "esempio": "esempi/voice-ui/",
    "vedi": [],
    "origine": "mining 66",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4067,7 +3964,6 @@
     "undo-history"
    ],
    "origine": "mining 67, 68",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://www.smashingmagazine.com/2010/09/how-manage-dangerous-actions-user-interfaces/",
@@ -4104,7 +4000,6 @@
    "esempio": "esempi/paywall/",
    "vedi": [],
    "origine": "mining 69",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4136,7 +4031,6 @@
    "esempio": "esempi/pull-to-refresh/",
    "vedi": [],
    "origine": "mining 70",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4168,7 +4062,6 @@
    "esempio": "esempi/slash-command/",
    "vedi": [],
    "origine": "mining 71",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4200,7 +4093,6 @@
    "esempio": "esempi/prompt-suggestions/",
    "vedi": [],
    "origine": "mining 72",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4232,7 +4124,6 @@
    "esempio": "esempi/tree-menu/",
    "vedi": [],
    "origine": "mining 73",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4264,7 +4155,6 @@
    "esempio": "esempi/sheet/",
    "vedi": [],
    "origine": "mining 74",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://developer.apple.com/design/human-interface-guidelines/sheets",
@@ -4301,7 +4191,6 @@
    "esempio": "esempi/upgrade-button/",
    "vedi": [],
    "origine": "mining 76",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4333,7 +4222,6 @@
    "esempio": "esempi/add-to-collection-button/",
    "vedi": [],
    "origine": "mining 77",
-   "scritto": "",
    "fonti": [
     {
      "url": "https://chromewebstore.google.com/detail/save-to-cosmos/mgjneceglphcpbbfbhjplkpgfapebmdg?pli=1",
@@ -4370,7 +4258,6 @@
    "esempio": "esempi/plugin-puzzle-button/",
    "vedi": [],
    "origine": "mining 78",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4402,7 +4289,6 @@
    "esempio": "esempi/draggable-overflow-text/",
    "vedi": [],
    "origine": "mining 79",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4434,7 +4320,6 @@
    "esempio": "esempi/live-validation/",
    "vedi": [],
    "origine": "mining 80",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4466,7 +4351,6 @@
    "esempio": "esempi/autocorrection/",
    "vedi": [],
    "origine": "mining 81",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4501,7 +4385,6 @@
     "dropdown-filter"
    ],
    "origine": "mining 82",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4533,7 +4416,6 @@
    "esempio": "esempi/skip-button/",
    "vedi": [],
    "origine": "mining 83",
-   "scritto": "",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4565,7 +4447,6 @@
    "esempio": "esempi/like-dislike/",
    "vedi": [],
    "origine": "mining 84",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4597,7 +4478,6 @@
    "esempio": "esempi/onboarding/",
    "vedi": [],
    "origine": "mining 85",
-   "scritto": "claude",
    "fonti": [],
    "letture": [],
    "testi": {
@@ -4642,7 +4522,6 @@
     "pull-to-refresh"
    ],
    "origine": "FZ, 2026-10-12",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html",
@@ -4692,7 +4571,6 @@
     "sticky"
    ],
    "origine": "FZ, 2026-10-12",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://www.nngroup.com/articles/back-to-top/",
@@ -4748,7 +4626,6 @@
     "picture-in-picture"
    ],
    "origine": "FZ, 2026-10-12",
-   "scritto": "claude",
    "fonti": [
     {
      "url": "https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler",

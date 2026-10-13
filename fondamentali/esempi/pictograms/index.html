@@ -1,6 +1,10 @@
 <!doctype html>
 <!-- Esempio ricostruito: Pictograms and icons. © Francesco Zaccaria, codice con licenza MIT. -->
-<!-- Versione per le slide (FZ, 2026-10-12): tolto «senza parole»; il concetto è la lettura rapida e l’interpretazione semplice. -->
+<!-- Versione per le slide (FZ, 2026-10-12): tolto «senza parole»; il concetto è la lettura rapida e l’interpretazione semplice.
+     FZ, 2026-10-13: sopra, il nuoto in cinque Olimpiadi (citazioni: Tokyo 1964, Messico 1968, Barcellona 1992 da olympic-museum.de;
+     Monaco 1972 foto di Henning Schlottmann, Wikimedia Commons, CC BY 1.0; Parigi 2024 dal foglio ufficiale dei pittogrammi, Conran Design Group);
+     sotto, icone d’interfaccia Lucide 0.469.0 (ISC), contorno e pieno; spessori corretti a occhio (FZ, 2026-10-13):
+     cerca e profilo ×1,05 (2,1), elimina ×0,98 (1,96). Il testo è passato nella colonna della slide. -->
 <html lang="en" data-lingua="en">
 <head>
 <meta charset="utf-8">
@@ -10,57 +14,48 @@
 <link rel="stylesheet" href="../base.css">
 <script src="../../assets/lingua.js"></script>
 <style>
-  .pitto { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
-  .pitto figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 15px; text-align: center; }
-  .pitto .tess { width: 76px; height: 76px; border-radius: 10px; background: var(--c-testo); display: grid; place-content: center; }
-  .pitto svg { width: 56px; height: 56px; }
-  .pitto .tess.b { background: var(--c-blu); } .pitto .tess.s { background: var(--c-rosa); }
+  .nuoto { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .nuoto figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .nuoto img { width: 100%; aspect-ratio: 1; display: block; }
+  .nuoto figcaption { font-size: 13px; line-height: 1.3; color: var(--c-tenue); }
+  .nuoto figcaption b { display: block; font-weight: 500; color: var(--c-testo); }
   .commuta { display: inline-flex; border: 1px solid var(--c-linea); border-radius: 9999px; padding: 3px; margin-bottom: 14px; }
   .commuta button { border: 0; background: none; padding: 6px 14px; border-radius: 9999px; cursor: pointer; font-size: 15px; }
   .commuta button[aria-pressed="true"] { background: var(--c-testo); color: #fff; }
   .icone { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
   .icona { border: 0; background: none; border-radius: 10px; padding: 10px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-size: 15px; }
   .icona:hover, .icona:focus-visible { background: #fdf3f2; }
-  .icona svg { width: 30px; height: 30px; fill: none; stroke: #111; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .icona svg { width: 30px; height: 30px; fill: none; stroke: #111; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   .pieno .icona svg .r { fill: #111; }
   .pieno .icona svg .vuoto { stroke: #fff; }
-  .taglie { display: flex; align-items: flex-end; gap: 18px; margin-top: 12px; color: var(--c-tenue); font-size: 15px; }
-  .taglie svg { fill: none; stroke: var(--c-blu); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 <style>/*pulito*/.lingua-selettore,.nota,.footer{display:none!important}html,body{background:#fff!important}body{padding:0!important}.riquadro{background:#fff!important;box-shadow:none!important;border:1px solid #f3efee!important}.didascalia{font-size:18px!important;letter-spacing:.06em!important}</style><script>/*pulito*/(function(){function p(){document.querySelectorAll("body *").forEach(function(e){var b=getComputedStyle(e).backgroundColor;if(b==="rgb(243, 239, 238)"){e.style.setProperty("background-color","#fff","important");e.style.setProperty("box-shadow","inset 0 0 0 1px #f3efee","important");}if(e instanceof SVGElement&&getComputedStyle(e).fill==="rgb(243, 239, 238)"){e.style.setProperty("fill","#fff","important");e.style.setProperty("stroke","#f3efee","important");e.style.setProperty("stroke-width","1px","important");}});}document.addEventListener("DOMContentLoaded",function(){p();new MutationObserver(p).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});});})();</script></head>
 <body>
 <div class="palco">
   <div class="riquadro">
-    <span class="didascalia"><span data-l="it">Pittogrammi: si leggono in un colpo d’occhio</span><span data-l="en">Pictograms: read at a glance</span><span data-l="fr">Pictogrammes : compris d’un coup d’œil</span><span data-l="zh">象形图：一眼即懂</span></span>
-    <div class="pitto">
-      <figure><span class="tess"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="30" cy="10" r="5" fill="#fff"/><path d="M28 18 L22 32 L28 34 L24 50 M28 18 L34 30 L42 32 M26 24 L16 28" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M28 34 L36 40 L38 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span><figcaption><span data-l="it">Corsa</span><span data-l="en">Running</span><span data-l="fr">Course</span><span data-l="zh">跑步</span></figcaption></figure>
-      <figure><span class="tess"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="20" cy="22" r="5" fill="#fff"/><path d="M8 34 Q20 24 30 30 Q40 36 50 28" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M6 44 Q14 38 22 44 T38 44 T52 42" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/></svg></span><figcaption><span data-l="it">Nuoto</span><span data-l="en">Swimming</span><span data-l="fr">Natation</span><span data-l="zh">游泳</span></figcaption></figure>
-      <figure><span class="tess b"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="13" r="5" fill="#fff"/><rect x="24" y="23" width="8" height="24" rx="2" fill="#fff"/></svg></span><figcaption><span data-l="it">Informazioni</span><span data-l="en">Information</span><span data-l="fr">Information</span><span data-l="zh">问讯处</span></figcaption></figure>
-      <figure><span class="tess b"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M12 22 H40 V34 a10 10 0 0 1 -10 10 H22 a10 10 0 0 1 -10 -10 Z" fill="#fff"/><path d="M40 25 h3 a5 5 0 0 1 0 10 h-4" stroke="#fff" stroke-width="3" fill="none"/><path d="M20 8 q3 4 0 8 M28 8 q3 4 0 8" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></span><figcaption><span data-l="it">Caffetteria</span><span data-l="en">Café</span><span data-l="fr">Café</span><span data-l="zh">咖啡馆</span></figcaption></figure>
-      <figure><span class="tess s"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M8 44 H18 V36 H28 V28 H38 V20 H48" stroke="#fff" stroke-width="5" fill="none" stroke-linejoin="round"/><path d="M14 22 L30 10 M30 10 h-8 M30 10 v8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg></span><figcaption><span data-l="it">Scale</span><span data-l="en">Stairs</span><span data-l="fr">Escalier</span><span data-l="zh">楼梯</span></figcaption></figure>
+    <span class="didascalia"><span data-l="it">Il nuoto alle Olimpiadi: un segno, molte discipline</span><span data-l="en">Swimming at the Olympics: one sign, many disciplines</span><span data-l="fr">La natation aux Jeux : un signe, de nombreuses disciplines</span><span data-l="zh">奥运会上的游泳：一个符号，多个项目</span></span>
+    <div class="nuoto">
+      <figure><img src="tokyo-1964-nuoto.png" alt="Tokyo 1964 — nuoto"><figcaption><b><span data-l="it">Tokyo 1964</span><span data-l="en">Tokyo 1964</span><span data-l="fr">Tokyo 1964</span><span data-l="zh">1964 东京</span></b>Masaru Katsumi, Yoshiro Yamashita</figcaption></figure>
+      <figure><img src="messico-1968-nuoto.png" alt="Città del Messico 1968 — nuoto"><figcaption><b><span data-l="it">Città del Messico 1968</span><span data-l="en">Mexico City 1968</span><span data-l="fr">Mexico 1968</span><span data-l="zh">1968 墨西哥城</span></b>Lance Wyman, Eduardo Terrazas</figcaption></figure>
+      <figure><img src="monaco-1972-nuoto.png" alt="Monaco 1972 — nuoto"><figcaption><b><span data-l="it">Monaco 1972</span><span data-l="en">Munich 1972</span><span data-l="fr">Munich 1972</span><span data-l="zh">1972 慕尼黑</span></b>Otl Aicher</figcaption></figure>
+      <figure><img src="barcellona-1992-nuoto.png" alt="Barcellona 1992 — nuoto"><figcaption><b><span data-l="it">Barcellona 1992</span><span data-l="en">Barcelona 1992</span><span data-l="fr">Barcelone 1992</span><span data-l="zh">1992 巴塞罗那</span></b>Josep Maria Trias</figcaption></figure>
+      <figure><img src="parigi-2024-nuoto.png" alt="Parigi 2024 — nuoto"><figcaption><b><span data-l="it">Parigi 2024</span><span data-l="en">Paris 2024</span><span data-l="fr">Paris 2024</span><span data-l="zh">2024 巴黎</span></b>Conran Design Group (UK)</figcaption></figure>
     </div>
   </div>
   <div class="riquadro" id="set">
-    <span class="didascalia"><span data-l="it">Icone d’interfaccia: una famiglia coerente</span><span data-l="en">Interface icons: one consistent family</span><span data-l="fr">Icônes d’interface : une famille cohérente</span><span data-l="zh">界面图标：风格统一的一套</span></span>
+    <span class="didascalia"><span data-l="it">Icone d’interfaccia: una famiglia coerente</span><span data-l="en">Interface icons: one consistent family</span><span data-l="fr">Icônes d’interface : une famille cohérente</span><span data-l="zh">界面图标：风格统一的一套</span></span>
     <div class="commuta" role="group"><button type="button" data-s="linea" aria-pressed="true"><span data-l="it">Contorno</span><span data-l="en">Outline</span><span data-l="fr">Contour</span><span data-l="zh">线框</span></button><button type="button" data-s="pieno" aria-pressed="false"><span data-l="it">Pieno</span><span data-l="en">Filled</span><span data-l="fr">Plein</span><span data-l="zh">填充</span></button></div>
     <div class="icone" id="icone">
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><path class="r" d="M5 14 L15 5 L25 14 V25 H18 V18 H12 V25 H5 Z"/></svg><span data-l="it">Home</span><span data-l="en">Home</span><span data-l="fr">Accueil</span><span data-l="zh">首页</span></button>
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="r" cx="13" cy="13" r="7.5"/><path d="M19 19 L26 26" stroke-width="2.6"/></svg><span data-l="it">Cerca</span><span data-l="en">Search</span><span data-l="fr">Chercher</span><span data-l="zh">搜索</span></button>
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="r" cx="15" cy="10" r="5"/><path class="r" d="M5 26 a10 9 0 0 1 20 0 Z"/></svg><span data-l="it">Profilo</span><span data-l="en">Profile</span><span data-l="fr">Profil</span><span data-l="zh">个人资料</span></button>
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><path class="r" d="M15 25 C4 17 4 9 9.5 7 C12.5 6 14 8 15 10 C16 8 17.5 6 20.5 7 C26 9 26 17 15 25 Z"/></svg><span data-l="it">Preferiti</span><span data-l="en">Favourite</span><span data-l="fr">Favori</span><span data-l="zh">收藏</span></button>
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><path class="r" d="M7 9 H23 L21.5 26 H8.5 Z"/><path d="M5 9 H25 M12 9 V5 H18 V9"/><path class="vuoto" d="M12.5 13 V22 M17.5 13 V22"/></svg><span data-l="it">Elimina</span><span data-l="en">Delete</span><span data-l="fr">Supprimer</span><span data-l="zh">删除</span></button>
-      <button class="icona" type="button"><svg viewBox="0 0 30 30" aria-hidden="true"><path class="r" d="M8 22 V13 a7 7 0 0 1 14 0 V22 l2 2 H6 Z"/><path d="M12.5 27 h5"/></svg><span data-l="it">Avvisi</span><span data-l="en">Alerts</span><span data-l="fr">Alertes</span><span data-l="zh">通知</span></button>
-    </div>
-    <div class="taglie" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 30 30"><path d="M5 14 L15 5 L25 14 V25 H18 V18 H12 V25 H5 Z" stroke-width="2.6"/></svg>
-      <svg width="24" height="24" viewBox="0 0 30 30"><path d="M5 14 L15 5 L25 14 V25 H18 V18 H12 V25 H5 Z" stroke-width="2.2"/></svg>
-      <svg width="32" height="32" viewBox="0 0 30 30"><path d="M5 14 L15 5 L25 14 V25 H18 V18 H12 V25 H5 Z"/></svg>
-      <svg width="48" height="48" viewBox="0 0 30 30"><path d="M5 14 L15 5 L25 14 V25 H18 V18 H12 V25 H5 Z" stroke-width="1.4"/></svg>
-      <span><span data-l="it">16 · 24 · 32 · 48 px: lo spessore si adatta alla taglia</span><span data-l="en">16 · 24 · 32 · 48 px: stroke weight adapts to size</span><span data-l="fr">16 · 24 · 32 · 48 px : l’épaisseur s’adapte à la taille</span><span data-l="zh">16 · 24 · 32 · 48 px：线宽随尺寸调整</span></span>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r" d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path class="vuoto" d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/></svg><span data-l="it">Home</span><span data-l="en">Home</span><span data-l="fr">Accueil</span><span data-l="zh">首页</span></button>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 2.1"><circle class="r" cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span data-l="it">Cerca</span><span data-l="en">Search</span><span data-l="fr">Chercher</span><span data-l="zh">搜索</span></button>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 2.1"><path class="r" d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle class="r" cx="12" cy="7" r="4"/></svg><span data-l="it">Profilo</span><span data-l="en">Profile</span><span data-l="fr">Profil</span><span data-l="zh">个人资料</span></button>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="r" d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg><span data-l="it">Preferiti</span><span data-l="en">Favourite</span><span data-l="fr">Favori</span><span data-l="zh">收藏</span></button>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true" style="stroke-width: 1.96"><path d="M3 6h18"/><path class="r" d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line class="vuoto" x1="10" x2="10" y1="11" y2="17"/><line class="vuoto" x1="14" x2="14" y1="11" y2="17"/></svg><span data-l="it">Elimina</span><span data-l="en">Delete</span><span data-l="fr">Supprimer</span><span data-l="zh">删除</span></button>
+      <button class="icona" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path class="r" d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></svg><span data-l="it">Avvisi</span><span data-l="en">Alerts</span><span data-l="fr">Alertes</span><span data-l="zh">通知</span></button>
     </div>
   </div>
 </div>
-<p class="nota"><span data-l="it">Disegni originali. Un pittogramma si legge in un attimo e si interpreta senza sforzo: forme semplici, un solo concetto per segno. Dai pittogrammi olimpici (Messico 1968) ai set di icone dei design system, la regola è la coerenza di griglia, tratto e angoli.</span><span data-l="en">Original drawings. A pictogram is read in an instant and interpreted effortlessly: simple shapes, one idea per sign. From Olympic pictograms (Mexico 1968) to design-system icon sets, the rule is consistency of grid, stroke and corners.</span><span data-l="fr">Dessins originaux. Un pictogramme se lit en un instant et s’interprète sans effort : des formes simples, une seule idée par signe. Des pictogrammes olympiques (Mexico 1968) aux jeux d’icônes des design systems, la règle est la cohérence de grille, de trait et d’angles.</span><span data-l="zh">原创绘制。象形图一瞬间就能读懂，理解毫不费力：形状简单，一个符号只表达一个意思。从奥运象形图（1968 年墨西哥城）到设计系统的图标集，原则都是网格、线条和圆角的一致性。</span></p>
+<p class="nota"><span data-l="it">Un segno solo, un’indicazione ampia: il pittogramma del nuoto vale per tutte le gare in vasca. In un buon pittogramma linee e pieni sono bilanciati tra loro, e anche il peso delle linee va bilanciato da un segno all’altro. Icone d’interfaccia: Lucide (ISC).</span><span data-l="en">A single sign, a broad indication: the swimming pictogram stands for every pool event. In a good pictogram, lines and solids are balanced with each other, and line weight must be balanced from one sign to the next. Interface icons: Lucide (ISC).</span><span data-l="fr">Un seul signe, une indication large : le pictogramme de la natation vaut pour toutes les épreuves en bassin. Dans un bon pictogramme, traits et pleins sont équilibrés entre eux, et le poids des traits doit être équilibré d’un signe à l’autre. Icônes d’interface : Lucide (ISC).</span><span data-l="zh">一个符号，一个宽泛的指示：游泳象形图代表泳池里的所有比赛。好的象形图中，线条与实心块彼此平衡，各个符号之间的线条粗细也要平衡。界面图标：Lucide（ISC）。</span></p>
 <script>
   document.querySelectorAll('.commuta button').forEach(function (b) {
     b.addEventListener('click', function () {

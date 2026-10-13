@@ -7,7 +7,6 @@ ordine: 140
 esempio: esempi/calendar-picker/
 vedi: picker
 origine: mining 14
-scritto: claude
 ---
 
 ## it

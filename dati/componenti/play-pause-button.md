@@ -6,7 +6,6 @@ anno: 2025
 ordine: 90
 esempio: esempi/play-pause-button/
 origine: mining 9
-scritto: claude
 ---
 
 ## it

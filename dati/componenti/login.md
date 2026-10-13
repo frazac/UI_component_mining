@@ -6,7 +6,6 @@ anno: 2025
 ordine: 350
 esempio: esempi/login/
 origine: mining 35
-scritto: claude
 fonti:
   - https://www.ibm.com/docs/en/doc/4.0.3?topic=rights-permission-system-general-introduction | ibm.com
 letture:

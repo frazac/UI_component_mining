@@ -6,7 +6,6 @@ anno: 2025
 ordine: 440
 esempio: esempi/rating/
 origine: mining 44
-scritto: claude
 ---
 
 ## it

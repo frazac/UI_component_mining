@@ -6,7 +6,6 @@ anno: 2025
 ordine: 230
 esempio: esempi/emoji/
 origine: mining 23
-scritto: claude
 letture:
   - https://emojipedia.org/ | 📙 Emojipedia — 😃 Home of Emoji Meanings 💁👌🎍😍
 ---

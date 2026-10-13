@@ -6,7 +6,6 @@ anno: 2025
 ordine: 580
 esempio: esempi/timer-countdown/
 origine: mining 58
-scritto: claude
 ---
 
 ## it

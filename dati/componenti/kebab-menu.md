@@ -7,7 +7,6 @@ ordine: 600
 esempio: esempi/kebab-menu/
 vedi: context-menu
 origine: mining 60
-scritto: claude
 letture:
   - https://www.reddit.com/r/apple/comments/nynv1n/really_sad_that_apple_has_fully_embraced_the/ | Really sad that Apple has fully embraced the triple-dot menu button : r/apple
 ---

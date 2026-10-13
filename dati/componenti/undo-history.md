@@ -6,7 +6,6 @@ anno: 2025
 ordine: 630
 esempio: esempi/undo-history/
 origine: mining 63
-scritto: claude
 ---
 
 ## it

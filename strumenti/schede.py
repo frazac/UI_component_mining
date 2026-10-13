@@ -14,7 +14,6 @@ Formato di una scheda:
     esempio: esempi/stati-link/      esempio ricostruito (html+css+js, MIT)
     vedi: interaction-states, button schede collegate
     origine: slide 6                 da dove viene (slide 2026, riga del mining…)
-    scritto: claude                  testo scritto da Claude (Gradiente IA 4), da rivedere
     fonti:
       - https://… | Titolo           fonti e «courtesy»
     letture:
@@ -33,6 +32,8 @@ Formato di una scheda:
     ## zh
 
 Una sezione di lingua vuota vuol dire «da tradurre».
+Lo stato redazionale non va nelle schede (sono pubbliche): sta in riservato/stato.json, fuori da git.
+Un vecchio campo «scritto: …» in una scheda viene spostato lì da sposta_riservati() (lo chiama costruisci.py).
 """
 import json
 import re
@@ -42,9 +43,32 @@ RADICE = Path(__file__).resolve().parent.parent
 CARTELLA = RADICE / 'dati' / 'componenti'
 LINGUE = ('it', 'en', 'fr', 'zh')
 LIVELLI = ('introduzione', 'fondamentale', 'avanzato')
-CAMPI = ('id', 'livello', 'categoria', 'anno', 'ordine', 'parole', 'esempio', 'vedi', 'origine', 'scritto')
+CAMPI = ('id', 'livello', 'categoria', 'anno', 'ordine', 'parole', 'esempio', 'vedi', 'origine')
 ELENCHI = ('fonti', 'letture')
 VIRGOLE = ('parole', 'vedi')
+
+
+RISERVATO = RADICE / 'riservato' / 'stato.json'   # fuori da git (.gitignore a elenco di permessi)
+
+
+def sposta_riservati():
+    """toglie dalle schede il campo «scritto:» (chi ha scritto il testo) e lo annota in RISERVATO"""
+    dati = json.loads(RISERVATO.read_text()) if RISERVATO.exists() else {}
+    scritti = dati.setdefault('scritto', {})
+    spostati = 0
+    for f in sorted(CARTELLA.glob('*.md')):
+        testo = f.read_text()
+        m = re.search(r'^scritto:[ \t]*(.*)\n', testo.split('\n---\n', 1)[0] + '\n', re.M)
+        if not m:
+            continue
+        scritti[f.stem] = m.group(1).strip()
+        f.write_text(testo.replace(m.group(0), '', 1))
+        spostati += 1
+    if spostati:
+        dati['nota'] = 'Chi ha scritto il testo delle schede. Riservato: non va nel repo pubblico.'
+        RISERVATO.parent.mkdir(exist_ok=True)
+        RISERVATO.write_text(json.dumps(dati, ensure_ascii=False, indent=1) + '\n')
+    return spostati
 
 
 def categorie():

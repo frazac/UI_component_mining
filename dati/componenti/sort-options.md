@@ -6,7 +6,6 @@ anno: 2025
 ordine: 490
 esempio: esempi/sort-options/
 origine: mining 49
-scritto: claude
 ---
 
 ## it

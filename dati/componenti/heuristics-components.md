@@ -8,7 +8,6 @@ parole: Nielsen, heuristics, usability, evaluation
 esempio: esempi/heuristics-components/
 vedi: progress-bar, undo-history, irreversible-action-warning, breadcrumb, command-palette, tooltip, empty-state
 origine: nuova 2026
-scritto: claude
 fonti:
   - https://www.nngroup.com/articles/ten-usability-heuristics/ | 10 Usability Heuristics for User Interface Design – Nielsen Norman Group
 ---

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 450
 esempio: esempi/scrollbar/
 origine: mining 45
-scritto: claude
 ---
 
 ## it

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 210
 esempio: esempi/distraction-free-mode/
 origine: mining 21
-scritto: claude
 fonti:
   - https://www.macworld.com/article/6/safari5.html | macworld.com
   - https://www.fairphone.com/en//07/03/fairphone-moments-switch-to-distraction-free-digital-minimalism/ | "Moments" on Fairphone

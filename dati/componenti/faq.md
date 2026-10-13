@@ -6,7 +6,6 @@ anno: 2025
 ordine: 260
 esempio: esempi/faq/
 origine: mining 26
-scritto: claude
 ---
 
 ## it

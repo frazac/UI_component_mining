@@ -6,7 +6,6 @@ anno: 2026
 ordine: 850
 esempio: esempi/onboarding/
 origine: mining 85
-scritto: claude
 ---
 
 ## it

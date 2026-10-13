@@ -6,7 +6,6 @@ anno: 2025
 ordine: 590
 esempio: esempi/trash/
 origine: mining 59
-scritto: claude
 ---
 
 ## it

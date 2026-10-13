@@ -8,7 +8,6 @@ parole: states, transitions, motion, duration, easing, reduced motion, accessibi
 esempio: esempi/states-transitions/
 vedi: interaction-states, feedback, microinteractions, skeleton-screen, loading-screen, live-validation
 origine: nuova 2026
-scritto: claude
 fonti:
   - https://www.nngroup.com/articles/animation-duration/ | Executing UX Animations: Duration and Motion Characteristics – Nielsen Norman Group
   - https://m3.material.io/styles/motion/overview | Motion – Material Design 3

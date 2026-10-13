@@ -32,9 +32,8 @@ course's slides, and can be edited from either side.
 ## Languages and proofreading
 
 Italian and English come from the author. French and Chinese translations, and the descriptions of the
-components that only had a name, were drafted with AI and are marked as *to be reviewed* until a human
-proofreader checks them sentence by sentence. Machine translation is not enough: every language has a
-proofreader with a name, credited below.
+components that only had a name, were drafted with AI and are checked sentence by sentence by human
+proofreaders. Machine translation is not enough: every language has a proofreader with a name, credited below.
 
 <!-- revisori -->
 ### Proofreaders

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 650
 esempio: esempi/versioning/
 origine: mining 65
-scritto: claude
 fonti:
   - https://github.blog/developer-skills/programming-languages-and-frameworks/what-is-git-our-beginners-guide-to-version-control/ | Git
 ---

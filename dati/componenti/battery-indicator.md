@@ -6,7 +6,6 @@ anno: 2025
 ordine: 50
 esempio: esempi/battery-indicator/
 origine: mining 5
-scritto: claude
 ---
 
 ## it

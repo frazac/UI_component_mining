@@ -51,7 +51,6 @@ T = {  # testi fissi dell'interfaccia
                 'fr': 'Aucun composant ne correspond à la recherche.', 'zh': '没有符合搜索条件的组件。'},
     'slide': {'it': 'Fondamentali', 'en': 'Fundamentals', 'fr': 'Fondamentaux', 'zh': '基础'},
     'tabella': {'it': 'La tabella', 'en': 'Table', 'fr': 'Le tableau', 'zh': '表格'},
-    'claude': {'it': 'Testo di Claude, da rivedere', 'en': 'Text by Claude, to be reviewed', 'fr': 'Texte de Claude, à relire', 'zh': '由 Claude 撰写，待审阅'},
     'licenza': {'it': 'Testi, tabella e slide: CC BY-NC-SA 4.0. Codice degli esempi: MIT.',
                 'en': 'Texts, table and slides: CC BY-NC-SA 4.0. Example code: MIT.',
                 'fr': 'Textes, tableau et diapositives : CC BY-NC-SA 4.0. Code des exemples : MIT.',
@@ -201,10 +200,9 @@ def riga(s, per_id):
     if s['esempio']:
         nome_es = s['esempio'].rstrip('/').split('/')[-1]
         collegamenti += f'<p class="piccolo"><b>{tt("esempio")}</b> <a href="{e(s["esempio"])}" target="_blank">{e(nome_es)}</a></p>'
-    claude = f'<span class="claude" title="{e(T["claude"]["en"])}">{tt("claude")}</span>' if s['scritto'] == 'claude' else ''
     return (f'<tr id="{e(s["id"])}" data-livello="{s["livello"]}" data-categoria="{s["categoria"]}" data-anno="{s["anno"]}" {attr}>'
             f'<th scope="row"><a class="ancora" href="#{e(s["id"])}">{nomi(s)}</a></th>'
-            f'<td class="note">{note(s)}{claude}{collegamenti}</td>'
+            f'<td class="note">{note(s)}{collegamenti}</td>'
             f'<td>{cat(s)}</td><td>{liv(s)}</td><td>{s["anno"] or ""}</td></tr>')
 
 
@@ -285,6 +283,9 @@ def json_dati(tutte):
 
 
 if __name__ == '__main__':
+    spostati = schede.sposta_riservati()
+    if spostati:
+        print(f'{spostati} schede: campo «scritto» spostato in riservato/stato.json')
     tutte = schede.tutte()
     (R / 'dati' / 'componenti.json').write_text(json_dati(tutte))
     (R / 'index.html').write_text(tabella(tutte))

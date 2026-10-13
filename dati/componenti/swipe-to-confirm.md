@@ -8,7 +8,6 @@ parole: swipe to confirm, slide to confirm, slide to unlock, slide to power off,
 esempio: esempi/swipe-to-confirm/
 vedi: irreversible-action-warning, slider, pull-to-refresh
 origine: FZ, 2026-10-12
-scritto: claude
 fonti:
   - https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html | Understanding Success Criterion 2.5.7: Dragging Movements | WAI | W3C
 ---

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 30
 esempio: esempi/archiving-systems/
 origine: mining 3
-scritto: claude
 ---
 
 ## it

@@ -82,7 +82,6 @@ table.componenti td.note ul { padding-left: 1.2em; }
 table.componenti td:nth-child(n+3) { color: var(--c-tenue-forte); font-size: 14px; white-space: nowrap; }
 .piccolo { font-size: 13px; color: var(--c-tenue-forte); }
 .piccolo b { font-weight: 500; text-transform: uppercase; letter-spacing: .04em; font-size: 11px; margin-right: .3em; }
-.claude { display: inline-block; margin: 0 0 .5em; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--c-rosa); }
 .vuoto { padding: 2rem 0; color: var(--c-tenue-forte); }
 
 a.link-md { border-bottom: 0; color: var(--c-testo); }

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 410
 esempio: esempi/picture-in-picture/
 origine: mining 41
-scritto: claude
 fonti:
   - https://developer.mozilla.org/en-US/docs/Web/API/Picture-in-Picture_API | developer.mozilla.org
 ---

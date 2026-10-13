@@ -7,7 +7,6 @@ ordine: 200
 esempio: esempi/dark-mode-switch/
 vedi: switch
 origine: mining 20
-scritto: claude
 ---
 
 ## it

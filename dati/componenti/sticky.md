@@ -6,7 +6,6 @@ anno: 2025
 ordine: 500
 esempio: esempi/sticky/
 origine: mining 50
-scritto: claude
 fonti:
   - https://designers.italia.it/design-system/componenti/affix/ | designers.italia.it
   - https://getbootstrap.com/docs/3.4/javascript/#affix | getbootstrap.com

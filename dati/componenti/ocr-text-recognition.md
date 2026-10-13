@@ -6,7 +6,6 @@ anno: 2025
 ordine: 550
 esempio: esempi/ocr-text-recognition/
 origine: mining 55
-scritto: claude
 fonti:
   - https://en.wikipedia.org/wiki/Optical_character_recognition | OCR
   - https://support.apple.com/en-us/4 | Apple system

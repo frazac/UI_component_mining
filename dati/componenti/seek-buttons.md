@@ -8,7 +8,6 @@ parole: seek, seek forward, seek backward, forward and rewind few seconds, skip 
 esempio: esempi/seek-buttons/
 vedi: play-pause-button, skip-button, slider, picture-in-picture
 origine: FZ, 2026-10-12
-scritto: claude
 fonti:
   - https://developer.mozilla.org/en-US/docs/Web/API/MediaSession/setActionHandler | MediaSession: setActionHandler() method - MDN
   - https://foliovision.com/player/demos/rewind-button | Rewind and Forward Buttons - Foliovision

@@ -6,7 +6,6 @@ anno: 2025
 ordine: 10
 esempio: esempi/page-404/
 origine: mining 1
-scritto: claude
 fonti:
   - https://www.404s.design/ | 404s.design
 ---

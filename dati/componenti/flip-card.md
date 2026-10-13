@@ -6,7 +6,6 @@ anno: 2025
 ordine: 150
 esempio: esempi/flip-card/
 origine: mining 15
-scritto: claude
 ---
 
 ## it

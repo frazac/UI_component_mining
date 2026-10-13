@@ -6,7 +6,6 @@ anno: 2025
 ordine: 100
 esempio: esempi/share-button/
 origine: mining 10
-scritto: claude
 ---
 
 ## it

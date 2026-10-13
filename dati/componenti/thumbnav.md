@@ -6,7 +6,6 @@ anno: 2025
 ordine: 570
 esempio: esempi/thumbnav/
 origine: mining 57
-scritto: claude
 fonti:
   - https://getuikit.com/docs/thumbnav | getuikit.com
   - https://designers.italia.it/design-system/componenti/thumbnav/ | designers.italia.it

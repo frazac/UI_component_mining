@@ -6,7 +6,6 @@ anno: 2025
 ordine: 70
 esempio: esempi/chat-bubble/
 origine: mining 7
-scritto: claude
 ---
 
 ## it

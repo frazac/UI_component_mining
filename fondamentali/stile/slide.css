@@ -78,6 +78,16 @@ html[data-lingua="zh"] .slide::after { content: attr(data-doc) " — " attr(data
 
 .slide.senza-pie::before,
 .slide.senza-pie::after { content: none; }
+/* Materiali di terzi protetti (data-diritti, FZ 2026-10-13): il piede rimanda alla didascalia e al tamburino di gerenza
+   (ultima slide); nella bozza «, diritto» in bluette. Queste slide non vanno nel repo pubblico (esporta_fondamentali.py). */
+html { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria e rispettivi titolari, v. didascalia e tamburino di gerenza"; }
+html[data-lingua="en"] { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria and respective owners, see caption and masthead"; }
+html[data-lingua="zh"] { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria 及各权利人，见图注与版权页"; }
+.slide[data-diritti]::before { content: var(--piede-diritti); }
+.diritti { color: var(--c-tenue); }
+.s-testo.gerenza p { max-width: calc(1000 * var(--px)); font-size: calc(22 * var(--px)); line-height: 1.45; }
+.s-sito .diritti, .s-video .diritti { font-size: calc(13 * var(--px)); margin-top: calc(6 * var(--px)); }
+
 
 /* slide su una parola chiave del glossario: chiave (Lucide key-square, ISC) nel piede, prima di G1…,
    nello stesso grigio e alta come le cifre del piede */
@@ -640,6 +650,8 @@ html[data-lingua="zh"] .slide em { font-style: normal; }
 
 /* --- Bozze: slide nuove e segnaposto ----------------------------------------- */
 html.bozza .slide[data-nuova]::before { content: "NUOVA — " var(--versione-bozza, ""); color: var(--c-blu); }
+html.bozza .slide[data-diritti]::before { content: var(--piede-diritti) ", diritto"; color: var(--c-blu); }
+html.bozza .slide[data-nuova][data-diritti]::before { content: "NUOVA — " var(--versione-bozza, "") ", diritto"; }
 .slide .segnaposto { color: var(--c-tenue); }
 
 /* Elenchi lunghi a due colonne (riferimenti, aree di studio) */
@@ -648,6 +660,8 @@ html.bozza .slide[data-nuova]::before { content: "NUOVA — " var(--versione-boz
 .s-letture ul.due-colonne li { font-size: calc(15 * var(--px)); line-height: 1.35; }
 .s-letture ul.due-colonne li + li { margin-top: calc(7 * var(--px)); }
 .s-letture .tag { color: var(--c-salmone); }
+/* tag (#argomento @autore) anche nelle fonti e nelle didascalie (FZ, 2026-10-13) */
+.fonte-breve .tag, .credito .tag, figcaption .tag { color: var(--c-salmone); }
 .s-testo ul.due-colonne li { font-size: calc(22 * var(--px)); }
 
 /* Slide trattenuta: solo nelle bozze, la pubblicazione la toglie (data-non-pubblicare="motivo") */
@@ -858,12 +872,13 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-ds figcaption a.link-md { font-size: calc(14 * var(--px)); }
 .s-ds .fonte-breve { position: absolute; left: calc(var(--margine) * var(--px)); bottom: calc(44 * var(--px)); margin: 0; font-size: calc(13 * var(--px)); color: var(--c-tenue); }
 /* tabella delle euristiche: il pittogramma (Lucide) a sinistra, sul bianco, fuori dal box (FZ, 2026-10-12) */
-.s-euristiche .euristica { display: flex !important; align-items: center; gap: calc(16 * var(--px)); padding: 0 !important; background: none !important; border-radius: 0 !important; }
+.s-euristiche .euristica { display: flex !important; align-items: stretch; gap: calc(16 * var(--px)); padding: 0 !important; background: none !important; border-radius: 0 !important; }
 .s-euristiche .euristica .picto { flex: none; align-self: flex-start; width: calc(28 * var(--px)); height: calc(28 * var(--px)); margin-top: calc(9 * var(--px)); opacity: 0.85; }
-/* pittogrammi più piccoli, appoggiati alla linea di base del titolo; più grondaia tra le colonne (FZ, 2026-10-12) */
+/* pittogrammi più piccoli, appoggiati alla linea di base del titolo; più grondaia tra le colonne (FZ, 2026-10-12);
+   box della stessa riga alti uguali e pittogramma sempre alla stessa y rispetto al box (FZ, 2026-10-13) */
 .s-euristiche .griglia { column-gap: calc(40 * var(--px)); row-gap: calc(10 * var(--px)); }
 .s-euristiche .euristica .nome { margin-bottom: calc(8 * var(--px)); }
-.s-euristiche .euristica .box { flex: 1; display: grid; grid-template-columns: calc(40 * var(--px)) 1fr; column-gap: calc(6 * var(--px)); align-items: baseline;
+.s-euristiche .euristica .box { flex: 1; display: grid; grid-template-columns: calc(40 * var(--px)) 1fr; column-gap: calc(6 * var(--px)); align-items: baseline; align-content: start;
   padding: calc(10 * var(--px)) calc(18 * var(--px)) calc(12 * var(--px)); border-radius: calc(12 * var(--px)); background: #f3efee; }
 /* AI + UI con l'esempio: elenco numerato breve nella colonna */
 .s-componente .ai-punti { padding-left: 1.2em; margin-top: calc(22 * var(--px)); }
@@ -876,3 +891,21 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-testo ul.cronologia li { font-size: calc(23 * var(--px)); line-height: 1.35; }
 .s-testo ul.cronologia li + li { margin-top: calc(12 * var(--px)); }
 .s-testo p.nomi { font-size: calc(46 * var(--px)); line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; margin-top: calc(10 * var(--px)); margin-bottom: calc(28 * var(--px)); }
+
+/* Snippet di chiusura (bozze/snippet.html, FZ 2026-10-13) ------------------------------------------------
+   «Grazie»: immagine al vivo su tutta la slide, strillo bianco grande, didascalia sul fondo. */
+.s-grazie { background: var(--c-testo); justify-content: flex-end; padding-bottom: calc(44 * var(--px)); }
+.s-grazie img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.s-grazie > :not(img) { position: relative; color: #fff; text-shadow: 0 0 calc(24 * var(--px)) rgba(0, 0, 0, 0.45); }
+.s-grazie .strillo { font-size: calc(var(--t-mega) * 1.4 * var(--px)); }
+.s-grazie .credito { margin-top: calc(12 * var(--px)); font-size: calc(14 * var(--px)); line-height: 1.45; }
+.slide.s-grazie::before, .slide.s-grazie::after { color: rgba(255, 255, 255, 0.75); z-index: 1; }
+/* Contatti, slide interattive e tamburino di gerenza */
+.s-chiusura { justify-content: space-between; padding-top: calc(56 * var(--px)); padding-bottom: calc(52 * var(--px)); }
+.s-chiusura .colonne { display: grid; grid-template-columns: 1fr 1fr; gap: calc(64 * var(--px)); }
+.s-chiusura .colonne p:not(.etichetta) { font-size: calc(var(--t-corpo) * var(--px)); line-height: 1.35; }
+.s-chiusura .colonne p.nota { font-size: calc(18 * var(--px)); color: var(--c-tenue-forte); margin-top: calc(12 * var(--px)); }
+.s-chiusura .etichetta { margin-bottom: calc(12 * var(--px)) !important; }
+.s-chiusura .gerenza-box { border-top: 1px solid rgba(0, 0, 0, 0.15); padding-top: calc(16 * var(--px)); }
+.s-chiusura .gerenza-box .etichetta { font-size: calc(var(--t-etichetta) * var(--px)); color: var(--c-tenue-forte); }
+.s-chiusura .gerenza-box .licenza { margin-top: 0 !important; font-size: calc(13 * var(--px)); row-gap: calc(5 * var(--px)); }
