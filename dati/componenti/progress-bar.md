@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 190
-parole: loading, steps, stepper
+parole: loading, steps, stepper, progress indicator, loader, progress meter, determinate, indeterminate
 esempio: esempi/progress-bar/
 vedi: loading-screen, skeleton-screen
 origine: slide 38

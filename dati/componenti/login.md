@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 350
+parole: log in, sign in, sign up, authentication, password, account, permissions, accesso
 esempio: esempi/login/
 origine: mining 35
 fonti:

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 250
+parole: expand, collapse, compact view, density, collapsible
 esempio: esempi/expand-collapse/
 origine: mining 25
 ---

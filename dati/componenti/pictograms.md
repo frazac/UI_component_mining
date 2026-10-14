@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenuti
 anno: 2024
 ordine: 230
-parole: icon, symbol, Otl Aicher, Lance Wyman, Fluent
+parole: icon, symbol, Otl Aicher, Lance Wyman, Fluent, icons, iconography, glyph, icone, pittogrammi
 esempio: esempi/pictograms/
 vedi: emoji
 origine: slide 40

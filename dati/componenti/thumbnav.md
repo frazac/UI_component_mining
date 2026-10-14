@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 570
+parole: thumb navigation, thumb zone, bottom navigation, mobile navigation
 esempio: esempi/thumbnav/
 origine: mining 57
 fonti:

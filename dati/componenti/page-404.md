@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 10
+parole: 404, not found, error page, broken link, pagina di errore
 esempio: esempi/page-404/
 origine: mining 1
 fonti:

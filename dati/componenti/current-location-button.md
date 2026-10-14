@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 130
+parole: locate me, my location, GPS, map, geolocation
 esempio: esempi/current-location-button/
 origine: mining 13
 fonti:

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 650
+parole: version control, git, revisions, version history, commits
 esempio: esempi/versioning/
 origine: mining 65
 fonti:

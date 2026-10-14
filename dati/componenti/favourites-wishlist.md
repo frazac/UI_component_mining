@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 280
+parole: favorites, wishlist, bookmark, save for later, heart, star, preferiti
 esempio: esempi/favourites-wishlist/
 origine: mining 28
 ---

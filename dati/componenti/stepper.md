@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 171
-parole: spinner, number input, plus minus
+parole: spinner, number input, plus minus, spin button, spinbox, numeric stepper, quantity selector
 esempio: esempi/stepper/
 origine: slide 36
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 190
+parole: cookie banner, consent, GDPR, privacy, cookie
 esempio: esempi/cookie-banner/
 origine: mining 19
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2026
 ordine: 760
+parole: upgrade, upsell, go premium, pro, plan
 esempio: esempi/upgrade-button/
 origine: mining 76
 ---

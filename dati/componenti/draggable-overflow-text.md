@@ -4,6 +4,7 @@ livello: avanzato
 categoria: testo
 anno: 2026
 ordine: 790
+parole: pan, panning, drag to scroll, overflow, horizontal scroll
 esempio: esempi/draggable-overflow-text/
 origine: mining 79
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2025
 ordine: 490
+parole: sort, sorting, order by, sort by, ordinamento
 esempio: esempi/sort-options/
 origine: mining 49
 ---

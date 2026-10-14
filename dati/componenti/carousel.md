@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenitori
 anno: 2024
 ordine: 210
-parole: slideshow, slider, gallery
+parole: slideshow, slider, gallery, image slider, rotator, swipe
 esempio: esempi/carousel/
 vedi: page-dots
 origine: slide 39

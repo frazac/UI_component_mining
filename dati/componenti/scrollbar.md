@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 450
+parole: scroll bar, scroll indicator, scroll thumb, overflow
 esempio: esempi/scrollbar/
 origine: mining 45
 ---

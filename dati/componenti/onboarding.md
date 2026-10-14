@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2026
 ordine: 850
+parole: walkthrough, coach marks, product tour, tutorial, tooltips, first run
 esempio: esempi/onboarding/
 origine: mining 85
 ---

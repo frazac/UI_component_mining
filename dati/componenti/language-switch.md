@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 330
+parole: language selector, language picker, locale, flags, lingua
 esempio: esempi/language-switch/
 origine: mining 33
 ---

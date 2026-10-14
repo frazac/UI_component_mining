@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 150
+parole: card flip, flip, rotate, two-sided card
 esempio: esempi/flip-card/
 origine: mining 15
 ---

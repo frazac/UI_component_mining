@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2026
 ordine: 840
+parole: like, dislike, thumbs up, thumbs down, upvote, downvote, reactions, mi piace
 esempio: esempi/like-dislike/
 origine: mining 84
 ---

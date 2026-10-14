@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: navigazione
 anno: 2024
 ordine: 10
-parole: link, anchor, href, visited
+parole: link, anchor, href, visited, url, ancora, collegamento
 esempio: resources/component-handout-states1.html
 vedi: interaction-states, button
 origine: slide 6

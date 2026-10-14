@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: navigazione
 anno: 2024
 ordine: 130
-parole: navbar, header, tabs, pills, menu
+parole: navbar, header, tabs, pills, menu, navigation bar, nav bar, top bar, app bar, toolbar, tab bar, segmented control
 esempio: esempi/bar-header/
 vedi: tab-audio-indicator, sticky
 origine: slide 31-32

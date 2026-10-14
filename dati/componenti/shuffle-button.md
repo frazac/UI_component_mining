@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 110
+parole: shuffle, random play, playlist, casuale
 esempio: esempi/shuffle-button/
 origine: mining 11
 ---

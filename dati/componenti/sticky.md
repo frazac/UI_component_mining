@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 500
+parole: affix, sticky header, fixed header, position sticky
 esempio: esempi/sticky/
 origine: mining 50
 fonti:

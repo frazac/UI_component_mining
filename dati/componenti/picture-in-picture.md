@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 410
+parole: PiP, floating video, mini player
 esempio: esempi/picture-in-picture/
 origine: mining 41
 fonti:

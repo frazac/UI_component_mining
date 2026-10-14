@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 640
+parole: undo send, unsend, recall, grace period, delay send
 esempio: esempi/undo-send/
 origine: mining 64
 ---

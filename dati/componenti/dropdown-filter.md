@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 71
-parole: dropdown, combobox, select, autocomplete, filter
+parole: dropdown, combobox, select, autocomplete, filter, dropdown menu, drop-down, select menu, menu a tendina, typeahead
 esempio: esempi/dropdown-filter/
 vedi: selectors, predictive-input
 origine: slide 15

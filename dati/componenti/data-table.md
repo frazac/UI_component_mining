@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenitori
 anno: 2024
 ordine: 200
-parole: table, grid, filter, sort
+parole: table, grid, filter, sort, datagrid, data grid, spreadsheet, rows, columns
 esempio: esempi/data-table/
 vedi: sort-options
 origine: slide 38

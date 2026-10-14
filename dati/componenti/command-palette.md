@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 180
+parole: command menu, command bar, cmd+k, ctrl+k, quick open, launcher, Spotlight
 esempio: esempi/command-palette/
 origine: mining 18
 fonti:

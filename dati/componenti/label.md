@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 320
+parole: form label, caption, field label, etichetta
 esempio: esempi/label/
 vedi: tag-chip
 origine: mining 32

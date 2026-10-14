@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2025
 ordine: 610
+parole: typing, is typing, three dots, chat
 esempio: esempi/typing-indicator/
 vedi: ai-thinking-steps, chat-bubble
 origine: mining 61

@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: navigazione
 anno: 2024
 ordine: 50
-parole: hierarchy, path, location
+parole: hierarchy, path, location, breadcrumbs, breadcrumb trail, briciole
 esempio: esempi/breadcrumb/
 origine: slide 13
 ---

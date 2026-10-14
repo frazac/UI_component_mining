@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2026
 ordine: 740
+parole: bottom sheet, top sheet, action sheet, half sheet, panel
 esempio: esempi/sheet/
 origine: mining 74
 fonti:

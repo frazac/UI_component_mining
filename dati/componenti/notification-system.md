@@ -4,6 +4,7 @@ livello: avanzato
 categoria: feedback
 anno: 2025
 ordine: 380
+parole: notifications, push notification, notification center, alerts, inbox
 esempio: esempi/notification-system/
 vedi: toast, badge
 origine: mining 38

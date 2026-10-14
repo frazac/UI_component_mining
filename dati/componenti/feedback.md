@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 30
-parole: haptics, vibration, throbber, confirmation, principle
+parole: haptics, vibration, throbber, confirmation, principle, response, toast, loading
 esempio: resources/component-handout-feedback.html
 vedi: interaction-states
 origine: slide 10-11

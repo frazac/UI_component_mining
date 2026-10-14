@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2025
 ordine: 220
+parole: file upload, dropzone, drag and drop, upload, uploader
 esempio: esempi/drag-drop-uploader/
 origine: mining 22
 letture:

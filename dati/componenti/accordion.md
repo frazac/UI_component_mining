@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenitori
 anno: 2024
 ordine: 220
-parole: collapse, expand, disclosure
+parole: collapse, expand, disclosure, collapsible, expandable, show more, toggle panel
 esempio: esempi/accordion/
 vedi: expand-collapse, faq
 origine: slide 39

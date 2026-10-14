@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 30
+parole: archive, folders, labels, tags, filing, archivio
 esempio: esempi/archiving-systems/
 origine: mining 3
 ---

@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 170
-parole: range, volume
+parole: range, volume, range slider, range input, track, thumb, handle
 esempio: esempi/slider/
 origine: slide 36
 ---

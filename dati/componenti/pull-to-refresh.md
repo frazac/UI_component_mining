@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2026
 ordine: 700
+parole: pull to refresh, swipe to refresh, refresh, reload
 esempio: esempi/pull-to-refresh/
 origine: mining 70
 ---

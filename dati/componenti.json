@@ -416,7 +416,10 @@
     "link",
     "anchor",
     "href",
-    "visited"
+    "visited",
+    "url",
+    "ancora",
+    "collegamento"
    ],
    "esempio": "resources/component-handout-states1.html",
    "vedi": [
@@ -521,7 +524,10 @@
     "vibration",
     "throbber",
     "confirmation",
-    "principle"
+    "principle",
+    "response",
+    "toast",
+    "loading"
    ],
    "esempio": "resources/component-handout-feedback.html",
    "vedi": [
@@ -560,7 +566,10 @@
     "mouse",
     "throbber",
     "hourglass",
-    "wait cursor"
+    "wait cursor",
+    "mouse pointer",
+    "spinning wheel",
+    "beach ball"
    ],
    "esempio": "esempi/pointer/",
    "vedi": [
@@ -611,7 +620,10 @@
    "parole": [
     "hierarchy",
     "path",
-    "location"
+    "location",
+    "breadcrumbs",
+    "breadcrumb trail",
+    "briciole"
    ],
    "esempio": "esempi/breadcrumb/",
    "vedi": [],
@@ -647,7 +659,11 @@
     "right-click",
     "long press",
     "copy",
-    "paste"
+    "paste",
+    "contextual menu",
+    "popup menu",
+    "menu contestuale",
+    "tasto destro"
    ],
    "esempio": "esempi/context-menu/",
    "vedi": [
@@ -732,7 +748,12 @@
     "combobox",
     "select",
     "autocomplete",
-    "filter"
+    "filter",
+    "dropdown menu",
+    "drop-down",
+    "select menu",
+    "menu a tendina",
+    "typeahead"
    ],
    "esempio": "esempi/dropdown-filter/",
    "vedi": [
@@ -769,7 +790,10 @@
    "ordine": 72,
    "parole": [
     "option",
-    "single choice"
+    "single choice",
+    "radio",
+    "radio group",
+    "option button"
    ],
    "esempio": "esempi/radio-button/",
    "vedi": [
@@ -811,7 +835,11 @@
    "parole": [
     "tick",
     "multiple choice",
-    "indeterminate"
+    "indeterminate",
+    "check box",
+    "tick box",
+    "checkmark",
+    "casella di controllo"
    ],
    "esempio": "esempi/checkbox/",
    "vedi": [
@@ -852,7 +880,11 @@
    "ordine": 74,
    "parole": [
     "toggle",
-    "on/off"
+    "on/off",
+    "toggle switch",
+    "lightswitch",
+    "on off switch",
+    "interruttore"
    ],
    "esempio": "esempi/switch/",
    "vedi": [
@@ -897,7 +929,11 @@
     "call to action",
     "affordance",
     "primary",
-    "secondary"
+    "secondary",
+    "btn",
+    "pulsante",
+    "bottone",
+    "action"
    ],
    "esempio": "esempi/button/",
    "vedi": [
@@ -986,7 +1022,10 @@
     "count",
     "status",
     "dot",
-    "notification"
+    "notification",
+    "counter",
+    "notification badge",
+    "pill"
    ],
    "esempio": "esempi/badge/",
    "vedi": [
@@ -1066,7 +1105,10 @@
    "parole": [
     "hint",
     "hover",
-    "help"
+    "help",
+    "infotip",
+    "title attribute",
+    "suggerimento"
    ],
    "esempio": "esempi/tooltip/",
    "vedi": [
@@ -1109,7 +1151,11 @@
     "label",
     "category",
     "filter",
-    "metadata"
+    "metadata",
+    "chips",
+    "pill",
+    "token",
+    "hashtag"
    ],
    "esempio": "resources/component-tag.html",
    "vedi": [
@@ -1153,7 +1199,12 @@
     "dialog",
     "lightbox",
     "backdrop",
-    "popup"
+    "popup",
+    "modal window",
+    "dialog box",
+    "alert dialog",
+    "overlay",
+    "finestra modale"
    ],
    "esempio": "esempi/modal/",
    "vedi": [
@@ -1207,7 +1258,13 @@
     "text box",
     "registration",
     "login",
-    "submit"
+    "submit",
+    "form",
+    "text field",
+    "text input",
+    "textarea",
+    "label",
+    "modulo"
    ],
    "esempio": "esempi/input-form/",
    "vedi": [
@@ -1255,7 +1312,10 @@
     "next",
     "previous",
     "page numbers",
-    "infinite scroll"
+    "infinite scroll",
+    "pager",
+    "paging",
+    "load more"
    ],
    "esempio": "esempi/pagination/",
    "vedi": [
@@ -1299,7 +1359,14 @@
     "header",
     "tabs",
     "pills",
-    "menu"
+    "menu",
+    "navigation bar",
+    "nav bar",
+    "top bar",
+    "app bar",
+    "toolbar",
+    "tab bar",
+    "segmented control"
    ],
    "esempio": "esempi/bar-header/",
    "vedi": [
@@ -1346,7 +1413,11 @@
    "parole": [
     "search",
     "query",
-    "results"
+    "results",
+    "search bar",
+    "search box",
+    "search input",
+    "lente"
    ],
    "esempio": "esempi/search-field/",
    "vedi": [
@@ -1390,7 +1461,12 @@
     "date",
     "time",
     "colour",
-    "wheel"
+    "wheel",
+    "time picker",
+    "colour picker",
+    "color picker",
+    "picker wheel",
+    "drum picker"
    ],
    "esempio": "esempi/picker/",
    "vedi": [
@@ -1428,7 +1504,9 @@
    "parole": [
     "launch screen",
     "boot",
-    "branding"
+    "branding",
+    "splash screen",
+    "startup screen"
    ],
    "esempio": "resources/splash-screen-exergo.jpg",
    "vedi": [
@@ -1469,7 +1547,12 @@
    "ordine": 170,
    "parole": [
     "range",
-    "volume"
+    "volume",
+    "range slider",
+    "range input",
+    "track",
+    "thumb",
+    "handle"
    ],
    "esempio": "esempi/slider/",
    "vedi": [],
@@ -1504,7 +1587,11 @@
    "parole": [
     "spinner",
     "number input",
-    "plus minus"
+    "plus minus",
+    "spin button",
+    "spinbox",
+    "numeric stepper",
+    "quantity selector"
    ],
    "esempio": "esempi/stepper/",
    "vedi": [],
@@ -1539,7 +1626,11 @@
    "parole": [
     "snackbar",
     "notification",
-    "message"
+    "message",
+    "alert",
+    "flash message",
+    "pop-up notification",
+    "notifica"
    ],
    "esempio": "esempi/toast/",
    "vedi": [
@@ -1576,7 +1667,12 @@
    "parole": [
     "loading",
     "steps",
-    "stepper"
+    "stepper",
+    "progress indicator",
+    "loader",
+    "progress meter",
+    "determinate",
+    "indeterminate"
    ],
    "esempio": "esempi/progress-bar/",
    "vedi": [
@@ -1615,7 +1711,12 @@
     "table",
     "grid",
     "filter",
-    "sort"
+    "sort",
+    "datagrid",
+    "data grid",
+    "spreadsheet",
+    "rows",
+    "columns"
    ],
    "esempio": "esempi/data-table/",
    "vedi": [
@@ -1652,7 +1753,10 @@
    "parole": [
     "slideshow",
     "slider",
-    "gallery"
+    "gallery",
+    "image slider",
+    "rotator",
+    "swipe"
    ],
    "esempio": "esempi/carousel/",
    "vedi": [
@@ -1689,7 +1793,11 @@
    "parole": [
     "collapse",
     "expand",
-    "disclosure"
+    "disclosure",
+    "collapsible",
+    "expandable",
+    "show more",
+    "toggle panel"
    ],
    "esempio": "esempi/accordion/",
    "vedi": [
@@ -1729,7 +1837,12 @@
     "symbol",
     "Otl Aicher",
     "Lance Wyman",
-    "Fluent"
+    "Fluent",
+    "icons",
+    "iconography",
+    "glyph",
+    "icone",
+    "pittogrammi"
    ],
    "esempio": "esempi/pictograms/",
    "vedi": [
@@ -1763,7 +1876,13 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 10,
-   "parole": [],
+   "parole": [
+    "404",
+    "not found",
+    "error page",
+    "broken link",
+    "pagina di errore"
+   ],
    "esempio": "esempi/page-404/",
    "vedi": [],
    "origine": "mining 1",
@@ -1799,7 +1918,14 @@
    "categoria": "feedback",
    "anno": 2025,
    "ordine": 20,
-   "parole": [],
+   "parole": [
+    "rings",
+    "fitness rings",
+    "progress ring",
+    "circular progress",
+    "goal",
+    "Apple Watch"
+   ],
    "esempio": "esempi/activity-rings/",
    "vedi": [],
    "origine": "mining 2",
@@ -1830,7 +1956,14 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 30,
-   "parole": [],
+   "parole": [
+    "archive",
+    "folders",
+    "labels",
+    "tags",
+    "filing",
+    "archivio"
+   ],
    "esempio": "esempi/archiving-systems/",
    "vedi": [],
    "origine": "mining 3",
@@ -1861,7 +1994,14 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 40,
-   "parole": [],
+   "parole": [
+    "AR",
+    "augmented reality",
+    "face filter",
+    "lens",
+    "Snapchat",
+    "Instagram"
+   ],
    "esempio": "esempi/ar-video-filters/",
    "vedi": [],
    "origine": "mining 4",
@@ -1892,7 +2032,13 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 50,
-   "parole": [],
+   "parole": [
+    "battery",
+    "battery level",
+    "charge",
+    "status bar",
+    "batteria"
+   ],
    "esempio": "esempi/battery-indicator/",
    "vedi": [],
    "origine": "mining 5",
@@ -1923,7 +2069,15 @@
    "categoria": "conversazione",
    "anno": 2025,
    "ordine": 60,
-   "parole": [],
+   "parole": [
+    "read receipt",
+    "seen",
+    "double tick",
+    "blue ticks",
+    "delivered",
+    "WhatsApp",
+    "spunte"
+   ],
    "esempio": "esempi/read-receipts/",
    "vedi": [],
    "origine": "mining 6, 75",
@@ -1954,7 +2108,13 @@
    "categoria": "conversazione",
    "anno": 2025,
    "ordine": 70,
-   "parole": [],
+   "parole": [
+    "speech bubble",
+    "message bubble",
+    "chat",
+    "balloon",
+    "fumetto"
+   ],
    "esempio": "esempi/chat-bubble/",
    "vedi": [],
    "origine": "mining 7",
@@ -1985,7 +2145,12 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 90,
-   "parole": [],
+   "parole": [
+    "play",
+    "pause",
+    "media controls",
+    "player"
+   ],
    "esempio": "esempi/play-pause-button/",
    "vedi": [],
    "origine": "mining 9",
@@ -2016,7 +2181,12 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 100,
-   "parole": [],
+   "parole": [
+    "share",
+    "share sheet",
+    "social sharing",
+    "condividi"
+   ],
    "esempio": "esempi/share-button/",
    "vedi": [],
    "origine": "mining 10",
@@ -2047,7 +2217,12 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 110,
-   "parole": [],
+   "parole": [
+    "shuffle",
+    "random play",
+    "playlist",
+    "casuale"
+   ],
    "esempio": "esempi/shuffle-button/",
    "vedi": [],
    "origine": "mining 11",
@@ -2078,7 +2253,12 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 120,
-   "parole": [],
+   "parole": [
+    "close button",
+    "traffic lights",
+    "window controls",
+    "macOS"
+   ],
    "esempio": "esempi/window-close-button/",
    "vedi": [],
    "origine": "mining 12",
@@ -2114,7 +2294,13 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 130,
-   "parole": [],
+   "parole": [
+    "locate me",
+    "my location",
+    "GPS",
+    "map",
+    "geolocation"
+   ],
    "esempio": "esempi/current-location-button/",
    "vedi": [],
    "origine": "mining 13",
@@ -2150,7 +2336,14 @@
    "categoria": "input",
    "anno": 2025,
    "ordine": 140,
-   "parole": [],
+   "parole": [
+    "datepicker",
+    "date picker",
+    "date range picker",
+    "calendar",
+    "data",
+    "calendario"
+   ],
    "esempio": "esempi/calendar-picker/",
    "vedi": [
     "picker"
@@ -2183,7 +2376,12 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 150,
-   "parole": [],
+   "parole": [
+    "card flip",
+    "flip",
+    "rotate",
+    "two-sided card"
+   ],
    "esempio": "esempi/flip-card/",
    "vedi": [],
    "origine": "mining 15",
@@ -2214,7 +2412,13 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 160,
-   "parole": [],
+   "parole": [
+    "shopping cart",
+    "basket",
+    "shopping bag",
+    "checkout",
+    "carrello"
+   ],
    "esempio": "esempi/cart/",
    "vedi": [],
    "origine": "mining 16",
@@ -2245,7 +2449,13 @@
    "categoria": "input",
    "anno": 2025,
    "ordine": 170,
-   "parole": [],
+   "parole": [
+    "colour picker",
+    "color wheel",
+    "eyedropper",
+    "swatches",
+    "hex"
+   ],
    "esempio": "esempi/color-picker/",
    "vedi": [
     "picker"
@@ -2278,7 +2488,15 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 180,
-   "parole": [],
+   "parole": [
+    "command menu",
+    "command bar",
+    "cmd+k",
+    "ctrl+k",
+    "quick open",
+    "launcher",
+    "Spotlight"
+   ],
    "esempio": "esempi/command-palette/",
    "vedi": [],
    "origine": "mining 18",
@@ -2314,7 +2532,13 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 190,
-   "parole": [],
+   "parole": [
+    "cookie banner",
+    "consent",
+    "GDPR",
+    "privacy",
+    "cookie"
+   ],
    "esempio": "esempi/cookie-banner/",
    "vedi": [],
    "origine": "mining 19",
@@ -2345,7 +2569,13 @@
    "categoria": "input",
    "anno": 2025,
    "ordine": 200,
-   "parole": [],
+   "parole": [
+    "dark mode",
+    "light mode",
+    "theme switcher",
+    "night mode",
+    "tema scuro"
+   ],
    "esempio": "esempi/dark-mode-switch/",
    "vedi": [
     "switch"
@@ -2378,7 +2608,12 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 210,
-   "parole": [],
+   "parole": [
+    "focus mode",
+    "zen mode",
+    "reader mode",
+    "full screen"
+   ],
    "esempio": "esempi/distraction-free-mode/",
    "vedi": [],
    "origine": "mining 21",
@@ -2418,7 +2653,13 @@
    "categoria": "input",
    "anno": 2025,
    "ordine": 220,
-   "parole": [],
+   "parole": [
+    "file upload",
+    "dropzone",
+    "drag and drop",
+    "upload",
+    "uploader"
+   ],
    "esempio": "esempi/drag-drop-uploader/",
    "vedi": [],
    "origine": "mining 22",
@@ -2454,7 +2695,12 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 230,
-   "parole": [],
+   "parole": [
+    "emoticon",
+    "smiley",
+    "reactions",
+    "emoji picker"
+   ],
    "esempio": "esempi/emoji/",
    "vedi": [],
    "origine": "mining 23",
@@ -2490,7 +2736,12 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 240,
-   "parole": [],
+   "parole": [
+    "blank slate",
+    "zero state",
+    "no results",
+    "first use"
+   ],
    "esempio": "esempi/empty-state/",
    "vedi": [
     "page-404"
@@ -2528,7 +2779,13 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 250,
-   "parole": [],
+   "parole": [
+    "expand",
+    "collapse",
+    "compact view",
+    "density",
+    "collapsible"
+   ],
    "esempio": "esempi/expand-collapse/",
    "vedi": [],
    "origine": "mining 25",
@@ -2559,7 +2816,12 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 260,
-   "parole": [],
+   "parole": [
+    "frequently asked questions",
+    "help",
+    "questions and answers",
+    "domande frequenti"
+   ],
    "esempio": "esempi/faq/",
    "vedi": [],
    "origine": "mining 26",
@@ -2590,7 +2852,12 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 270,
-   "parole": [],
+   "parole": [
+    "site icon",
+    "tab icon",
+    "bookmark icon",
+    "touch icon"
+   ],
    "esempio": "esempi/favicon/",
    "vedi": [],
    "origine": "mining 27",
@@ -2621,7 +2888,15 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 280,
-   "parole": [],
+   "parole": [
+    "favorites",
+    "wishlist",
+    "bookmark",
+    "save for later",
+    "heart",
+    "star",
+    "preferiti"
+   ],
    "esempio": "esempi/favourites-wishlist/",
    "vedi": [],
    "origine": "mining 28",
@@ -2652,7 +2927,12 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 290,
-   "parole": [],
+   "parole": [
+    "sidebar",
+    "sticky sidebar",
+    "side panel",
+    "table of contents"
+   ],
    "esempio": "esempi/floating-sticky-sidebar/",
    "vedi": [],
    "origine": "mining 29",
@@ -2692,7 +2972,13 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 300,
-   "parole": [],
+   "parole": [
+    "hero",
+    "hero image",
+    "hero banner",
+    "jumbotron",
+    "masthead"
+   ],
    "esempio": "esempi/hero-unit/",
    "vedi": [],
    "origine": "mining 30",
@@ -2723,7 +3009,13 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 310,
-   "parole": [],
+   "parole": [
+    "link icon",
+    "chain",
+    "permalink",
+    "copy link",
+    "anchor link"
+   ],
    "esempio": "esempi/link-chain-icon/",
    "vedi": [],
    "origine": "mining 31",
@@ -2754,7 +3046,12 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 320,
-   "parole": [],
+   "parole": [
+    "form label",
+    "caption",
+    "field label",
+    "etichetta"
+   ],
    "esempio": "esempi/label/",
    "vedi": [
     "tag-chip"
@@ -2787,7 +3084,13 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 330,
-   "parole": [],
+   "parole": [
+    "language selector",
+    "language picker",
+    "locale",
+    "flags",
+    "lingua"
+   ],
    "esempio": "esempi/language-switch/",
    "vedi": [],
    "origine": "mining 33",
@@ -2818,7 +3121,16 @@
    "categoria": "feedback",
    "anno": 2025,
    "ordine": 340,
-   "parole": [],
+   "parole": [
+    "loader",
+    "loading",
+    "spinner",
+    "throbber",
+    "loading indicator",
+    "activity indicator",
+    "preloader",
+    "caricamento"
+   ],
    "esempio": "esempi/loading-screen/",
    "vedi": [
     "skeleton-screen",
@@ -2853,7 +3165,16 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 350,
-   "parole": [],
+   "parole": [
+    "log in",
+    "sign in",
+    "sign up",
+    "authentication",
+    "password",
+    "account",
+    "permissions",
+    "accesso"
+   ],
    "esempio": "esempi/login/",
    "vedi": [],
    "origine": "mining 35",
@@ -2894,7 +3215,13 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 360,
-   "parole": [],
+   "parole": [
+    "ticker",
+    "news ticker",
+    "scrolling text",
+    "crawl",
+    "scrolling banner"
+   ],
    "esempio": "esempi/marquee/",
    "vedi": [
     "draggable-overflow-text"
@@ -2927,7 +3254,14 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 370,
-   "parole": [],
+   "parole": [
+    "notch",
+    "Dynamic Island",
+    "detents",
+    "safe area",
+    "status bar",
+    "home indicator"
+   ],
    "esempio": "esempi/mobile-display-parts/",
    "vedi": [],
    "origine": "mining 37",
@@ -2963,7 +3297,13 @@
    "categoria": "feedback",
    "anno": 2025,
    "ordine": 380,
-   "parole": [],
+   "parole": [
+    "notifications",
+    "push notification",
+    "notification center",
+    "alerts",
+    "inbox"
+   ],
    "esempio": "esempi/notification-system/",
    "vedi": [
     "toast",
@@ -2997,7 +3337,15 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 390,
-   "parole": [],
+   "parole": [
+    "file manager",
+    "list view",
+    "grid view",
+    "column view",
+    "gallery view",
+    "Quick Look",
+    "preview"
+   ],
    "esempio": "esempi/finder-views/",
    "vedi": [],
    "origine": "mining 39",
@@ -3028,7 +3376,13 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 400,
-   "parole": [],
+   "parole": [
+    "page control",
+    "dots",
+    "pagination dots",
+    "carousel indicators",
+    "page indicator"
+   ],
    "esempio": "esempi/page-dots/",
    "vedi": [],
    "origine": "mining 40",
@@ -3068,7 +3422,11 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 410,
-   "parole": [],
+   "parole": [
+    "PiP",
+    "floating video",
+    "mini player"
+   ],
    "esempio": "esempi/picture-in-picture/",
    "vedi": [],
    "origine": "mining 41",
@@ -3104,7 +3462,12 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 420,
-   "parole": [],
+   "parole": [
+    "pinned",
+    "pin to top",
+    "fissa",
+    "sticky post"
+   ],
    "esempio": "esempi/pin/",
    "vedi": [],
    "origine": "mining 42",
@@ -3135,7 +3498,13 @@
    "categoria": "contenuti",
    "anno": 2025,
    "ordine": 430,
-   "parole": [],
+   "parole": [
+    "placeholder",
+    "blur-up",
+    "LQIP",
+    "lazy loading",
+    "segnaposto"
+   ],
    "esempio": "esempi/image-placeholder/",
    "vedi": [],
    "origine": "mining 43",
@@ -3166,7 +3535,14 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 440,
-   "parole": [],
+   "parole": [
+    "star rating",
+    "stars",
+    "review",
+    "score",
+    "valutazione",
+    "stelle"
+   ],
    "esempio": "esempi/rating/",
    "vedi": [],
    "origine": "mining 44",
@@ -3197,7 +3573,12 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 450,
-   "parole": [],
+   "parole": [
+    "scroll bar",
+    "scroll indicator",
+    "scroll thumb",
+    "overflow"
+   ],
    "esempio": "esempi/scrollbar/",
    "vedi": [],
    "origine": "mining 45",
@@ -3228,7 +3609,13 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 460,
-   "parole": [],
+   "parole": [
+    "seat selection",
+    "seating chart",
+    "booking",
+    "tickets",
+    "checkout"
+   ],
    "esempio": "esempi/seat-map/",
    "vedi": [],
    "origine": "mining 46",
@@ -3264,7 +3651,13 @@
    "categoria": "testo",
    "anno": 2025,
    "ordine": 470,
-   "parole": [],
+   "parole": [
+    "selection",
+    "highlight",
+    "highlighter",
+    "select text",
+    "evidenziatore"
+   ],
    "esempio": "esempi/text-selection/",
    "vedi": [],
    "origine": "mining 47",
@@ -3295,7 +3688,13 @@
    "categoria": "feedback",
    "anno": 2025,
    "ordine": 480,
-   "parole": [],
+   "parole": [
+    "skeleton loader",
+    "skeleton",
+    "ghost elements",
+    "shimmer",
+    "content placeholder"
+   ],
    "esempio": "esempi/skeleton-screen/",
    "vedi": [],
    "origine": "mining 48",
@@ -3331,7 +3730,13 @@
    "categoria": "input",
    "anno": 2025,
    "ordine": 490,
-   "parole": [],
+   "parole": [
+    "sort",
+    "sorting",
+    "order by",
+    "sort by",
+    "ordinamento"
+   ],
    "esempio": "esempi/sort-options/",
    "vedi": [],
    "origine": "mining 49",
@@ -3362,7 +3767,12 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 500,
-   "parole": [],
+   "parole": [
+    "affix",
+    "sticky header",
+    "fixed header",
+    "position sticky"
+   ],
    "esempio": "esempi/sticky/",
    "vedi": [],
    "origine": "mining 50",
@@ -3406,7 +3816,12 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 510,
-   "parole": [],
+   "parole": [
+    "story",
+    "ephemeral content",
+    "Instagram stories",
+    "status"
+   ],
    "esempio": "esempi/stories/",
    "vedi": [],
    "origine": "mining 51",
@@ -3437,7 +3852,13 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 520,
-   "parole": [],
+   "parole": [
+    "tabs",
+    "browser tabs",
+    "audio indicator",
+    "speaker icon",
+    "mute tab"
+   ],
    "esempio": "esempi/tab-audio-indicator/",
    "vedi": [],
    "origine": "mining 52",
@@ -3468,7 +3889,12 @@
    "categoria": "social",
    "anno": 2025,
    "ordine": 530,
-   "parole": [],
+   "parole": [
+    "photo tagging",
+    "tag people",
+    "hotspots",
+    "shoppable images"
+   ],
    "esempio": "esempi/image-tags/",
    "vedi": [],
    "origine": "mining 53",
@@ -3499,7 +3925,13 @@
    "categoria": "testo",
    "anno": 2025,
    "ordine": 540,
-   "parole": [],
+   "parole": [
+    "caret",
+    "insertion point",
+    "text cursor",
+    "blinking cursor",
+    "I-beam"
+   ],
    "esempio": "esempi/text-caret/",
    "vedi": [
     "pointer",
@@ -3538,7 +3970,12 @@
    "categoria": "testo",
    "anno": 2025,
    "ordine": 550,
-   "parole": [],
+   "parole": [
+    "OCR",
+    "live text",
+    "text recognition",
+    "scan text"
+   ],
    "esempio": "esempi/ocr-text-recognition/",
    "vedi": [],
    "origine": "mining 55",
@@ -3578,7 +4015,13 @@
    "categoria": "conversazione",
    "anno": 2025,
    "ordine": 560,
-   "parole": [],
+   "parole": [
+    "thinking",
+    "reasoning",
+    "chain of thought",
+    "progress steps",
+    "AI loader"
+   ],
    "esempio": "esempi/ai-thinking-steps/",
    "vedi": [],
    "origine": "mining 56",
@@ -3609,7 +4052,12 @@
    "categoria": "navigazione",
    "anno": 2025,
    "ordine": 570,
-   "parole": [],
+   "parole": [
+    "thumb navigation",
+    "thumb zone",
+    "bottom navigation",
+    "mobile navigation"
+   ],
    "esempio": "esempi/thumbnav/",
    "vedi": [],
    "origine": "mining 57",
@@ -3649,7 +4097,13 @@
    "categoria": "feedback",
    "anno": 2025,
    "ordine": 580,
-   "parole": [],
+   "parole": [
+    "timer",
+    "countdown",
+    "stopwatch",
+    "clock",
+    "cronometro"
+   ],
    "esempio": "esempi/timer-countdown/",
    "vedi": [],
    "origine": "mining 58",
@@ -3680,7 +4134,13 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 590,
-   "parole": [],
+   "parole": [
+    "trash",
+    "recycle bin",
+    "bin",
+    "delete",
+    "cestino"
+   ],
    "esempio": "esempi/trash/",
    "vedi": [],
    "origine": "mining 59",
@@ -3711,7 +4171,14 @@
    "categoria": "azioni",
    "anno": 2025,
    "ordine": 600,
-   "parole": [],
+   "parole": [
+    "kebab",
+    "meatball menu",
+    "three dots",
+    "more options",
+    "overflow menu",
+    "ellipsis"
+   ],
    "esempio": "esempi/kebab-menu/",
    "vedi": [
     "context-menu"
@@ -3749,7 +4216,12 @@
    "categoria": "conversazione",
    "anno": 2025,
    "ordine": 610,
-   "parole": [],
+   "parole": [
+    "typing",
+    "is typing",
+    "three dots",
+    "chat"
+   ],
    "esempio": "esempi/typing-indicator/",
    "vedi": [
     "ai-thinking-steps",
@@ -3792,7 +4264,12 @@
    "categoria": "contenitori",
    "anno": 2025,
    "ordine": 620,
-   "parole": [],
+   "parole": [
+    "cards",
+    "tile",
+    "panel",
+    "content card"
+   ],
    "esempio": "esempi/card/",
    "vedi": [],
    "origine": "mining 62",
@@ -3828,7 +4305,15 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 630,
-   "parole": [],
+   "parole": [
+    "undo",
+    "redo",
+    "history",
+    "ctrl+z",
+    "cmd+z",
+    "version history",
+    "annulla"
+   ],
    "esempio": "esempi/undo-history/",
    "vedi": [],
    "origine": "mining 63",
@@ -3859,7 +4344,13 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 640,
-   "parole": [],
+   "parole": [
+    "undo send",
+    "unsend",
+    "recall",
+    "grace period",
+    "delay send"
+   ],
    "esempio": "esempi/undo-send/",
    "vedi": [],
    "origine": "mining 64",
@@ -3890,7 +4381,13 @@
    "categoria": "sistema",
    "anno": 2025,
    "ordine": 650,
-   "parole": [],
+   "parole": [
+    "version control",
+    "git",
+    "revisions",
+    "version history",
+    "commits"
+   ],
    "esempio": "esempi/versioning/",
    "vedi": [],
    "origine": "mining 65",
@@ -3926,7 +4423,15 @@
    "categoria": "conversazione",
    "anno": 2025,
    "ordine": 660,
-   "parole": [],
+   "parole": [
+    "VUI",
+    "voice assistant",
+    "voice message",
+    "voice note",
+    "speech",
+    "Siri",
+    "Alexa"
+   ],
    "esempio": "esempi/voice-ui/",
    "vedi": [],
    "origine": "mining 66",
@@ -3957,7 +4462,13 @@
    "categoria": "errori",
    "anno": 2025,
    "ordine": 670,
-   "parole": [],
+   "parole": [
+    "confirmation dialog",
+    "destructive action",
+    "are you sure",
+    "delete confirmation",
+    "warning"
+   ],
    "esempio": "esempi/irreversible-action-warning/",
    "vedi": [
     "modal",
@@ -3996,7 +4507,13 @@
    "categoria": "social",
    "anno": 2026,
    "ordine": 690,
-   "parole": [],
+   "parole": [
+    "paywall",
+    "content lock",
+    "subscription",
+    "premium",
+    "metered"
+   ],
    "esempio": "esempi/paywall/",
    "vedi": [],
    "origine": "mining 69",
@@ -4027,7 +4544,12 @@
    "categoria": "azioni",
    "anno": 2026,
    "ordine": 700,
-   "parole": [],
+   "parole": [
+    "pull to refresh",
+    "swipe to refresh",
+    "refresh",
+    "reload"
+   ],
    "esempio": "esempi/pull-to-refresh/",
    "vedi": [],
    "origine": "mining 70",
@@ -4058,7 +4580,13 @@
    "categoria": "conversazione",
    "anno": 2026,
    "ordine": 710,
-   "parole": [],
+   "parole": [
+    "slash command",
+    "slash menu",
+    "colon",
+    "emoji shortcode",
+    "mention"
+   ],
    "esempio": "esempi/slash-command/",
    "vedi": [],
    "origine": "mining 71",
@@ -4089,7 +4617,13 @@
    "categoria": "conversazione",
    "anno": 2026,
    "ordine": 720,
-   "parole": [],
+   "parole": [
+    "suggested prompts",
+    "sample queries",
+    "starter prompts",
+    "suggestions",
+    "chips"
+   ],
    "esempio": "esempi/prompt-suggestions/",
    "vedi": [],
    "origine": "mining 72",
@@ -4120,7 +4654,14 @@
    "categoria": "navigazione",
    "anno": 2026,
    "ordine": 730,
-   "parole": [],
+   "parole": [
+    "tree view",
+    "treeview",
+    "tree",
+    "nested list",
+    "hierarchy",
+    "outline"
+   ],
    "esempio": "esempi/tree-menu/",
    "vedi": [],
    "origine": "mining 73",
@@ -4151,7 +4692,13 @@
    "categoria": "contenitori",
    "anno": 2026,
    "ordine": 740,
-   "parole": [],
+   "parole": [
+    "bottom sheet",
+    "top sheet",
+    "action sheet",
+    "half sheet",
+    "panel"
+   ],
    "esempio": "esempi/sheet/",
    "vedi": [],
    "origine": "mining 74",
@@ -4187,7 +4734,13 @@
    "categoria": "social",
    "anno": 2026,
    "ordine": 760,
-   "parole": [],
+   "parole": [
+    "upgrade",
+    "upsell",
+    "go premium",
+    "pro",
+    "plan"
+   ],
    "esempio": "esempi/upgrade-button/",
    "vedi": [],
    "origine": "mining 76",
@@ -4218,7 +4771,13 @@
    "categoria": "azioni",
    "anno": 2026,
    "ordine": 770,
-   "parole": [],
+   "parole": [
+    "save button",
+    "pin it",
+    "browser extension",
+    "plugin",
+    "collection"
+   ],
    "esempio": "esempi/add-to-collection-button/",
    "vedi": [],
    "origine": "mining 77",
@@ -4254,7 +4813,12 @@
    "categoria": "azioni",
    "anno": 2026,
    "ordine": 780,
-   "parole": [],
+   "parole": [
+    "extensions",
+    "plugins",
+    "add-ons",
+    "puzzle icon"
+   ],
    "esempio": "esempi/plugin-puzzle-button/",
    "vedi": [],
    "origine": "mining 78",
@@ -4285,7 +4849,13 @@
    "categoria": "testo",
    "anno": 2026,
    "ordine": 790,
-   "parole": [],
+   "parole": [
+    "pan",
+    "panning",
+    "drag to scroll",
+    "overflow",
+    "horizontal scroll"
+   ],
    "esempio": "esempi/draggable-overflow-text/",
    "vedi": [],
    "origine": "mining 79",
@@ -4316,7 +4886,13 @@
    "categoria": "errori",
    "anno": 2026,
    "ordine": 800,
-   "parole": [],
+   "parole": [
+    "inline validation",
+    "form validation",
+    "error message",
+    "real-time feedback",
+    "validazione"
+   ],
    "esempio": "esempi/live-validation/",
    "vedi": [],
    "origine": "mining 80",
@@ -4347,7 +4923,13 @@
    "categoria": "testo",
    "anno": 2026,
    "ordine": 810,
-   "parole": [],
+   "parole": [
+    "autocorrect",
+    "spell check",
+    "spellchecker",
+    "grammar check",
+    "correttore"
+   ],
    "esempio": "esempi/autocorrection/",
    "vedi": [],
    "origine": "mining 81",
@@ -4378,7 +4960,13 @@
    "categoria": "input",
    "anno": 2026,
    "ordine": 820,
-   "parole": [],
+   "parole": [
+    "autocomplete",
+    "autosuggest",
+    "typeahead",
+    "predictive text",
+    "suggestions"
+   ],
    "esempio": "esempi/predictive-input/",
    "vedi": [
     "search-field",
@@ -4412,7 +5000,12 @@
    "categoria": "azioni",
    "anno": 2026,
    "ordine": 830,
-   "parole": [],
+   "parole": [
+    "skip",
+    "skip intro",
+    "skip ad",
+    "salta"
+   ],
    "esempio": "esempi/skip-button/",
    "vedi": [],
    "origine": "mining 83",
@@ -4443,7 +5036,16 @@
    "categoria": "social",
    "anno": 2026,
    "ordine": 840,
-   "parole": [],
+   "parole": [
+    "like",
+    "dislike",
+    "thumbs up",
+    "thumbs down",
+    "upvote",
+    "downvote",
+    "reactions",
+    "mi piace"
+   ],
    "esempio": "esempi/like-dislike/",
    "vedi": [],
    "origine": "mining 84",
@@ -4474,7 +5076,14 @@
    "categoria": "navigazione",
    "anno": 2026,
    "ordine": 850,
-   "parole": [],
+   "parole": [
+    "walkthrough",
+    "coach marks",
+    "product tour",
+    "tutorial",
+    "tooltips",
+    "first run"
+   ],
    "esempio": "esempi/onboarding/",
    "vedi": [],
    "origine": "mining 85",

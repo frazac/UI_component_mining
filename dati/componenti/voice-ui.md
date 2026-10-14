@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2025
 ordine: 660
+parole: VUI, voice assistant, voice message, voice note, speech, Siri, Alexa
 esempio: esempi/voice-ui/
 origine: mining 66
 ---

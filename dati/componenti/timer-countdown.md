@@ -4,6 +4,7 @@ livello: avanzato
 categoria: feedback
 anno: 2025
 ordine: 580
+parole: timer, countdown, stopwatch, clock, cronometro
 esempio: esempi/timer-countdown/
 origine: mining 58
 ---

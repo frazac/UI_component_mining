@@ -4,6 +4,7 @@ livello: avanzato
 categoria: feedback
 anno: 2025
 ordine: 20
+parole: rings, fitness rings, progress ring, circular progress, goal, Apple Watch
 esempio: esempi/activity-rings/
 origine: mining 2
 ---

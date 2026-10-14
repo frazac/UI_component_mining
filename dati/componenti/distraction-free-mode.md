@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 210
+parole: focus mode, zen mode, reader mode, full screen
 esempio: esempi/distraction-free-mode/
 origine: mining 21
 fonti:

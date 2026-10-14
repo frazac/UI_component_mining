@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: azioni
 anno: 2024
 ordine: 60
-parole: right-click, long press, copy, paste
+parole: right-click, long press, copy, paste, contextual menu, popup menu, menu contestuale, tasto destro
 esempio: esempi/context-menu/
 vedi: kebab-menu
 origine: slide 14

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 430
+parole: placeholder, blur-up, LQIP, lazy loading, segnaposto
 esempio: esempi/image-placeholder/
 origine: mining 43
 ---

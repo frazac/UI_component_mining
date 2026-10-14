@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 620
+parole: cards, tile, panel, content card
 esempio: esempi/card/
 origine: mining 62
 letture:

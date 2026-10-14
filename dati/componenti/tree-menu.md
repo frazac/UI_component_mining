@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2026
 ordine: 730
+parole: tree view, treeview, tree, nested list, hierarchy, outline
 esempio: esempi/tree-menu/
 origine: mining 73
 ---

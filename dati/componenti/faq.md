@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 260
+parole: frequently asked questions, help, questions and answers, domande frequenti
 esempio: esempi/faq/
 origine: mining 26
 ---

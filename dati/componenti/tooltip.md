@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 84
-parole: hint, hover, help
+parole: hint, hover, help, infotip, title attribute, suggerimento
 esempio: esempi/tooltip/
 vedi: button
 origine: slide 23

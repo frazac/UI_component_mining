@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: azioni
 anno: 2024
 ordine: 80
-parole: CTA, call to action, affordance, primary, secondary
+parole: CTA, call to action, affordance, primary, secondary, btn, pulsante, bottone, action
 esempio: esempi/button/
 vedi: hyperlink, ghost-button, badge, floating-action-button, tooltip
 origine: slide 20, 22, 24

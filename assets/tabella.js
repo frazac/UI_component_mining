@@ -1,5 +1,6 @@
 /*
- * Tabella dei componenti: ricerca per parole (nella lingua scelta), filtro per livello e categoria.
+ * Tabella dei componenti: ricerca per parole (in tutte le lingue, risultati ordinati per pertinenza),
+ * filtro per livello e categoria.
  * Lo stato dei filtri sta nell'indirizzo (#q=…&livello=…&categoria=…) per poterlo condividere. Licenza MIT.
  */
 (function () {
@@ -13,21 +14,51 @@
   var vuoto = document.querySelector('.vuoto');
   var livello = '';
 
-  function normalizza(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function normalizza(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function parole(s) { return normalizza(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean); }
+  var HAN = /\p{Script=Han}/u;
+
+  // per ogni riga: le parole dei tre campi, dal più pesante (nomi) al più leggero (note e categoria)
+  var CAMPI = [['nomi', 3], ['parole', 2], ['testo', 1]];
+  righe.forEach(function (tr, i) {
+    tr._ordine = i;
+    tr._campi = CAMPI.map(function (c) {
+      var t = tr.getAttribute('data-cerca-' + c[0]) || '';
+      return { peso: c[1], testo: normalizza(t), parole: parole(t) };
+    });
+  });
+
+  // pertinenza di un termine: inizio di parola (non sottostringa: «spinner» non trova «stepper»),
+  // parola intera vale di più; in cinese, dove non ci sono spazi, basta la sottostringa
+  function punti(tr, termine) {
+    var meglio = 0;
+    tr._campi.forEach(function (c) {
+      var p = 0;
+      if (HAN.test(termine)) p = c.testo.indexOf(termine) !== -1 ? c.peso * 2 : 0;
+      else c.parole.forEach(function (w) {
+        if (w === termine) p = Math.max(p, c.peso * 2 + 1);
+        else if (w.indexOf(termine) === 0) p = Math.max(p, c.peso * 2);
+      });
+      meglio = Math.max(meglio, p);
+    });
+    return meglio;
+  }
 
   function filtra() {
-    var lingua = window.Lingua ? window.Lingua.get() : 'en';
-    var parole = normalizza(cerca.value.trim()).split(/\s+/).filter(Boolean);
+    var termini = parole(cerca.value);
     var cat = categoria.value;
     var n = 0;
     righe.forEach(function (tr) {
-      var testo = normalizza(tr.getAttribute('data-cerca-' + lingua) + ' ' + tr.getAttribute('data-cerca-en'));
-      var ok = (!livello || tr.dataset.livello === livello) &&
-               (!cat || tr.dataset.categoria === cat) &&
-               parole.every(function (p) { return testo.indexOf(p) !== -1; });
+      var tot = 0;
+      var ok = (!livello || tr.dataset.livello === livello) && (!cat || tr.dataset.categoria === cat) &&
+               termini.every(function (t) { var p = punti(tr, t); tot += p; return p > 0; });
+      tr._punti = tot;
       tr.hidden = !ok;
       if (ok) n++;
     });
+    var corpo = righe[0].parentNode;
+    righe.slice().sort(function (a, b) { return (b._punti - a._punti) || (a._ordine - b._ordine); })
+      .forEach(function (tr) { corpo.appendChild(tr); });
     conteggio.value = n;
     vuoto.hidden = n > 0;
     var stato = new URLSearchParams();
@@ -47,7 +78,6 @@
   });
   cerca.addEventListener('input', filtra);
   categoria.addEventListener('change', filtra);
-  document.addEventListener('lingua', filtra);
 
   // stato iniziale dall'indirizzo (solo se è uno stato di filtri, non un'ancora a un componente)
   if (/=/.test(location.hash)) {

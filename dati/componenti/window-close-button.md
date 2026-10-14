@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 120
+parole: close button, traffic lights, window controls, macOS
 esempio: esempi/window-close-button/
 origine: mining 12
 fonti:

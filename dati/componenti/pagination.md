@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: navigazione
 anno: 2024
 ordine: 120
-parole: next, previous, page numbers, infinite scroll
+parole: next, previous, page numbers, infinite scroll, pager, paging, load more
 esempio: esempi/pagination/
 vedi: page-dots
 origine: slide 30

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2025
 ordine: 70
+parole: speech bubble, message bubble, chat, balloon, fumetto
 esempio: esempi/chat-bubble/
 origine: mining 7
 ---

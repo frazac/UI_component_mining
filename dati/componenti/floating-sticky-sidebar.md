@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 290
+parole: sidebar, sticky sidebar, side panel, table of contents
 esempio: esempi/floating-sticky-sidebar/
 origine: mining 29
 fonti:

@@ -192,9 +192,13 @@ def revisori():
 # --- tabella ---------------------------------------------------------------
 
 def riga(s, per_id):
-    cerca = {l: piatto(' '.join([s['testi'][l]['nome'], s['testi'][l]['note'], s['testi']['en']['nome'],
-                                 CAT['categorie'][s['categoria']][l], ' '.join(s['parole'])])).lower() for l in LINGUE}
-    attr = ' '.join(f'data-cerca-{l}="{e(cerca[l])}"' for l in LINGUE)
+    # ricerca in tutte le lingue, su tre campi di peso diverso: nomi > parole chiave > note e categoria
+    cerca = {
+        'nomi': ' '.join([s['id'].replace('-', ' ')] + [s['testi'][l]['nome'] for l in LINGUE]),
+        'parole': ' '.join(s['parole']),
+        'testo': ' '.join([s['testi'][l]['note'] for l in LINGUE] + [CAT['categorie'][s['categoria']][l] for l in LINGUE]),
+    }
+    attr = ' '.join(f'data-cerca-{k}="{e(piatto(v).lower())}"' for k, v in cerca.items())
     collegamenti = ''
     for chiave in ('fonti', 'letture'):
         if s[chiave]:

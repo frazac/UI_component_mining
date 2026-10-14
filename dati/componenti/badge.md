@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 82
-parole: count, status, dot, notification
+parole: count, status, dot, notification, counter, notification badge, pill
 esempio: esempi/badge/
 vedi: button, notification-system
 origine: slide 23

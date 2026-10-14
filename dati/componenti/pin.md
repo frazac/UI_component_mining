@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 420
+parole: pinned, pin to top, fissa, sticky post
 esempio: esempi/pin/
 origine: mining 42
 ---

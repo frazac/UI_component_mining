@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 460
+parole: seat selection, seating chart, booking, tickets, checkout
 esempio: esempi/seat-map/
 origine: mining 46
 fonti:

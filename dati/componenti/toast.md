@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 180
-parole: snackbar, notification, message
+parole: snackbar, notification, message, alert, flash message, pop-up notification, notifica
 esempio: esempi/toast/
 vedi: notification-system
 origine: slide 37

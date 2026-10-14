@@ -4,6 +4,7 @@ livello: avanzato
 categoria: testo
 anno: 2025
 ordine: 470
+parole: selection, highlight, highlighter, select text, evidenziatore
 esempio: esempi/text-selection/
 origine: mining 47
 ---

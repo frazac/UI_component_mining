@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 230
+parole: emoticon, smiley, reactions, emoji picker
 esempio: esempi/emoji/
 origine: mining 23
 letture:

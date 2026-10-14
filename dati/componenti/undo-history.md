@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 630
+parole: undo, redo, history, ctrl+z, cmd+z, version history, annulla
 esempio: esempi/undo-history/
 origine: mining 63
 ---

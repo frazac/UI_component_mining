@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 72
-parole: option, single choice
+parole: option, single choice, radio, radio group, option button
 esempio: esempi/radio-button/
 vedi: selectors
 origine: slide 16

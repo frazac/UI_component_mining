@@ -4,6 +4,7 @@ livello: avanzato
 categoria: testo
 anno: 2026
 ordine: 810
+parole: autocorrect, spell check, spellchecker, grammar check, correttore
 esempio: esempi/autocorrection/
 origine: mining 81
 ---

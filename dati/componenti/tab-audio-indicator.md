@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 520
+parole: tabs, browser tabs, audio indicator, speaker icon, mute tab
 esempio: esempi/tab-audio-indicator/
 origine: mining 52
 ---

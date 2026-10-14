@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2026
 ordine: 690
+parole: paywall, content lock, subscription, premium, metered
 esempio: esempi/paywall/
 origine: mining 69
 ---

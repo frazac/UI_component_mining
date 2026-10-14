@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 140
-parole: search, query, results
+parole: search, query, results, search bar, search box, search input, lente
 esempio: esempi/search-field/
 vedi: predictive-input, prompt-suggestions
 origine: slide 33

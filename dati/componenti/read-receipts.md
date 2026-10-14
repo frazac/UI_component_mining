@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2025
 ordine: 60
+parole: read receipt, seen, double tick, blue ticks, delivered, WhatsApp, spunte
 esempio: esempi/read-receipts/
 origine: mining 6, 75
 ---

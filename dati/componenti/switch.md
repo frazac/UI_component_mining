@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 74
-parole: toggle, on/off
+parole: toggle, on/off, toggle switch, lightswitch, on off switch, interruttore
 esempio: esempi/switch/
 vedi: selectors, dark-mode-switch
 origine: slide 18

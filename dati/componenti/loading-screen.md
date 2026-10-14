@@ -4,6 +4,7 @@ livello: avanzato
 categoria: feedback
 anno: 2025
 ordine: 340
+parole: loader, loading, spinner, throbber, loading indicator, activity indicator, preloader, caricamento
 esempio: esempi/loading-screen/
 vedi: skeleton-screen, splash-page, progress-bar
 origine: mining 34

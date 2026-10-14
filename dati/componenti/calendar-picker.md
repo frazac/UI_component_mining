@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2025
 ordine: 140
+parole: datepicker, date picker, date range picker, calendar, data, calendario
 esempio: esempi/calendar-picker/
 vedi: picker
 origine: mining 14

@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: feedback
 anno: 2024
 ordine: 160
-parole: launch screen, boot, branding
+parole: launch screen, boot, branding, splash screen, startup screen
 esempio: resources/splash-screen-exergo.jpg
 vedi: loading-screen
 origine: slide 35

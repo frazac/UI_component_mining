@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenitori
 anno: 2024
 ordine: 100
-parole: dialog, lightbox, backdrop, popup
+parole: dialog, lightbox, backdrop, popup, modal window, dialog box, alert dialog, overlay, finestra modale
 esempio: esempi/modal/
 vedi: irreversible-action-warning, sheet
 origine: slide 26, 37

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 510
+parole: story, ephemeral content, Instagram stories, status
 esempio: esempi/stories/
 origine: mining 51
 ---

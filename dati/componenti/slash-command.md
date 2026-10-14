@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2026
 ordine: 710
+parole: slash command, slash menu, colon, emoji shortcode, mention
 esempio: esempi/slash-command/
 origine: mining 71
 ---

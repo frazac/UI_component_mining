@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2026
 ordine: 820
+parole: autocomplete, autosuggest, typeahead, predictive text, suggestions
 esempio: esempi/predictive-input/
 vedi: search-field, dropdown-filter
 origine: mining 82

@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: navigazione
 anno: 2024
 ordine: 40
-parole: cursor, mouse, throbber, hourglass, wait cursor
+parole: cursor, mouse, throbber, hourglass, wait cursor, mouse pointer, spinning wheel, beach ball
 esempio: esempi/pointer/
 vedi: text-caret
 origine: slide 12

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 160
+parole: shopping cart, basket, shopping bag, checkout, carrello
 esempio: esempi/cart/
 origine: mining 16
 ---

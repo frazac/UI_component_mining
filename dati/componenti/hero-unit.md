@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 300
+parole: hero, hero image, hero banner, jumbotron, masthead
 esempio: esempi/hero-unit/
 origine: mining 30
 ---

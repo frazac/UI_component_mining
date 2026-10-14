@@ -4,6 +4,7 @@ livello: avanzato
 categoria: testo
 anno: 2025
 ordine: 550
+parole: OCR, live text, text recognition, scan text
 esempio: esempi/ocr-text-recognition/
 origine: mining 55
 fonti:

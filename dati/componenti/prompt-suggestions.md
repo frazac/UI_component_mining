@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2026
 ordine: 720
+parole: suggested prompts, sample queries, starter prompts, suggestions, chips
 esempio: esempi/prompt-suggestions/
 origine: mining 72
 ---

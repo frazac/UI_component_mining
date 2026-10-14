@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 530
+parole: photo tagging, tag people, hotspots, shoppable images
 esempio: esempi/image-tags/
 origine: mining 53
 ---

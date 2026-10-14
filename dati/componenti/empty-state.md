@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 240
+parole: blank slate, zero state, no results, first use
 esempio: esempi/empty-state/
 vedi: page-404
 origine: mining 24

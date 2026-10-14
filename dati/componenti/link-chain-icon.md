@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 310
+parole: link icon, chain, permalink, copy link, anchor link
 esempio: esempi/link-chain-icon/
 origine: mining 31
 ---

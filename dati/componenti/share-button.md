@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 100
+parole: share, share sheet, social sharing, condividi
 esempio: esempi/share-button/
 origine: mining 10
 ---

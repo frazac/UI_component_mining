@@ -4,6 +4,7 @@ livello: avanzato
 categoria: feedback
 anno: 2025
 ordine: 480
+parole: skeleton loader, skeleton, ghost elements, shimmer, content placeholder
 esempio: esempi/skeleton-screen/
 origine: mining 48
 fonti:

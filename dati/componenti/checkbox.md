@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 73
-parole: tick, multiple choice, indeterminate
+parole: tick, multiple choice, indeterminate, check box, tick box, checkmark, casella di controllo
 esempio: esempi/checkbox/
 vedi: selectors
 origine: slide 17

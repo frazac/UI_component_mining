@@ -4,6 +4,7 @@ livello: avanzato
 categoria: navigazione
 anno: 2025
 ordine: 400
+parole: page control, dots, pagination dots, carousel indicators, page indicator
 esempio: esempi/page-dots/
 origine: mining 40
 fonti:

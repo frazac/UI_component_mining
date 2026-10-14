@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 270
+parole: site icon, tab icon, bookmark icon, touch icon
 esempio: esempi/favicon/
 origine: mining 27
 ---

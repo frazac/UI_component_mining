@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2025
 ordine: 170
+parole: colour picker, color wheel, eyedropper, swatches, hex
 esempio: esempi/color-picker/
 vedi: picker
 origine: mining 17

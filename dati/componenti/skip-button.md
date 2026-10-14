@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2026
 ordine: 830
+parole: skip, skip intro, skip ad, salta
 esempio: esempi/skip-button/
 origine: mining 83
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenitori
 anno: 2025
 ordine: 390
+parole: file manager, list view, grid view, column view, gallery view, Quick Look, preview
 esempio: esempi/finder-views/
 origine: mining 39
 ---

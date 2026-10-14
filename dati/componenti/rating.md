@@ -4,6 +4,7 @@ livello: avanzato
 categoria: social
 anno: 2025
 ordine: 440
+parole: star rating, stars, review, score, valutazione, stelle
 esempio: esempi/rating/
 origine: mining 44
 ---

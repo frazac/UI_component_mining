@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 150
-parole: date, time, colour, wheel
+parole: date, time, colour, wheel, time picker, colour picker, color picker, picker wheel, drum picker
 esempio: esempi/picker/
 vedi: calendar-picker, color-picker
 origine: slide 34

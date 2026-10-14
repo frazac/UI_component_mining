@@ -4,6 +4,7 @@ livello: avanzato
 categoria: testo
 anno: 2025
 ordine: 540
+parole: caret, insertion point, text cursor, blinking cursor, I-beam
 esempio: esempi/text-caret/
 vedi: pointer, live-validation
 origine: mining 54, 86

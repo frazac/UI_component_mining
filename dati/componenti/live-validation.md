@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2026
 ordine: 800
+parole: inline validation, form validation, error message, real-time feedback, validazione
 esempio: esempi/live-validation/
 origine: mining 80
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 50
+parole: battery, battery level, charge, status bar, batteria
 esempio: esempi/battery-indicator/
 origine: mining 5
 ---

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 590
+parole: trash, recycle bin, bin, delete, cestino
 esempio: esempi/trash/
 origine: mining 59
 ---

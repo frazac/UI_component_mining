@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2026
 ordine: 780
+parole: extensions, plugins, add-ons, puzzle icon
 esempio: esempi/plugin-puzzle-button/
 origine: mining 78
 ---

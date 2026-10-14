@@ -4,6 +4,7 @@ livello: avanzato
 categoria: conversazione
 anno: 2025
 ordine: 560
+parole: thinking, reasoning, chain of thought, progress steps, AI loader
 esempio: esempi/ai-thinking-steps/
 origine: mining 56
 ---

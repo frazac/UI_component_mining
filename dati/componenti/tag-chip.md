@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: contenuti
 anno: 2024
 ordine: 90
-parole: label, category, filter, metadata
+parole: label, category, filter, metadata, chips, pill, token, hashtag
 esempio: resources/component-tag.html
 vedi: label, image-tags
 origine: slide 25

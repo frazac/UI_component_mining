@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 40
+parole: AR, augmented reality, face filter, lens, Snapchat, Instagram
 esempio: esempi/ar-video-filters/
 origine: mining 4
 ---

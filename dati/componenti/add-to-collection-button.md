@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2026
 ordine: 770
+parole: save button, pin it, browser extension, plugin, collection
 esempio: esempi/add-to-collection-button/
 origine: mining 77
 fonti:

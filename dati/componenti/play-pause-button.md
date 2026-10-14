@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 90
+parole: play, pause, media controls, player
 esempio: esempi/play-pause-button/
 origine: mining 9
 ---

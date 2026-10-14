@@ -4,6 +4,7 @@ livello: avanzato
 categoria: sistema
 anno: 2025
 ordine: 370
+parole: notch, Dynamic Island, detents, safe area, status bar, home indicator
 esempio: esempi/mobile-display-parts/
 origine: mining 37
 letture:

@@ -4,6 +4,7 @@ livello: avanzato
 categoria: contenuti
 anno: 2025
 ordine: 360
+parole: ticker, news ticker, scrolling text, crawl, scrolling banner
 esempio: esempi/marquee/
 vedi: draggable-overflow-text
 origine: mining 36

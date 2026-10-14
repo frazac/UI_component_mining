@@ -4,6 +4,7 @@ livello: avanzato
 categoria: input
 anno: 2025
 ordine: 200
+parole: dark mode, light mode, theme switcher, night mode, tema scuro
 esempio: esempi/dark-mode-switch/
 vedi: switch
 origine: mining 20

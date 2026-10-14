@@ -4,6 +4,7 @@ livello: avanzato
 categoria: errori
 anno: 2025
 ordine: 670
+parole: confirmation dialog, destructive action, are you sure, delete confirmation, warning
 esempio: esempi/irreversible-action-warning/
 vedi: modal, undo-history
 origine: mining 67, 68

@@ -4,7 +4,7 @@ livello: fondamentale
 categoria: input
 anno: 2024
 ordine: 110
-parole: field, text box, registration, login, submit
+parole: field, text box, registration, login, submit, form, text field, text input, textarea, label, modulo
 esempio: esempi/input-form/
 vedi: live-validation, selectors
 origine: slide 27-29

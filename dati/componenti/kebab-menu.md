@@ -4,6 +4,7 @@ livello: avanzato
 categoria: azioni
 anno: 2025
 ordine: 600
+parole: kebab, meatball menu, three dots, more options, overflow menu, ellipsis
 esempio: esempi/kebab-menu/
 vedi: context-menu
 origine: mining 60
