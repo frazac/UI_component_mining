@@ -75,6 +75,9 @@ table.componenti thead th { position: sticky; top: var(--alto-filtri, 70px); bac
 table.componenti td, table.componenti tbody th { vertical-align: top; text-align: left; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--c-linea); }
 table.componenti tbody th { width: 22%; font-weight: 500; font-size: 17px; line-height: 1.25; }
 table.componenti tbody th a.ancora { color: var(--c-testo); border: 0; }
+/* un'ancora (#toast, «Vedi anche») non deve finire sotto la barra dei filtri e l'intestazione fisse;
+   --alto-filtri la misura tabella.js */
+table.componenti tbody tr { scroll-margin-top: calc(var(--alto-filtri, 70px) + var(--alto-testa, 36px) + 8px); }
 table.componenti tbody tr:target { background: rgba(250, 145, 145, .12); }
 table.componenti td.note { width: 52%; }
 table.componenti td.note p, table.componenti td.note ul { margin: 0 0 .5em; }
@@ -96,6 +99,7 @@ a.link-md .u { color: var(--c-blu); overflow-wrap: anywhere; }
 
 @media (max-width: 760px) {
   table.componenti thead { display: none; }
+  :root { --alto-testa: 0px; }
   table.componenti tr { display: block; padding: 12px 0; border-bottom: 1px solid var(--c-linea); }
   table.componenti td, table.componenti tbody th { display: block; width: auto !important; border: 0; padding: 2px 0; white-space: normal !important; }
   table.componenti td:nth-child(n+3) { display: inline; margin-right: .8em; }

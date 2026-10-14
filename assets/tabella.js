@@ -88,6 +88,36 @@
     chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c.dataset.livello === livello)); });
     filtra();
   }
+  // altezza della barra dei filtri fissa (cambia con la larghezza e la lingua): serve al CSS per le ancore
+  var barra = document.querySelector('.filtri');
+  function misura() { document.documentElement.style.setProperty('--alto-filtri', barra.offsetHeight + 'px'); }
+  misura();
+  if (window.ResizeObserver) new ResizeObserver(misura).observe(barra);
+
+  // ancora a un componente (#toast, «Vedi anche»): se un filtro nasconde la riga, azzera i filtri e poi scorri
+  function vaiAllAncora() {
+    var id = decodeURIComponent(location.hash.slice(1));
+    if (!id || /=/.test(id)) return;
+    var tr = document.getElementById(id);
+    if (!tr || righe.indexOf(tr) === -1) return;
+    if (tr.hidden) {
+      cerca.value = '';
+      categoria.value = '';
+      livello = '';
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c.dataset.livello === '')); });
+      filtra();
+      history.replaceState(null, '', '#' + id);
+    }
+    tr.scrollIntoView();
+  }
+  window.addEventListener('hashchange', vaiAllAncora);
+  // un clic sull'ancora già nell'indirizzo non genera hashchange
+  document.addEventListener('click', function (ev) {
+    var a = ev.target.closest && ev.target.closest('a[href^="#"]');
+    if (a && a.getAttribute('href') === location.hash) { ev.preventDefault(); vaiAllAncora(); }
+  });
+  if (location.hash && !/=/.test(location.hash)) requestAnimationFrame(vaiAllAncora);
+
   // «/» porta alla ricerca
   document.addEventListener('keydown', function (ev) {
     if (ev.key === '/' && document.activeElement !== cerca) { ev.preventDefault(); cerca.focus(); }
