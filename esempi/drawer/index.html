@@ -1,0 +1,135 @@
+<!doctype html>
+<!-- Esempio ricostruito: Drawer (side drawer). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drawer — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 720px; }
+  .finestra { position: relative; height: 400px; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+  .barra { display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 10px; border-bottom: 1px solid var(--c-linea); }
+  .barra h3 { flex: 1; margin: 0; font-size: 17px; font-weight: 500; }
+  .ico { width: 42px; height: 42px; border: 0; border-radius: 50%; background: none; cursor: pointer; display: grid; place-content: center; position: relative; }
+  .ico:hover { background: #f3efee; }
+  .ico svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .ico .n[hidden] { display: none; }
+  .ico .n { position: absolute; top: 4px; right: 3px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--c-salmone); color: #fff; font-size: 11px; display: grid; place-content: center; }
+  .griglia { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 16px; }
+  .prodotto { border-radius: 10px; background: #f6f3f2; height: 130px; position: relative; }
+  .prodotto::before { content: ""; position: absolute; inset: 12px 12px 40px; border-radius: 8px; background: linear-gradient(140deg, var(--g1), var(--g2)); }
+  .prodotto span { position: absolute; left: 12px; bottom: 12px; font-size: 13px; }
+  .velo { position: absolute; inset: 0; background: rgba(0,0,0,.35); opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 4; }
+  .velo.on { opacity: 1; pointer-events: auto; }
+  .cassetto { position: absolute; top: 0; bottom: 0; width: 270px; max-width: 82%; background: #fff; z-index: 5; display: flex; flex-direction: column; transition: transform .32s cubic-bezier(.3,.7,.2,1), visibility .32s; visibility: hidden; box-shadow: 0 0 30px rgba(0,0,0,.18); }
+  .cassetto.on { transform: none !important; visibility: visible; transition: transform .32s cubic-bezier(.3,.7,.2,1), visibility 0s; }
+  .sx { left: 0; transform: translateX(-100%); border-radius: 0 16px 16px 0; }
+  .dx { right: 0; transform: translateX(100%); border-radius: 16px 0 0 16px; }
+  .testa { display: flex; align-items: center; justify-content: space-between; padding: 12px 10px 8px 20px; }
+  .testa h4 { margin: 0; font-size: 16px; font-weight: 500; }
+  nav a { display: flex; gap: 14px; align-items: center; margin: 2px 10px; padding: 11px 12px; border-radius: 9999px; color: inherit; text-decoration: none; font-size: 15px; }
+  nav a:hover { background: #f6f3f2; }
+  nav a[aria-current] { background: #fde3e3; font-weight: 500; }
+  nav svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  nav hr { border: 0; border-top: 1px solid var(--c-linea); margin: 8px 20px; }
+  .filtri { padding: 0 20px; display: grid; gap: 10px; font-size: 15px; flex: 1; align-content: start; }
+  .filtri label { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+  .filtri input { width: 18px; height: 18px; accent-color: var(--c-salmone); }
+  .applica { margin: 16px 20px 20px; border: 0; border-radius: 9999px; padding: 12px; background: var(--c-testo); color: #fff; cursor: pointer; }
+  .esito { text-align: center; font-size: 15px; color: var(--c-tenue); min-height: 22px; margin: 0; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <span class="didascalia" style="margin:0"><span data-l="it">A sinistra la navigazione (☰), a destra i filtri: due cassetti modali</span><span data-l="en">Navigation on the left (☰), filters on the right: two modal drawers</span><span data-l="fr">La navigation à gauche (☰), les filtres à droite : deux tiroirs modaux</span><span data-l="zh">左侧是导航（☰），右侧是筛选：两个模态抽屉</span></span>
+  <div class="finestra" id="finestra">
+    <div class="barra" id="sfondo">
+      <button class="ico" type="button" data-apri="nav" aria-controls="nav" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <h3><span data-l="it">Negozio</span><span data-l="en">Shop</span><span data-l="fr">Boutique</span><span data-l="zh">商店</span></h3>
+      <button class="ico" type="button" data-apri="filtri" aria-controls="filtri" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg><span class="n" id="nfiltri" hidden></span></button>
+    </div>
+    <div class="griglia">
+      <div class="prodotto" style="--g1:rgb(250,145,145);--g2:#ffe3b0"><span>Lampada</span></div>
+      <div class="prodotto" style="--g1:rgb(105,143,255);--g2:#b6e0d0"><span>Sedia</span></div>
+      <div class="prodotto" style="--g1:#2f9a52;--g2:#e7f2c4"><span>Vaso</span></div>
+      <div class="prodotto" style="--g1:#7b6cd9;--g2:rgb(250,145,145)"><span>Tavolo</span></div>
+      <div class="prodotto" style="--g1:#e0a100;--g2:#fff0c4"><span>Tappeto</span></div>
+      <div class="prodotto" style="--g1:#111;--g2:#999"><span>Specchio</span></div>
+    </div>
+    <div class="velo" id="velo"></div>
+    <div class="cassetto sx" id="nav" role="dialog" aria-modal="true" aria-labelledby="t-nav">
+      <div class="testa"><h4 id="t-nav"><span data-l="it">Menu</span><span data-l="en">Menu</span><span data-l="fr">Menu</span><span data-l="zh">菜单</span></h4><button class="ico" type="button" data-chiudi><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <nav>
+        <a href="#" aria-current="page"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z"/></svg><span data-l="it">Home</span><span data-l="en">Home</span><span data-l="fr">Accueil</span><span data-l="zh">首页</span></a>
+        <a href="#"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg><span data-l="it">Categorie</span><span data-l="en">Categories</span><span data-l="fr">Catégories</span><span data-l="zh">分类</span></a>
+        <a href="#"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg><span data-l="it">Preferiti</span><span data-l="en">Favourites</span><span data-l="fr">Favoris</span><span data-l="zh">收藏</span></a>
+        <a href="#"><svg viewBox="0 0 24 24"><path d="M5 7h14l-1.5 12h-11z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span data-l="it">Ordini</span><span data-l="en">Orders</span><span data-l="fr">Commandes</span><span data-l="zh">订单</span></a>
+        <hr>
+        <a href="#"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg><span data-l="it">Impostazioni</span><span data-l="en">Settings</span><span data-l="fr">Réglages</span><span data-l="zh">设置</span></a>
+      </nav>
+    </div>
+    <div class="cassetto dx" id="filtri" role="dialog" aria-modal="true" aria-labelledby="t-filtri">
+      <div class="testa"><h4 id="t-filtri"><span data-l="it">Filtri</span><span data-l="en">Filters</span><span data-l="fr">Filtres</span><span data-l="zh">筛选</span></h4><button class="ico" type="button" data-chiudi><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+      <div class="filtri">
+        <label><input type="checkbox"><span data-l="it">Disponibile subito</span><span data-l="en">Available now</span><span data-l="fr">Disponible tout de suite</span><span data-l="zh">现货</span></label>
+        <label><input type="checkbox"><span data-l="it">Spedizione gratuita</span><span data-l="en">Free shipping</span><span data-l="fr">Livraison gratuite</span><span data-l="zh">免运费</span></label>
+        <label><input type="checkbox"><span data-l="it">In offerta</span><span data-l="en">On sale</span><span data-l="fr">En promotion</span><span data-l="zh">特价</span></label>
+        <label><input type="checkbox"><span data-l="it">Legno</span><span data-l="en">Wood</span><span data-l="fr">Bois</span><span data-l="zh">木质</span></label>
+      </div>
+      <button class="applica" type="button" data-chiudi><span data-l="it">Mostra risultati</span><span data-l="en">Show results</span><span data-l="fr">Afficher les résultats</span><span data-l="zh">显示结果</span></button>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Si chiude con ×, con Esc o toccando il velo; mentre è aperto il focus resta dentro e alla chiusura torna al pulsante che l’ha aperto. Lo stesso pannello che sale dal basso è uno sheet.</span><span data-l="en">It closes with ×, Esc or a tap on the scrim; while it is open focus stays inside, and on closing it returns to the button that opened it. The same panel rising from the bottom is a sheet.</span><span data-l="fr">Il se ferme avec ×, Échap ou un toucher sur le voile ; tant qu’il est ouvert le focus reste à l’intérieur et revient au bouton qui l’a ouvert à la fermeture. Le même panneau qui monte du bas est une sheet.</span><span data-l="zh">可用 ×、Esc 或点击遮罩关闭；打开期间焦点保留在面板内，关闭后回到打开它的按钮。从底部升起的同类面板就是 sheet。</span></p>
+<script>
+  var velo = document.getElementById('velo'), aperto = null, origine = null;
+  var ETI = { nav: { it: 'Apri il menu', en: 'Open menu', fr: 'Ouvrir le menu', zh: '打开菜单' }, filtri: { it: 'Filtri', en: 'Filters', fr: 'Filtres', zh: '筛选' }, chiudi: { it: 'Chiudi', en: 'Close', fr: 'Fermer', zh: '关闭' } };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function focabili(c) { return Array.prototype.filter.call(c.querySelectorAll('a, button, input'), function (x) { return x.offsetParent !== null; }); }
+  function apri(id, b) {
+    aperto = document.getElementById(id); origine = b;
+    aperto.classList.add('on'); velo.classList.add('on'); b.setAttribute('aria-expanded', 'true');
+    document.getElementById('sfondo').inert = true; document.querySelector('.griglia').inert = true;
+    setTimeout(function () { focabili(aperto)[0].focus(); }, 50);
+  }
+  function chiudi() {
+    if (!aperto) return;
+    aperto.classList.remove('on'); velo.classList.remove('on'); origine.setAttribute('aria-expanded', 'false');
+    document.getElementById('sfondo').inert = false; document.querySelector('.griglia').inert = false;
+    if (aperto.id === 'filtri') { var n = document.querySelectorAll('#filtri input:checked').length, e = document.getElementById('nfiltri'); e.hidden = !n; e.textContent = n; }
+    origine.focus(); aperto = null;
+  }
+  document.querySelectorAll('[data-apri]').forEach(function (b) { b.addEventListener('click', function () { apri(b.dataset.apri, b); }); });
+  document.querySelectorAll('[data-chiudi]').forEach(function (b) { b.addEventListener('click', chiudi); });
+  document.querySelectorAll('nav a').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); document.querySelectorAll('nav a').forEach(function (x) { x.removeAttribute('aria-current'); }); a.setAttribute('aria-current', 'page'); chiudi(); }); });
+  velo.addEventListener('click', chiudi);
+  document.addEventListener('keydown', function (e) {
+    if (!aperto) return;
+    if (e.key === 'Escape') { chiudi(); return; }
+    if (e.key === 'Tab') {
+      var f = focabili(aperto), i = f.indexOf(document.activeElement);
+      if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  // trascinamento verso il bordo per chiudere
+  document.querySelectorAll('.cassetto').forEach(function (c) {
+    var x0 = null, dx = 0, segno = c.classList.contains('sx') ? -1 : 1;
+    c.addEventListener('pointerdown', function (e) { if (e.target.closest('input, label')) return; x0 = e.clientX; dx = 0; c.style.transition = 'none'; });
+    c.addEventListener('pointermove', function (e) { if (x0 === null) return; dx = e.clientX - x0; if (dx * segno > 0) c.style.transform = 'translateX(' + dx + 'px)'; });
+    function fine() { if (x0 === null) return; c.style.transition = ''; c.style.transform = ''; if (dx * segno > 70) chiudi(); x0 = null; }
+    c.addEventListener('pointerup', fine); c.addEventListener('pointercancel', fine); c.addEventListener('pointerleave', fine);
+  });
+  var NOMI = { it: ['Lampada', 'Sedia', 'Vaso', 'Tavolo', 'Tappeto', 'Specchio'], en: ['Lamp', 'Chair', 'Vase', 'Table', 'Rug', 'Mirror'], fr: ['Lampe', 'Chaise', 'Vase', 'Table', 'Tapis', 'Miroir'], zh: ['台灯', '椅子', '花瓶', '桌子', '地毯', '镜子'] };
+  function etichette() {
+    document.querySelectorAll('[data-apri]').forEach(function (b) { b.setAttribute('aria-label', ETI[b.dataset.apri][l()]); b.title = ETI[b.dataset.apri][l()]; });
+    document.querySelectorAll('.testa [data-chiudi]').forEach(function (b) { b.setAttribute('aria-label', ETI.chiudi[l()]); });
+    document.querySelectorAll('.prodotto span').forEach(function (s, i) { s.textContent = NOMI[l()][i]; });
+  }
+  etichette(); document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>

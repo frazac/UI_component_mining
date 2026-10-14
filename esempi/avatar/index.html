@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- Esempio ricostruito: Avatar (profile picture). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avatar — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 760px; }
+  .fila { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; }
+  .av { --d: 48px; position: relative; width: var(--d); height: var(--d); border-radius: 50%; flex: none; display: grid; place-content: center; color: #fff; font-weight: 500; font-size: calc(var(--d) * .4); background: #ccc center / cover; user-select: none; }
+  .av.q { border-radius: 26%; }
+  .av svg { width: 62%; height: 62%; margin: auto; }
+  .stato { position: absolute; right: 2%; bottom: 2%; width: 28%; height: 28%; border-radius: 50%; border: 2px solid #fff; background: #2f9a52; }
+  .stato.occ { background: #e0a100; }
+  .stato.off { background: #fff; box-shadow: inset 0 0 0 2px #aaa; }
+  .cont { position: absolute; top: -4px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: #d63a3a; color: #fff; font-size: 12px; display: grid; place-content: center; border: 2px solid #fff; }
+  .foto1 { background-image: linear-gradient(160deg, rgb(250,145,145), #ffe3b0); }
+  .foto2 { background-image: linear-gradient(200deg, rgb(105,143,255), #b6e0d0); }
+  .gruppo { display: flex; }
+  .gruppo .av { --d: 40px; box-shadow: 0 0 0 3px #fff; }
+  .gruppo .av + .av { margin-left: -12px; }
+  .gruppo .piu { background: #ece8e7; color: var(--c-testo); font-size: 14px; }
+  .leg { font-size: 12px; color: var(--c-tenue); text-align: center; margin-top: 6px; }
+  .col { display: flex; flex-direction: column; align-items: center; }
+  label { font-size: 14px; color: var(--c-tenue); }
+  input { display: block; width: 100%; margin-top: 6px; padding: 10px 12px; border: 1px solid var(--c-linea); border-radius: 10px; font-size: 16px; }
+  .prova { display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; }
+  .riga { display: flex; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--c-linea); font-size: 15px; }
+  .riga:first-child { border-top: 0; }
+  .riga small { display: block; color: var(--c-tenue); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Foto, iniziali, icona neutra, forma quadrata; misure fisse</span><span data-l="en">Photo, initials, neutral icon, square shape; fixed sizes</span><span data-l="fr">Photo, initiales, icône neutre, forme carrée ; tailles fixes</span><span data-l="zh">照片、首字母、中性图标、方形；固定尺寸</span></span>
+    <div class="fila">
+      <div class="col"><span class="av foto1" style="--d:72px"><span class="stato"></span></span><span class="leg">72 · online</span></div>
+      <div class="col"><span class="av foto2" style="--d:56px"><span class="stato occ"></span></span><span class="leg">56</span></div>
+      <div class="col"><span class="av" style="--d:40px;background:#7b6cd9">AB</span><span class="leg">40</span></div>
+      <div class="col"><span class="av" style="--d:32px;background:#2f9a52">LM<span class="stato off"></span></span><span class="leg">32</span></div>
+      <div class="col"><span class="av" style="--d:48px;background:#d9d4d2"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><circle cx="12" cy="8.5" r="4.5"/><path d="M3.5 21a8.5 8.5 0 0 1 17 0z"/></svg></span><span class="leg" data-l="it">senza foto</span><span class="leg" data-l="en">no photo</span><span class="leg" data-l="fr">sans photo</span><span class="leg" data-l="zh">无照片</span></div>
+      <div class="col"><span class="av q" style="--d:48px;background:#111">Co<span class="cont">3</span></span><span class="leg" data-l="it">azienda</span><span class="leg" data-l="en">company</span><span class="leg" data-l="fr">entreprise</span><span class="leg" data-l="zh">公司</span></div>
+      <div class="col"><span class="gruppo" id="gruppo"></span><span class="leg" data-l="it">gruppo</span><span class="leg" data-l="en">group</span><span class="leg" data-l="fr">groupe</span><span class="leg" data-l="zh">群组</span></div>
+    </div>
+  </div>
+  <div class="riquadro prova">
+    <span class="av" id="mio" style="--d:88px"></span>
+    <div>
+      <label for="nome"><span data-l="it">Scrivi un nome: iniziali e colore si ricavano da lì</span><span data-l="en">Type a name: initials and colour are derived from it</span><span data-l="fr">Écrivez un nom : initiales et couleur en découlent</span><span data-l="zh">输入一个名字：首字母和颜色都由它生成</span></label>
+      <input id="nome" value="Ada Lovelace" autocomplete="off">
+    </div>
+  </div>
+  <div class="riquadro" id="chat"></div>
+</div>
+<p class="nota"><span data-l="it">Lo stesso nome dà sempre lo stesso colore, così una persona si riconosce anche senza foto. Il pallino dice lo stato, il badge le notifiche.</span><span data-l="en">The same name always gives the same colour, so a person is recognisable even without a photo. The dot shows status, the badge notifications.</span><span data-l="fr">Le même nom donne toujours la même couleur : on reconnaît une personne même sans photo. La pastille indique l’état, le badge les notifications.</span><span data-l="zh">同一个名字总是得到同一种颜色，没有照片也能认出是谁。圆点表示状态，徽标表示通知。</span></p>
+<script>
+  var COLORI = ['#d66a6a', '#5b7be0', '#2f9a52', '#c28a00', '#7b6cd9', '#c2508f', '#1f8f8f', '#7a6a5a'];
+  function colore(s) { var h = 0; for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return COLORI[h % COLORI.length]; }
+  function iniziali(s) {
+    var p = s.trim().split(/\s+/).filter(Boolean);
+    if (!p.length) return '';
+    if (/[㐀-鿿]/.test(p[0])) return Array.from(p.join('')).slice(-2).join('');
+    return (Array.from(p[0])[0] + (p.length > 1 ? Array.from(p[p.length - 1])[0] : '')).toUpperCase();
+  }
+  function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function av(nome, d) { return '<span class="av" style="--d:' + d + 'px;background:' + colore(nome) + '" title="' + esc(nome) + '">' + esc(iniziali(nome)) + '</span>'; }
+  var g = ['Giulia Rossi', 'Marco Bianchi', 'Sara Colombo'].map(function (n) { return av(n, 40); }).join('');
+  document.getElementById('gruppo').innerHTML = g + '<span class="av piu">+3</span>';
+  var nome = document.getElementById('nome'), mio = document.getElementById('mio');
+  function aggiorna() {
+    var n = nome.value; mio.textContent = iniziali(n); mio.style.background = n.trim() ? colore(n) : '#d9d4d2'; mio.setAttribute('aria-label', n);
+    var M = { it: ['Ci vediamo alle 10?', 'Perfetto, a dopo!'], en: ['See you at 10?', 'Perfect, see you later!'], fr: ['On se voit à 10 h ?', 'Parfait, à tout à l’heure !'], zh: ['十点见？', '好的，回头见！'] }[window.Lingua ? Lingua.get() : 'en'];
+    document.getElementById('chat').innerHTML =
+      '<div class="riga">' + av('Giulia Rossi', 36) + '<span>Giulia Rossi<small>' + M[0] + '</small></span></div>' +
+      '<div class="riga">' + (n.trim() ? av(n, 36) : '<span class="av" style="--d:36px;background:#d9d4d2"></span>') + '<span>' + (esc(n.trim()) || '—') + '<small>' + M[1] + '</small></span></div>';
+  }
+  nome.addEventListener('input', aggiorna); aggiorna(); document.addEventListener('lingua', aggiorna);
+</script>
+</body>
+</html>

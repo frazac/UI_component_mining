@@ -4663,6 +4663,328 @@
      "note": "播放键旁边的两个按钮，把播放位置前后移动固定的时长，通常是 10 秒（播客中有时是 5、15 或 30 秒）：图标是一个环形箭头，中间写着秒数。英文叫 seek（seek forward、seek backward），也叫 skip forward / skip back、skip few seconds 或 forward and rewind few seconds；浏览器 API 也用这个名字（Media Session 的 seekforward 和 seekbackward 操作）。\n\n它几乎总有快捷方式：在 YouTube 上，双击视频两侧、按 J 和 L 键（10 秒）或方向键（5 秒）。它不同于“跳过”按钮，后者跳过整段内容（片头、广告）。对于长时媒体，系统控件（锁屏、iOS 控制中心）也会显示这类按时间跳转的按钮，而不是上一曲/下一曲或上一章/下一章：由每个应用决定请求哪一种。"
     }
    }
+  },
+  {
+   "id": "phone-keypad",
+   "livello": "avanzato",
+   "categoria": "input",
+   "anno": 2026,
+   "ordine": 890,
+   "parole": [
+    "phone keypad",
+    "dial pad",
+    "dialer",
+    "keypad",
+    "tastierino",
+    "numeric keypad",
+    "DTMF",
+    "dual-tone multi-frequency",
+    "touch-tone",
+    "IVR",
+    "E.161",
+    "T9"
+   ],
+   "esempio": "esempi/phone-keypad/",
+   "vedi": [
+    "button",
+    "input-form",
+    "voice-ui"
+   ],
+   "origine": "FZ, 2026-10-13",
+   "fonti": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling",
+     "titolo": "Dual-tone multi-frequency signaling - Wikipedia"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/E.161",
+     "titolo": "E.161 - Wikipedia"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Tastierino telefonico (dial pad)",
+     "note": "La griglia di 3 × 4 tasti per comporre un numero: 1-2-3 in alto, poi * 0 # in basso, con le lettere sotto le cifre (ABC sul 2, DEF sul 3…, secondo lo standard E.161) che servivano per scrivere con la tastiera T9 e per i numeri «parlanti». È l’ordine inverso del tastierino della calcolatrice e del computer, dove 7-8-9 stanno in alto.\n\nOgni tasto, premuto durante una chiamata, manda un suono DTMF (Dual-Tone Multi-Frequency, il «Touch-Tone» introdotto dalla Bell nel 1963): due toni insieme, uno per la riga (697, 770, 852, 941 Hz) e uno per la colonna (1209, 1336, 1477 Hz). Per questo il tastierino ricompare dentro la schermata di chiamata, per rispondere ai menu dei risponditori automatici («premi 1…»). Nell’interfaccia il tono e una breve vibrazione sono il feedback di ogni tasto; il tasto 0 tenuto premuto scrive +."
+    },
+    "en": {
+     "nome": "Phone keypad (dial pad)",
+     "note": "The 3 × 4 grid of keys for dialling a number: 1-2-3 at the top, then * 0 # at the bottom, with letters under the digits (ABC on 2, DEF on 3…, following the E.161 standard), once used for T9 typing and for vanity numbers. It is the reverse order of the calculator and computer keypad, where 7-8-9 sit at the top.\n\nPressed during a call, each key sends a DTMF tone (Dual-Tone Multi-Frequency, the “Touch-Tone” introduced by Bell in 1963): two tones at once, one for the row (697, 770, 852, 941 Hz) and one for the column (1209, 1336, 1477 Hz). That is why the keypad reappears inside the call screen, to answer automated phone menus (“press 1…”). In the interface, the tone and a short vibration are the feedback of each key; holding 0 types +."
+    },
+    "fr": {
+     "nome": "Clavier téléphonique (dial pad)",
+     "note": "La grille de 3 × 4 touches pour composer un numéro : 1-2-3 en haut, puis * 0 # en bas, avec des lettres sous les chiffres (ABC sur le 2, DEF sur le 3…, selon la norme E.161), qui servaient à écrire avec le T9 et aux numéros « mnémoniques ». C’est l’ordre inverse du pavé de la calculatrice et de l’ordinateur, où 7-8-9 sont en haut.\n\nPendant un appel, chaque touche envoie un signal DTMF (Dual-Tone Multi-Frequency, le « Touch-Tone » lancé par Bell en 1963) : deux tons à la fois, un pour la ligne (697, 770, 852, 941 Hz) et un pour la colonne (1209, 1336, 1477 Hz). C’est pourquoi le clavier réapparaît dans l’écran d’appel, pour répondre aux serveurs vocaux (« tapez 1… »). Dans l’interface, le ton et une brève vibration sont le retour de chaque touche ; un appui long sur 0 écrit +."
+    },
+    "zh": {
+     "nome": "电话拨号键盘（dial pad）",
+     "note": "用于拨号的 3 × 4 按键网格：上方是 1-2-3，下方是 * 0 #，数字下方印有字母（2 上是 ABC，3 上是 DEF……，依据 E.161 标准），过去用于 T9 输入和“字母号码”。它的顺序与计算器和电脑小键盘相反，后者 7-8-9 在最上方。\n\n通话中按下每个键都会发送 DTMF 信号（双音多频，即贝尔公司 1963 年推出的“Touch-Tone”按键音）：同时发出两个音，一个代表行（697、770、852、941 Hz），一个代表列（1209、1336、1477 Hz）。因此通话界面里还会再次出现拨号键盘，用来操作自动语音菜单（“请按 1……”）。在界面中，按键音和短促的振动就是每个按键的反馈；长按 0 输入 +。"
+    }
+   }
+  },
+  {
+   "id": "radial-menu",
+   "livello": "avanzato",
+   "categoria": "azioni",
+   "anno": 2026,
+   "ordine": 900,
+   "parole": [
+    "radial menu",
+    "pie menu",
+    "marking menu",
+    "ring menu",
+    "weapon wheel",
+    "dial",
+    "knob",
+    "rotary",
+    "jog dial",
+    "digital crown",
+    "surface dial",
+    "menu circolare",
+    "manopola",
+    "ghiera"
+   ],
+   "esempio": "esempi/radial-menu/",
+   "vedi": [
+    "context-menu",
+    "floating-action-button",
+    "slider",
+    "kebab-menu"
+   ],
+   "origine": "FZ, 2026-10-13",
+   "fonti": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Pie_menu",
+     "titolo": "Pie menu - Wikipedia"
+    },
+    {
+     "url": "https://doi.org/10.1145/57167.57182",
+     "titolo": "Callahan, Hopkins, Weiser, Shneiderman, An empirical comparison of pie vs. linear menus (CHI 1988)"
+    },
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/digital-crown",
+     "titolo": "Digital Crown - Apple Human Interface Guidelines"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://learn.microsoft.com/en-us/windows/apps/design/input/windows-wheel-interactions",
+     "titolo": "Surface Dial interactions - Microsoft Learn"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Menu radiale (radial menu, pie menu)",
+     "note": "Le voci si dispongono a raggiera, come le fette di una torta, attorno al punto in cui si è cliccato o toccato: sono tutte alla stessa distanza, quindi si raggiungono in fretta (legge di Fitts) e si ricordano per direzione, tanto che con l’uso basta un gesto rapido senza guardare (marking menu). Si trova nei programmi 3D e di grafica (Maya, Blender), nei videogiochi con il joystick e in alcuni pulsanti flottanti che si aprono a ventaglio. Funziona con poche voci, di solito fino a otto.\n\nParenti, nella stessa famiglia: il **ring menu** (anello di voci attorno al personaggio o al cursore, la «weapon wheel» dei giochi), il **dial** e il **knob** (manopola o ghiera da ruotare per scegliere o regolare un valore: il volume, la Digital Crown dell’Apple Watch, il Surface Dial, le manopole dei synth virtuali)."
+    },
+    "en": {
+     "nome": "Radial menu (pie menu)",
+     "note": "Items are laid out in a circle, like slices of a pie, around the point where you clicked or touched: they are all at the same distance, so they are quick to reach (Fitts’s law) and remembered by direction, so much so that with practice a quick flick is enough, without looking (marking menu). It is found in 3D and graphics software (Maya, Blender), in gamepad-driven video games and in some floating buttons that fan out. It works with few items, usually up to eight.\n\nRelatives, in the same family: the **ring menu** (a ring of items around the character or cursor, the “weapon wheel” of games), the **dial** and the **knob** (a rotary control to turn in order to pick or adjust a value: volume, the Apple Watch Digital Crown, the Surface Dial, the knobs of virtual synths)."
+    },
+    "fr": {
+     "nome": "Menu radial (radial menu, pie menu)",
+     "note": "Les éléments sont disposés en cercle, comme les parts d’une tarte, autour du point où l’on a cliqué ou touché : ils sont tous à la même distance, donc rapides à atteindre (loi de Fitts) et mémorisés par leur direction, au point qu’avec l’habitude un geste rapide suffit, sans regarder (marking menu). On le trouve dans les logiciels 3D et graphiques (Maya, Blender), dans les jeux vidéo à la manette et dans certains boutons flottants qui s’ouvrent en éventail. Il fonctionne avec peu d’éléments, en général jusqu’à huit.\n\nDe la même famille : le **ring menu** (un anneau d’éléments autour du personnage ou du curseur, la « roue des armes » des jeux), le **dial** et le **knob** (molette ou bouton rotatif à tourner pour choisir ou régler une valeur : le volume, la Digital Crown de l’Apple Watch, le Surface Dial, les potentiomètres des synthés virtuels)."
+    },
+    "zh": {
+     "nome": "径向菜单（radial menu，饼状菜单）",
+     "note": "菜单项像饼的切片一样，围绕点击或触摸的位置呈放射状排列：它们与起点的距离都相同，因此能很快点到（费茨定律），并且靠方向来记忆，熟练之后无需看屏幕，快速一划即可（marking menu，标记菜单）。常见于 3D 与图形软件（Maya、Blender）、使用手柄的电子游戏，以及一些呈扇形展开的浮动按钮。它只适合少量选项，通常不超过八个。\n\n同一家族的亲戚：**环形菜单**（ring menu，围绕角色或光标的一圈选项，即游戏里的“武器轮盘”）、**拨盘**（dial）和**旋钮**（knob，通过旋转来选择或调节数值的控件：音量、Apple Watch 的数码表冠、Surface Dial、虚拟合成器的旋钮）。"
+    }
+   }
+  },
+  {
+   "id": "avatar",
+   "livello": "avanzato",
+   "categoria": "social",
+   "anno": 2026,
+   "ordine": 910,
+   "parole": [
+    "avatar",
+    "profile picture",
+    "profile photo",
+    "pfp",
+    "propic",
+    "userpic",
+    "user icon",
+    "foto profilo",
+    "immagine del profilo",
+    "initials",
+    "identicon",
+    "avatar group",
+    "presence",
+    "Memoji"
+   ],
+   "esempio": "esempi/avatar/",
+   "vedi": [
+    "badge",
+    "login",
+    "chat-bubble",
+    "emoji",
+    "image-placeholder"
+   ],
+   "origine": "FZ, 2026-10-13",
+   "fonti": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Avatar_(computing)",
+     "titolo": "Avatar (computing) - Wikipedia"
+    },
+    {
+     "url": "https://mui.com/material-ui/react-avatar/",
+     "titolo": "Avatar - Material UI"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Avatar (foto profilo)",
+     "note": "L’immagine che rappresenta una persona nell’interfaccia: accanto ai messaggi, nei commenti, in alto a destra come accesso al profilo. Altri nomi: foto o immagine del profilo, propic, profile picture (pfp), userpic, user icon. Se manca la foto si mostrano le iniziali su un colore ricavato dal nome, un’icona neutra, oppure un disegno generato (identicon) o personalizzato (Memoji, Bitmoji).\n\nDi solito è un cerchio (o un quadrato arrotondato, spesso per le aziende e i gruppi), in poche misure fisse. Può avere un pallino di stato (online, occupato) o un badge, e più avatar si sovrappongono in un gruppo che finisce con «+3». La parola viene dal sanscrito avatāra, «discesa» di una divinità in forma terrena, ed è passata ai videogiochi negli anni Ottanta."
+    },
+    "en": {
+     "nome": "Avatar (profile picture)",
+     "note": "The image that represents a person in the interface: next to messages, in comments, in the top right corner as the entry to the profile. Other names: profile picture or photo (pfp), propic, userpic, user icon. When there is no photo, the interface shows the initials on a colour derived from the name, a neutral icon, or a generated (identicon) or customised drawing (Memoji, Bitmoji).\n\nIt is usually a circle (or a rounded square, often for companies and groups), in a few fixed sizes. It can carry a status dot (online, busy) or a badge, and several avatars overlap in a group ending with “+3”. The word comes from the Sanskrit avatāra, the “descent” of a deity in earthly form, and passed into video games in the 1980s."
+    },
+    "fr": {
+     "nome": "Avatar (photo de profil)",
+     "note": "L’image qui représente une personne dans l’interface : à côté des messages, dans les commentaires, en haut à droite comme accès au profil. Autres noms : photo ou image de profil, profile picture (pfp), propic, userpic, icône utilisateur. Sans photo, on affiche les initiales sur une couleur tirée du nom, une icône neutre, ou un dessin généré (identicon) ou personnalisé (Memoji, Bitmoji).\n\nC’est en général un cercle (ou un carré arrondi, souvent pour les entreprises et les groupes), en quelques tailles fixes. Il peut porter une pastille d’état (en ligne, occupé) ou un badge, et plusieurs avatars se superposent en un groupe qui se termine par « +3 ». Le mot vient du sanskrit avatāra, la « descente » d’une divinité sous forme terrestre, et est passé aux jeux vidéo dans les années 1980."
+    },
+    "zh": {
+     "nome": "头像（avatar）",
+     "note": "在界面中代表一个人的图像：出现在消息旁、评论里，以及右上角作为进入个人资料的入口。其他叫法：个人资料照片（profile picture，pfp）、propic、userpic、用户图标。没有照片时，界面会显示姓名首字母（底色由名字生成）、中性图标，或自动生成的图案（identicon）及自定义形象（Memoji、Bitmoji）。\n\n它通常是圆形（公司和群组常用圆角方形），只有少数几种固定尺寸。可以带一个状态圆点（在线、忙碌）或徽标；多个头像可以叠在一起组成头像组，末尾显示“+3”。这个词源自梵语 avatāra，意为神灵以凡间形态“降临”，在 1980 年代进入电子游戏。"
+    }
+   }
+  },
+  {
+   "id": "drawer",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2026,
+   "ordine": 920,
+   "parole": [
+    "drawer",
+    "navigation drawer",
+    "side drawer",
+    "side sheet",
+    "off-canvas",
+    "offcanvas",
+    "side panel",
+    "hamburger menu",
+    "slide-out menu",
+    "cassetto",
+    "pannello laterale"
+   ],
+   "esempio": "esempi/drawer/",
+   "vedi": [
+    "sheet",
+    "modal",
+    "floating-sticky-sidebar",
+    "tree-menu",
+    "kebab-menu"
+   ],
+   "origine": "FZ, 2026-10-13",
+   "fonti": [
+    {
+     "url": "https://m3.material.io/components/navigation-drawer/overview",
+     "titolo": "Navigation drawer - Material Design 3"
+    },
+    {
+     "url": "https://m3.material.io/components/side-sheets/overview",
+     "titolo": "Side sheets - Material Design 3"
+    },
+    {
+     "url": "https://getbootstrap.com/docs/5.3/components/offcanvas/",
+     "titolo": "Offcanvas - Bootstrap"
+    }
+   ],
+   "letture": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Hamburger_button",
+     "titolo": "Hamburger button - Wikipedia"
+    }
+   ],
+   "testi": {
+    "it": {
+     "nome": "Drawer (cassetto laterale)",
+     "note": "Un pannello che esce come un cassetto dal bordo sinistro o destro dello schermo e copre in parte la pagina: a sinistra di solito per la navigazione (si apre con il pulsante hamburger ☰), a destra per filtri, carrello o dettagli. Bootstrap lo chiama offcanvas, Material Design navigation drawer o side sheet.\n\nÈ lo stesso principio dello sheet, che scorre dal bordo superiore o inferiore (un «bottom drawer» è in pratica un bottom sheet). Se oscura la pagina con un velo e blocca il resto è modale: va chiuso con Esc, con un tocco sul velo o con un gesto, tenendo il focus dentro finché è aperto. Se invece resta aperto accanto al contenuto è una barra laterale fissa."
+    },
+    "en": {
+     "nome": "Drawer (side drawer)",
+     "note": "A panel that slides out like a drawer from the left or right edge of the screen and partly covers the page: on the left usually for navigation (opened with the hamburger button ☰), on the right for filters, cart or details. Bootstrap calls it offcanvas, Material Design navigation drawer or side sheet.\n\nIt is the same principle as the sheet, which slides in from the top or bottom edge (a “bottom drawer” is in practice a bottom sheet). If it dims the page with a scrim and blocks the rest, it is modal: it closes with Esc, a tap on the scrim or a gesture, keeping focus inside while it is open. If it stays open next to the content, it is a fixed sidebar."
+    },
+    "fr": {
+     "nome": "Tiroir (drawer)",
+     "note": "Un panneau qui sort comme un tiroir du bord gauche ou droit de l’écran et recouvre en partie la page : à gauche en général pour la navigation (il s’ouvre avec le bouton hamburger ☰), à droite pour les filtres, le panier ou les détails. Bootstrap l’appelle offcanvas, Material Design navigation drawer ou side sheet.\n\nC’est le même principe que la feuille (sheet), qui glisse depuis le bord supérieur ou inférieur (un « bottom drawer » est en pratique une bottom sheet). S’il assombrit la page d’un voile et bloque le reste, il est modal : il se ferme avec Échap, un toucher sur le voile ou un geste, en gardant le focus à l’intérieur tant qu’il est ouvert. S’il reste ouvert à côté du contenu, c’est une barre latérale fixe."
+    },
+    "zh": {
+     "nome": "抽屉（drawer）",
+     "note": "像抽屉一样从屏幕左侧或右侧边缘滑出、部分遮住页面的面板：左侧通常用于导航（通过汉堡按钮 ☰ 打开），右侧用于筛选、购物车或详情。Bootstrap 称之为 offcanvas，Material Design 称之为 navigation drawer 或 side sheet。\n\n它与从顶部或底部边缘滑入的面板（sheet）原理相同（“底部抽屉”实际上就是底部面板）。如果它用遮罩压暗页面并阻止其他操作，就是模态的：可用 Esc、点击遮罩或手势关闭，打开期间焦点应留在其中。如果它常驻在内容旁边，就成了固定侧边栏。"
+    }
+   }
+  },
+  {
+   "id": "separator",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2026,
+   "ordine": 930,
+   "parole": [
+    "separator",
+    "divider",
+    "rule",
+    "horizontal rule",
+    "hr",
+    "filetto",
+    "linea",
+    "vertical divider",
+    "pipe",
+    "asterism",
+    "dinkus",
+    "section break",
+    "thematic break",
+    "fleuron",
+    "⁂"
+   ],
+   "esempio": "esempi/separator/",
+   "vedi": [
+    "card",
+    "breadcrumb",
+    "context-menu"
+   ],
+   "origine": "FZ, 2026-10-13",
+   "fonti": [
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/HTML/Element/hr",
+     "titolo": "<hr>: The Thematic Break (Horizontal Rule) element - MDN"
+    },
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/separator_role",
+     "titolo": "ARIA: separator role - MDN"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Asterism_(typography)",
+     "titolo": "Asterism (typography) - Wikipedia"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Dinkus",
+     "titolo": "Dinkus - Wikipedia"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Separatore (divider)",
+     "note": "Il segno che divide gruppi di contenuti. Il più comune è l’asta: un filetto sottile, orizzontale tra le voci di un menu o le sezioni di una pagina, verticale tra i comandi di una barra degli strumenti o tra i link di un piè di pagina (spesso il carattere |). In HTML è l’elemento hr, che indica un cambio di argomento; il ruolo ARIA separator dice lo stesso a chi usa un lettore di schermo.\n\nNei testi lunghi la pausa tra due parti si segna anche con caratteri tipografici: l’asterismo ⁂ (tre asterischi a triangolo), i tre asterischi in fila * * * (dinkus) o un fregio come ❦. Va usato con misura: spesso basta lo spazio a separare, per la legge di prossimità della Gestalt, e troppe linee rendono l’interfaccia una griglia."
+    },
+    "en": {
+     "nome": "Separator (divider)",
+     "note": "The mark that divides groups of content. The most common is the rule: a thin line, horizontal between menu items or page sections, vertical between toolbar commands or footer links (often the | character). In HTML it is the hr element, which marks a change of topic; the ARIA separator role conveys the same to screen-reader users.\n\nIn long texts the pause between two parts is also marked with typographic characters: the asterism ⁂ (three asterisks in a triangle), three asterisks in a row * * * (dinkus) or an ornament such as ❦. Use it sparingly: space alone is often enough to separate, by the Gestalt law of proximity, and too many lines turn the interface into a grid."
+    },
+    "fr": {
+     "nome": "Séparateur (divider)",
+     "note": "Le signe qui divise des groupes de contenus. Le plus courant est le filet : une ligne fine, horizontale entre les éléments d’un menu ou les sections d’une page, verticale entre les commandes d’une barre d’outils ou les liens d’un pied de page (souvent le caractère |). En HTML c’est l’élément hr, qui marque un changement de sujet ; le rôle ARIA separator indique la même chose aux utilisateurs de lecteurs d’écran.\n\nDans les textes longs, la pause entre deux parties se marque aussi par des caractères typographiques : l’astérisme ⁂ (trois astérisques en triangle), trois astérisques en ligne * * * (dinkus) ou un ornement comme ❦. À utiliser avec mesure : l’espace suffit souvent à séparer, par la loi de proximité de la Gestalt, et trop de lignes transforment l’interface en grille."
+    },
+    "zh": {
+     "nome": "分隔线（separator，divider）",
+     "note": "用来划分内容分组的符号。最常见的是细线：横向用于菜单项或页面各部分之间，纵向用于工具栏按钮或页脚链接之间（常用字符 |）。在 HTML 中是 hr 元素，表示话题的转换；ARIA 的 separator 角色向屏幕阅读器用户传达同样的含义。\n\n在长文本中，两个部分之间的停顿也可以用排版符号标示：星号三角 ⁂（asterism，三个星号排成三角形）、一行三个星号 * * *（dinkus），或花饰 ❦ 之类的装饰符。应当克制使用：根据格式塔的接近律，往往留白就足以分隔，线条太多会让界面变成网格。"
+    }
+   }
   }
  ]
 }

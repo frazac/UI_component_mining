@@ -29,6 +29,10 @@ python3 strumenti/pdf.py             # slides → one PDF per language (needs Go
 Only the Python standard library is needed. The same cards are used, through `git subtree`, in the
 course's slides, and can be edited from either side.
 
+## Thanks
+
+Thanks to all my students, who shared in creating this list in class, through dialogue.
+
 ## Languages and proofreading
 
 Italian and English come from the author. French and Chinese translations, and the descriptions of the

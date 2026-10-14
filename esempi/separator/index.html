@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Esempio ricostruito: Separator (divider), dall'asta all'asterismo. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Separator — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&family=EB+Garamond&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1fr 1.3fr; max-width: 860px; }
+  .menu { list-style: none; margin: 0; padding: 6px; border: 1px solid var(--c-linea); border-radius: 12px; font-size: 15px; max-width: 230px; }
+  .menu li { padding: 8px 12px; border-radius: 8px; }
+  .menu li:not([role]):hover { background: #f6f3f2; }
+  .menu [role="separator"] { padding: 0; margin: 6px 4px; height: 1px; background: var(--c-linea); }
+  .menu .rosso { color: #c0392b; }
+  .strum { display: inline-flex; align-items: center; gap: 2px; margin-top: 18px; padding: 4px; border: 1px solid var(--c-linea); border-radius: 10px; }
+  .strum button { width: 34px; height: 34px; border: 0; background: none; border-radius: 7px; cursor: pointer; font-size: 15px; }
+  .strum button:hover { background: #f6f3f2; }
+  .strum [role="separator"] { width: 1px; height: 22px; background: var(--c-linea); margin: 0 4px; }
+  .piede { margin-top: 18px; font-size: 13px; color: var(--c-tenue); }
+  .piede span { margin: 0 6px; color: #ccc; }
+  .testo { font: 17px/1.55 "EB Garamond", Georgia, "Noto Sans SC", serif; }
+  .testo p { margin: 0 0 10px; text-indent: 1.2em; }
+  .testo p.primo { text-indent: 0; }
+  .stacco { text-align: center; margin: 14px 0; color: var(--c-rosa); user-select: none; }
+  .stacco.asta { border: 0; height: 1px; width: 40%; margin: 22px auto; background: var(--c-linea); }
+  .stacco.asterismo { font-size: 22px; line-height: 1; }
+  .stacco.dinkus { letter-spacing: .9em; padding-left: .9em; font-size: 18px; }
+  .stacco.fregio { font-size: 22px; }
+  .stacco.spazio { height: 18px; }
+  .scegli { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .scegli button { border: 1px solid var(--c-linea); background: #fff; border-radius: 9999px; padding: 6px 12px; font-size: 14px; cursor: pointer; }
+  .scegli button[aria-pressed="true"] { background: var(--c-testo); border-color: var(--c-testo); color: #fff; }
+  .scegli b { font-weight: 400; font-family: "EB Garamond", serif; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">L’asta: orizzontale e verticale</span><span data-l="en">The rule: horizontal and vertical</span><span data-l="fr">Le filet : horizontal et vertical</span><span data-l="zh">细线：横向与纵向</span></span>
+    <ul class="menu" id="menu"></ul>
+    <div class="strum" role="toolbar" aria-label="Format">
+      <button type="button" aria-label="Bold"><b>B</b></button><button type="button" aria-label="Italic"><i>I</i></button><button type="button" aria-label="Underline"><u>U</u></button>
+      <span role="separator" aria-orientation="vertical"></span>
+      <button type="button" aria-label="Align left">≡</button><button type="button" aria-label="List">•</button>
+      <span role="separator" aria-orientation="vertical"></span>
+      <button type="button" aria-label="Link">🔗</button>
+    </div>
+    <div class="piede" id="piede"></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Nel testo: lo stacco tra due parti</span><span data-l="en">In text: the break between two parts</span><span data-l="fr">Dans le texte : la pause entre deux parties</span><span data-l="zh">在文本中：两部分之间的停顿</span></span>
+    <div class="scegli" id="scegli"></div>
+    <div class="testo" id="testo"></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">In HTML lo stacco tematico è &lt;hr&gt;: il suo aspetto si cambia con il CSS, il significato resta lo stesso. Prova «solo spazio»: spesso basta.</span><span data-l="en">In HTML the thematic break is &lt;hr&gt;: its look changes with CSS, the meaning stays the same. Try “space only”: it is often enough.</span><span data-l="fr">En HTML la pause thématique est &lt;hr&gt; : son aspect change avec le CSS, le sens reste le même. Essayez « espace seul » : souvent cela suffit.</span><span data-l="zh">在 HTML 中，主题分隔是 &lt;hr&gt;：外观可用 CSS 改变，含义不变。试试“仅留白”：往往就够了。</span></p>
+<script>
+  var T = {
+    it: { menu: ['Copia', 'Incolla', '—', 'Rinomina', 'Duplica', '—', 'Elimina'], piede: ['Privacy', 'Cookie', 'Contatti'],
+          stili: ['Asta', 'Asterismo ⁂', 'Dinkus * * *', 'Fregio ❦', 'Solo spazio'],
+          a: ['Il treno partì alle sei, sotto una pioggia sottile che rendeva lucide le pensiline.', 'Nessuno, nella carrozza, sembrava avere fretta di arrivare.'],
+          b: ['Tre anni dopo la stazione era chiusa.', 'Al posto dei binari crescevano l’erba e le margherite, e i ragazzi ci andavano in bicicletta.'] },
+    en: { menu: ['Copy', 'Paste', '—', 'Rename', 'Duplicate', '—', 'Delete'], piede: ['Privacy', 'Cookies', 'Contact'],
+          stili: ['Rule', 'Asterism ⁂', 'Dinkus * * *', 'Fleuron ❦', 'Space only'],
+          a: ['The train left at six, under a thin rain that made the platform roofs shine.', 'No one in the carriage seemed in a hurry to arrive.'],
+          b: ['Three years later the station was closed.', 'Grass and daisies grew where the tracks had been, and the children went there by bike.'] },
+    fr: { menu: ['Copier', 'Coller', '—', 'Renommer', 'Dupliquer', '—', 'Supprimer'], piede: ['Confidentialité', 'Cookies', 'Contact'],
+          stili: ['Filet', 'Astérisme ⁂', 'Dinkus * * *', 'Fleuron ❦', 'Espace seul'],
+          a: ['Le train partit à six heures, sous une pluie fine qui faisait briller les quais.', 'Personne, dans le wagon, ne semblait pressé d’arriver.'],
+          b: ['Trois ans plus tard, la gare était fermée.', 'L’herbe et les pâquerettes poussaient à la place des rails, et les enfants y allaient à vélo.'] },
+    zh: { menu: ['复制', '粘贴', '—', '重命名', '创建副本', '—', '删除'], piede: ['隐私', 'Cookie', '联系'],
+          stili: ['细线', '星号三角 ⁂', 'Dinkus * * *', '花饰 ❦', '仅留白'],
+          a: ['火车六点出发，细雨把站台的雨棚淋得发亮。', '车厢里，似乎没有人急着到站。'],
+          b: ['三年后，车站关闭了。', '铁轨的位置长出了青草和雏菊，孩子们骑着自行车去那里玩。'] }
+  };
+  var STILI = ['asta', 'asterismo', 'dinkus', 'fregio', 'spazio'], SEGNI = ['', '⁂', '* * *', '❦', ''], stile = 1;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function disegna() {
+    var t = T[l()];
+    document.getElementById('menu').innerHTML = t.menu.map(function (v, i) { return v === '—' ? '<li role="separator"></li>' : '<li' + (i === t.menu.length - 1 ? ' class="rosso"' : '') + '>' + v + '</li>'; }).join('');
+    document.getElementById('piede').innerHTML = '© 2026<span aria-hidden="true">|</span>' + t.piede.join('<span aria-hidden="true">|</span>');
+    document.getElementById('scegli').innerHTML = t.stili.map(function (v, i) { return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === stile) + '">' + v.replace(/([⁂❦]|\* \* \*)/, '<b>$1</b>') + '</button>'; }).join('');
+    var p = function (a) { return a.map(function (x, i) { return '<p' + (i ? '' : ' class="primo"') + '>' + x + '</p>'; }).join(''); };
+    var stacco = SEGNI[stile] ? '<div class="stacco ' + STILI[stile] + '" role="separator">' + SEGNI[stile] + '</div>' : '<hr class="stacco ' + STILI[stile] + '">';
+    document.getElementById('testo').innerHTML = p(t.a) + stacco + p(t.b);
+    document.querySelectorAll('#scegli button').forEach(function (b) { b.onclick = function () { stile = +b.dataset.i; disegna(); }; });
+  }
+  disegna(); document.addEventListener('lingua', disegna);
+</script>
+</body>
+</html>

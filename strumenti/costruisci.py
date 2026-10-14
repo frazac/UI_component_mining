@@ -65,6 +65,10 @@ T['cookie'] = {'it': 'Solo cookie tecnici, per statistiche anonime e aggregate c
                'en': 'Technical cookies only, for anonymous, aggregated analytics via matomo.masterismi.com.',
                'fr': 'Cookies techniques uniquement, pour des statistiques anonymes et agrégées via matomo.masterismi.com.',
                'zh': '仅使用技术性 Cookie，通过 matomo.masterismi.com 进行匿名汇总统计。'}
+T['studenti'] = {'it': 'Grazie a tutti i miei studenti, che in aula, dialogando, hanno condiviso la creazione di questa lista.',
+                'en': 'Thanks to all my students, who shared in creating this list in class, through dialogue.',
+                'fr': 'Merci à tous mes étudiants, qui ont partagé en classe, par le dialogue, la création de cette liste.',
+                'zh': '感谢我所有的学生，他们在课堂上以对话的方式共同参与了这份清单的创建。'}
 T['revisori'] = {'it': 'Revisione delle traduzioni', 'en': 'Translation proofreading', 'fr': 'Relecture des traductions', 'zh': '译文审校'}
 # statistiche Matomo (come le pagine in resources/), solo sul sito pubblicato: niente in locale né nei PDF
 MATOMO = '''<script>
@@ -164,6 +168,7 @@ def colophon():
     return f'''<footer class="colophon">
   <p>© 2024–{date.today().year} {AUTORE} · <a href="{LICENZA}" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · {tt('licenza')}</p>
   <p><a href="{GRADIENTE}" target="_blank" rel="noopener">{tt('gradiente')}</a></p>
+  <p>{tt('studenti')}</p>
   <p>{revisori()}</p>
   <p>{tt('versione')} {e(VERSIONE)} · <a href="https://github.com/frazac/UI_component_mining" target="_blank" rel="noopener">GitHub</a> · <a href="https://linktr.ee/frazac" target="_blank" rel="noopener">Linktree</a></p>
   <p>{tt('cookie')}</p>

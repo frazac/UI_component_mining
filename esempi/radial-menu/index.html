@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- Esempio ricostruito: Radial menu (pie menu), con dial/knob. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radial menu — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { grid-template-columns: 1.5fr 1fr; }
+  .tela { position: relative; height: 330px; border-radius: 10px; background: #f6f3f2 radial-gradient(circle, #ddd6d4 1px, transparent 1.5px) 0 0 / 22px 22px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair; }
+  .torta { position: absolute; width: 230px; height: 230px; margin: -115px 0 0 -115px; pointer-events: none; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .18s cubic-bezier(.3,.7,.2,1.3); }
+  .torta.on { opacity: 1; transform: none; }
+  .torta svg { width: 100%; height: 100%; overflow: visible; }
+  .fetta { fill: rgba(255,255,255,.96); stroke: var(--c-linea); transition: fill .1s; }
+  .fetta.sel { fill: var(--c-salmone); }
+  .torta text { font: 500 12px var(--f-testo); text-anchor: middle; dominant-baseline: middle; fill: var(--c-testo); }
+  .torta .ico { font-size: 20px; }
+  .centro { fill: #fff; stroke: var(--c-linea); }
+  .forma { position: absolute; width: 34px; height: 34px; margin: -17px 0 0 -17px; pointer-events: none; animation: entra .25s ease-out; }
+  @keyframes entra { from { transform: scale(0); } }
+  .esito { margin-top: 12px; font-size: 15px; color: var(--c-tenue); min-height: 22px; }
+  .manopola { width: 150px; height: 150px; margin: 14px auto 0; position: relative; }
+  .manopola svg { width: 100%; height: 100%; }
+  .knob { position: absolute; inset: 25px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff, #e3dedc 70%); box-shadow: 0 6px 14px rgba(0,0,0,.18), inset 0 -2px 4px rgba(0,0,0,.08); cursor: grab; touch-action: none; }
+  .knob::after { content: ""; position: absolute; left: 50%; top: 9px; width: 4px; height: 18px; margin-left: -2px; border-radius: 2px; background: var(--c-testo); }
+  .knob:active { cursor: grabbing; }
+  .valore { text-align: center; font-size: 28px; font-variant-numeric: tabular-nums; margin-top: 4px; }
+  .valore small { font-size: 14px; color: var(--c-tenue); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Menu radiale: tieni premuto, trascina verso una fetta, rilascia</span><span data-l="en">Radial menu: press and hold, drag towards a slice, release</span><span data-l="fr">Menu radial : maintenez, glissez vers une part, relâchez</span><span data-l="zh">径向菜单：按住，拖向一个扇区，松开</span></span>
+    <div class="tela" id="tela" tabindex="0">
+      <div class="torta" id="torta"><svg viewBox="-115 -115 230 230" id="svg"></svg></div>
+    </div>
+    <p class="esito" id="esito"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Dial o knob: ruota per regolare</span><span data-l="en">Dial or knob: turn to adjust</span><span data-l="fr">Dial ou knob : tournez pour régler</span><span data-l="zh">拨盘或旋钮：旋转以调节</span></span>
+    <div class="manopola">
+      <svg viewBox="0 0 150 150" aria-hidden="true"><path id="arco0" d="" fill="none" stroke="#eee8e6" stroke-width="6" stroke-linecap="round"/><path id="arco" d="" fill="none" stroke="var(--c-salmone)" stroke-width="6" stroke-linecap="round"/></svg>
+      <div class="knob" id="knob" role="slider" tabindex="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <div class="valore"><span id="val">40</span><small> %</small></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Le voci sono tutte alla stessa distanza dal punto di partenza: con l’abitudine si sceglie per direzione, con un gesto rapido. Con la tastiera: Invio per aprire, frecce per scegliere. La manopola si gira trascinando, con le frecce o con la rotella.</span><span data-l="en">All items are at the same distance from the starting point: with practice you choose by direction, with a quick flick. With the keyboard: Enter to open, arrows to choose. The knob turns by dragging, with the arrow keys or the mouse wheel.</span><span data-l="fr">Tous les éléments sont à la même distance du point de départ : avec l’habitude on choisit par direction, d’un geste rapide. Au clavier : Entrée pour ouvrir, flèches pour choisir. Le bouton tourne en glissant, avec les flèches ou la molette.</span><span data-l="zh">所有选项与起点的距离都相同：熟练后凭方向快速一划即可选择。键盘操作：回车打开，方向键选择。旋钮可通过拖动、方向键或鼠标滚轮旋转。</span></p>
+<script>
+  var VOCI = [
+    { ico: '●', c: 'rgb(250,145,145)', it: 'Cerchio', en: 'Circle', fr: 'Cercle', zh: '圆形' },
+    { ico: '■', c: 'rgb(105,143,255)', it: 'Quadrato', en: 'Square', fr: 'Carré', zh: '方形' },
+    { ico: '▲', c: '#2f9a52', it: 'Triangolo', en: 'Triangle', fr: 'Triangle', zh: '三角形' },
+    { ico: '★', c: '#e0a100', it: 'Stella', en: 'Star', fr: 'Étoile', zh: '星形' },
+    { ico: '♥', c: 'rgb(223,136,136)', it: 'Cuore', en: 'Heart', fr: 'Cœur', zh: '心形' },
+    { ico: '✕', c: '#555', it: 'Annulla', en: 'Cancel', fr: 'Annuler', zh: '取消' }
+  ];
+  var N = VOCI.length, R = 112, r0 = 30, tela = document.getElementById('tela'), torta = document.getElementById('torta'), svg = document.getElementById('svg');
+  var aperto = false, cx = 0, cy = 0, sel = -1;
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function pt(a, rr) { return [Math.sin(a) * rr, -Math.cos(a) * rr]; }
+  function disegna() {
+    var h = '';
+    VOCI.forEach(function (v, i) {
+      var a0 = (i - .5) / N * 2 * Math.PI, a1 = (i + .5) / N * 2 * Math.PI, p = [pt(a0, r0), pt(a0, R), pt(a1, R), pt(a1, r0)];
+      h += '<path class="fetta" data-i="' + i + '" d="M' + p[0] + 'L' + p[1] + 'A' + R + ' ' + R + ' 0 0 1 ' + p[2] + 'L' + p[3] + 'A' + r0 + ' ' + r0 + ' 0 0 0 ' + p[0] + 'Z"/>';
+      var m = pt(i / N * 2 * Math.PI, (R + r0) / 2);
+      h += '<text class="ico" x="' + m[0] + '" y="' + (m[1] - 9) + '" fill="' + v.c + '" style="fill:' + v.c + '">' + v.ico + '</text><text x="' + m[0] + '" y="' + (m[1] + 13) + '">' + v[l()] + '</text>';
+    });
+    svg.innerHTML = h + '<circle class="centro" r="' + (r0 - 4) + '"/>';
+    evidenzia();
+  }
+  function evidenzia() { svg.querySelectorAll('.fetta').forEach(function (f) { f.classList.toggle('sel', +f.dataset.i === sel); }); }
+  function apri(x, y) {
+    var b = tela.getBoundingClientRect();
+    cx = Math.max(118, Math.min(b.width - 118, x)); cy = Math.max(118, Math.min(b.height - 118, y));
+    torta.style.left = cx + 'px'; torta.style.top = cy + 'px'; torta.classList.add('on'); aperto = true; sel = -1; evidenzia();
+  }
+  function punta(x, y) {
+    var dx = x - cx, dy = y - cy;
+    if (Math.hypot(dx, dy) < r0 - 4) sel = -1;
+    else sel = Math.round(((Math.atan2(dx, -dy) + 2 * Math.PI) % (2 * Math.PI)) / (2 * Math.PI) * N) % N;
+    evidenzia();
+  }
+  function chiudi() {
+    torta.classList.remove('on'); aperto = false;
+    var e = document.getElementById('esito');
+    if (sel < 0 || sel === N - 1) { e.textContent = ''; return; }
+    var v = VOCI[sel], f = document.createElement('span');
+    f.className = 'forma'; f.textContent = v.ico; f.style.cssText += ';left:' + cx + 'px;top:' + cy + 'px;color:' + v.c + ';font-size:34px;line-height:34px;text-align:center';
+    tela.appendChild(f); e.textContent = '→ ' + v[l()];
+  }
+  function locale(e) { var b = tela.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; }
+  tela.addEventListener('pointerdown', function (e) { var p = locale(e); tela.setPointerCapture(e.pointerId); apri(p[0], p[1]); });
+  tela.addEventListener('pointermove', function (e) { if (aperto) { var p = locale(e); punta(p[0], p[1]); } });
+  tela.addEventListener('pointerup', function () { if (aperto) chiudi(); });
+  tela.addEventListener('keydown', function (e) {
+    var b = tela.getBoundingClientRect();
+    if (!aperto && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); apri(b.width / 2, b.height / 2); sel = 0; evidenzia(); return; }
+    if (!aperto) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') sel = (sel + 1) % N;
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') sel = (sel - 1 + N) % N;
+    else if (e.key === 'Enter' || e.key === ' ') chiudi();
+    else if (e.key === 'Escape') { sel = -1; chiudi(); }
+    else return;
+    e.preventDefault(); evidenzia();
+  });
+  // manopola: 270° di corsa, da -135° a +135°
+  var val = 40, knob = document.getElementById('knob'), MIN = -135, MAX = 135;
+  function arco(v) {
+    var a1 = (MIN + (MAX - MIN) * v / 100) * Math.PI / 180, a0 = MIN * Math.PI / 180, rr = 68;
+    function p(a) { return (75 + Math.sin(a) * rr) + ' ' + (75 - Math.cos(a) * rr); }
+    return 'M' + p(a0) + ' A' + rr + ' ' + rr + ' 0 ' + (a1 - a0 > Math.PI ? 1 : 0) + ' 1 ' + p(a1);
+  }
+  function imposta(v) {
+    val = Math.round(Math.max(0, Math.min(100, v)));
+    knob.style.transform = 'rotate(' + (MIN + (MAX - MIN) * val / 100) + 'deg)';
+    document.getElementById('arco').setAttribute('d', val ? arco(val) : '');
+    document.getElementById('val').textContent = val; knob.setAttribute('aria-valuenow', val);
+  }
+  document.getElementById('arco0').setAttribute('d', arco(100));
+  var tira = false, ang0 = 0, val0 = 0;
+  function angolo(e) { var b = knob.getBoundingClientRect(); return Math.atan2(e.clientX - b.left - b.width / 2, -(e.clientY - b.top - b.height / 2)) * 180 / Math.PI; }
+  knob.addEventListener('pointerdown', function (e) { tira = true; knob.setPointerCapture(e.pointerId); ang0 = angolo(e); val0 = val; });
+  knob.addEventListener('pointermove', function (e) {
+    if (!tira) return;
+    var d = angolo(e) - ang0; if (d > 180) d -= 360; if (d < -180) d += 360;
+    imposta(val0 + d / (MAX - MIN) * 100); ang0 = angolo(e); val0 = val;
+  });
+  knob.addEventListener('pointerup', function () { tira = false; });
+  knob.addEventListener('wheel', function (e) { e.preventDefault(); imposta(val - Math.sign(e.deltaY) * 2); }, { passive: false });
+  knob.addEventListener('keydown', function (e) {
+    var k = { ArrowUp: 5, ArrowRight: 5, ArrowDown: -5, ArrowLeft: -5, PageUp: 10, PageDown: -10 }[e.key];
+    if (e.key === 'Home') imposta(0); else if (e.key === 'End') imposta(100); else if (k) imposta(val + k); else return;
+    e.preventDefault();
+  });
+  function etichette() {
+    knob.setAttribute('aria-label', { it: 'Volume', en: 'Volume', fr: 'Volume', zh: '音量' }[l()]);
+    tela.setAttribute('aria-label', { it: 'Area di disegno con menu radiale', en: 'Canvas with radial menu', fr: 'Zone de dessin avec menu radial', zh: '带径向菜单的画布' }[l()]);
+    disegna();
+  }
+  etichette(); imposta(val); document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>
