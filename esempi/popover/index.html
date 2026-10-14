@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- Esempio ricostruito: Popover. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Popover — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 680px; }
+  .riquadro { min-height: 210px; }
+  .riga { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .pulsante { border: 1px solid rgba(0,0,0,.25); background: #fff; border-radius: 9999px; padding: 9px 16px; font-size: 15px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
+  .pulsante:hover { background: #f6f3f2; }
+  .pulsante svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .info { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(0,0,0,.3); background: #fff; font: 500 14px/1 var(--f-testo); cursor: pointer; }
+  .testo { font-size: 16px; line-height: 1.6; margin: 0; }
+  .testo .utente { border: 0; background: none; padding: 0; color: rgb(52, 88, 212); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font-size: inherit; }
+  /* il popover nativo (attributo popover): il browser gestisce livello, Esc e clic fuori */
+  [popover] { margin: 0; inset: auto; border: 0; padding: 16px; border-radius: 12px; background: #fff; color: var(--c-testo); box-shadow: 0 10px 34px rgba(0,0,0,.2); width: 260px; font-size: 15px; overflow: visible; opacity: 0; transform: translateY(-4px); transition: opacity .15s, transform .15s, overlay .15s allow-discrete, display .15s allow-discrete; }
+  [popover]:popover-open { opacity: 1; transform: none; }
+  @starting-style { [popover]:popover-open { opacity: 0; transform: translateY(-4px); } }
+  [popover]::before { content: ""; position: absolute; left: var(--freccia, 24px); width: 12px; height: 12px; background: #fff; transform: rotate(45deg); }
+  [popover].sotto::before { top: -6px; }
+  [popover].sopra::before { bottom: -6px; }
+  [popover] h4 { margin: 0 0 6px; font-size: 16px; font-weight: 500; }
+  [popover] p { margin: 0 0 10px; color: var(--c-tenue); font-size: 14px; }
+  .profilo { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .profilo .av { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(140deg, rgb(250,145,145), #ffe3b0); flex: none; }
+  .profilo p { margin: 0; }
+  .azioni { display: flex; gap: 8px; }
+  .azioni button, .opzioni button { border: 0; border-radius: 9999px; padding: 8px 14px; cursor: pointer; font-size: 14px; }
+  .azioni .primario { background: var(--c-testo); color: #fff; }
+  .azioni .secondario { background: #f3efee; }
+  .opzioni { display: grid; gap: 2px; margin: 0 -8px; }
+  .opzioni button { text-align: left; background: none; border-radius: 8px; }
+  .opzioni button:hover { background: #f6f3f2; }
+  .esito { font-size: 14px; color: var(--c-tenue); min-height: 20px; margin: 14px 0 0; }
+</style>
+</head>
+<body>
+<div class="palco due">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Anteprima di un profilo, con azioni</span><span data-l="en">Profile preview, with actions</span><span data-l="fr">Aperçu d’un profil, avec actions</span><span data-l="zh">个人资料预览，带操作</span></span>
+    <p class="testo"><span data-l="it">Foto caricata da</span><span data-l="en">Photo uploaded by</span><span data-l="fr">Photo publiée par</span><span data-l="zh">照片上传者：</span> <button class="utente" popovertarget="pop-profilo">@giulia.r</button> <span data-l="it">ieri sera.</span><span data-l="en">last night.</span><span data-l="fr">hier soir.</span><span data-l="zh">昨晚。</span></p>
+    <div popover id="pop-profilo" aria-label="@giulia.r">
+      <div class="profilo"><span class="av"></span><div><h4>Giulia R.</h4><p><span data-l="it">Illustratrice · 214 foto</span><span data-l="en">Illustrator · 214 photos</span><span data-l="fr">Illustratrice · 214 photos</span><span data-l="zh">插画师 · 214 张照片</span></p></div></div>
+      <div class="azioni">
+        <button class="primario" type="button" data-esito="segui"><span data-l="it">Segui</span><span data-l="en">Follow</span><span data-l="fr">Suivre</span><span data-l="zh">关注</span></button>
+        <button class="secondario" type="button" data-esito="messaggio"><span data-l="it">Messaggio</span><span data-l="en">Message</span><span data-l="fr">Message</span><span data-l="zh">私信</span></button>
+      </div>
+    </div>
+    <p class="esito" id="esito1" aria-live="polite"></p>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Opzioni da un pulsante, e una spiegazione (ⓘ)</span><span data-l="en">Options from a button, and an explanation (ⓘ)</span><span data-l="fr">Options depuis un bouton, et une explication (ⓘ)</span><span data-l="zh">按钮弹出选项，以及说明（ⓘ）</span></span>
+    <div class="riga">
+      <button class="pulsante" popovertarget="pop-condividi"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6"/></svg><span data-l="it">Condividi</span><span data-l="en">Share</span><span data-l="fr">Partager</span><span data-l="zh">分享</span></button>
+      <button class="info" popovertarget="pop-info" aria-label="Info">i</button>
+    </div>
+    <div popover id="pop-condividi">
+      <div class="opzioni">
+        <button type="button" data-esito="link"><span data-l="it">Copia il link</span><span data-l="en">Copy link</span><span data-l="fr">Copier le lien</span><span data-l="zh">复制链接</span></button>
+        <button type="button" data-esito="email"><span data-l="it">Invia per email</span><span data-l="en">Send by email</span><span data-l="fr">Envoyer par e-mail</span><span data-l="zh">通过邮件发送</span></button>
+        <button type="button" data-esito="incorpora"><span data-l="it">Incorpora</span><span data-l="en">Embed</span><span data-l="fr">Intégrer</span><span data-l="zh">嵌入</span></button>
+      </div>
+    </div>
+    <div popover id="pop-info">
+      <h4><span data-l="it">Chi vede la foto?</span><span data-l="en">Who sees the photo?</span><span data-l="fr">Qui voit la photo ?</span><span data-l="zh">谁能看到这张照片？</span></h4>
+      <p><span data-l="it">Chiunque abbia il link. Puoi cambiarlo nelle impostazioni.</span><span data-l="en">Anyone with the link. You can change it in settings.</span><span data-l="fr">Toute personne ayant le lien. Modifiable dans les réglages.</span><span data-l="zh">任何拥有链接的人。可在设置中更改。</span></p>
+      <a href="#" onclick="return false"><span data-l="it">Scopri di più</span><span data-l="en">Learn more</span><span data-l="fr">En savoir plus</span><span data-l="zh">了解更多</span></a>
+    </div>
+    <p class="esito" id="esito2" aria-live="polite"></p>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Si apre con un clic, non al passaggio del mouse; si chiude con Esc, con un clic fuori o con lo stesso pulsante. Non oscura la pagina (non è una modale) e può contenere pulsanti e link (non è un tooltip). Qui usa l’attributo HTML popover.</span><span data-l="en">It opens on click, not on hover; it closes with Esc, a click outside or the same button. It does not dim the page (it is not a modal) and it can contain buttons and links (it is not a tooltip). Here it uses the HTML popover attribute.</span><span data-l="fr">Il s’ouvre d’un clic, pas au survol ; il se ferme avec Échap, un clic à l’extérieur ou le même bouton. Il n’assombrit pas la page (ce n’est pas une modale) et peut contenir des boutons et des liens (ce n’est pas une infobulle). Ici, il utilise l’attribut HTML popover.</span><span data-l="zh">点击打开，而非悬停；可用 Esc、点击外部或再次点击同一按钮关闭。它不会压暗页面（不是模态框），并且可以包含按钮和链接（不是工具提示）。这里使用的是 HTML 的 popover 属性。</span></p>
+<script>
+  var ESITI = {
+    segui: { it: 'Ora segui @giulia.r', en: 'You now follow @giulia.r', fr: 'Vous suivez maintenant @giulia.r', zh: '你已关注 @giulia.r' },
+    messaggio: { it: 'Apertura della chat…', en: 'Opening chat…', fr: 'Ouverture du chat…', zh: '正在打开聊天…' },
+    link: { it: 'Link copiato', en: 'Link copied', fr: 'Lien copié', zh: '链接已复制' },
+    email: { it: 'Apertura della posta…', en: 'Opening mail…', fr: 'Ouverture de la messagerie…', zh: '正在打开邮件…' },
+    incorpora: { it: 'Codice di incorporamento copiato', en: 'Embed code copied', fr: 'Code d’intégration copié', zh: '嵌入代码已复制' }
+  };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  // posizione accanto al pulsante: sotto, oppure sopra se sotto non c'è posto
+  document.querySelectorAll('[popovertarget]').forEach(function (b) {
+    var pop = document.getElementById(b.getAttribute('popovertarget'));
+    pop.addEventListener('toggle', function (e) {
+      if (e.newState !== 'open') return;
+      var r = b.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      var x = Math.max(8, Math.min(r.left + r.width / 2 - 24, innerWidth - w - 8));
+      var sotto = r.bottom + 12 + h < innerHeight;
+      pop.style.left = x + 'px';
+      pop.style.top = (sotto ? r.bottom + 12 : r.top - 12 - h) + 'px';
+      pop.style.setProperty('--freccia', (r.left + r.width / 2 - x - 6) + 'px');
+      pop.classList.toggle('sotto', sotto); pop.classList.toggle('sopra', !sotto);
+    });
+  });
+  document.querySelectorAll('[data-esito]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var pop = b.closest('[popover]');
+      document.getElementById(pop.id === 'pop-profilo' ? 'esito1' : 'esito2').textContent = ESITI[b.dataset.esito][l()];
+      pop.hidePopover();
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<!-- Esempio ricostruito: Spinner (indicatore di attività). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spinner — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 760px; }
+  .tre-forme { display: flex; justify-content: space-around; align-items: center; padding: 6px 0 2px; }
+  .forma { display: grid; justify-items: center; gap: 10px; font-size: 13px; color: var(--c-tenue); }
+  /* 1. cerchio aperto */
+  .cerchio { width: 40px; height: 40px; border-radius: 50%; border: 4px solid #f1dcdc; border-top-color: var(--c-salmone); animation: gira .8s linear infinite; }
+  /* 2. corona di trattini (stile macOS/iOS) */
+  .corona { position: relative; width: 40px; height: 40px; }
+  .corona i { position: absolute; left: 18px; top: 2px; width: 4px; height: 11px; border-radius: 2px; background: var(--c-testo); transform-origin: 2px 18px; animation: sfuma .96s linear infinite; }
+  /* 3. tre punti */
+  .punti { display: flex; gap: 6px; height: 40px; align-items: center; }
+  .punti i { width: 10px; height: 10px; border-radius: 50%; background: rgb(105,143,255); animation: salta 1s ease-in-out infinite; }
+  .punti i:nth-child(2) { animation-delay: .15s; } .punti i:nth-child(3) { animation-delay: .3s; }
+  @keyframes gira { to { transform: rotate(360deg); } }
+  @keyframes sfuma { from { opacity: 1; } to { opacity: .15; } }
+  @keyframes salta { 0%, 80%, 100% { transform: scale(.6); opacity: .4; } 40% { transform: none; opacity: 1; } }
+  /* movimento ridotto: niente rotazione, una pulsazione lenta */
+  @media (prefers-reduced-motion: reduce) {
+    .cerchio, .corona i, .punti i { animation: pulsa 2s ease-in-out infinite !important; animation-duration: 2s !important; }
+    @keyframes pulsa { 50% { opacity: .35; } }
+  }
+  .invia { position: relative; border: 0; border-radius: 9999px; padding: 12px 26px; min-width: 170px; background: var(--c-testo); color: #fff; font-size: 16px; cursor: pointer; }
+  .invia[aria-busy="true"] { cursor: progress; background: #444; }
+  .invia .mini { display: none; width: 18px; height: 18px; border-width: 3px; border-color: rgba(255,255,255,.3); border-top-color: #fff; vertical-align: -3px; margin-right: 8px; }
+  .invia[aria-busy="true"] .mini { display: inline-block; }
+  .elenco { margin-top: 4px; min-height: 150px; display: grid; place-items: center; border-radius: 10px; background: #faf8f7; }
+  .elenco ul { list-style: none; margin: 0; padding: 0; width: 100%; }
+  .elenco li { padding: 10px 16px; border-bottom: 1px solid var(--c-linea); font-size: 15px; }
+  .comandi { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; font-size: 14px; }
+  .comandi button { border: 1px solid rgba(0,0,0,.25); background: #fff; border-radius: 9999px; padding: 7px 14px; cursor: pointer; }
+  .comandi label { display: flex; gap: 6px; align-items: center; color: var(--c-tenue); }
+  .esito { font-size: 14px; color: var(--c-tenue); min-height: 20px; margin: 12px 0 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Tre forme comuni</span><span data-l="en">Three common shapes</span><span data-l="fr">Trois formes courantes</span><span data-l="zh">三种常见形状</span></span>
+    <div class="tre-forme">
+      <div class="forma"><span class="cerchio"></span><span data-l="it">cerchio aperto</span><span data-l="en">open circle</span><span data-l="fr">cercle ouvert</span><span data-l="zh">开口圆环</span></div>
+      <div class="forma"><span class="corona" id="corona"></span><span data-l="it">corona di trattini</span><span data-l="en">ring of dashes</span><span data-l="fr">couronne de tirets</span><span data-l="zh">一圈短线</span></div>
+      <div class="forma"><span class="punti"><i></i><i></i><i></i></span><span data-l="it">punti</span><span data-l="en">dots</span><span data-l="fr">points</span><span data-l="zh">圆点</span></div>
+    </div>
+  </div>
+  <div class="palco due" style="max-width:none">
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Dentro il pulsante premuto</span><span data-l="en">Inside the pressed button</span><span data-l="fr">Dans le bouton appuyé</span><span data-l="zh">在按下的按钮里</span></span>
+      <button class="invia" id="invia" type="button"><span class="cerchio mini"></span><span class="et"></span></button>
+      <p class="esito" id="esito1" aria-live="polite"></p>
+    </div>
+    <div class="riquadro">
+      <span class="didascalia"><span data-l="it">Al posto dell’elenco che arriva</span><span data-l="en">In place of the incoming list</span><span data-l="fr">À la place de la liste qui arrive</span><span data-l="zh">在即将出现的列表位置</span></span>
+      <div class="comandi">
+        <button type="button" id="carica"><span data-l="it">Ricarica</span><span data-l="en">Reload</span><span data-l="fr">Recharger</span><span data-l="zh">重新加载</span></button>
+        <label><input type="checkbox" id="ritardo" checked><span data-l="it">ritardo di 300 ms</span><span data-l="en">300 ms delay</span><span data-l="fr">délai de 300 ms</span><span data-l="zh">延迟 300 毫秒</span></label>
+        <label><input type="checkbox" id="veloce"><span data-l="it">risposta veloce</span><span data-l="en">fast response</span><span data-l="fr">réponse rapide</span><span data-l="zh">快速响应</span></label>
+      </div>
+      <div class="elenco" id="elenco" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Lo spinner dice «sto lavorando», non «quanto manca»: per attese oltre i dieci secondi serve una barra di avanzamento. Con il ritardo, una risposta veloce non fa lampeggiare lo spinner. Con prefers-reduced-motion la rotazione diventa una pulsazione lenta.</span><span data-l="en">The spinner says “I’m working”, not “how long”: for waits over ten seconds a progress bar is needed. With the delay, a fast response does not make the spinner flash. With prefers-reduced-motion the rotation becomes a slow pulse.</span><span data-l="fr">Le spinner dit « je travaille », pas « combien de temps » : au-delà de dix secondes, il faut une barre de progression. Avec le délai, une réponse rapide ne fait pas clignoter le spinner. Avec prefers-reduced-motion, la rotation devient une pulsation lente.</span><span data-l="zh">spinner 表示“正在处理”，而不是“还要多久”：等待超过十秒时需要进度条。加上延迟后，快速响应不会让 spinner 一闪而过。开启 prefers-reduced-motion 时，旋转会变成缓慢的脉动。</span></p>
+<script>
+  var T = {
+    invia: { it: 'Invia', en: 'Send', fr: 'Envoyer', zh: '发送' },
+    invio: { it: 'Invio…', en: 'Sending…', fr: 'Envoi…', zh: '发送中…' },
+    inviato: { it: 'Messaggio inviato.', en: 'Message sent.', fr: 'Message envoyé.', zh: '消息已发送。' },
+    carico: { it: 'Caricamento in corso', en: 'Loading', fr: 'Chargement en cours', zh: '正在加载' },
+    voci: { it: ['Ordine 1024 · spedito', 'Ordine 1023 · consegnato', 'Ordine 1019 · consegnato'], en: ['Order 1024 · shipped', 'Order 1023 · delivered', 'Order 1019 · delivered'], fr: ['Commande 1024 · expédiée', 'Commande 1023 · livrée', 'Commande 1019 · livrée'], zh: ['订单 1024 · 已发货', '订单 1023 · 已送达', '订单 1019 · 已送达'] }
+  };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  var corona = document.getElementById('corona');
+  for (var i = 0; i < 8; i++) { var t = document.createElement('i'); t.style.transform = 'rotate(' + (i * 45) + 'deg)'; t.style.animationDelay = (i * .12 - .96) + 's'; corona.appendChild(t); }
+
+  var invia = document.getElementById('invia');
+  function etInvia() { invia.querySelector('.et').textContent = invia.getAttribute('aria-busy') === 'true' ? T.invio[l()] : T.invia[l()]; }
+  invia.addEventListener('click', function () {
+    if (invia.getAttribute('aria-busy') === 'true') return;
+    invia.setAttribute('aria-busy', 'true'); etInvia(); document.getElementById('esito1').textContent = '';
+    setTimeout(function () { invia.removeAttribute('aria-busy'); etInvia(); document.getElementById('esito1').textContent = T.inviato[l()]; }, 1800);
+  });
+
+  var elenco = document.getElementById('elenco'), turno = 0;
+  function carica() {
+    var mio = ++turno, veloce = document.getElementById('veloce').checked, ritardo = document.getElementById('ritardo').checked ? 300 : 0;
+    elenco.innerHTML = '';
+    var timer = setTimeout(function () { if (mio === turno) elenco.innerHTML = '<span class="cerchio"></span><span class="sr">' + T.carico[l()] + '</span>'; }, ritardo);
+    setTimeout(function () {
+      if (mio !== turno) return;
+      clearTimeout(timer);
+      elenco.innerHTML = '<ul>' + T.voci[l()].map(function (v) { return '<li>' + v + '</li>'; }).join('') + '</ul>';
+    }, veloce ? 150 : 2000);
+  }
+  document.getElementById('carica').addEventListener('click', carica);
+  etInvia(); carica();
+  document.addEventListener('lingua', function () { etInvia(); if (elenco.querySelector('ul')) carica(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- Esempio ricostruito: Tabs. © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabs — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 680px; }
+  [role="tablist"] { position: relative; display: flex; gap: 4px; border-bottom: 1px solid var(--c-linea); overflow-x: auto; scrollbar-width: none; }
+  [role="tab"] { flex: none; border: 0; background: none; padding: 12px 16px; font-size: 16px; color: var(--c-tenue); cursor: pointer; border-radius: 8px 8px 0 0; }
+  [role="tab"]:hover { background: #f6f3f2; color: var(--c-testo); }
+  [role="tab"][aria-selected="true"] { color: var(--c-testo); font-weight: 500; }
+  .indicatore { position: absolute; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--c-salmone); transition: left .25s ease, width .25s ease; }
+  [role="tabpanel"] { padding: 22px 4px 4px; min-height: 150px; font-size: 16px; line-height: 1.55; }
+  [role="tabpanel"] p { margin: 0 0 .6em; }
+  [role="tabpanel"] ul { margin: 0; padding-left: 1.2em; }
+  .stelle { color: #e0a100; letter-spacing: 2px; }
+  .segmenti { display: inline-flex; padding: 3px; border-radius: 10px; background: #efebea; }
+  .segmenti button { border: 0; background: none; padding: 7px 16px; border-radius: 8px; font-size: 14px; cursor: pointer; }
+  .segmenti button[aria-pressed="true"] { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.15); font-weight: 500; }
+  .vista { margin-top: 14px; display: grid; gap: 8px; }
+  .vista.griglia { grid-template-columns: repeat(3, 1fr); }
+  .vista div { height: 34px; border-radius: 6px; background: linear-gradient(90deg, #fde3e3, #e6ecff); }
+  .vista.griglia div { height: 70px; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Schede: un pannello alla volta (frecce ← → con la tastiera)</span><span data-l="en">Tabs: one panel at a time (← → arrow keys on the keyboard)</span><span data-l="fr">Onglets : un panneau à la fois (flèches ← → au clavier)</span><span data-l="zh">标签页：一次显示一个面板（键盘可用 ← → 切换）</span></span>
+    <div role="tablist" id="schede">
+      <button role="tab" id="t1" aria-controls="p1" aria-selected="true"><span data-l="it">Descrizione</span><span data-l="en">Description</span><span data-l="fr">Description</span><span data-l="zh">描述</span></button>
+      <button role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><span data-l="it">Specifiche</span><span data-l="en">Specs</span><span data-l="fr">Caractéristiques</span><span data-l="zh">规格</span></button>
+      <button role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><span data-l="it">Recensioni (3)</span><span data-l="en">Reviews (3)</span><span data-l="fr">Avis (3)</span><span data-l="zh">评价（3）</span></button>
+      <span class="indicatore" id="indicatore"></span>
+    </div>
+    <div role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0">
+      <p><span data-l="it">Lampada da tavolo in vetro soffiato, luce calda regolabile.</span><span data-l="en">Blown-glass table lamp, adjustable warm light.</span><span data-l="fr">Lampe de table en verre soufflé, lumière chaude réglable.</span><span data-l="zh">吹制玻璃台灯，暖光可调。</span></p>
+      <p><span data-l="it">Ogni pezzo è leggermente diverso dagli altri.</span><span data-l="en">Each piece is slightly different from the others.</span><span data-l="fr">Chaque pièce est légèrement différente des autres.</span><span data-l="zh">每一件都略有不同。</span></p>
+    </div>
+    <div role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden>
+      <ul>
+        <li><span data-l="it">Altezza: 38 cm</span><span data-l="en">Height: 38 cm</span><span data-l="fr">Hauteur : 38 cm</span><span data-l="zh">高度：38 厘米</span></li>
+        <li><span data-l="it">Lampadina: LED E14, 2700 K</span><span data-l="en">Bulb: LED E14, 2700 K</span><span data-l="fr">Ampoule : LED E14, 2700 K</span><span data-l="zh">灯泡：LED E14，2700 K</span></li>
+        <li><span data-l="it">Cavo: 1,8 m con interruttore</span><span data-l="en">Cable: 1.8 m with switch</span><span data-l="fr">Câble : 1,8 m avec interrupteur</span><span data-l="zh">电线：1.8 米，带开关</span></li>
+      </ul>
+    </div>
+    <div role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden>
+      <p><span class="stelle">★★★★★</span> <span data-l="it">«Luce bellissima.»</span><span data-l="en">“Beautiful light.”</span><span data-l="fr">« Très belle lumière. »</span><span data-l="zh">“光线很美。”</span></p>
+      <p><span class="stelle">★★★★☆</span> <span data-l="it">«Arrivata in due giorni.»</span><span data-l="en">“Arrived in two days.”</span><span data-l="fr">« Arrivée en deux jours. »</span><span data-l="zh">“两天就到了。”</span></p>
+      <p><span class="stelle">★★★★★</span> <span data-l="it">«Più grande del previsto.»</span><span data-l="en">“Bigger than expected.”</span><span data-l="fr">« Plus grande que prévu. »</span><span data-l="zh">“比预想的大。”</span></p>
+    </div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Segmented control: la versione compatta, per cambiare vista</span><span data-l="en">Segmented control: the compact version, for switching views</span><span data-l="fr">Segmented control : la version compacte, pour changer de vue</span><span data-l="zh">分段控件：紧凑版本，用于切换视图</span></span>
+    <div class="segmenti" id="segmenti">
+      <button type="button" aria-pressed="true" data-vista="elenco"><span data-l="it">Elenco</span><span data-l="en">List</span><span data-l="fr">Liste</span><span data-l="zh">列表</span></button>
+      <button type="button" aria-pressed="false" data-vista="griglia"><span data-l="it">Griglia</span><span data-l="en">Grid</span><span data-l="fr">Grille</span><span data-l="zh">网格</span></button>
+    </div>
+    <div class="vista" id="vista"><div></div><div></div><div></div></div>
+  </div>
+</div>
+<p class="nota"><span data-l="it">Con Tab si entra nella fila delle schede, con le frecce si cambia scheda, con Tab di nuovo si passa al pannello. Home e Fine portano alla prima e all’ultima.</span><span data-l="en">Tab enters the row of tabs, the arrow keys switch tab, Tab again moves to the panel. Home and End go to the first and the last.</span><span data-l="fr">Tab fait entrer dans la rangée d’onglets, les flèches changent d’onglet, Tab à nouveau passe au panneau. Début et Fin mènent au premier et au dernier.</span><span data-l="zh">按 Tab 进入标签行，用方向键切换标签，再按 Tab 进入面板。Home 和 End 分别跳到第一个和最后一个标签。</span></p>
+<script>
+  var schede = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  var indicatore = document.getElementById('indicatore');
+  function sposta() {
+    var t = schede.filter(function (s) { return s.getAttribute('aria-selected') === 'true'; })[0];
+    indicatore.style.left = t.offsetLeft + 'px'; indicatore.style.width = t.offsetWidth + 'px';
+  }
+  function scegli(t, fuoco) {
+    schede.forEach(function (s) {
+      var on = s === t;
+      s.setAttribute('aria-selected', String(on)); s.tabIndex = on ? 0 : -1;
+      document.getElementById(s.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (fuoco) t.focus();
+    sposta();
+  }
+  schede.forEach(function (s, i) {
+    s.addEventListener('click', function () { scegli(s, false); });
+    s.addEventListener('keydown', function (e) {
+      var n = schede.length, j = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+      if (j !== undefined) { e.preventDefault(); scegli(schede[j], true); }
+    });
+  });
+  document.querySelectorAll('#segmenti button').forEach(function (b, _, tutti) {
+    b.addEventListener('click', function () {
+      tutti.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      document.getElementById('vista').className = 'vista' + (b.dataset.vista === 'griglia' ? ' griglia' : '');
+    });
+  });
+  sposta();
+  document.addEventListener('lingua', sposta);
+  window.addEventListener('resize', sposta);
+  if (document.fonts) document.fonts.ready.then(sposta);
+</script>
+</body>
+</html>

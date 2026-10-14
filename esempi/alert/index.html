@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- Esempio ricostruito: Avviso (alert). © Francesco Zaccaria, codice con licenza MIT. -->
+<html lang="en" data-lingua="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alert — UI Design: Components</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&family=Noto+Sans+SC:wght@400;500&display=swap">
+<link rel="stylesheet" href="../base.css">
+<script src="../../assets/lingua.js"></script>
+<style>
+  .palco { max-width: 680px; }
+  .avviso { display: grid; grid-template-columns: 24px 1fr auto; gap: 4px 12px; align-items: start; padding: 14px 14px 14px 16px; border-radius: 10px; border-left: 5px solid var(--bordo); background: var(--fondo); margin-bottom: 12px; font-size: 15px; line-height: 1.45; }
+  .avviso[hidden] { display: none; }
+  .avviso svg { width: 22px; height: 22px; fill: none; stroke: var(--bordo); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+  .avviso b { font-weight: 500; display: block; }
+  .avviso p { margin: 0; }
+  .avviso .azione { grid-column: 2; justify-self: start; margin-top: 6px; border: 0; background: none; padding: 0; font-size: 15px; color: var(--testo-azione, var(--c-testo)); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .avviso .chiudi { width: 30px; height: 30px; border: 0; border-radius: 50%; background: none; cursor: pointer; font-size: 20px; line-height: 1; color: rgba(0,0,0,.55); }
+  .avviso .chiudi:hover { background: rgba(0,0,0,.06); }
+  .info { --bordo: rgb(52, 88, 212); --fondo: #eef2ff; }
+  .successo { --bordo: #237a43; --fondo: #e9f6ee; }
+  .attenzione { --bordo: #a86b00; --fondo: #fff5df; }
+  .errore { --bordo: #c0362c; --fondo: #fdecea; }
+  .campo { display: grid; gap: 6px; margin-top: 4px; font-size: 15px; }
+  .campo input { padding: 10px 12px; border: 1px solid rgba(0,0,0,.3); border-radius: 8px; font-size: 16px; }
+  .campo input[aria-invalid="true"] { border-color: #c0362c; border-width: 2px; }
+  .campo .msg { color: #c0362c; font-size: 14px; display: flex; gap: 6px; align-items: center; }
+  .campo .msg[hidden] { display: none; }
+  .riga { display: flex; gap: 10px; align-items: center; margin-top: 12px; }
+  .riga button { border: 0; border-radius: 9999px; padding: 10px 18px; background: var(--c-testo); color: #fff; cursor: pointer; font-size: 15px; }
+  .rimetti { border: 1px solid rgba(0,0,0,.25) !important; background: #fff !important; color: inherit !important; }
+</style>
+</head>
+<body>
+<div class="palco">
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Quattro tipi: colore, icona e parole insieme</span><span data-l="en">Four types: colour, icon and words together</span><span data-l="fr">Quatre types : couleur, icône et mots ensemble</span><span data-l="zh">四种类型：颜色、图标和文字结合</span></span>
+    <div class="avviso info" role="status">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>
+      <div><b><span data-l="it">Manutenzione domenica</span><span data-l="en">Maintenance on Sunday</span><span data-l="fr">Maintenance dimanche</span><span data-l="zh">周日维护</span></b><p><span data-l="it">Dalle 2 alle 4 il servizio potrebbe essere lento.</span><span data-l="en">From 2 to 4 am the service may be slow.</span><span data-l="fr">De 2 h à 4 h, le service pourrait être lent.</span><span data-l="zh">凌晨 2 点至 4 点服务可能较慢。</span></p></div>
+      <button class="chiudi" type="button" data-chiudi>×</button>
+    </div>
+    <div class="avviso successo" role="status">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg>
+      <div><b><span data-l="it">Profilo salvato</span><span data-l="en">Profile saved</span><span data-l="fr">Profil enregistré</span><span data-l="zh">资料已保存</span></b><p><span data-l="it">Le modifiche sono visibili a tutti.</span><span data-l="en">Your changes are visible to everyone.</span><span data-l="fr">Les modifications sont visibles par tous.</span><span data-l="zh">所有人都能看到你的修改。</span></p></div>
+      <button class="chiudi" type="button" data-chiudi>×</button>
+    </div>
+    <div class="avviso attenzione" role="status">
+      <svg viewBox="0 0 24 24"><path d="M12 3l9.5 17h-19z"/><path d="M12 10v4M12 17h.01"/></svg>
+      <div><b><span data-l="it">Spazio quasi esaurito</span><span data-l="en">Storage almost full</span><span data-l="fr">Espace presque plein</span><span data-l="zh">存储空间即将用完</span></b><p><span data-l="it">Hai usato il 92 % dello spazio.</span><span data-l="en">You have used 92% of your storage.</span><span data-l="fr">Vous avez utilisé 92 % de votre espace.</span><span data-l="zh">你已使用 92% 的存储空间。</span></p></div>
+      <button class="chiudi" type="button" data-chiudi>×</button>
+      <button class="azione" type="button"><span data-l="it">Libera spazio</span><span data-l="en">Free up space</span><span data-l="fr">Libérer de l’espace</span><span data-l="zh">释放空间</span></button>
+    </div>
+    <div class="avviso errore" role="alert">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+      <div><b><span data-l="it">Pagamento non riuscito</span><span data-l="en">Payment failed</span><span data-l="fr">Échec du paiement</span><span data-l="zh">付款失败</span></b><p><span data-l="it">La carta è scaduta. Nessun addebito è stato fatto.</span><span data-l="en">The card has expired. You have not been charged.</span><span data-l="fr">La carte a expiré. Aucun débit n’a été effectué.</span><span data-l="zh">银行卡已过期，未产生任何扣款。</span></p></div>
+      <span></span>
+      <button class="azione" type="button"><span data-l="it">Cambia carta</span><span data-l="en">Change card</span><span data-l="fr">Changer de carte</span><span data-l="zh">更换银行卡</span></button>
+    </div>
+    <div class="riga"><button class="rimetti" type="button" id="rimetti"><span data-l="it">Mostra di nuovo tutti</span><span data-l="en">Show all again</span><span data-l="fr">Tout réafficher</span><span data-l="zh">全部重新显示</span></button></div>
+  </div>
+  <div class="riquadro">
+    <span class="didascalia"><span data-l="it">Errore di un form: vicino al campo, con un riepilogo in alto</span><span data-l="en">Form error: next to the field, with a summary at the top</span><span data-l="fr">Erreur de formulaire : près du champ, avec un récapitulatif en haut</span><span data-l="zh">表单错误：在字段旁边，并在顶部汇总</span></span>
+    <div class="avviso errore" id="riepilogo" role="alert" hidden tabindex="-1">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+      <div><b><span data-l="it">C’è un problema</span><span data-l="en">There is a problem</span><span data-l="fr">Il y a un problème</span><span data-l="zh">出现问题</span></b><p><a href="#email" id="vai"><span data-l="it">Inserisci un indirizzo email valido</span><span data-l="en">Enter a valid email address</span><span data-l="fr">Saisissez une adresse e-mail valide</span><span data-l="zh">请输入有效的电子邮件地址</span></a></p></div>
+    </div>
+    <form id="form" novalidate onsubmit="return false">
+      <label class="campo"><span data-l="it">Email</span><span data-l="en">Email</span><span data-l="fr">E-mail</span><span data-l="zh">电子邮件</span>
+        <input id="email" type="email" value="giulia@" aria-describedby="err-email">
+        <span class="msg" id="err-email" hidden>⚠ <span data-l="it">Manca il dominio, per esempio giulia@esempio.it</span><span data-l="en">The domain is missing, for example giulia@example.com</span><span data-l="fr">Le domaine manque, par exemple giulia@exemple.fr</span><span data-l="zh">缺少域名，例如 giulia@example.com</span></span>
+      </label>
+      <div class="riga"><button type="submit" id="invia"><span data-l="it">Iscriviti</span><span data-l="en">Subscribe</span><span data-l="fr">S’inscrire</span><span data-l="zh">订阅</span></button></div>
+    </form>
+  </div>
+</div>
+<p class="nota"><span data-l="it">L’avviso resta nella pagina finché serve (il toast invece sparisce da solo). Il colore da solo non basta: ogni tipo ha anche un’icona e un titolo. Gli errori usano role="alert", gli altri role="status".</span><span data-l="en">The alert stays in the page as long as it is needed (a toast disappears by itself). Colour alone is not enough: each type also has an icon and a title. Errors use role="alert", the others role="status".</span><span data-l="fr">L’alerte reste dans la page tant qu’elle est utile (le toast, lui, disparaît tout seul). La couleur seule ne suffit pas : chaque type a aussi une icône et un titre. Les erreurs utilisent role="alert", les autres role="status".</span><span data-l="zh">提示框会一直留在页面上，直到不再需要（toast 则会自动消失）。仅靠颜色不够：每种类型都配有图标和标题。错误使用 role="alert"，其他使用 role="status"。</span></p>
+<script>
+  var CHIUDI = { it: 'Chiudi', en: 'Dismiss', fr: 'Fermer', zh: '关闭' };
+  function l() { return window.Lingua ? Lingua.get() : 'en'; }
+  function etichette() { document.querySelectorAll('[data-chiudi]').forEach(function (b) { b.setAttribute('aria-label', CHIUDI[l()]); }); }
+  document.querySelectorAll('[data-chiudi]').forEach(function (b) { b.addEventListener('click', function () { b.closest('.avviso').hidden = true; }); });
+  document.getElementById('rimetti').addEventListener('click', function () { document.querySelectorAll('.riquadro:first-child .avviso').forEach(function (a) { a.hidden = false; }); });
+  var email = document.getElementById('email'), riep = document.getElementById('riepilogo'), msg = document.getElementById('err-email');
+  document.getElementById('form').addEventListener('submit', function () {
+    var ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value);
+    email.setAttribute('aria-invalid', String(!ok)); msg.hidden = ok; riep.hidden = ok;
+    if (!ok) riep.focus();
+    else { riep.hidden = true; email.value = ''; }
+  });
+  document.getElementById('vai').addEventListener('click', function (e) { e.preventDefault(); email.focus(); });
+  email.addEventListener('input', function () { if (/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value)) { email.setAttribute('aria-invalid', 'false'); msg.hidden = true; riep.hidden = true; } });
+  etichette(); document.addEventListener('lingua', etichette);
+</script>
+</body>
+</html>

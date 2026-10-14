@@ -52,6 +52,7 @@
       var tot = 0;
       var ok = (!livello || tr.dataset.livello === livello) && (!cat || tr.dataset.categoria === cat) &&
                termini.every(function (t) { var p = punti(tr, t); tot += p; return p > 0; });
+      if (ok && termini.join(' ') === tr.id.replace(/-/g, ' ')) tot += 3;   // la scheda che si chiama proprio così
       tr._punti = tot;
       tr.hidden = !ok;
       if (ok) n++;

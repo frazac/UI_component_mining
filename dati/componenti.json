@@ -5594,6 +5594,247 @@
      "note": "用来划分内容分组的符号。最常见的是细线：横向用于菜单项或页面各部分之间，纵向用于工具栏按钮或页脚链接之间（常用字符 |）。在 HTML 中是 hr 元素，表示话题的转换；ARIA 的 separator 角色向屏幕阅读器用户传达同样的含义。\n\n在长文本中，两个部分之间的停顿也可以用排版符号标示：星号三角 ⁂（asterism，三个星号排成三角形）、一行三个星号 * * *（dinkus），或花饰 ❦ 之类的装饰符。应当克制使用：根据格式塔的接近律，往往留白就足以分隔，线条太多会让界面变成网格。"
     }
    }
+  },
+  {
+   "id": "tabs",
+   "livello": "avanzato",
+   "categoria": "navigazione",
+   "anno": 2026,
+   "ordine": 940,
+   "parole": [
+    "tabs",
+    "tab",
+    "tab bar",
+    "tabbed interface",
+    "tab panel",
+    "segmented control",
+    "linguette",
+    "schede",
+    "scheda"
+   ],
+   "esempio": "esempi/tabs/",
+   "vedi": [
+    "bar-header",
+    "tab-audio-indicator",
+    "accordion",
+    "thumbnav"
+   ],
+   "origine": "FZ, 2026-10-15",
+   "fonti": [
+    {
+     "url": "https://www.w3.org/WAI/ARIA/apg/patterns/tabs/",
+     "titolo": "Tabs pattern - WAI-ARIA Authoring Practices Guide"
+    },
+    {
+     "url": "https://m3.material.io/components/tabs/overview",
+     "titolo": "Tabs - Material Design 3"
+    },
+    {
+     "url": "https://design-system.service.gov.uk/components/tabs/",
+     "titolo": "Tabs - GOV.UK Design System"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Schede (tabs)",
+     "note": "Una fila di etichette sopra un'area di contenuto: ogni etichetta mostra il suo pannello e nasconde gli altri, come le linguette di un raccoglitore. Servono a dividere contenuti dello stesso livello, che non si devono confrontare a colpo d'occhio (descrizione, specifiche, recensioni). La scheda attiva deve distinguersi bene, di solito con una sottolineatura o uno sfondo.\n\nCon la tastiera si entra nella fila con Tab e ci si sposta tra le schede con le frecce; Tab porta poi dentro il pannello. Se le schede sono troppe vanno su una riga scorrevole o diventano un menu; su mobile, con contenuti lunghi, spesso funziona meglio un accordion. Il segmented control è la loro versione compatta, per cambiare vista. Da non confondere con la barra di navigazione in basso delle app, che cambia sezione."
+    },
+    "en": {
+     "nome": "Tabs",
+     "note": "A row of labels above a content area: each label shows its panel and hides the others, like the tabs of a binder. They divide content at the same level that does not need to be compared at a glance (description, specs, reviews). The active tab must stand out clearly, usually with an underline or a background.\n\nWith the keyboard you enter the row with Tab and move between tabs with the arrow keys; Tab then moves into the panel. When there are too many tabs they go on a scrolling row or become a menu; on mobile, with long content, an accordion often works better. The segmented control is their compact version, for switching views. Not to be confused with the bottom navigation bar of apps, which switches sections."
+    },
+    "fr": {
+     "nome": "Onglets (tabs)",
+     "note": "Une rangée d’étiquettes au-dessus d’une zone de contenu : chaque étiquette affiche son panneau et masque les autres, comme les intercalaires d’un classeur. Ils répartissent des contenus de même niveau qu’on n’a pas besoin de comparer d’un coup d’œil (description, caractéristiques, avis). L’onglet actif doit bien se distinguer, en général par un soulignement ou un fond.\n\nAu clavier, on entre dans la rangée avec Tab et on passe d’un onglet à l’autre avec les flèches ; Tab mène ensuite dans le panneau. S’il y a trop d’onglets, ils passent sur une rangée défilante ou deviennent un menu ; sur mobile, avec des contenus longs, un accordéon fonctionne souvent mieux. Le segmented control en est la version compacte, pour changer de vue. À ne pas confondre avec la barre de navigation en bas des applications, qui change de section."
+    },
+    "zh": {
+     "nome": "标签页（tabs）",
+     "note": "内容区上方的一排标签：点击某个标签会显示它的面板并隐藏其他面板，就像文件夹的分隔标签。适合划分同一层级、不需要一眼对比的内容（描述、规格、评价）。当前标签必须清楚可辨，通常用下划线或背景色表示。\n\n使用键盘时，按 Tab 进入标签行，用方向键在标签之间切换，再按 Tab 进入面板。标签太多时可以放在可横向滚动的一行里，或改成菜单；在移动端内容较长时，手风琴往往更合适。分段控件（segmented control）是它的紧凑版本，用于切换视图。不要与应用底部切换板块的导航栏混淆。"
+    }
+   }
+  },
+  {
+   "id": "popover",
+   "livello": "avanzato",
+   "categoria": "contenitori",
+   "anno": 2026,
+   "ordine": 950,
+   "parole": [
+    "popover",
+    "popup",
+    "pop-up",
+    "flyout",
+    "bubble",
+    "callout",
+    "toggletip",
+    "nuvoletta",
+    "fumetto"
+   ],
+   "esempio": "esempi/popover/",
+   "vedi": [
+    "tooltip",
+    "modal",
+    "context-menu",
+    "onboarding",
+    "kebab-menu"
+   ],
+   "origine": "FZ, 2026-10-15",
+   "fonti": [
+    {
+     "url": "https://developer.mozilla.org/en-US/docs/Web/API/Popover_API",
+     "titolo": "Popover API - MDN"
+    },
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/popovers",
+     "titolo": "Popovers - Apple Human Interface Guidelines"
+    },
+    {
+     "url": "https://carbondesignsystem.com/components/popover/usage/",
+     "titolo": "Popover - Carbon Design System"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Popover",
+     "note": "Un piccolo riquadro che si apre accanto all'elemento che l'ha richiamato, con una freccia che lo indica, e resta sopra la pagina senza oscurarla. Contiene più di un tooltip: un breve testo con un link, un'anteprima, qualche opzione, un piccolo form. Si apre con un clic o un tocco, non al passaggio del mouse, e si chiude con Esc, con un clic fuori o con lo stesso pulsante.\n\nA differenza della modale non blocca il resto dell'interfaccia; a differenza del tooltip può contenere elementi interattivi, quindi il focus deve poterci entrare e alla chiusura tornare al pulsante. Il suo posto si adatta allo spazio: se sotto non c'è posto, si apre sopra. In HTML oggi esiste l'attributo popover, che gestisce apertura, chiusura e livello senza JavaScript."
+    },
+    "en": {
+     "nome": "Popover",
+     "note": "A small box that opens next to the element that called it, with an arrow pointing to it, and stays above the page without dimming it. It holds more than a tooltip: a short text with a link, a preview, a few options, a small form. It opens with a click or a tap, not on hover, and closes with Esc, a click outside or the same button.\n\nUnlike a modal it does not block the rest of the interface; unlike a tooltip it can contain interactive elements, so focus must be able to enter it and return to the button on closing. Its position adapts to the space: if there is no room below, it opens above. HTML now has the popover attribute, which handles opening, closing and stacking without JavaScript."
+    },
+    "fr": {
+     "nome": "Popover",
+     "note": "Une petite boîte qui s’ouvre à côté de l’élément qui l’a appelée, avec une flèche qui le désigne, et reste au-dessus de la page sans l’assombrir. Elle contient plus qu’une infobulle : un court texte avec un lien, un aperçu, quelques options, un petit formulaire. Elle s’ouvre d’un clic ou d’un toucher, pas au survol, et se ferme avec Échap, un clic à l’extérieur ou le même bouton.\n\nContrairement à la fenêtre modale, elle ne bloque pas le reste de l’interface ; contrairement à l’infobulle, elle peut contenir des éléments interactifs : le focus doit donc pouvoir y entrer et revenir au bouton à la fermeture. Sa position s’adapte à l’espace : s’il n’y a pas de place en dessous, elle s’ouvre au-dessus. HTML dispose aujourd’hui de l’attribut popover, qui gère ouverture, fermeture et superposition sans JavaScript."
+    },
+    "zh": {
+     "nome": "弹出框（popover）",
+     "note": "在触发它的元素旁边打开的小框，带一个指向该元素的箭头，浮在页面上方而不压暗页面。它比工具提示（tooltip）容纳更多内容：一段带链接的短文、预览、几个选项或一个小表单。它通过点击或轻触打开，而不是悬停，可用 Esc、点击外部或再次点击同一按钮关闭。\n\n与模态框不同，它不会阻断界面的其余部分；与工具提示不同，它可以包含可交互元素，因此焦点必须能够进入其中，并在关闭后回到按钮。它的位置会根据空间调整：下方放不下时就向上打开。如今 HTML 提供了 popover 属性，无需 JavaScript 即可处理打开、关闭和层级。"
+    }
+   }
+  },
+  {
+   "id": "spinner",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2026,
+   "ordine": 960,
+   "parole": [
+    "spinner",
+    "throbber",
+    "loader",
+    "loading spinner",
+    "activity indicator",
+    "progress circle",
+    "indeterminate",
+    "rotella",
+    "caricamento"
+   ],
+   "esempio": "esempi/spinner/",
+   "vedi": [
+    "loading-screen",
+    "progress-bar",
+    "skeleton-screen",
+    "pointer",
+    "feedback"
+   ],
+   "origine": "FZ, 2026-10-15",
+   "fonti": [
+    {
+     "url": "https://developer.apple.com/design/human-interface-guidelines/progress-indicators",
+     "titolo": "Progress indicators - Apple Human Interface Guidelines"
+    },
+    {
+     "url": "https://m3.material.io/components/progress-indicators/overview",
+     "titolo": "Progress indicators - Material Design 3"
+    },
+    {
+     "url": "https://www.nngroup.com/articles/progress-indicators/",
+     "titolo": "Progress Indicators Make a Slow System Less Insufferable - Nielsen Norman Group"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Spinner (indicatore di attività)",
+     "note": "Una piccola figura che gira (un cerchio aperto, una corona di trattini, dei punti) per dire che il sistema sta lavorando e non si è bloccato. È un indicatore indeterminato: mostra che qualcosa succede, non quanto manca. Per attese brevi, da uno a pochi secondi, basta; oltre i dieci secondi serve una barra di avanzamento con la percentuale o il tempo stimato.\n\nVa messo dove arriverà il risultato: dentro il pulsante appena premuto, al posto dell'elenco che si sta caricando, non in un angolo lontano. Se l'attesa è quasi sempre brevissima conviene mostrarlo con un piccolo ritardo, per evitare un lampo inutile. Per chi usa lo screen reader va annunciato lo stato («caricamento in corso»), e con prefers-reduced-motion la rotazione va rallentata o sostituita. Lo skeleton screen è l'alternativa che anticipa anche la forma del contenuto."
+    },
+    "en": {
+     "nome": "Spinner (activity indicator)",
+     "note": "A small rotating figure (an open circle, a ring of dashes, dots) that says the system is working and has not frozen. It is an indeterminate indicator: it shows that something is happening, not how much is left. For short waits, from one to a few seconds, it is enough; beyond ten seconds a progress bar with a percentage or an estimated time is needed.\n\nIt belongs where the result will appear: inside the button just pressed, in place of the list being loaded, not in a distant corner. If the wait is almost always very short, it is better to show it after a small delay, to avoid a pointless flash. Screen reader users need the status announced (“loading”), and with prefers-reduced-motion the rotation should be slowed down or replaced. The skeleton screen is the alternative that also anticipates the shape of the content."
+    },
+    "fr": {
+     "nome": "Spinner (indicateur d’activité)",
+     "note": "Une petite figure qui tourne (un cercle ouvert, une couronne de tirets, des points) pour dire que le système travaille et ne s’est pas bloqué. C’est un indicateur indéterminé : il montre qu’il se passe quelque chose, pas combien il reste. Pour des attentes courtes, d’une à quelques secondes, il suffit ; au-delà de dix secondes, il faut une barre de progression avec le pourcentage ou le temps estimé.\n\nIl se place là où le résultat arrivera : dans le bouton qu’on vient d’appuyer, à la place de la liste en cours de chargement, pas dans un coin éloigné. Si l’attente est presque toujours très brève, mieux vaut l’afficher avec un léger délai, pour éviter un clignotement inutile. Pour les utilisateurs de lecteur d’écran, l’état doit être annoncé (« chargement en cours ») et, avec prefers-reduced-motion, la rotation doit être ralentie ou remplacée. Le skeleton screen est l’alternative qui anticipe aussi la forme du contenu."
+    },
+    "zh": {
+     "nome": "加载指示器（spinner）",
+     "note": "一个旋转的小图形（开口的圆环、一圈短线或几个圆点），表示系统正在工作、没有卡住。它是不确定型指示器：只表明正在进行，不表明还剩多少。等待时间较短（一到几秒）时用它就够了；超过十秒则需要显示百分比或预计时间的进度条。\n\n它应放在结果将要出现的位置：刚按下的按钮里、正在加载的列表处，而不是远处的角落。如果等待几乎总是很短，最好稍作延迟再显示，避免一闪而过。对于使用读屏软件的用户，需要播报状态（“正在加载”）；开启 prefers-reduced-motion 时，应放慢或替换旋转动画。骨架屏（skeleton screen）是另一种选择，还能预先呈现内容的形状。"
+    }
+   }
+  },
+  {
+   "id": "alert",
+   "livello": "avanzato",
+   "categoria": "feedback",
+   "anno": 2026,
+   "ordine": 970,
+   "parole": [
+    "alert",
+    "inline alert",
+    "banner",
+    "notification banner",
+    "callout",
+    "inline notification",
+    "section message",
+    "message box",
+    "avviso",
+    "messaggio"
+   ],
+   "esempio": "esempi/alert/",
+   "vedi": [
+    "toast",
+    "modal",
+    "live-validation",
+    "irreversible-action-warning",
+    "notification-system",
+    "empty-state"
+   ],
+   "origine": "FZ, 2026-10-15",
+   "fonti": [
+    {
+     "url": "https://design-system.service.gov.uk/components/notification-banner/",
+     "titolo": "Notification banner - GOV.UK Design System"
+    },
+    {
+     "url": "https://carbondesignsystem.com/components/notification/usage/",
+     "titolo": "Notification - Carbon Design System"
+    },
+    {
+     "url": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/",
+     "titolo": "Alert pattern - WAI-ARIA Authoring Practices Guide"
+    }
+   ],
+   "letture": [],
+   "testi": {
+    "it": {
+     "nome": "Avviso (alert)",
+     "note": "Un riquadro nella pagina che comunica qualcosa di importante sullo stato del sistema o dell'azione appena fatta: un'informazione, un successo, un'attenzione, un errore. Ha un colore, un'icona e un titolo che dicono subito di che tipo è, poi un testo breve e, se serve, un'azione («Riprova», «Vedi i dettagli») o una × per chiuderlo. Resta finché il problema c'è o finché l'utente non lo chiude.\n\nÈ diverso dal toast, che compare in sovrimpressione e sparisce da solo, e dalla finestra di dialogo d'allarme, che blocca tutto e chiede una risposta. Il colore non basta, per chi non distingue i colori: servono anche icona e parole. Se compare dopo il caricamento della pagina va annunciato agli screen reader (role=\"alert\" per gli errori urgenti, role=\"status\" per il resto). Gli errori di un form vanno vicino al campo, con un riepilogo in alto."
+    },
+    "en": {
+     "nome": "Alert",
+     "note": "A box in the page that communicates something important about the state of the system or of the action just taken: information, success, a warning, an error. It has a colour, an icon and a title that immediately say what kind it is, then a short text and, if needed, an action (“Try again”, “See details”) or a × to dismiss it. It stays as long as the problem exists or until the user dismisses it.\n\nIt differs from the toast, which appears as an overlay and disappears by itself, and from the alert dialog, which blocks everything and asks for an answer. Colour is not enough, for people who cannot tell colours apart: an icon and words are needed too. If it appears after the page has loaded it must be announced to screen readers (role=\"alert\" for urgent errors, role=\"status\" for the rest). Form errors go next to the field, with a summary at the top."
+    },
+    "fr": {
+     "nome": "Alerte (alert)",
+     "note": "Un encadré dans la page qui communique quelque chose d’important sur l’état du système ou de l’action qu’on vient de faire : une information, un succès, un avertissement, une erreur. Il a une couleur, une icône et un titre qui disent tout de suite de quel type il s’agit, puis un texte court et, si besoin, une action (« Réessayer », « Voir les détails ») ou un × pour le fermer. Il reste tant que le problème existe ou jusqu’à ce que l’utilisateur le ferme.\n\nIl se distingue du toast, qui apparaît en surimpression et disparaît tout seul, et de la boîte de dialogue d’alerte, qui bloque tout et demande une réponse. La couleur ne suffit pas, pour qui ne distingue pas les couleurs : il faut aussi une icône et des mots. S’il apparaît après le chargement de la page, il doit être annoncé aux lecteurs d’écran (role=\"alert\" pour les erreurs urgentes, role=\"status\" pour le reste). Les erreurs d’un formulaire se placent près du champ, avec un récapitulatif en haut."
+    },
+    "zh": {
+     "nome": "提示框（alert）",
+     "note": "页面中的一个区块，用来传达有关系统状态或刚完成操作的重要信息：普通信息、成功、警告或错误。它用颜色、图标和标题立即表明类型，然后是一段简短文字，必要时附带一个操作（“重试”“查看详情”）或用于关闭的 ×。只要问题仍然存在，或直到用户将其关闭，它就一直保留。\n\n它不同于以浮层出现并自动消失的 toast，也不同于阻断一切、要求用户回应的警告对话框。仅靠颜色是不够的，因为有人无法区分颜色：还需要图标和文字。如果它在页面加载后才出现，必须让读屏软件播报（紧急错误用 role=\"alert\"，其他情况用 role=\"status\"）。表单错误应放在对应字段旁边，并在顶部给出汇总。"
+    }
+   }
   }
  ]
 }
