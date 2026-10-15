@@ -34,4 +34,11 @@ html[data-lingua="zh"] .slide::after { content: attr(data-cap-zh) " — " counte
 .viste a:hover { color: #000; }
 .viste a[aria-current], .lingua-selettore button[aria-pressed="true"] { background: #000; color: #fff; }
 @media screen { body.pagina-fondamentali { padding-top: 64px; } }
+/* telefoni: le due pillole devono stare sulla stessa riga senza sovrapporsi */
+@media (max-width: 480px) {
+  .viste, .lingua-selettore { top: 10px; font-size: 12px; }
+  .viste { left: 10px; letter-spacing: .02em; }
+  .lingua-selettore { right: 10px; }
+  .viste a, .lingua-selettore button { padding: 7px 8px; }
+}
 @media print { .viste, .lingua-selettore { display: none; } }

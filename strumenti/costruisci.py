@@ -35,6 +35,7 @@ T = {  # testi fissi dell'interfaccia
                     'Chaque composant a sa source ; les exemples sont reconstruits en HTML, CSS et JavaScript.',
               'zh': '源自 NABA（米兰）UI 设计课程中与学生一起进行的课堂“挖掘”，逐渐发展为一份目录。每个组件都注明出处；示例均以 HTML、CSS 和 JavaScript 重新制作。'},
     'cerca': {'it': 'Cerca un componente…', 'en': 'Search a component…', 'fr': 'Chercher un composant…', 'zh': '搜索组件…'},
+    'filtri': {'it': 'Filtri', 'en': 'Filters', 'fr': 'Filtres', 'zh': '筛选'},
     'tutte': {'it': 'Tutte le categorie', 'en': 'All categories', 'fr': 'Toutes les catégories', 'zh': '全部类别'},
     'tutti': {'it': 'Tutti', 'en': 'All', 'fr': 'Tous', 'zh': '全部'},
     'nome': {'it': 'Nome', 'en': 'Name', 'fr': 'Nom', 'zh': '名称'},
@@ -230,9 +231,12 @@ def tabella(tutte):
   <p class="intro">{tt('intro')}</p>
 </header>
 <form class="filtri" role="search" onsubmit="return false">
-  <input type="search" id="cerca" autocomplete="off" data-it="{e(T['cerca']['it'])}" data-en="{e(T['cerca']['en'])}" data-fr="{e(T['cerca']['fr'])}" data-zh="{e(T['cerca']['zh'])}" placeholder="{e(T['cerca']['en'])}">
+  <span class="campo-cerca"><input type="search" id="cerca" autocomplete="off" data-it="{e(T['cerca']['it'])}" data-en="{e(T['cerca']['en'])}" data-fr="{e(T['cerca']['fr'])}" data-zh="{e(T['cerca']['zh'])}" placeholder="{e(T['cerca']['en'])}" aria-keyshortcuts="/" aria-label="{e(T['cerca']['en'])}"><kbd class="tasto" aria-hidden="true">/</kbd></span>
+  <button type="button" class="apri-filtri" aria-expanded="false" aria-controls="altri-filtri">{tt('filtri')} <span class="n" hidden></span></button>
+  <div class="altri-filtri" id="altri-filtri">
   <div class="chips"><button type="button" class="chip" data-livello="" aria-pressed="true">{tt('tutti')}</button>{livelli}</div>
   <select id="categoria"><option value="" data-it="{e(T['tutte']['it'])}" data-en="{e(T['tutte']['en'])}" data-fr="{e(T['tutte']['fr'])}" data-zh="{e(T['tutte']['zh'])}">{e(T['tutte']['en'])}</option>{opzioni}</select>
+  </div>
   <p class="conteggio"><output id="conteggio">{len(tutte)}</output> {tt('componenti')}</p>
 </form>
 <main>

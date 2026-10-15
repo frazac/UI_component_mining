@@ -13,6 +13,13 @@
   var conteggio = document.getElementById('conteggio');
   var vuoto = document.querySelector('.vuoto');
   var livello = '';
+  var apriFiltri = document.querySelector('.apri-filtri');
+  var numFiltri = apriFiltri.querySelector('.n');
+  apriFiltri.addEventListener('click', function () {
+    var aperti = apriFiltri.getAttribute('aria-expanded') !== 'true';
+    apriFiltri.setAttribute('aria-expanded', String(aperti));
+    apriFiltri.closest('.filtri').classList.toggle('aperti', aperti);
+  });
 
   function normalizza(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
   function parole(s) { return normalizza(s).split(/[^\p{L}\p{N}]+/u).filter(Boolean); }
@@ -61,6 +68,9 @@
     righe.slice().sort(function (a, b) { return (b._punti - a._punti) || (a._ordine - b._ordine); })
       .forEach(function (tr) { corpo.appendChild(tr); });
     conteggio.value = n;
+    var attivi = (livello ? 1 : 0) + (cat ? 1 : 0);
+    numFiltri.hidden = !attivi;
+    numFiltri.textContent = attivi;
     vuoto.hidden = n > 0;
     var stato = new URLSearchParams();
     if (cerca.value.trim()) stato.set('q', cerca.value.trim());

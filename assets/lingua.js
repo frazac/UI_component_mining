@@ -44,7 +44,7 @@
     });
     document.querySelectorAll('[data-en]').forEach(function (el) {
       var t = el.getAttribute('data-' + lingua) || el.getAttribute('data-en');
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = t; else el.textContent = t;
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') { el.placeholder = t; el.setAttribute('aria-label', t); } else el.textContent = t;
     });
   }
 
