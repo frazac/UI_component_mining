@@ -155,6 +155,14 @@ def testa(titolo, css_extra=''):
   <title>{e(titolo)}</title>
   <meta name="description" content="{e(T['sottotitolo']['en'])}">
   <meta name="author" content="{AUTORE}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{e(titolo)}">
+  <meta property="og:description" content="{e(T['sottotitolo']['en'])}">
+  <meta property="og:image" content="https://frazac.github.io/UI_component_mining/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="An interface button taken apart into floating layers">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

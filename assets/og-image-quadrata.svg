@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <!-- Versione quadrata dell'immagine per le anteprime: un pulsante smontato in strati. © Francesco Zaccaria, CC BY-NC-SA 4.0 -->
+  <defs>
+    <filter id="ombra" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity=".10"/></filter>
+  </defs>
+  <rect width="1080" height="1080" fill="#fff"/>
+  <g transform="translate(540 540) scale(1.6) translate(-600 -320)">
+
+
+  <!-- un solo filo che tiene insieme gli strati -->
+  <path d="M600 92 V548" stroke="#000" stroke-width="1.5" stroke-dasharray="2 9" opacity=".3"/>
+
+  <!-- contenitore -->
+  <g transform="translate(600 440) matrix(.866 .5 -.866 .5 0 0)" filter="url(#ombra)">
+    <rect x="-200" y="-86" width="400" height="172" rx="86" fill="#fff" stroke="#000" stroke-width="2"/>
+  </g>
+  <!-- strato dello stato -->
+  <g transform="translate(600 320) matrix(.866 .5 -.866 .5 0 0)">
+    <rect x="-200" y="-86" width="400" height="172" rx="86" fill="rgb(250,145,145)" opacity=".6"/>
+  </g>
+  <!-- icona ed etichetta -->
+  <g transform="translate(600 208) matrix(.866 .5 -.866 .5 0 0)" filter="url(#ombra)">
+    <circle cx="-110" cy="0" r="34" fill="rgb(105,143,255)"/>
+    <rect x="-48" y="-13" width="190" height="26" rx="13" fill="#000"/>
+  </g>
+  </g>
+</svg>

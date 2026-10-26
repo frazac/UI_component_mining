@@ -79,9 +79,9 @@ html[data-lingua="zh"] .slide::after { content: attr(data-doc) " — " attr(data
 .slide.senza-pie::before,
 .slide.senza-pie::after { content: none; }
 /* Materiali di terzi protetti (data-diritti, FZ 2026-10-13): il piede rimanda alla didascalia e al tamburino di gerenza
-   (ultima slide); nella bozza «, diritto» in bluette. Queste slide non vanno nel repo pubblico (esporta_fondamentali.py). */
+   (ultima slide); nella bozza il piede è in bluette (senza «, diritto»: FZ 2026-10-13). Queste slide non vanno nel repo pubblico (esporta_fondamentali.py). */
 html { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria e rispettivi titolari, v. didascalia e tamburino di gerenza"; }
-html[data-lingua="en"] { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria and respective owners, see caption and masthead"; }
+html[data-lingua="en"] { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria and respective owners, see caption and colophon"; }
 html[data-lingua="zh"] { --piede-diritti: "UI DESIGN — NABA — © 2026 Francesco Zaccaria 及各权利人，见图注与版权页"; }
 .slide[data-diritti]::before { content: var(--piede-diritti); }
 .diritti { color: var(--c-tenue); }
@@ -179,6 +179,9 @@ html[data-lingua="zh"] .strillo { line-height: 1.15; letter-spacing: 0; }
 
 /* Tema-focus: una sola frase, grandissima */
 .s-focus .strillo { font-size: calc(var(--t-mega) * var(--px)); }
+/* strilli grandi: interlinea stretta, eccezione alla regola generale (FZ, 2026-10-20); 0.9 lascia aria tra discendenti e ascendenti */
+.s-focus .strillo { line-height: 0.9; }
+html[data-lingua="zh"] .s-focus .strillo { line-height: 1.08; }
 
 /* Strilli (tema-focus): fondo blu masterismi, testo bianco. Le aperture di capitolo (s-sezione) restano bianche. */
 .slide.s-focus { background: var(--c-focus); color: #fff; }
@@ -224,8 +227,10 @@ html[data-lingua="zh"] .strillo { line-height: 1.15; letter-spacing: 0; }
 .slide sub { top: 0.25em; }
 
 /* Tabella (es. scala AIAS): filo sopra ogni riga, pittogramma a tratto */
-.s-tabella { padding-top: calc(40 * var(--px)); }
-.s-tabella h2 { font-size: calc(44 * var(--px)); margin-bottom: calc(40 * var(--px)); }
+/* titolo nella stessa posizione e nello stesso corpo di .s-testo (FZ, 2026-10-19: «il titolo della slide sta sempre nella stessa posizione») */
+.s-tabella { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-tabella h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(64 * var(--px)); }
+.s-tabella.th-larga th { width: calc(440 * var(--px)); }
 .s-tabella table { width: calc((var(--slide-w) - 2 * var(--margine)) * var(--px)); table-layout: fixed; border-collapse: collapse; }
 .s-tabella tr { border-top: calc(1 * var(--px)) solid rgba(0, 0, 0, 0.15); }
 .s-tabella th,
@@ -303,10 +308,12 @@ html[data-lingua="en"] .s-citazione blockquote p::after, html[data-lingua="zh"] 
 }
 .slide.s-immagine::before,
 .slide.s-immagine::after { color: rgba(255, 255, 255, 0.7); }
-.s-immagine .credito a.link-md,
-.s-immagine .credito a.link-md .u { color: inherit; --c-link-testo: currentColor; }
+/* nei crediti il titolo del link prende il colore del credito; l'url resta bluette come in tutti i [titolo](url) */
+.s-immagine .credito a.link-md { color: inherit; --c-link-testo: currentColor; }
 
 /* Esercitazione */
+/* titolo sempre in alto, con l'occhiello sopra nella posizione standard (FZ, 2026-10-20) */
+.s-esercizio { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
 .s-esercizio .etichetta { color: var(--c-blu); }
 .s-esercizio h2 {
   font-family: var(--f-testo);
@@ -321,10 +328,10 @@ html[data-lingua="en"] .s-citazione blockquote p::after, html[data-lingua="zh"] 
 .s-esercizio li { font-size: calc(var(--t-corpo) * var(--px)); line-height: 1.35; }
 .s-esercizio li + li { margin-top: 0.5em; }
 .s-esercizio li::marker { font-family: var(--f-testo); color: var(--c-blu); }
+/* il tempo sta dentro il titolo, a destra, sulla stessa linea di base (FZ, 2026-10-20) */
+.s-esercizio h2:has(.tempo) { display: flex; align-items: baseline; gap: calc(24 * var(--px)); }
+.s-esercizio h2 .tempo { margin-left: auto; font-weight: 400; letter-spacing: 0; flex: none; }
 .s-esercizio .tempo {
-  position: absolute;
-  top: calc(var(--margine-alto) * var(--px));
-  right: calc(var(--margine) * var(--px));
   margin: 0;
   font-family: var(--f-testo);
   font-size: calc(var(--t-medio) * var(--px));
@@ -624,7 +631,7 @@ html[data-lingua="zh"] .slide em { font-style: normal; }
 .s-sito .sito .nota { color: var(--c-tenue-forte); }
 
 /* --- Video (griglia): fotogrammi verticali affiancati, sotto ciascuno il titolo e il link ----- */
-.s-video { justify-content: flex-start; padding-top: calc(56 * var(--px)); padding-bottom: calc(96 * var(--px)); }
+.s-video { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); padding-bottom: calc(96 * var(--px)); }
 .s-video > p.small { margin-top: calc(28 * var(--px)); }
 .s-video .griglia-video {
   flex: 1 1 0;
@@ -648,10 +655,8 @@ html[data-lingua="zh"] .slide em { font-style: normal; }
 .s-video figcaption { margin-top: calc(12 * var(--px)); font-size: calc(15 * var(--px)); line-height: 1.3; }
 .s-video figcaption .tag { display: block; color: var(--c-salmone); }
 
-/* --- Bozze: slide nuove e segnaposto ----------------------------------------- */
-html.bozza .slide[data-nuova]::before { content: "NUOVA — " var(--versione-bozza, ""); color: var(--c-blu); }
-html.bozza .slide[data-diritti]::before { content: var(--piede-diritti) ", diritto"; color: var(--c-blu); }
-html.bozza .slide[data-nuova][data-diritti]::before { content: "NUOVA — " var(--versione-bozza, "") ", diritto"; }
+/* --- Bozze: diritti e segnaposto (piè «NUOVA» tolto: FZ, 2026-10-13) ---------- */
+html.bozza .slide[data-diritti]::before { content: var(--piede-diritti); color: var(--c-blu); }
 .slide .segnaposto { color: var(--c-tenue); }
 
 /* Elenchi lunghi a due colonne (riferimenti, aree di studio) */
@@ -893,8 +898,8 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-testo p.nomi { font-size: calc(46 * var(--px)); line-height: 1.25; font-weight: 500; letter-spacing: -0.01em; margin-top: calc(10 * var(--px)); margin-bottom: calc(28 * var(--px)); }
 
 /* Snippet di chiusura (bozze/snippet.html, FZ 2026-10-13) ------------------------------------------------
-   «Grazie»: immagine al vivo su tutta la slide, strillo bianco grande, didascalia sul fondo. */
-.s-grazie { background: var(--c-testo); justify-content: flex-end; padding-bottom: calc(44 * var(--px)); }
+   «Grazie»: immagine al vivo su tutta la slide, strillo bianco grande in alto, didascalia sul fondo. */
+.s-grazie { background: var(--c-testo); justify-content: space-between; padding-top: calc(48 * var(--px)); padding-bottom: calc(44 * var(--px)); } /* strillo in alto: l'immagine resta libera in basso */
 .s-grazie img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; margin: 0; }
 .s-grazie > :not(img) { position: relative; color: #fff; text-shadow: 0 0 calc(24 * var(--px)) rgba(0, 0, 0, 0.45); }
 .s-grazie .strillo { font-size: calc(var(--t-mega) * 1.4 * var(--px)); }
@@ -909,3 +914,329 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-chiusura .gerenza-box { border-top: 1px solid rgba(0, 0, 0, 0.15); padding-top: calc(16 * var(--px)); }
 .s-chiusura .gerenza-box .etichetta { font-size: calc(var(--t-etichetta) * var(--px)); color: var(--c-tenue-forte); }
 .s-chiusura .gerenza-box .licenza { margin-top: 0 !important; font-size: calc(13 * var(--px)); row-gap: calc(5 * var(--px)); }
+
+/* Coppia di immagini affiancate, ciascuna con la sua didascalia (es. universal / inclusive design) */
+.s-coppia { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-coppia h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(40 * var(--px)); }
+.s-coppia .coppia { display: grid; grid-template-columns: 1fr 1fr; gap: calc(48 * var(--px)); }
+.s-coppia figure { margin: 0; }
+.s-coppia img { display: block; width: 100%; height: calc(380 * var(--px)); object-fit: contain; background: #fff; }
+.s-coppia figcaption { margin-top: calc(16 * var(--px)); font-size: calc(20 * var(--px)); line-height: 1.3; }
+.s-coppia figcaption strong { display: block; color: var(--c-salmone); }
+
+/* Cerchi e frecce come nelle vecchie dispense (universal / inclusive design, FZ 2026-10-19): tutto in coordinate 1280 × 720 */
+.s-cerchi { --serif: "Iowan Old Style", "Palatino", Georgia, serif; justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-cerchi h2 { position: relative; z-index: 2; font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; }
+.s-cerchi svg.cerchi { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; z-index: 1; pointer-events: none; }
+.s-cerchi h2 { white-space: nowrap; }   /* titolo su una riga (FZ, 2026-10-19); i cerchi restano dove sono nella dispensa (p. 37–39) */
+.s-cerchi svg.cerchi circle { fill: none; stroke: rgb(224, 160, 184); stroke-width: 2; }
+.s-cerchi svg.cerchi circle.punti { stroke: rgb(255, 37, 177); stroke-dasharray: 2 4; stroke-width: 1.5; }
+.s-cerchi svg.cerchi path { fill: none; stroke: rgb(224, 160, 184); stroke-width: 2; }
+.s-cerchi img { position: absolute; margin: 0; z-index: 0; object-fit: contain; }   /* niente margin-inline di .slide > *: cerchi, foto e testi nello stesso riferimento */
+.s-cerchi p.c { position: absolute; z-index: 2; margin: 0; transform: translate(-50%, -50%); text-align: center; font-family: var(--serif); font-size: calc(21 * var(--px)); line-height: calc(29 * var(--px)); font-weight: 700; }
+.s-cerchi p.c.compatto { line-height: calc(29 * var(--px)); }
+.s-cerchi p.c .sp { display: block; height: calc(19 * var(--px)); }   /* 29 + 19 = 48: lo stacco tra le voci della dispensa */
+.s-cerchi p.c.tit { font-style: italic; text-transform: uppercase; }
+.s-cerchi p.c.it { font-style: italic; font-weight: 600; }
+.s-cerchi p.c u, .s-cerchi p.c .sott { text-decoration: underline; }
+.s-cerchi p.c.piccolo { font-family: var(--f-testo); font-size: calc(11 * var(--px)); line-height: calc(15 * var(--px)); font-weight: 400; text-transform: uppercase; }
+.s-cerchi p.c.normale { font-weight: 400; }
+.s-cerchi p.credito { position: absolute; z-index: 2; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(60 * var(--px)); margin: 0; font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }   /* crediti delle foto nelle slide a cerchi (Geberit in s106, FZ 2026-10-21) */
+.s-cerchi p.credito a.link-md { color: inherit; --c-link-testo: currentColor; }
+
+/* termine nuovo in evidenza, bluette (FZ, 2026-10-19) */
+.nuovo { background: rgba(105, 143, 255, 0.22); padding: 0 0.15em; border-radius: 0.15em; }
+
+/* Pagine delle vecchie dispense riprese fedelmente (Mindset, FZ 2026-10-19):
+   .s-pagina = titolo standard + la pagina originale sotto (immagine, per lingua se c'è la versione italiana);
+   .s-domanda = immagine al centro, «What do you see?» e «What is it?» evidenziati in giallo ai lati;
+   .s-duecol = titolo + due colonne (testo e testo, o testo e immagine) */
+.s-pagina { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); padding-bottom: calc(44 * var(--px)); }
+.s-pagina h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(8 * var(--px)); }
+.s-pagina > img { flex: 1 1 0; min-height: 0; width: calc(100% - 2 * var(--margine) * var(--px)); object-fit: contain; object-position: center top; }
+.s-pagina .credito { margin-top: calc(6 * var(--px)); font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }
+.s-domanda { background: var(--c-fondo); }   /* niente fondo pulce (FZ, 2026-10-19) */
+.s-domanda .domanda { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(40 * var(--px)); height: calc(520 * var(--px)); }
+.s-domanda .domanda > p { margin: 0; font-size: calc(22 * var(--px)); text-align: center; }
+.s-domanda .domanda > p span { background: #ffff00; padding: 0 0.2em; }
+.s-domanda .domanda img { height: calc(520 * var(--px)); width: auto; display: block; }
+.s-domanda .hamburger { width: calc(120 * var(--px)); display: grid; gap: calc(22 * var(--px)); }
+.s-domanda .hamburger i { display: block; height: calc(9 * var(--px)); background: var(--c-testo); }
+.s-domanda .credito { margin-top: calc(20 * var(--px)); font-size: calc(14 * var(--px)); color: var(--c-tenue-forte); }
+.s-duecol { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-duecol h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(48 * var(--px)); }
+.s-duecol .colonne { display: grid; grid-template-columns: 1.5fr 1fr; gap: calc(48 * var(--px)); align-items: start; }
+.s-duecol .colonne.pari { grid-template-columns: 1fr 1fr; }
+.s-duecol .colonne p { margin: 0 0 calc(14 * var(--px)); font-size: calc(20 * var(--px)); line-height: 1.4; }
+.s-duecol .colonne p.intest { font-weight: 700; }
+.s-duecol .colonne blockquote { margin: 0 0 calc(14 * var(--px)); font-style: italic; font-size: calc(20 * var(--px)); line-height: 1.4; }
+.s-duecol .colonne blockquote p { font-size: inherit; margin: 0; }
+.s-duecol figure { margin: 0; }
+.s-duecol figure img { display: block; width: 100%; max-height: calc(420 * var(--px)); object-fit: contain; }
+.s-duecol figcaption { margin-top: calc(8 * var(--px)); font-size: calc(13 * var(--px)); line-height: 1.4; color: var(--c-salmone); }
+
+/* pagina intera della dispensa, alla stessa scala della slide: titolo e piede originali tolti dall'immagine, qui il titolo standard sopra */
+.s-pagina.piena > img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; object-fit: fill; z-index: 0; }
+.s-pagina.piena h2 { position: relative; z-index: 1; }
+.slide.s-pagina.piena::before, .slide.s-pagina.piena::after { z-index: 2; }   /* il piede della slide sopra la pagina */
+.s-pagina.piena { background: #fff; }
+.s-pagina.piena .credito { position: absolute; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(48 * var(--px)); margin: 0; z-index: 1; }
+.s-pagina.stretto h2 { max-width: calc(480 * var(--px)); }   /* titolo su due righe dove la pagina sale fino in cima (12/13/14) */
+
+/* Ridisegni del capitolo Mindset (FZ, 2026-10-19) — tutte le coordinate in % della slide 1280 × 720 */
+.s-cerchi p.c img.ico { position: static; display: block; object-fit: contain; z-index: auto; width: calc(34 * var(--px)); height: calc(34 * var(--px)); margin: 0 auto calc(8 * var(--px)); }
+.s-cerchi p.c.bollo { font-size: calc(16.5 * var(--px)); line-height: 1.32; }
+.s-cerchi p.c.bollo .es { display: block; margin-top: calc(10 * var(--px)); font-family: var(--f-testo); font-style: normal; font-weight: 400; font-size: calc(13.5 * var(--px)); line-height: 1.35; color: var(--c-salmone); }
+.s-cerchi p.c.piccola { font-size: calc(13 * var(--px)); line-height: 1.2; }
+.s-cerchi p.c.riga { font-size: calc(15 * var(--px)); background: #fff; padding: 0 calc(10 * var(--px)); font-style: italic; }
+.s-cerchi p.l { position: absolute; z-index: 2; margin: 0; }
+.s-cerchi .figura { position: absolute; margin: 0; z-index: 0; object-fit: contain; }
+.s-cerchi .didascalia { position: absolute; z-index: 2; margin: 0; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); top: calc(600 * var(--px)); font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }
+/* poche → molte affordance */
+.s-affordance .passo { position: absolute; margin: 0; z-index: 2; transform: translate(-50%, -50%); font-size: calc(18 * var(--px)); white-space: nowrap; }
+.s-affordance .passo.p2 { font-weight: 700; background: #e9e9e9; padding: calc(10 * var(--px)) calc(22 * var(--px)); }
+.s-affordance .passo.p3 { border: calc(1.5 * var(--px)) solid #555; padding: calc(10 * var(--px)) calc(22 * var(--px)); }
+.s-affordance .passo.p4 { border: calc(1.5 * var(--px)) solid #555; padding: calc(10 * var(--px)) calc(22 * var(--px)); background: #f4f4f4; box-shadow: 0 calc(3 * var(--px)) calc(6 * var(--px)) rgba(0,0,0,.25); }
+.s-affordance .passo.p5 { border: calc(1.5 * var(--px)) solid #555; padding: calc(10 * var(--px)) calc(22 * var(--px)); background: #f4f4f4; box-shadow: 0 calc(3 * var(--px)) calc(6 * var(--px)) rgba(0,0,0,.25); text-decoration: underline; }
+.s-affordance .cursore { position: absolute; z-index: 3; width: calc(26 * var(--px)); height: calc(26 * var(--px)); }
+.s-affordance .tip { position: absolute; z-index: 3; margin: 0; font-size: calc(13 * var(--px)); color: #2b5bd7; background: #eef3ff; border: 1px solid #8aa6f0; padding: calc(2 * var(--px)) calc(8 * var(--px)); white-space: nowrap; }
+.s-affordance .etich { position: absolute; z-index: 2; margin: 0; font-size: calc(22 * var(--px)); color: var(--c-salmone); }
+.s-duecol .mosaico { display: grid; grid-template-columns: 1fr 1fr; gap: calc(10 * var(--px)); }
+.s-duecol .mosaico img { width: 100%; height: calc(150 * var(--px)); object-fit: cover; object-position: center; border: 1px solid #e6e6e6; display: block; }
+
+/* Gestalt: una slide per legge, con esempio interattivo (casella «applica la legge», solo CSS) ed esempio reale dai fondamentali (FZ, 2026-10-19) */
+.s-gestalt { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
+.s-gestalt h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(22 * var(--px)); }
+.s-gestalt .def { margin-bottom: calc(18 * var(--px)); font-size: calc(21 * var(--px)); line-height: 1.35; max-width: calc(1100 * var(--px)); }
+.s-gestalt .righe { display: grid; grid-template-columns: 1fr 1fr; gap: calc(36 * var(--px)); align-items: start; }
+.s-gestalt figure { margin: 0; }
+.s-gestalt figure img { display: block; width: 100%; height: calc(330 * var(--px)); object-fit: contain; border: 1px solid #e6e6e6; background: #fff; }
+.s-gestalt figcaption { margin-top: calc(8 * var(--px)); font-size: calc(14 * var(--px)); color: var(--c-tenue-forte); }
+.demo { position: relative; }
+.demo input { position: absolute; opacity: 0; pointer-events: none; }
+.demo .campo { position: relative; height: calc(330 * var(--px)); border: 1px solid #e6e6e6; background: #fafafa; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.demo label { display: inline-block; margin-top: calc(10 * var(--px)); padding: calc(6 * var(--px)) calc(14 * var(--px)); border: 1px solid var(--c-blu); border-radius: 9999px; color: var(--c-blu); font-size: calc(14 * var(--px)); cursor: pointer; user-select: none; }
+.demo label::before { content: "○ "; }
+.demo:has(input:checked) label { background: var(--c-blu); color: #fff; }
+.demo:has(input:checked) label::before { content: "● "; }
+.demo .campo * { transition: all .45s ease; }
+.demo i { display: block; }
+/* elementi di base: voce = pallino + due righe */
+.demo .voce { display: grid; grid-template-columns: calc(16 * var(--px)) 1fr; column-gap: calc(8 * var(--px)); row-gap: calc(5 * var(--px)); align-items: center; width: calc(120 * var(--px)); }
+.demo .voce i:nth-child(1) { grid-row: span 2; width: calc(16 * var(--px)); height: calc(16 * var(--px)); border-radius: 50%; background: #9a9a9a; }
+.demo .voce i:nth-child(2) { height: calc(6 * var(--px)); background: #b9b9b9; }
+.demo .voce i:nth-child(3) { height: calc(6 * var(--px)); width: 70%; background: #d6d6d6; }
+/* prossimità */
+.d-prossimita .campo > div { display: grid; grid-template-columns: repeat(3, auto); gap: calc(26 * var(--px)) calc(26 * var(--px)); }
+.d-prossimita:has(input:checked) .campo > div { column-gap: calc(70 * var(--px)); row-gap: calc(8 * var(--px)); }
+/* somiglianza */
+.d-somiglianza .campo > div { display: grid; grid-template-columns: repeat(4, auto); gap: calc(22 * var(--px)); }
+.d-somiglianza .campo b { display: block; width: calc(44 * var(--px)); height: calc(44 * var(--px)); border-radius: 50%; background: #b9b9b9; }
+.d-somiglianza:has(input:checked) .campo b.a { background: var(--c-salmone); border-radius: 50%; }
+.d-somiglianza:has(input:checked) .campo b.b { background: var(--c-blu); border-radius: calc(6 * var(--px)); }
+.d-somiglianza:has(input:checked) .campo b.c { background: #2e2e2e; border-radius: 50%; transform: scale(.6); }
+/* continuità */
+.d-continuita .campo > div { display: flex; gap: calc(14 * var(--px)); position: relative; padding-bottom: calc(10 * var(--px)); }
+.d-continuita .campo b { display: block; padding: calc(8 * var(--px)) calc(14 * var(--px)); background: #fff; border: 1px solid #ccc; font-size: calc(15 * var(--px)); font-weight: 400; }
+.d-continuita .campo b:nth-child(1) { transform: translateY(-40%); } .d-continuita .campo b:nth-child(2) { transform: translateY(70%); }
+.d-continuita .campo b:nth-child(3) { transform: translateY(-90%); } .d-continuita .campo b:nth-child(4) { transform: translateY(40%); }
+.d-continuita .campo b:nth-child(5) { transform: translateY(-20%); }
+.d-continuita .campo > div::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: calc(3 * var(--px)); background: var(--c-salmone); opacity: 0; }
+.d-continuita:has(input:checked) .campo b { transform: none; border-color: transparent; background: none; }
+.d-continuita:has(input:checked) .campo b:first-child { color: var(--c-salmone); font-weight: 700; }
+.d-continuita:has(input:checked) .campo > div::after { opacity: 1; }
+/* figura-sfondo */
+.d-figura .campo { display: block; padding: calc(24 * var(--px)); }
+.d-figura .campo .riga { height: calc(10 * var(--px)); background: #d6d6d6; margin-bottom: calc(14 * var(--px)); }
+.d-figura .campo .riga:nth-child(3n) { width: 70%; }
+.d-figura .campo .velo { position: absolute; inset: 0; background: rgba(0,0,0,0); }
+.d-figura .campo .scheda { position: absolute; left: 22%; right: 22%; top: 24%; bottom: 24%; background: #f2f2f2; border: 1px solid #ddd; padding: calc(18 * var(--px)); font-size: calc(15 * var(--px)); }
+.d-figura .campo .scheda i { height: calc(8 * var(--px)); background: #ccc; margin-top: calc(10 * var(--px)); }
+.d-figura .campo .scheda u { display: inline-block; margin-top: calc(16 * var(--px)); padding: calc(6 * var(--px)) calc(12 * var(--px)); background: #ccc; text-decoration: none; }
+.d-figura:has(input:checked) .campo .velo { background: rgba(0,0,0,.45); }
+.d-figura:has(input:checked) .campo .scheda { background: #fff; box-shadow: 0 calc(10 * var(--px)) calc(30 * var(--px)) rgba(0,0,0,.35); }
+.d-figura:has(input:checked) .campo .scheda u { background: var(--c-blu); color: #fff; }
+/* chiusura */
+.d-chiusura .campo { justify-content: flex-start; padding-left: calc(24 * var(--px)); }
+.d-chiusura .campo > div { display: flex; gap: calc(14 * var(--px)); }
+.d-chiusura .campo b { flex: none; display: block; width: calc(118 * var(--px)); height: calc(180 * var(--px)); background: #fff; border: 1px solid #ccc; }
+.d-chiusura .campo b::before { content: ""; display: block; height: 55%; background: #e3e3e3; }
+.d-chiusura:has(input:checked) .campo b { width: calc(150 * var(--px)); }
+/* regione comune */
+.d-regione .campo > div { display: grid; grid-template-columns: auto auto; gap: calc(40 * var(--px)); }
+.d-regione .gruppo { display: grid; gap: calc(14 * var(--px)); padding: calc(18 * var(--px)); border-radius: calc(12 * var(--px)); background: transparent; border: 1px solid transparent; }
+.d-regione:has(input:checked) .gruppo { background: #fff; border-color: #ddd; box-shadow: 0 calc(2 * var(--px)) calc(8 * var(--px)) rgba(0,0,0,.08); }
+.d-regione:has(input:checked) .campo > div { gap: calc(20 * var(--px)); }
+/* connessione uniforme */
+.d-connessione .campo > div { display: flex; gap: calc(54 * var(--px)); position: relative; }
+.d-connessione .campo b { position: relative; z-index: 1; display: block; width: calc(30 * var(--px)); height: calc(30 * var(--px)); border-radius: 50%; border: calc(3 * var(--px)) solid #aaa; background: #fafafa; }
+.d-connessione .campo > div::before { content: ""; position: absolute; left: calc(15 * var(--px)); right: calc(15 * var(--px)); top: 50%; height: calc(3 * var(--px)); background: #aaa; transform: scaleX(0); transform-origin: left; transition: transform .45s ease; }
+.d-connessione:has(input:checked) .campo > div::before { transform: scaleX(1); }
+.d-connessione:has(input:checked) .campo b:nth-child(-n+3) { background: var(--c-blu); border-color: var(--c-blu); }
+/* destino comune */
+.d-destino .campo > div { display: grid; grid-template-columns: repeat(5, auto); gap: calc(26 * var(--px)); }
+.d-destino .campo b { display: block; width: calc(36 * var(--px)); height: calc(36 * var(--px)); border-radius: 50%; background: #b9b9b9; }
+@keyframes gestalt-su { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(calc(-40 * var(--px))); } }
+.d-destino:has(input:checked) .campo b.m { animation: gestalt-su 1.4s ease-in-out infinite; background: var(--c-salmone); }
+/* Prägnanz */
+.d-pragnanz .campo svg { width: calc(300 * var(--px)); height: calc(200 * var(--px)); }
+.d-pragnanz .campo svg circle { fill: none; stroke: #888; stroke-width: 6; transition: stroke .45s ease; }
+.d-pragnanz:has(input:checked) .campo svg circle:nth-child(1) { stroke: #0081c8; }
+.d-pragnanz:has(input:checked) .campo svg circle:nth-child(2) { stroke: #000; }
+.d-pragnanz:has(input:checked) .campo svg circle:nth-child(3) { stroke: #ee334e; }
+.d-pragnanz:has(input:checked) .campo svg circle:nth-child(4) { stroke: #fcb131; }
+.d-pragnanz:has(input:checked) .campo svg circle:nth-child(5) { stroke: #00a651; }
+@media print { .demo label { display: none; } }
+.s-cerchi p.c.appeso { transform: translate(-50%, 0); }   /* testo appeso al pittogramma, sempre alla stessa altezza (FZ, 2026-10-19) */
+/* Gestalt senza l'esempio dai componenti: l'esempio interattivo prende tutta la larghezza (FZ, 2026-10-19) */
+.s-gestalt .righe { grid-template-columns: 1fr; }
+.s-gestalt .demo .campo { height: calc(400 * var(--px)); }
+/* chiusura: triangolo di Kanizsa — prima tre dischi pieni, poi i «pac-man» e il triangolo che non c'è */
+.d-kanizsa .campo svg { width: calc(520 * var(--px)); height: calc(390 * var(--px)); }
+.d-kanizsa .dischi circle { fill: #2e2e2e; }
+.d-kanizsa .spicchi { fill: #fafafa; opacity: 0; transition: opacity .45s ease; }
+.d-kanizsa .linee path { fill: none; stroke: #2e2e2e; stroke-width: 4; opacity: 0; transition: opacity .45s ease; }
+.d-kanizsa:has(input:checked) .spicchi, .d-kanizsa:has(input:checked) .linee path { opacity: 1; }
+
+/* Schemi della dispensa ridisegnati in vettoriale, alle coordinate originali, nelle tre lingue (FZ, 2026-10-20) */
+.s-cerchi p.c.etic { font-family: var(--f-testo); font-weight: 400; font-style: normal; font-size: calc(17 * var(--px)); line-height: 1.35; padding: 0 calc(5 * var(--px)); white-space: nowrap; }
+.s-cerchi p.c.etic.rosa { background: rgb(229, 170, 195); }
+.s-cerchi p.c.etic.giallo { background: rgb(238, 255, 65); }
+.s-cerchi p.c.ruota { transform: translate(-50%, -50%) rotate(-60deg); }
+.s-cerchi p.c.ruota-arco { transform: translate(-50%, -50%) rotate(-45deg); font-family: var(--f-testo); font-weight: 400; font-style: normal; font-size: calc(15 * var(--px)); line-height: 1.15; text-align: center; }
+.s-cerchi p.c.nodo { font-family: var(--f-testo); font-weight: 400; font-style: normal; font-size: calc(15 * var(--px)); line-height: 1.3; }
+.s-cerchi p.c.nodo b { display: block; font-weight: 700; }
+.s-cerchi svg.cerchi .magenta { fill: none; stroke: rgb(255, 37, 177); stroke-width: 2; }
+.s-cerchi svg.cerchi .magenta-sottile { fill: none; stroke: rgb(255, 37, 177); stroke-width: 0.8; }
+.s-cerchi svg.cerchi circle.punto { fill: rgb(255, 37, 177); stroke: none; }
+.s-cerchi svg.cerchi circle.tratt { fill: none; stroke: rgb(255, 37, 177); stroke-width: 0.8; stroke-dasharray: 2 4; }
+.s-cerchi svg.cerchi circle.pulce { fill: rgb(238, 230, 228); }
+.s-cerchi svg.cerchi circle.acqua { fill: rgb(224, 241, 239); }
+.s-cerchi svg.cerchi circle.bianco { fill: #fff; }
+.s-cerchi svg.cerchi path.punta { fill: rgb(229, 170, 195); stroke: none; }
+.s-tabella .nota-tabella { margin-top: calc(28 * var(--px)); max-width: calc(1000 * var(--px)); font-size: calc(19 * var(--px)); line-height: 1.4; color: var(--c-tenue-forte); }
+/* tre proposte affiancate nella colonna destra (Stull) */
+.s-duecol .tre { display: grid; grid-template-columns: 1fr; gap: calc(10 * var(--px)); }
+.s-duecol .tre figure { display: grid; grid-template-columns: calc(150 * var(--px)) 1fr; gap: calc(10 * var(--px)); align-items: center; }
+.s-duecol .tre img { width: 100%; height: calc(110 * var(--px)); object-fit: cover; display: block; }
+.s-duecol .tre figcaption { margin: 0; color: var(--c-testo); font-size: calc(13 * var(--px)); line-height: 1.35; }
+/* smartphone al sole: lo stesso schermo all'ombra e in pieno sole (disegnato da noi) */
+.s-sole .telefoni { display: grid; grid-template-columns: 1fr 1fr; gap: calc(60 * var(--px)); justify-items: center; margin-top: calc(-40 * var(--px)); }
+.s-sole figure { margin: 0; text-align: center; }
+.s-sole .telefono { position: relative; width: calc(180 * var(--px)); height: calc(340 * var(--px)); border-radius: calc(30 * var(--px)); background: #111; padding: calc(10 * var(--px)); box-sizing: border-box; overflow: hidden; }
+.s-sole .telefono img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: calc(22 * var(--px)); display: block; }
+.s-sole .sole img { filter: contrast(.3) brightness(1.55) saturate(.4); }
+.s-sole .sole .telefono::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 70% 25%, rgba(255,255,255,.95), rgba(255,255,255,.55) 35%, rgba(255,255,255,.1) 70%); }
+.s-sole figcaption { margin-top: calc(12 * var(--px)); font-size: calc(16 * var(--px)); }
+.s-sole .nota { margin-top: calc(14 * var(--px)); font-size: calc(15 * var(--px)); line-height: 1.4; color: var(--c-tenue-forte); }
+.s-cerchi p.c.a-destra { transform: translate(-100%, -50%); }
+.s-tabella tr:first-child th { font-weight: 700; color: var(--c-salmone); }
+/* il piede della slide sopra cerchi e schemi (FZ, 2026-10-20) */
+.slide.s-cerchi::before, .slide.s-cerchi::after { z-index: 3; }
+
+/* --- Capitolo Ricerca (2026-10-21) -------------------------------------------
+   Cerchi sopra le immagini e i diagrammi, come nella dispensa ID2526 (p. 106–153):
+   .verbo = cerchio rosa del metodo (COLLEZIONARE…), .bolla = cerchietto tratteggiato con link,
+   .tondo = cerchio bianco filettato di rosa (Empiria, Contemporary design…),
+   .focus-giallo = il «FOCUS» giallo. Posizione con left/top (centro del cerchio). */
+.slide .verbo, .slide .bolla, .slide .tondo, .slide .focus-giallo {
+  position: absolute; z-index: 2; margin: 0; transform: translate(-50%, -50%);
+  border-radius: 50%; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+.slide .verbo { width: calc(184 * var(--px)); height: calc(184 * var(--px)); background: rgb(229, 170, 195); color: rgb(190, 78, 78); font-family: var(--f-testo); font-size: calc(17 * var(--px)); line-height: 1.15; font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
+.slide .bolla { width: calc(104 * var(--px)); height: calc(104 * var(--px)); background: rgba(255, 255, 255, 0.88); border: calc(1.5 * var(--px)) dotted rgb(255, 37, 177); font-family: var(--f-testo); font-size: calc(11 * var(--px)); line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; color: var(--c-testo); text-decoration: none; }
+.slide .bolla::after { content: "↗"; display: block; margin-top: calc(4 * var(--px)); font-size: calc(24 * var(--px)); line-height: 1; color: var(--c-blu); }
+.slide .tondo { width: calc(200 * var(--px)); height: calc(200 * var(--px)); padding: calc(18 * var(--px)); background: #fff; border: calc(2 * var(--px)) solid rgb(224, 160, 184); color: var(--c-testo); font-family: "Iowan Old Style", "Palatino", Georgia, serif; font-size: calc(19 * var(--px)); line-height: 1.2; }
+.slide .tondo.piccolo { width: calc(150 * var(--px)); height: calc(150 * var(--px)); font-size: calc(17 * var(--px)); }
+.slide .focus-giallo { width: calc(144 * var(--px)); height: calc(144 * var(--px)); background: rgb(238, 255, 65); border: 1px solid #222; color: #222; font-family: "Iowan Old Style", "Palatino", Georgia, serif; font-style: italic; font-size: calc(16 * var(--px)); line-height: 1.12; text-transform: uppercase; }
+html[data-lingua="zh"] .slide .focus-giallo { font-style: normal; }
+
+/* Immagini con i cerchi (metodo, esempi di visualizzazione): su bianco, l'immagine non si taglia */
+.s-immagine.s-verbo { background: var(--c-fondo); }
+.s-immagine.s-verbo .credito { color: var(--c-tenue-forte); }
+.slide.s-immagine.s-verbo::before, .slide.s-immagine.s-verbo::after { color: var(--c-tenue); }
+.s-immagine.s-verbo > img { object-fit: contain; }
+.s-immagine .coppia { flex: 1 1 0; min-height: 0; display: flex; gap: calc(16 * var(--px)); padding: calc(36 * var(--px)) calc(290 * var(--px)) 0 calc(var(--margine) * var(--px)); }
+.s-immagine .coppia img { flex: 1 1 0; min-width: 0; height: 100%; width: auto; object-fit: contain; }
+.s-immagine .coppia img.largo { flex-grow: 1.6; }
+
+/* Design Odyssey: parole chiave in maiuscoletto a sinistra, testo a destra */
+.s-duecol .colonne.chiavi { grid-template-columns: calc(380 * var(--px)) 1fr; }
+.s-duecol ul.chiavi { list-style: none; margin: 0; padding: 0; }
+.s-duecol ul.chiavi li { font-size: calc(16 * var(--px)); line-height: 2; letter-spacing: 0.05em; text-transform: uppercase; }
+.s-duecol p.fase { font-weight: 700; font-size: calc(22 * var(--px)) !important; }
+.s-duecol p.domanda-fase { margin-top: calc(24 * var(--px)) !important; padding-top: calc(12 * var(--px)); border-top: 1px solid rgba(0, 0, 0, 0.15); }
+.s-duecol p.domanda-fase .sott { display: block; font-size: calc(13 * var(--px)); letter-spacing: 0.06em; text-transform: uppercase; color: var(--c-tenue-forte); }
+.s-duecol figure img.basso { max-height: calc(260 * var(--px)); width: auto; }
+.s-duecol .colonne p.piccolo, .s-duecol .colonne li.piccolo { font-size: calc(16 * var(--px)); }
+.s-duecol .colonne ul.punti { margin: 0 0 calc(14 * var(--px)); padding-left: calc(22 * var(--px)); }
+.s-duecol .colonne ul.punti li { font-size: calc(19 * var(--px)); line-height: 1.4; }
+.s-duecol .colonne ul.punti li + li { margin-top: calc(8 * var(--px)); }
+.s-duecol .colonne h3 { margin: 0 0 calc(12 * var(--px)); font-size: calc(22 * var(--px)); }
+
+/* I ❤ ⇥ (Tab): il rebus del tracciamento (dispensa p. 113) */
+.s-rebus { align-items: center; justify-content: center; }
+.s-rebus .rebus { display: flex; align-items: center; justify-content: center; gap: calc(40 * var(--px)); margin: 0; }
+.s-rebus .rebus span { font-family: "Rockwell", "Roboto Slab", "Iowan Old Style", Georgia, serif; font-weight: 900; font-size: calc(240 * var(--px)); line-height: 1; }
+.s-rebus .rebus img { width: calc(300 * var(--px)); height: auto; }
+.s-rebus .credito { margin-top: calc(40 * var(--px)); font-size: calc(18 * var(--px)); color: var(--c-tenue-forte); text-align: center; }
+
+/* Diagrammi del capitolo (doppio diamante, metodo, stile, percorsi di Stull, mappa a incroci) */
+.s-cerchi p.l { font-family: var(--f-testo); font-size: calc(16 * var(--px)); line-height: 1.3; }
+.s-cerchi p.l.rot { transform-origin: 0 0; transform: rotate(-90deg); white-space: nowrap; }
+.s-cerchi p.l.rosso { color: rgb(226, 30, 30); font-weight: 700; }
+.s-cerchi p.l.sotto { color: #777; font-family: "Iowan Old Style", "Palatino", Georgia, serif; }
+.s-cerchi p.l.centro { transform: translate(-50%, 0); text-align: center; }
+.s-cerchi p.l.medio { transform: translate(-50%, -50%); text-align: center; }
+.s-cerchi p.c.v { font-family: var(--f-testo); font-style: normal; font-weight: 500; font-size: calc(15 * var(--px)); line-height: 1.15; letter-spacing: 0.02em; text-transform: uppercase; color: rgb(190, 78, 78); }
+.s-cerchi p.c.v.nero { color: var(--c-testo); }
+.s-cerchi p.c.g { font-family: var(--f-testo); font-style: normal; font-weight: 700; font-size: calc(19 * var(--px)); }
+.s-cerchi svg.cerchi .rosa { fill: rgb(229, 170, 195); stroke: none; }
+.s-cerchi svg.cerchi .rosa-chiaro { fill: rgba(236, 180, 205, 0.45); stroke: rgb(224, 160, 184); stroke-width: 1.5; }
+.s-cerchi svg.cerchi .capsula { fill: none; stroke: rgb(232, 96, 96); stroke-width: 1.5; }
+.s-cerchi svg.cerchi .capsula-chiara { fill: none; stroke: rgb(244, 196, 206); stroke-width: 1.5; }
+.s-cerchi svg.cerchi .grigio { fill: rgb(214, 214, 214); stroke: none; }
+.s-cerchi svg.cerchi .rosso { fill: none; stroke: rgb(226, 30, 30); stroke-width: 5; }
+.s-cerchi svg.cerchi .rosso-pieno { fill: rgb(226, 30, 30); stroke: none; }
+.s-cerchi svg.cerchi .nero { fill: none; stroke: #111; stroke-width: 2.5; }
+.s-cerchi svg.cerchi .nero-pieno { fill: #111; stroke: none; }
+.s-cerchi svg.cerchi .tratteggio { fill: none; stroke: #111; stroke-width: 2; stroke-dasharray: 3 5; }
+.s-cerchi svg.cerchi .bianco-filo { fill: #fff; stroke: #111; stroke-width: 3; }
+.s-cerchi svg.cerchi .linea { fill: none; stroke-width: 12; stroke-linecap: round; stroke-linejoin: round; }
+.s-cerchi svg.cerchi .curva { fill: none; stroke: rgb(255, 37, 177); stroke-width: 3; }
+.s-cerchi svg.cerchi .griglia { fill: none; stroke: rgba(0, 0, 0, 0.18); stroke-width: 1; }
+.s-cerchi .didascalia.alta { top: calc(560 * var(--px)); }
+.s-cerchi p.l.fig { font-weight: 500; }
+.s-cerchi p.l.fig b { font-weight: 700; }
+.s-cerchi p.l.legenda { font-size: calc(14 * var(--px)); line-height: 1.35; color: var(--c-tenue-forte); }
+
+/* Finestra di dialogo dei permessi, ridisegnata (Stull, fig. 4.5) */
+.dialogo { width: calc(400 * var(--px)); margin: calc(10 * var(--px)) auto 0; border-radius: calc(22 * var(--px)); background: rgba(242, 242, 247, 0.98); box-shadow: 0 calc(10 * var(--px)) calc(40 * var(--px)) rgba(0, 0, 0, 0.22); font-family: -apple-system, system-ui, var(--f-testo); text-align: center; overflow: hidden; }
+.dialogo .dtesto { padding: calc(22 * var(--px)) calc(22 * var(--px)) calc(16 * var(--px)); }
+.dialogo .dtesto b { display: block; font-size: calc(20 * var(--px)); line-height: 1.25; }
+.dialogo .dtesto small { display: block; margin-top: calc(6 * var(--px)); font-size: calc(15 * var(--px)); }
+.dialogo .dtasto { border-top: 1px solid rgba(60, 60, 67, 0.25); padding: calc(13 * var(--px)); font-size: calc(19 * var(--px)); color: rgb(0, 122, 255); }
+.s-duecol .fondo-grigio { background: #d9d9de; padding: calc(36 * var(--px)) calc(20 * var(--px)); border-radius: calc(8 * var(--px)); }
+
+/* Lista dei requisiti: il foglio grigio con le righe (dispensa p. 154) */
+.s-duecol svg.lista { display: block; width: 100%; height: auto; }
+
+/* Elenco numerato fitto a due colonne (strumenti per chi comincia, p. 156) */
+.s-testo ol.fitto { columns: 2; column-gap: calc(48 * var(--px)); margin: 0; padding-left: calc(28 * var(--px)); }
+.s-testo ol.fitto li { break-inside: avoid; font-size: calc(16 * var(--px)); line-height: 1.38; }
+.s-testo ol.fitto li + li { margin-top: calc(7 * var(--px)); }
+.s-testo ol.fitto li::before { content: none; }
+.s-testo h2.basso { margin-bottom: calc(40 * var(--px)); }
+.s-testo ol.fitto li { padding-left: 0.2em; position: static; }
+.s-testo.stretto li { font-size: calc(22 * var(--px)); }
+.s-duecol svg.lista { width: auto; max-width: 100%; max-height: calc(440 * var(--px)); }
+.s-duecol .colonne.chiavi p { font-size: calc(18 * var(--px)); }
+.s-duecol .colonne.chiavi ul.chiavi li { line-height: 1.85; }
+.s-duecol .colonne.chiavi figure img.basso { max-height: calc(170 * var(--px)); }
+.s-duecol .colonne.chiavi figcaption { margin-top: calc(4 * var(--px)); }
+.s-duecol .colonne.chiavi p.domanda-fase { margin-top: calc(14 * var(--px)) !important; }
+
+/* sottoelenco con lo stesso corpo dell'elenco (FZ, 2026-10-26: strumenti emblematici nel capitolo Ricerca) */
+.s-testo.corpo-unico li { font-size: calc(var(--t-corpo) * 0.88 * var(--px)); }   /* un po' più piccolo, ma uguale per tutte le voci */
+.s-testo.corpo-unico li li { font-size: 1em; }
