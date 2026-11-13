@@ -11,7 +11,7 @@ Formato di una scheda:
     anno: 2024
     ordine: 100                      ordine nelle slide (dentro il livello)
     parole: link, anchor, href       parole chiave per la ricerca
-    esempio: esempi/stati-link/      esempio ricostruito (html+css+js, MIT)
+    esempio: esempi/stati-link/      esempio ricostruito (html+css+js, MIT); più esempi separati da virgole
     vedi: interaction-states, button schede collegate
     origine: slide 6                 da dove viene (slide 2026, riga del mining…)
     fonti:

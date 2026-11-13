@@ -5,11 +5,9 @@ categoria: input
 anno: 2024
 ordine: 140
 parole: search, query, results, search bar, search box, search input, lente
-esempio: esempi/search-field/
+esempio: esempi/search-field/, esempi/search-field-2/
 vedi: predictive-input, prompt-suggestions
 origine: slide 33
-fonti:
-  - https://www.behance.net/gallery/28198219/CSS3-JQUERY-Search-Animation | Antonio Di Nardo | CSS3 + JQUERY - Search Animation | Behance
 ---
 
 ## it

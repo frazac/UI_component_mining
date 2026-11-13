@@ -216,8 +216,10 @@ def riga(s, per_id):
         collegamenti += f'<p class="piccolo"><b>{tt("vedi")}</b> ' + ', '.join(
             f'<a href="#{v}">{nomi(per_id[v])}</a>' for v in s['vedi'] if v in per_id) + '</p>'
     if s['esempio']:
-        nome_es = s['esempio'].rstrip('/').split('/')[-1]
-        collegamenti += f'<p class="piccolo"><b>{tt("esempio")}</b> <a href="{e(s["esempio"])}" target="_blank">{e(nome_es)}</a></p>'
+        # uno o più esempi, separati da virgole
+        esempi = [x.strip() for x in s['esempio'].split(',') if x.strip()]
+        collegamenti += f'<p class="piccolo"><b>{tt("esempio")}</b> ' + ', '.join(
+            f'<a href="{e(x)}" target="_blank">{e(x.rstrip("/").split("/")[-1])}</a>' for x in esempi) + '</p>'
     return (f'<tr id="{e(s["id"])}" data-livello="{s["livello"]}" data-categoria="{s["categoria"]}" data-anno="{s["anno"]}" {attr}>'
             f'<th scope="row"><a class="ancora" href="#{e(s["id"])}">{nomi(s)}</a></th>'
             f'<td class="note">{note(s)}{collegamenti}</td>'

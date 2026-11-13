@@ -1419,18 +1419,13 @@
     "search input",
     "lente"
    ],
-   "esempio": "esempi/search-field/",
+   "esempio": "esempi/search-field/, esempi/search-field-2/",
    "vedi": [
     "predictive-input",
     "prompt-suggestions"
    ],
    "origine": "slide 33",
-   "fonti": [
-    {
-     "url": "https://www.behance.net/gallery/28198219/CSS3-JQUERY-Search-Animation",
-     "titolo": "Antonio Di Nardo | CSS3 + JQUERY - Search Animation | Behance"
-    }
-   ],
+   "fonti": [],
    "letture": [],
    "testi": {
     "it": {
