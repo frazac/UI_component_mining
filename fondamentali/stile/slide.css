@@ -954,19 +954,22 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-pagina { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); padding-bottom: calc(44 * var(--px)); }
 .s-pagina h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(8 * var(--px)); }
 .s-pagina > img { flex: 1 1 0; min-height: 0; width: calc(100% - 2 * var(--margine) * var(--px)); object-fit: contain; object-position: center top; }
+.s-pagina.centro > img { object-position: center; }   /* pagina senza titolo, centrata in verticale (s94, FZ 2026-11-02) */
 .s-pagina .credito { margin-top: calc(6 * var(--px)); font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }
 .s-domanda { background: var(--c-fondo); }   /* niente fondo pulce (FZ, 2026-10-19) */
-.s-domanda .domanda { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(40 * var(--px)); height: calc(520 * var(--px)); }
+.s-domanda .domanda { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(40 * var(--px)); height: calc(520 * var(--px)); margin-bottom: calc(40 * var(--px)); }
 .s-domanda .domanda > p { margin: 0; font-size: calc(22 * var(--px)); text-align: center; }
 .s-domanda .domanda > p span { background: #ffff00; padding: 0 0.2em; }
 .s-domanda .domanda img { height: calc(520 * var(--px)); width: auto; display: block; }
 .s-domanda .hamburger { width: calc(120 * var(--px)); display: grid; gap: calc(22 * var(--px)); }
 .s-domanda .hamburger i { display: block; height: calc(9 * var(--px)); background: var(--c-testo); }
-.s-domanda .credito { margin-top: calc(20 * var(--px)); font-size: calc(14 * var(--px)); color: var(--c-tenue-forte); }
+.s-domanda .credito { position: absolute; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(60 * var(--px)); margin: 0; font-size: calc(14 * var(--px)); color: var(--c-tenue-forte); }   /* fuori dal flusso: con e senza didascalia l'immagine resta ferma (s92 → s93, FZ 2026-11-02) */
 .s-duecol { justify-content: flex-start; padding-top: calc((var(--margine-alto) - 40) * var(--px)); }
 .s-duecol h2 { font-family: var(--f-testo); font-weight: 700; font-size: calc(var(--t-titolo) * var(--px)); line-height: 1.05; letter-spacing: -0.015em; margin-bottom: calc(48 * var(--px)); }
 .s-duecol .colonne { display: grid; grid-template-columns: 1.5fr 1fr; gap: calc(48 * var(--px)); align-items: start; }
 .s-duecol .colonne.pari { grid-template-columns: 1fr 1fr; }
+.s-duecol > p.intro { margin-top: calc(-24 * var(--px)); margin-bottom: calc(28 * var(--px)); font-size: calc(20 * var(--px)); line-height: 1.4; max-width: calc(900 * var(--px)); }
+.s-duecol .colonne.allineate figure img { height: calc(360 * var(--px)); max-height: none; }   /* immagini alte uguali: le didascalie partono alla stessa riga (handouts-s217, FZ 2026-11-02) */
 .s-duecol .colonne p { margin: 0 0 calc(14 * var(--px)); font-size: calc(20 * var(--px)); line-height: 1.4; }
 .s-duecol .colonne p.intest { font-weight: 700; }
 .s-duecol .colonne blockquote { margin: 0 0 calc(14 * var(--px)); font-style: italic; font-size: calc(20 * var(--px)); line-height: 1.4; }
@@ -974,6 +977,8 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-duecol figure { margin: 0; }
 .s-duecol figure img { display: block; width: 100%; max-height: calc(420 * var(--px)); object-fit: contain; }
 .s-duecol figcaption { margin-top: calc(8 * var(--px)); font-size: calc(13 * var(--px)); line-height: 1.4; color: var(--c-salmone); }
+.s-duecol p.credito { position: absolute; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(60 * var(--px)); margin: 0; font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }   /* una sola didascalia sopra il piede (s126, FZ 2026-10-27) */
+.s-duecol p.credito a.link-md { color: inherit; --c-link-testo: currentColor; }
 
 /* pagina intera della dispensa, alla stessa scala della slide: titolo e piede originali tolti dall'immagine, qui il titolo standard sopra */
 .s-pagina.piena > img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; object-fit: fill; z-index: 0; }
@@ -1012,6 +1017,7 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-gestalt figure { margin: 0; }
 .s-gestalt figure img { display: block; width: 100%; height: calc(330 * var(--px)); object-fit: contain; border: 1px solid #e6e6e6; background: #fff; }
 .s-gestalt figcaption { margin-top: calc(8 * var(--px)); font-size: calc(14 * var(--px)); color: var(--c-tenue-forte); }
+.s-gestalt p.credito { position: absolute; left: calc(var(--margine) * var(--px)); right: calc(var(--margine) * var(--px)); bottom: calc(60 * var(--px)); margin: 0; font-size: calc(14 * var(--px)); line-height: 1.45; color: var(--c-tenue-forte); }   /* fonte sopra il piede (Kanizsa, handouts-s161, FZ 2026-11-04) */
 .demo { position: relative; }
 .demo input { position: absolute; opacity: 0; pointer-events: none; }
 .demo .campo { position: relative; height: calc(330 * var(--px)); border: 1px solid #e6e6e6; background: #fafafa; overflow: hidden; display: flex; align-items: center; justify-content: center; }
@@ -1091,6 +1097,7 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 /* Gestalt senza l'esempio dai componenti: l'esempio interattivo prende tutta la larghezza (FZ, 2026-10-19) */
 .s-gestalt .righe { grid-template-columns: 1fr; }
 .s-gestalt .demo .campo { height: calc(400 * var(--px)); }
+.s-gestalt:has(> p.credito) .demo .campo { height: calc(360 * var(--px)); }   /* con la fonte sopra il piede il pulsante resta libero */
 /* chiusura: triangolo di Kanizsa — prima tre dischi pieni, poi i «pac-man» e il triangolo che non c'è */
 .d-kanizsa .campo svg { width: calc(520 * var(--px)); height: calc(390 * var(--px)); }
 .d-kanizsa .dischi circle { fill: #2e2e2e; }
@@ -1114,6 +1121,14 @@ body.annotate-placing .s-componente .esempio { outline: calc(2 * var(--px)) dash
 .s-cerchi svg.cerchi circle.acqua { fill: rgb(224, 241, 239); }
 .s-cerchi svg.cerchi circle.bianco { fill: #fff; }
 .s-cerchi svg.cerchi path.punta { fill: rgb(229, 170, 195); stroke: none; }
+/* s103: lo stesso schema di s102 sopra il disegno a pastelli (il rumore), testi identici (FZ, 2026-11-02) */
+.s-cerchi.rumore img.sfondo { inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-cerchi p.c.nodo.rumore { transform: translate(-50%, -50%) rotate(12deg); }
+/* s215, il funnel della conoscenza: testi più grandi e le «fiches» (tante sparse, poche collegate, poche in fila; FZ, 2026-11-02) */
+.s-cerchi p.c.bollo.grande { font-size: calc(24 * var(--px)); }
+.s-cerchi p.c.bollo.grande .es { font-size: calc(16 * var(--px)); color: var(--c-testo); }
+.s-cerchi svg.cerchi .fiches circle { fill: rgb(240, 216, 222); stroke: none; }   /* rosa chiaro, vicino al pulce: i testi neri restano leggibili sopra */
+.s-cerchi svg.cerchi .fiches path { stroke: rgb(240, 216, 222); stroke-width: 1.5; }
 .s-tabella .nota-tabella { margin-top: calc(28 * var(--px)); max-width: calc(1000 * var(--px)); font-size: calc(19 * var(--px)); line-height: 1.4; color: var(--c-tenue-forte); }
 /* tre proposte affiancate nella colonna destra (Stull) */
 .s-duecol .tre { display: grid; grid-template-columns: 1fr; gap: calc(10 * var(--px)); }
